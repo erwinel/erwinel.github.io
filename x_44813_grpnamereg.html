@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Group Name Registry Application</title>
+        <meta name="description" content="Lenny's website for all things coding" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="stylesheet" type="text/css" media="screen" href="lib/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="lib/bootstrap/css/bootstrap-reboot.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="style/default.css" />
+        <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+        <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <header class="container-fluid border border-secondary p-sm-1 defaultHeader"><h1>Group Name Registry Application</h1></header>
+        <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item border border-secondary bg-dark"><a href="index.html" class="nav-link text-light">Home</a></li>
+                <li class="nav-item border border-secondary bg-dark"><a href="InitialConfig.html" class="nav-link text-light">Initial Config</a></li>
+                <li class="nav-item border border-secondary bg-dark"><a href="GlobalUpdateSets.html" class="nav-link text-light">Update Sets</a></li>
+                <li class="nav-item border border-secondary bg-dark"><a href="x_44813_util.html" class="nav-link text-light">Utilities Application</a></li>
+                <li class="nav-item active border border-secondary bg-light"><a href="x_44813_grpnamereg.html" class="nav-link text">Group Name Registry</a></li>
+                <li class="nav-item border border-secondary bg-dark"><a href="x_44813_sec_clsif.html" class="nav-link text-light">Security Classification</a></li>
+            </ul>
+        </nav>
+        <section class="container-fluid border border-light p-md-3">
+            <div class="card">
+                <div class="card-header"><h2>Purpose</h2></div>
+                <div class="card-body">
+                    The purpose of this application is to allow group name references to be agnostic between SDLC instances.
+                    <div class="card">
+                        <div class="card-header"><h3>Justification</h3></div>
+                        <div class="card-body">
+                            In a ServiceNow SDLC environment which synchronizes ServiceNow user groups with other sources, such as Active Directory Integration, it is possible that
+                            groups of the same name can have different <var>sys_id</var> on each of the development, test and production instances. If a workflow is created on
+                            the development server with a Group Approval node, the node can fail when pushed to test and/or production. This requires the workflow to be modified
+                            on the test and production servers, to select the approval group again.
+                            <h4>Complications of modifying workflows in Test/UAT and Production</h4>
+                            A potential conflict can arise if a workflow is modified in Test/UAT and/or Production, and then the workflow needs to be updated later from the development
+                            instance. If any modification dates in the update set occur between the time when the update set was completed and the time when any modifications occur
+                            in the other instance, then it will become excessively cumbersome to get the new update set to succeed.
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>The Solution</h3></div>
+                        <div class="card-body">
+                            This application allows a list of commonly known group names to be defined by the system administrator.
+                            The workflow developer can then utilize this solution to populate group approval nodes by group name, rather than by the <var>sys_id</var>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h2>Installation</h2></div>
+                <div class="card-body">
+                    <ul>
+                        <li>Open <a href="../x_44813_grpnamereg">the Group Name Registry repository website</a> to get the actual URL for the repository</li>
+                        <li>In ServiceNow, Navigate to <var>Applications</var> &rarr; <var>Studio</var></li>
+                        <li>Select <var>Open from repository</var></li>
+                        <li>Enter the URL from step one</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h2>Usage (System Administrators)</h2></div>
+                <div class="card-body">
+                    
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h2>Usage (Workflow Developers)</h2></div>
+                <div class="card-body">
+                    
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
