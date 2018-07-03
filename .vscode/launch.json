@@ -9,16 +9,56 @@
             "request": "launch",
             "name": "Launch Chrome",
             "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}",
-            "file": "${workspaceFolder}/index.html"
+            "webRoot": "${workspaceFolder}/dist",
+            "file": "${workspaceFolder}/dist/index.html"
         },
         {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Current File Chrome",
             "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}",
+            "webRoot": "${workspaceFolder}/dist",
             "file": "${file}"
+        },
+        {
+            "type": "PowerShell",
+            "request": "launch",
+            "name": "PowerShell Launch Current File",
+            "script": "${file}",
+            "args": [],
+            "cwd": "${file}"
+        },
+        {
+            "type": "PowerShell",
+            "request": "launch",
+            "name": "PowerShell Launch Current File in Temporary Console",
+            "script": "${file}",
+            "args": [],
+            "cwd": "${file}",
+            "createTemporaryIntegratedConsole": true
+        },
+        {
+            "type": "PowerShell",
+            "request": "launch",
+            "name": "PowerShell Launch Current File w/Args Prompt",
+            "script": "${file}",
+            "args": [
+                "${command:SpecifyScriptArgs}"
+            ],
+            "cwd": "${file}"
+        },
+        {
+            "type": "PowerShell",
+            "request": "attach",
+            "name": "PowerShell Attach to Host Process",
+            "processId": "${command:PickPSHostProcess}",
+            "runspaceId": 1
+        },
+        {
+            "type": "PowerShell",
+            "request": "launch",
+            "name": "PowerShell Interactive Session",
+            "cwd": "${workspaceRoot}"
         }
     ]
 }

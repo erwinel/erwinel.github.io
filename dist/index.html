@@ -9,25 +9,31 @@
         <title>ServiceNow Github Repositories</title>
         <meta name="description" content="Lenny's website for all things coding" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="stylesheet" type="text/css" media="screen" href="lib/angular/angular-csp.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="lib/bootstrap/css/bootstrap.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="lib/bootstrap/css/bootstrap-reboot.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="style/default.css" />
         <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+        <script type="text/javascript" src="lib/angular/angular.js"></script>
         <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
+        <script type="text/javascript" src="script/app.js" id="appScript"></script>
     </head>
-    <body>
+    <body ng-app="erwinel" ng-controller="mainController">
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <header class="container-fluid border border-secondary p-sm-1 defaultHeader"><h1>ServiceNow Github Repositories</h1></header>
+        <header class="container-fluid border border-secondary p-sm-1 defaultHeader"><h1>{{titleText}}</h1></header>
         <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active border border-secondary bg-light"><a href="index.html" class="nav-link text">Home</a></li>
-                <li class="nav-item border border-secondary bg-dark"><a href="InitialConfig.html" class="nav-link text-light">Initial Config</a></li>
-                <li class="nav-item border border-secondary bg-dark"><a href="GlobalUpdateSets.html" class="nav-link text-light">Update Sets</a></li>
-                <li class="nav-item border border-secondary bg-dark"><a href="x_44813_util.html" class="nav-link text-light">Utilities Application</a></li>
-                <li class="nav-item border border-secondary bg-dark"><a href="x_44813_grpnamereg.html" class="nav-link text-light">Group Name Registry</a></li>
-                <li class="nav-item border border-secondary bg-dark"><a href="x_44813_sec_clsif.html" class="nav-link text-light">Security Classification</a></li>
+                <li ng-repeat="m in navNodes" class="nav-item {{m.itemClass}}">
+                    <a ng-if="m.type == 'item'" href="{{m.href}}" class="nav-link {{m.linkClass}}">{{m.text}}</a>
+                    <a ng-if="m.type == 'dropdown'" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{m.text}}</a>
+                    <div ng-if="m.type == 'dropdown'" class="dropdown-menu">
+                        <a href="{{m.href}}" class="nav-link {{m.linkClass}}">{{m.text}}</a>
+                        <div class="dropdown-divider"></div>
+                        <a ng-repeat="n in m.navNodes" class="dropdown-item {{n.linkClass}}" href="{{n.href}}">{{n.text}}</a>
+                    </div>
+                </li>
             </ul>
         </nav>
         <section class="container-fluid border border-light p-md-3">
