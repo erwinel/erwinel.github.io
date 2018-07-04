@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es3",
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": false,
+        "preserveConstEnums": false,
+        "sourceMap": false,
+        "declaration": false,
+        "outDir": ".",
+        "strict": false,
+        "declarationMap": false,
+        "importHelpers": true,
+        "lib": [ "es2015", "dom" ]
+    },
+    "files": [ "./publish.ts" ]
+}
