@@ -8,17 +8,18 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome",
-            "url": "http://localhost:8080",
+            "url": "http://localhost:8085/index.html",
             "webRoot": "${workspaceFolder}/dist",
-            "preLaunchTask": "build-script-release",
-            "file": "${workspaceFolder}/dist/index.html"
+            "cwd": "${workspaceFolder}/dist",
+            "preLaunchTask": "build-script-release"
         },
         {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Current File Chrome",
-            "url": "http://localhost:8080",
+            "url": "http://localhost:8085",
             "webRoot": "${workspaceFolder}/dist",
+            "cwd": "${workspaceFolder}/dist",
             "file": "${file}"
         },
         {

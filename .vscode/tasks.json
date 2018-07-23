@@ -114,6 +114,34 @@
             }
         },
         {
+            "identifier": "update-lib",
+            "label": "Update Lib",
+            "type": "gulp",
+            "task": "update-lib",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false
+            }
+        },
+        {
+            "identifier": "clean-lib",
+            "label": "Clean Lib",
+            "type": "gulp",
+            "task": "clean-lib",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false
+            }
+        },
+        {
             "identifier": "build-tsutil-test",
             "label": "Build Util (TS/test)",
             "type": "typescript",

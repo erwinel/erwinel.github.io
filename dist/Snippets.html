@@ -23,19 +23,7 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <header class="container-fluid border border-secondary p-sm-1 defaultHeader"><h1>{{titleText}}</h1></header>
-        <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3">
-            <ul class="navbar-nav mr-auto">
-                <li ng-repeat="m in navNodes" class="nav-item {{m.itemClass}}">
-                    <a ng-if="m.type == 'item'" href="{{m.href}}" class="nav-link {{m.linkClass}}">{{m.text}}</a>
-                    <a ng-if="m.type == 'dropdown'" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{m.text}}</a>
-                    <div ng-if="m.type == 'dropdown'" class="dropdown-menu">
-                        <a href="{{m.href}}" class="nav-link {{m.linkClass}}">{{m.text}}</a>
-                        <div class="dropdown-divider"></div>
-                        <a ng-repeat="n in m.navNodes" class="dropdown-item {{n.linkClass}}" href="{{n.href}}">{{n.text}}</a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
+        <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3" ng-include="'Nav.include.htm'"></nav>
         <section class="container-fluid border border-light p-md-3">
             <ul>
                 <li><a href="#force_to_update_set">Force To Update Set</a></li>
