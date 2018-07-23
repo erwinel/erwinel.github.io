@@ -16,7 +16,7 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "shared",
-                "showReuseMessage": true
+                "showReuseMessage": false
             }
         },
         {
@@ -32,7 +32,7 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "shared",
-                "showReuseMessage": true
+                "showReuseMessage": false
             }
         },
         {
@@ -46,7 +46,7 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "shared",
-                "showReuseMessage": true
+                "showReuseMessage": false
             }
         },
         {
@@ -63,7 +63,7 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "shared",
-                "showReuseMessage": true
+                "showReuseMessage": false
             }
         },
         {
@@ -77,7 +77,35 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "shared",
-                "showReuseMessage": true
+                "showReuseMessage": false
+            }
+        },
+        {
+            "identifier": "start-webserver",
+            "label": "Start Web Server",
+            "type": "gulp",
+            "task": "start-webserver",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false
+            }
+        },
+        {
+            "identifier": "stop-webserver",
+            "label": "Stop Web Server",
+            "type": "gulp",
+            "task": "stop-webserver",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false
             }
         }
     ]

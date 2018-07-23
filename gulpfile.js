@@ -48,7 +48,7 @@ function getTSProject(name, stage) {
 function cleanOutDir(name, done) {
     var tsproj = getTSProject(name, "test");
     if (typeof(tsproj) != "undefined")
-        Del(Path.normalize(Path.join(tsproj.options.outDir, (typeof(tsProjCache[name].cleanFilter) == "string") ? tsProjCache[name].cleanFilter : "**/*")), {dryRun: true}).then(function(paths) {
+        Del(Path.normalize(Path.join(tsproj.options.outDir, (typeof(tsProjCache[name].cleanFilter) == "string") ? tsProjCache[name].cleanFilter : "**/*"))).then(function(paths) {
             done();
             console.log("Deleted %s", JSON.stringify(paths));
         }, function(reason) {
@@ -65,3 +65,18 @@ function cleanOutDir(name, done) {
 gulp.task("clean-dist-script", function(done) { cleanOutDir("dist", done); });
 
 gulp.task("clean-util", function(done) { cleanOutDir("util", done); });
+
+gulp.task('start-webserver', function() {
+    gulp.src('dist')
+        .pipe(webserver({
+        livereload: true,
+        directoryListing: true,
+        open: true,
+        port: 8085
+    }));
+});
+
+gulp.task('stop-webserver', function() {
+    var stream = gulp.src('dist').pipe(webserver());
+    stream.emit('kill');
+});
