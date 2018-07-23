@@ -7,14 +7,14 @@ const Path = require("path");
 const runSequence = require('run-sequence');
 
 const tsProjCache = {
-    dist: {
+    script: {
         release: { path: "./src/tsconfig-dist.json" },
         test: { path: "./src/tsconfig.json" }
     },
     util: {
         release: { path: "./util-src/tsconfig-release.json" },
         test: { path: "./util-src/tsconfig.json" },
-        cleanFilter: '*/**/*'
+        cleanFilter: '*/**'
     }
 };
 
@@ -45,26 +45,71 @@ function getTSProject(name, stage) {
     }
 }
 
-function cleanOutDir(name, done) {
-    var tsproj = getTSProject(name, "test");
+gulp.task('build-script-release', function(done) {
+    var tsproj = getTSProject("script", "release");
+    if (typeof(tsproj) != "undefined") 
+        return tsproj.src().pipe(tsproj()).pipe(gulp.dest(tsproj.options.outDir));
+    else
+        done();
+});
+
+gulp.task('build-script-test', function(done) {
+    var tsproj = getTSProject("script", "test");
+    if (typeof(tsproj) != "undefined") 
+        return tsproj.src().pipe(tsproj()).pipe(gulp.dest(tsproj.options.outDir));
+    else
+        done();
+});
+
+gulp.task('build-util-release', function(done) {
+    var tsproj = getTSProject("util", "release");
+    if (typeof(tsproj) != "undefined") 
+        return tsproj.src().pipe(tsproj()).pipe(gulp.dest(tsproj.options.outDir));
+    else
+        done();
+});
+
+gulp.task('build-util-test', function(done) {
+    var tsproj = getTSProject("util", "test");
+    if (typeof(tsproj) != "undefined") 
+        return tsproj.src().pipe(tsproj()).pipe(gulp.dest(tsproj.options.outDir));
+    else
+        done();
+});
+
+gulp.task("clean-script", function(done) {
+    var tsproj = getTSProject("script", "test");
     if (typeof(tsproj) != "undefined")
-        Del(Path.normalize(Path.join(tsproj.options.outDir, (typeof(tsProjCache[name].cleanFilter) == "string") ? tsProjCache[name].cleanFilter : "**/*"))).then(function(paths) {
+        Del(['dist/script/**', '!dist/script']).then(function(paths) {
             done();
             console.log("Deleted %s", JSON.stringify(paths));
         }, function(reason) {
             done();
             if (typeof(reason) != "undefined" && reason !== null)
-                console.error("cleanOutDir(%s) failed: %s", name, JSON.stringify(reason));
+                console.error("clean-dist-script failed: %s", JSON.stringify(reason));
             else
-                console.error("cleanOutDir(%s) failed", name);
+                console.error("clean-dist-script failed");
         });
     else
         done();
-}
+});
 
-gulp.task("clean-dist-script", function(done) { cleanOutDir("dist", done); });
-
-gulp.task("clean-util", function(done) { cleanOutDir("util", done); });
+gulp.task("clean-util", function(done) {
+    var tsproj = getTSProject("util", "test");
+    if (typeof(tsproj) != "undefined")
+        Del(['util/**', '!util', '!util/**/*.ps1', '!util/**/*.xml']).then(function(paths) {
+            done();
+            console.log("Deleted %s", JSON.stringify(paths));
+        }, function(reason) {
+            done();
+            if (typeof(reason) != "undefined" && reason !== null)
+                console.error("clean-dist-script failed: %s", JSON.stringify(reason));
+            else
+                console.error("clean-dist-script failed");
+        });
+    else
+        done();
+});
 
 gulp.task('start-webserver', function() {
     gulp.src('dist')

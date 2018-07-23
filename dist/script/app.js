@@ -156,4 +156,3 @@ erwinelApp.controller("mainController", function ($scope, $http) {
         $scope.titleText = "Warning: Script element with id of 'appScript' not found. Cannot initialize menu.";
     }
 });
-//# sourceMappingURL=app.js.map
