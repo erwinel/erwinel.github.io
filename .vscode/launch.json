@@ -21,6 +21,13 @@
             "file": "${file}"
         },
         {
+            "type": "node",
+            "request": "launch",
+            "name": "Test js-tokens",
+            "program": "${workspaceFolder}/util/js-tokens.js",
+            "preLaunchTask": "build-util-test"
+        },
+        {
             "type": "PowerShell",
             "request": "launch",
             "name": "PowerShell Launch Current File",

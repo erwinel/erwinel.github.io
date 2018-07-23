@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Code Snippets</title>
+        <meta name="description" content="Lenny's website for all things coding" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="stylesheet" type="text/css" media="screen" href="lib/angular/angular-csp.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="lib/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="lib/bootstrap/css/bootstrap-reboot.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="style/default.css" />
+        <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+        <script type="text/javascript" src="lib/angular/angular.js"></script>
+        <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
+        <script type="text/javascript" src="script/app.js" id="appScript"></script>
+    </head>
+    <body ng-app="erwinel" ng-controller="mainController">
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <header class="container-fluid border border-secondary p-sm-1 defaultHeader"><h1>{{titleText}}</h1></header>
+        <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3">
+            <ul class="navbar-nav mr-auto">
+                <li ng-repeat="m in navNodes" class="nav-item {{m.itemClass}}">
+                    <a ng-if="m.type == 'item'" href="{{m.href}}" class="nav-link {{m.linkClass}}">{{m.text}}</a>
+                    <a ng-if="m.type == 'dropdown'" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{m.text}}</a>
+                    <div ng-if="m.type == 'dropdown'" class="dropdown-menu">
+                        <a href="{{m.href}}" class="nav-link {{m.linkClass}}">{{m.text}}</a>
+                        <div class="dropdown-divider"></div>
+                        <a ng-repeat="n in m.navNodes" class="dropdown-item {{n.linkClass}}" href="{{n.href}}">{{n.text}}</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <section class="container-fluid border border-light p-md-3">
+            <ul>
+                <li><a href="#force_to_update_set">Force To Update Set</a></li>
+            </ul>
+            <div class="card" id="force_to_update_set">
+                <div class="card-header"><h2>Force To Update Set</h2></div>
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-header"><h3>Usage</h3></div>
+                        <div class="card-body">
+                            Once the UI action is created using this snippet, you will be able to click on the action link to force the item being edited into the
+                            current update set.
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>Implementation</h3></div>
+                        <div class="card-body">
+                            Create new UI action:
+                            <ol>
+                                <li>
+                                    <span class="d-inline-block">
+                                        <img src="images/snippets/form_menu.png" alt="Form Menu Example" width="179" height="248"
+                                            class="mt-0 mr-0 ml-3 mb-3 d-inline img-fluid float-right" />
+                                        Open the edit form for a record in the target table.
+                                    </span>
+                                </li>
+                                <li>Click on the form menu and select <samp>Configure</samp> &rArr; <samp>UI Actions</samp>.</li>
+                                <li>
+                                    <span class="d-inline-block">
+                                        <img src="images/snippets/new_ui_action.png" alt="New UI Action Button" width="163" height="77"
+                                            class="mt-0 mr-0 ml-3 mb-3 d-inline img-fluid float-right" />
+                                        Click <samp>New</samp>.
+                                    </span>
+                                    <img src="images/snippets/ui_action_form.png" alt="New UI Action Button" width="611" height="460"
+                                        class="mt-0 mr-0 ml-3 mb-3 d-inline img-fluid float-right" />
+                                </li>
+                                <li>Enter a display name under <samp>Name</samp>.</li>
+                                <li>Enter programmatic name (a letter followed only by letters, number and underscores) under <samp>Action Name</samp>.
+                                    This should be a value that would be different from the name of any other UI actions.</li>
+                                <li>Uncheck <samp>Show Insert</samp>.</li>
+                                <li>Check <samp>Form Link</samp>.</li>
+                                <li>Enter <code>gs.hasRole('admin')</code> for <samp>Condition</samp>.</li>
+                                <li style="clear:both">Enter the following code into the <samp></samp> textbox:
+                                    <pre class="script-pane pre-scrollable clear"><code><span class="script-comment">//Commit any changes to the record</span>
+<var>current</var><span class="script-command">.update</span>();
+
+<span class="script-comment">//Check to make sure the table isn't synchronized already</span>
+<span class="script-keyword">var</span> <var>tbl</var> <span class="script-operator">=</span> <var>current</var><span class="script-command">.getTableName</span>();
+<span class="script-keyword">if</span>(<var>tbl</var><span class="script-command">.startsWith</span>(<q>'wf_'</q>) <span class="script-operator">||</span> <var>tbl</var><span class="script-command">.startsWith</span>(<q>'sys_ui_'</q>) <span class="script-operator">||</span> <var>tbl</var> <span class="script-operator">==</span> <q>'sys_choice'</q> <span class="script-operator">||</span> <var>current</var><span class="script-command">.getED</span>()<span class="script-command">.getBooleanAttribute</span>(<q>'update_synch'</q>) <span class="script-operator">||</span> <var>current</var><span class="script-command">.getED</span>()<span class="script-command">.getBooleanAttribute</span>(<q>'update_synch_custom'</q>)){
+   <var>gs</var><span class="script-command">.addErrorMessage</span>(<q>'Updates are already being recorded for this table.'</q>);
+   <var>action</var><span class="script-command">.setRedirectURL</span>(<var>current</var>);  
+} <span class="script-keyword">else</span>{
+   <span class="script-comment">//Push the update into the current update set</span>
+   <span class="script-keyword">var</span> <var>um</var> <span class="script-operator">=</span> <span class="script-keyword">new</span> <span class="script-command">GlideUpdateManager2</span>();
+   <var>um</var><span class="script-command">.saveRecord</span>(<var>current</var>);
+
+   <span class="script-comment">//Query for the current update set to display info message</span>
+   <span class="script-keyword">var</span> <var>setID</var> <span class="script-operator">=</span> <var>gs</var><span class="script-command">.getPreference</span>(<q>'sys_update_set'</q>);
+   <span class="script-keyword">var</span> <var>us</var> <span class="script-operator">=</span> <span class="script-keyword">new</span> <span class="script-command">GlideRecord</span>(<q>'sys_update_set'</q>);
+   <var>us</var><span class="script-command">.get</span>(<var>setID</var>);
+
+   <span class="script-comment">//Display info message and reload the form</span>
+   <var>gs</var><span class="script-command">.addInfoMessage</span>(<q>'Record included in &lt;a href="sys_update_set.do?sys_id='</q> <span class="script-operator">+</span> <var>setID</var> <span class="script-operator">+</span> <q>'"&gt;'</q> <span class="script-operator">+</span> <var>us</var>.name <span class="script-operator">+</span> <q>'&lt;/a&gt; update set.'</q>);
+   <var>action</var><span class="script-command">.setRedirectURL</span>(<var>current</var>);
+}</code></pre>
+                                </li>
+
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

@@ -1,0 +1,84 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "identifier": "build-distro",
+            "label": "Build Distro",
+            "type": "typescript",
+            "tsconfig": "src\\tsconfig-dist.json",
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            }
+        },
+        {
+            "identifier": "build-distro-test",
+            "label": "Build Distro (test)",
+            "type": "typescript",
+            "tsconfig": "src\\tsconfig.json",
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            }
+        },
+        {
+            "identifier": "clean-dist-script",
+            "label": "Clean Distro",
+            "type": "gulp",
+            "task": "clean-dist-script",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            }
+        },
+        {
+            "identifier": "build-util-test",
+            "label": "Build Util Test",
+            "type": "typescript",
+            "tsconfig": "util-src\\tsconfig.json",
+            "group": "build",
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            }
+        },
+        {
+            "identifier": "clean-util",
+            "label": "Clean Util",
+            "type": "gulp",
+            "task": "clean-util",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            }
+        }
+    ]
+}

@@ -2,6 +2,22 @@
     --light-yellow: #f7ff84;
     --dark-indigo: #3f0a94;
 }
+ol.vTop {
+    position: relative;
+    color: #006400;
+}
+ol.vTop li::before {
+    position: absolute;
+    vertical-align: top;
+    text-align: left;
+    color: var(--light-yellow);
+}
+ol.vTop li {
+    position: relative;
+    vertical-align: top;
+    text-align: left;
+}
+
 header.defaultHeader {
     background-color: var(--dark-indigo);
 }

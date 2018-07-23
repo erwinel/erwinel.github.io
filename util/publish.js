@@ -1,16 +1,15 @@
-//"use strict";
-//exports.__esModule = true;
-var FS = require("fs");
-var Path = require("path");
-var Tmp = require("tmp");
-var git = require("simple-git");
-var Denomination_Byte = "bytes";
-var Denomination_KB = "KB";
-var Denomination_MB = "MB";
-var Denomination_GB = "GB";
-var Denomination_TB = "TB";
-var SizeInfo = /** @class */ (function () {
-    function SizeInfo(size, denomination) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const FS = require("fs");
+const Path = require("path");
+const Tmp = require("tmp");
+const Denomination_Byte = "bytes";
+const Denomination_KB = "KB";
+const Denomination_MB = "MB";
+const Denomination_GB = "GB";
+const Denomination_TB = "TB";
+class SizeInfo {
+    constructor(size, denomination) {
         this.denomination = Denomination_Byte;
         this.value = 0;
         if (typeof (size) != "number" || size <= 0) {
@@ -22,7 +21,7 @@ var SizeInfo = /** @class */ (function () {
         this.denomination = (typeof (denomination) == "string") ? denomination : Denomination_Byte;
         this.normalize();
     }
-    SizeInfo.prototype.normalize = function () {
+    normalize() {
         if (!Number.isFinite(this.value) || this.value == 0) {
             this.value = 0;
             this.denomination = Denomination_Byte;
@@ -100,10 +99,10 @@ var SizeInfo = /** @class */ (function () {
                 }
             }
         }
-    };
-    SizeInfo.prototype.add = function (value) {
+    }
+    add(value) {
         this.normalize();
-        var rValue;
+        let rValue;
         if (typeof (value) == "undefined")
             return new SizeInfo(this.value, this.denomination);
         if (typeof (value) == "number") {
@@ -118,7 +117,7 @@ var SizeInfo = /** @class */ (function () {
         }
         if (this.value == 0)
             return rValue;
-        var lValue = new SizeInfo(this.value, this.denomination);
+        let lValue = new SizeInfo(this.value, this.denomination);
         if (rValue.denomination == lValue.denomination) {
             lValue.value += rValue.value;
             lValue.normalize();
@@ -194,15 +193,14 @@ var SizeInfo = /** @class */ (function () {
         lValue.value += rValue.value;
         lValue.normalize();
         return lValue;
-    };
-    SizeInfo.prototype.toString = function () {
+    }
+    toString() {
         this.normalize();
         return (Math.round(this.value * 100) / 100) + " " + this.denomination;
-    };
-    return SizeInfo;
-}());
-var FileSystemInfo = /** @class */ (function () {
-    function FileSystemInfo(dirName, fileName) {
+    }
+}
+class FileSystemInfo {
+    constructor(dirName, fileName) {
         this.name = "";
         this.lcName = "";
         this.dirname = "";
@@ -211,7 +209,7 @@ var FileSystemInfo = /** @class */ (function () {
         this.exists = false;
         this.isDirectory = false;
         this.isFile = false;
-        var p, d;
+        let p, d;
         if (typeof (fileName) != "string") {
             if (typeof (dirName) == "undefined")
                 return;
@@ -242,7 +240,7 @@ var FileSystemInfo = /** @class */ (function () {
         }
         this.lcName = this.name.toLowerCase();
         if (this.exists) {
-            var stat = FS.statSync(this.path);
+            let stat = FS.statSync(this.path);
             this.isDirectory = stat.isDirectory();
             if (this.isDirectory)
                 this.isFile = false;
@@ -256,17 +254,17 @@ var FileSystemInfo = /** @class */ (function () {
         }
         this.size = 0;
     }
-    FileSystemInfo.prototype.refresh = function () {
+    refresh() {
         if (this.path.length == 0)
             return;
-        var existed = this.exists;
+        let existed = this.exists;
         this.exists = FS.existsSync(this.path);
         if (!existed && (this.exists || FS.existsSync(this.dirname))) {
             this.dirname = Path.resolve(this.dirname);
             this.path = Path.join(this.dirname, this.name);
         }
         if (this.exists) {
-            var stat = FS.statSync(this.path);
+            let stat = FS.statSync(this.path);
             this.isDirectory = stat.isDirectory();
             if (this.isDirectory)
                 this.isFile = false;
@@ -279,19 +277,19 @@ var FileSystemInfo = /** @class */ (function () {
             }
         }
         this.size = 0;
-    };
-    FileSystemInfo.prototype.getChildItems = function () {
+    }
+    getChildItems() {
         this.refresh();
         if (!(this.exists && this.isDirectory))
             return [];
         return FS.readdirSync(this.path).map(function (n) {
-            var item = new FileSystemInfo();
+            let item = new FileSystemInfo();
             item.name = n;
             item.lcName = n.toLowerCase();
             item.dirname = this.path;
             item.path = Path.join(this.path, n);
             item.exists = true;
-            var stat = FS.statSync(item.path);
+            let stat = FS.statSync(item.path);
             item.isDirectory = stat.isDirectory();
             if (!item.isDirectory) {
                 item.isFile = stat.isFile();
@@ -300,9 +298,8 @@ var FileSystemInfo = /** @class */ (function () {
             }
             return item;
         }, this);
-    };
-    return FileSystemInfo;
-}());
+    }
+}
 function isIFsSourceOp(value) {
     return (typeof (value) == "object" && value !== null && typeof (value.source) == "string");
 }
@@ -314,14 +311,14 @@ function isIFsBinaryOp(value) {
 }
 function isIOpError(value) { return (typeof (value) == "object" && value !== null && typeof (value.error) != "undefined"); }
 function copyFiles(source, target, checkTarget, returnAll) {
-    var sourceItems = source.getChildItems();
-    var results;
+    let sourceItems = source.getChildItems();
+    let results;
     if (checkTarget) {
-        var targetItems = target.getChildItems();
-        results = targetItems.filter(function (tf) {
-            var sf = sourceItems.filter(function (s) { return s.lcName == tf.lcName; });
+        let targetItems = target.getChildItems();
+        results = targetItems.filter((tf) => {
+            let sf = sourceItems.filter((s) => s.lcName == tf.lcName);
             return sf.length == 0 || ((tf.isDirectory) ? !sf[0].isDirectory : (tf.isFile && sf[0].isFile));
-        }).map(function (tf) {
+        }).map((tf) => {
             try {
                 try {
                     if (tf.isDirectory)
@@ -339,16 +336,16 @@ function copyFiles(source, target, checkTarget, returnAll) {
             catch (err) {
                 return { target: tf, error: err };
             }
-        }).filter(function (e) { return typeof (e) != "undefined"; });
+        }).filter((e) => typeof (e) != "undefined");
     }
     else
         results = [];
     if (results.length > 0)
-        sourceItems = sourceItems.filter(function (sf) { return (sf.isDirectory || sf.isFile) && results.filter(function (f) { return f.target.lcName == sf.lcName; }).length == 0; });
+        sourceItems = sourceItems.filter((sf) => (sf.isDirectory || sf.isFile) && results.filter((f) => f.target.lcName == sf.lcName).length == 0);
     else
-        sourceItems = sourceItems.filter(function (sf) { return sf.isDirectory || sf.isFile; });
+        sourceItems = sourceItems.filter((sf) => sf.isDirectory || sf.isFile);
     sourceItems.forEach(function (sf) {
-        var tf = new FileSystemInfo(this.path, sf.name);
+        let tf = new FileSystemInfo(this.path, sf.name);
         try {
             if (sf.isDirectory) {
                 if (!tf.exists) {
@@ -398,13 +395,13 @@ function copyFiles(source, target, checkTarget, returnAll) {
 function loadJSONConfig(path) {
     if (!FS.existsSync(path))
         throw new Error("File not found: " + path);
-    var stat = FS.statSync(path);
+    let stat = FS.statSync(path);
     if (!stat.isFile())
         throw new Error("Path does not point to a file: " + path);
     return JSON.parse(FS.readFileSync(path).toString());
 }
 function publishToPagesBranch(localBranchSummary, sourceFileSystemInfo) {
-    var currentBranchSummary = localBranchSummary;
+    let currentBranchSummary = localBranchSummary;
     try {
         var opItems = [];
         var tempDir = Tmp.dirSync();
@@ -472,7 +469,7 @@ function validateRemoteBranch(remoteBranchSummary) {
         return true;
     return false;
 }
-var packageConfig = loadJSONConfig("./package.json");
+let packageConfig = loadJSONConfig("./package.json");
 if (typeof (packageConfig.main) != "string") {
     var t = typeof (packageConfig.main);
     if (t == "undefined")
@@ -481,7 +478,7 @@ if (typeof (packageConfig.main) != "string") {
 }
 else if (packageConfig.main.length == 0)
     throw new Error("'main' package configuration setting was empty. Cannot continue.");
-var sourceFileSystemInfo = new FileSystemInfo(Path.dirname(packageConfig.main));
+let sourceFileSystemInfo = new FileSystemInfo(Path.dirname(packageConfig.main));
 if (sourceFileSystemInfo.exists || !sourceFileSystemInfo.isDirectory)
     throw new Error("Directory for 'main' package configuration setting does not exist. Cannot continue.");
 git.branch(function (err, remoteBranchSummary) {
@@ -495,3 +492,4 @@ git.branch(function (err, remoteBranchSummary) {
                 publishFromLocalBranch(remoteBranchSummary, localBranchSummary, sourceFileSystemInfo);
         });
 });
+//# sourceMappingURL=publish.js.map
