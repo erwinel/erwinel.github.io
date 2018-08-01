@@ -1,0 +1,71 @@
+{
+    "$schema": "./navSettingsSchema.json",
+    "navItems": [
+        {
+            "title": "Home",
+            "pageUrl": "Home.htm"
+        },
+        {
+            "id": "InitialConfig",
+            "title": "Initial Config",
+            "heading": "Initial ServiceNow Configuration",
+            "pageUrl": "InitialConfig.htm"
+        },
+        {
+            "id": "UpdateSets",
+            "title": "Update Sets",
+            "heading": "Global Update Sets",
+            "pageUrl": "GlobalUpdateSets.htm"
+        },
+        {
+            "title": "Applications",
+            "heading": "Custom Applications",
+            "pageUrl": "Applications.htm",
+            "navItems": [
+                {
+                    "title": "Utilities Application",
+                    "pageUrl": "x_44813_util.htm"
+                },
+                {
+                    "title": "Group Name Registry",
+                    "pageUrl": "x_44813_grpnamereg.htm"
+                },
+                {
+                    "title": "Security Classification",
+                    "pageUrl": "x_44813_sec_clsif.htm"
+                }
+            ]
+        },
+        {
+            "id": "Scripting",
+            "title": "Scripting",
+            "pageUrl": "Scripting.htm",
+            "navItems": [
+                {
+                    "id": "DevEnvSetup",
+                    "title": "Environment Setup",
+                    "heading": "Development Environment Setup",
+                    "pageUrl": "DevEnvSetup.htm"
+                },
+                {
+                    "id": "Snippets",
+                    "title": "Snippets",
+                    "heading": "Code Snippets",
+                    "pageUrl": "Snippets.htm"
+                },
+                {
+                    "id": "ServiceNowServerDev",
+                    "title": "Server-Side",
+                    "heading": "Server-Side Development Repository",
+                    "pageUrl": "ServiceNowServerDev.htm"
+                },
+                {
+                    "id": "ServiceNowClientDev",
+                    "title": "Client-Side",
+                    "heading": "Client-Side Development Repository",
+                    "pageUrl": "ServiceNowClientDev.htm"
+                }
+            ]
+        }
+    ]
+}

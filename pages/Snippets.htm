@@ -1,0 +1,71 @@
+<ul>
+    <li><a href="#force_to_update_set">Force To Update Set</a></li>
+</ul>
+<div class="card" id="force_to_update_set">
+    <div class="card-header"><h2>Force To Update Set</h2></div>
+    <div class="card-body">
+        <div class="card">
+            <div class="card-header"><h3>Usage</h3></div>
+            <div class="card-body">
+                Once the UI action is created using this snippet, you will be able to click on the action link to force the item being edited into the
+                current update set.
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>Implementation</h3></div>
+            <div class="card-body">
+                Create new UI action:
+                <ol>
+                    <li>
+                        <span class="d-inline-block">
+                            <img src="images/snippets/form_menu.png" alt="Form Menu Example" width="179" height="248"
+                                class="mt-0 mr-0 ml-3 mb-3 d-inline img-fluid float-right" />
+                            Open the edit form for a record in the target table.
+                        </span>
+                    </li>
+                    <li>Click on the form menu and select <samp>Configure</samp> &rArr; <samp>UI Actions</samp>.</li>
+                    <li>
+                        <span class="d-inline-block">
+                            <img src="images/snippets/new_ui_action.png" alt="New UI Action Button" width="163" height="77"
+                                class="mt-0 mr-0 ml-3 mb-3 d-inline img-fluid float-right" />
+                            Click <samp>New</samp>.
+                        </span>
+                        <img src="images/snippets/ui_action_form.png" alt="New UI Action Button" width="611" height="460"
+                            class="mt-0 mr-0 ml-3 mb-3 d-inline img-fluid float-right" />
+                    </li>
+                    <li>Enter a display name under <samp>Name</samp>.</li>
+                    <li>Enter programmatic name (a letter followed only by letters, number and underscores) under <samp>Action Name</samp>.
+                        This should be a value that would be different from the name of any other UI actions.</li>
+                    <li>Uncheck <samp>Show Insert</samp>.</li>
+                    <li>Check <samp>Form Link</samp>.</li>
+                    <li>Enter <code>gs.hasRole('admin')</code> for <samp>Condition</samp>.</li>
+                    <li style="clear:both">Enter the following code into the <samp></samp> textbox:
+                        <pre class="script-pane pre-scrollable clear"><code><span class="script-comment">//Commit any changes to the record</span>
+<var>current</var><span class="script-command">.update</span>();
+
+<span class="script-comment">//Check to make sure the table isn't synchronized already</span>
+<span class="script-keyword">var</span> <var>tbl</var> <span class="script-operator">=</span> <var>current</var><span class="script-command">.getTableName</span>();
+<span class="script-keyword">if</span>(<var>tbl</var><span class="script-command">.startsWith</span>(<q>'wf_'</q>) <span class="script-operator">||</span> <var>tbl</var><span class="script-command">.startsWith</span>(<q>'sys_ui_'</q>) <span class="script-operator">||</span> <var>tbl</var> <span class="script-operator">==</span> <q>'sys_choice'</q> <span class="script-operator">||</span> <var>current</var><span class="script-command">.getED</span>()<span class="script-command">.getBooleanAttribute</span>(<q>'update_synch'</q>) <span class="script-operator">||</span> <var>current</var><span class="script-command">.getED</span>()<span class="script-command">.getBooleanAttribute</span>(<q>'update_synch_custom'</q>)){
+   <var>gs</var><span class="script-command">.addErrorMessage</span>(<q>'Updates are already being recorded for this table.'</q>);
+   <var>action</var><span class="script-command">.setRedirectURL</span>(<var>current</var>);  
+} <span class="script-keyword">else</span>{
+   <span class="script-comment">//Push the update into the current update set</span>
+   <span class="script-keyword">var</span> <var>um</var> <span class="script-operator">=</span> <span class="script-keyword">new</span> <span class="script-command">GlideUpdateManager2</span>();
+   <var>um</var><span class="script-command">.saveRecord</span>(<var>current</var>);
+
+   <span class="script-comment">//Query for the current update set to display info message</span>
+   <span class="script-keyword">var</span> <var>setID</var> <span class="script-operator">=</span> <var>gs</var><span class="script-command">.getPreference</span>(<q>'sys_update_set'</q>);
+   <span class="script-keyword">var</span> <var>us</var> <span class="script-operator">=</span> <span class="script-keyword">new</span> <span class="script-command">GlideRecord</span>(<q>'sys_update_set'</q>);
+   <var>us</var><span class="script-command">.get</span>(<var>setID</var>);
+
+   <span class="script-comment">//Display info message and reload the form</span>
+   <var>gs</var><span class="script-command">.addInfoMessage</span>(<q>'Record included in &lt;a href="sys_update_set.do?sys_id='</q> <span class="script-operator">+</span> <var>setID</var> <span class="script-operator">+</span> <q>'"&gt;'</q> <span class="script-operator">+</span> <var>us</var>.name <span class="script-operator">+</span> <q>'&lt;/a&gt; update set.'</q>);
+   <var>action</var><span class="script-command">.setRedirectURL</span>(<var>current</var>);
+}</code></pre>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>

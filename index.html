@@ -6,8 +6,8 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>ServiceNow Github Repositories</title>
-        <meta name="description" content="Lenny's website for all things coding" />
+        <title>ServiceNow Implementation</title>
+        <meta name="description" content="ServiceNow Implementation and Maintenance Documentation" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <link rel="stylesheet" type="text/css" media="screen" href="lib/angular/angular-csp.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="lib/bootstrap/css/bootstrap.css" />
@@ -16,40 +16,31 @@
         <script type="text/javascript" src="lib/jquery/jquery.js"></script>
         <script type="text/javascript" src="lib/angular/angular.js"></script>
         <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="script/app.js" id="appScript"></script>
+        <script type="text/javascript" src="script/mainApp.js" id="appScript"></script>
     </head>
-    <body ng-app="erwinel" ng-controller="mainController">
+    <body ng-app="main" ng-controller="mainController">
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <header class="container-fluid border border-secondary p-sm-1 defaultHeader"><h1>{{titleText}}</h1></header>
-        <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3" ng-include="'Nav.include.htm'"></nav>
-        <section class="container-fluid border border-light p-md-3">
-            ServiceNow Application, Configuration and Development Repositories
-            <div class="card">
-                <div class="card-header"><h2>Overview</h2></div>
-                <div class="card-body">
-                    The collection of Github repositories referenced by this documentation contain update sets, source code and documentation for installing and maintaining
-                    custom ServiceNow applications as well as for the initial configuration of ServiceNow instances.
-                    <p>See <a href="InitialConfig.html">Initial Config</a> for initial ServiceNow configuration steps.
-                        See <a href="GlobalUpdateSets.html">Update Sets</a> for information on global update sets.
-                        Otherwise, use other menu options for individual application documentation.</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header"><h2>Development</h2></div>
-                <div class="card-body">
-                    There are 2 special repositories, <a href="../ServiceNowServerDev"></a> and <a href="../ServiceNowClientDev"></a>, which are intended to assist with complex source code development for other applications.
-                    These repositories use node.js and NPM modules to compile TypeScript sources and generate JavaScript.
-                    This compiled JavaScript must then be manually ported to the actual JavaScript code that will be used in the individual applications.
-                    <ul>
-                        <li><a href="DevEnvSetup.html">Development Environment Setup</a></li>
-                        <li><a href="Snippets.html">Code Snippets</a></li>
-                        <li><a href="ServiceNowServerDev.html">Server-side Development Sources</a> - Development of Server-side JavaScript code.</li>
-                        <li><a href="ServiceNowClientDev.html">Client-side Development Sources</a> - Development of Client-side JavaScript code.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+        <header class="container-fluid border border-secondary p-sm-1 defaultHeader">
+            <h1>{{titleText}}</h1>{{descriptionText}}
+        </header>
+        <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3">
+            <ul class="navbar-nav mr-auto">
+                <li ng-repeat="m in navItems" class="{{m.itemClass}}">
+                    <a href="#" ng-if="m.isPage" class="{{m.linkClass}}" ng-click="m.controller.raiseActivate()">{{m.title}}</a>
+                    <a href="{{m.url}}" ng-if="!m.isPage" class="{{m.linkClass}}" target="_blank">{{m.title}}</a>
+                </li>
+            </ul>
+        </nav>
+        <aside ng-if="sideNavNodes.length > 0" class="float-right d-inline-flex">
+            <ul class="nav flex-column">
+                <li ng-repeat="m in sideNavNodes" class="nav-item {{m.itemClass}}">
+                    <a href="#" ng-if="m.isPage" class="{{m.linkClass}}" ng-click="m.controller.raiseActivate()">{{m.title}}</a>
+                    <a href="{{m.url}}" ng-if="!m.isPage" class="{{m.linkClass}}" target="_blank">{{m.title}}</a>
+                </li>
+            </ul>
+        </aside>
+        <section class="container-fluid border border-light p-md-3" ng-include="includeUrl"></section>
     </body>
 </html>
