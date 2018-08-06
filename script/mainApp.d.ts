@@ -30,9 +30,6 @@ declare module menuControllers {
     }
     interface IContainerScope extends angular.IScope {
         navItems: INavScope[];
-        itemsById: {
-            [index: string]: INavScope;
-        };
         current?: INavScope;
     }
     interface ITopLevelScope extends IContainerScope, IParentItem {
@@ -83,12 +80,60 @@ declare module menuControllers {
         constructor(source: navSettingsJSON.NavItem, parent: NavItem | ITopLevelScope, precedingNode?: NavItem);
         static import(source: navSettingsJSON.NavItem[], parent: NavItem | ITopLevelScope): NavItem[];
         static isNavItem(node: NavItem | ITopLevelScope): node is NavItem;
+        static getNavItemById(parent: IContainerScope | NavItem | NavItem[], idValue: string | string[], ...idValues: string[]): NavItem | undefined;
     }
-    function initializeTopLevelScope(scope: ITopLevelScope, http: ng.IHttpService): void;
+    function initializeTopLevelScope(scope: ITopLevelScope, http: angular.IHttpService): void;
+    function isContainerScope(scope: angular.IScope): scope is IContainerScope;
+    function isNavScope(scope: angular.IScope): scope is INavScope;
+    function isParentItem(value: object): value is IParentItem;
+    function isTopLevelScope(scope: angular.IScope): scope is ITopLevelScope;
 }
+declare function isScopeObject(value: object): value is angular.IScope;
 interface IMainAppScope extends menuControllers.ITopLevelScope {
+    scrollToAnchor: {
+        (name: string): void;
+    };
+    setPage: {
+        (id: string, ...subId: string[]): void;
+    };
+    getPageHeading: {
+        (id: string, ...subId: string[]): string;
+    };
+    getPageTitle: {
+        (id: string, ...subId: string[]): string;
+    };
+    logMessages: IAppLoggerEntry[];
 }
 declare class mainController {
-    constructor($scope: IMainAppScope, $http: ng.IHttpService);
+    static isMainAppScope(scope: angular.IScope): scope is IMainAppScope;
+    constructor($scope: IMainAppScope, $http: angular.IHttpService, $location: angular.ILocationService, $anchorScroll: angular.IAnchorScrollService, logger: AppLoggerService);
+    static getNavItem($scope: IMainAppScope, id: string, subId: string[] | undefined): menuControllers.NavItem | undefined;
+}
+declare function ensureUniqueId(defaultId: string, id?: any): any;
+interface IAppLoggerInfo {
+    message: string;
+    type?: string;
+    code?: number;
+    detail?: any;
+}
+interface IAppLoggerEntry {
+    message: string;
+    type: string;
+    code: number;
+    detail: string;
+    id: number;
+}
+interface IAppLogger {
+    getLogEntries: {
+        (): IAppLoggerEntry[];
+    };
+    log: {
+        (message: string | IAppLoggerInfo | Error): void;
+    };
+}
+declare class AppLoggerService {
+    private _logEntries;
+    getLogEntries(): IAppLoggerEntry[];
+    log(message: string | IAppLoggerInfo | Error): void;
 }
 //# sourceMappingURL=mainApp.d.ts.map
