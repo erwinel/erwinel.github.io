@@ -363,10 +363,10 @@ angular.module("main", [])
                 if (typeof (instanceAttributes.menuPath) == "string" && mainController.isMainAppScope(scope)) {
                     let id = instanceAttributes.menuPath.split("/").map(function (v) { return v.trim(); }).filter(function (v) { return v.length > 0; });
                     if (id.length > 0) {
-                        logger.log("Looking up pageRefLink " + instanceAttributes.menuPath);
+                        console.log("Looking up pageRefLink " + instanceAttributes.menuPath);
                         let item = menuControllers.NavItem.getNavItemById(scope, id);
                         if (typeof (item) != "undefined") {
-                            logger.log("Found pageRefLink url " + item.url);
+                            console.log("Found pageRefLink url " + item.url);
                             let element;
                             if (item.isActive)
                                 element = $('<samp />');

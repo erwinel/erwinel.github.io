@@ -42,31 +42,5 @@
             </ul>
         </aside>
         <section class="container-fluid border border-light p-md-3" ng-include="includeUrl"></section>
-        <footer class="container-fluid border border-light p-md-3" ng-if="logMessages.length > 0">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Message</th>
-                        <th>Code</th>
-                    </tr>
-                </thead>
-                <tr ng-repeat="m in logMessages">
-                    <td ng-if="m.detail.length > 0">
-                        <modal-popup-dialog-centered id="logEntry{{m.id}}d">
-                            <modal-popup-dialog-button text="{{m.type}}" />
-                            <div class="modal-body">
-                                {{m.detail}}
-                            </div>
-                        </modal-popup-dialog-centered>
-                    </td>
-                    <td ng-if="m.detail.length == 0">
-                        {{m.type}}
-                    </td>
-                    <td>{{m.message}}</td>
-                    <td>{{m.code}}</td>
-                </tr>
-            </table>
-        </footer>
     </body>
 </html>
