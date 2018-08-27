@@ -1,46 +1,16 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>ServiceNow Implementation</title>
-        <meta name="description" content="ServiceNow Implementation and Maintenance Documentation" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <link rel="stylesheet" type="text/css" media="screen" href="lib/angular/angular-csp.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="lib/bootstrap/css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="lib/bootstrap/css/bootstrap-reboot.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="style/default.css" />
-        <script type="text/javascript" src="lib/jquery/jquery.js"></script>
-        <script type="text/javascript" src="lib/angular/angular.js"></script>
-        <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="script/mainApp.js" id="appScript"></script>
-    </head>
-    <body ng-app="main" ng-controller="mainController">
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <header class="container-fluid border border-secondary p-sm-1 defaultHeader">
-            <h1>{{titleText}}</h1>{{descriptionText}}
-        </header>
-        <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3">
-            <ul class="navbar-nav mr-auto">
-                <li ng-repeat="m in navItems" class="{{m.itemClass}}">
-                    <a href="#" ng-if="m.isPage" class="{{m.linkClass}}" ng-click="m.controller.raiseActivate()">{{m.title}}</a>
-                    <a href="{{m.url}}" ng-if="!m.isPage" class="{{m.linkClass}}" target="_blank">{{m.title}}</a>
-                </li>
-            </ul>
-        </nav>
-        <aside ng-if="sideNavNodes.length > 0" class="float-right d-inline-flex">
-            <ul class="nav flex-column">
-                <li ng-repeat="m in sideNavNodes" class="nav-item {{m.itemClass}}">
-                    <a href="#" ng-if="m.isPage" class="{{m.linkClass}}" ng-click="m.controller.raiseActivate()">{{m.title}}</a>
-                    <a href="{{m.url}}" ng-if="!m.isPage" class="{{m.linkClass}}" target="_blank">{{m.title}}</a>
-                </li>
-            </ul>
-        </aside>
-        <section class="container-fluid border border-light p-md-3" ng-include="includeUrl"></section>
-    </body>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8" />
+  <title>ServiceNow Implementation, Dev and Maintenance</title>
+  <meta name="description" content="ServiceNow Implementation, Dev and Maintenance Documentation" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <base href="/">
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+<script type="text/javascript" src="runtime.js"></script><script type="text/javascript" src="polyfills.js"></script><script type="text/javascript" src="styles.js"></script><script type="text/javascript" src="vendor.js"></script><script type="text/javascript" src="main.js"></script></body>
 </html>
