@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<unload unload_date="2018-09-17 15:41:06">
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2019-03-21 17:03:38">
 <sys_remote_update_set action="INSERT_OR_UPDATE">
 <application display_value="Global">global</application>
 <application_name>Global</application_name>
@@ -10,22 +9,22 @@
 <deleted/>
 <description/>
 <inserted/>
-<name>Initial Update Set 2018-09-07</name>
+<name>Initial Update Set 2019-03-20</name>
 <origin_sys_id/>
 <parent display_value=""/>
-<release_date/>
+<release_date>2019-03-21 17:03:23</release_date>
 <remote_base_update_set display_value=""/>
 <remote_parent_id/>
-<remote_sys_id>a124d526db202300dbf62a9a4896194e</remote_sys_id>
+<remote_sys_id>384b34790fd83300d12eba8ce1050ef5</remote_sys_id>
 <state>loaded</state>
 <summary/>
 <sys_class_name>sys_remote_update_set</sys_class_name>
 <sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>e964d926db202300dbf62a9a48961998</sys_id>
+<sys_created_on>2019-03-21 17:03:38</sys_created_on>
+<sys_id>1665da4e0f987300d12eba8ce1050e1f</sys_id>
 <sys_mod_count>0</sys_mod_count>
 <sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
+<sys_updated_on>2019-03-21 17:03:38</sys_updated_on>
 <update_set display_value=""/>
 <update_source display_value=""/>
 <updated/>
@@ -35,850 +34,52 @@
 <application display_value="Global">global</application>
 <category>customer</category>
 <comments/>
-<name>cmn_schedule_696fc988db64130093da55d0cf9619e0</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="cmn_schedule"><cmn_schedule action="INSERT_OR_UPDATE"><description>0600 - 1800 Weekdays, Excluding Holidays</description><document/><document_key/><name>0600 - 1800 Weekdays Excl Holidays</name><parent/><read_only>false</read_only><sys_class_name>cmn_schedule</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:43:45</sys_created_on><sys_id>696fc988db64130093da55d0cf9619e0</sys_id><sys_mod_count>1</sys_mod_count><sys_name>0600 - 1800 Weekdays Excl Holidays</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>cmn_schedule_696fc988db64130093da55d0cf9619e0</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:46:40</sys_updated_on><time_zone/><type/></cmn_schedule></record_update>]]></payload>
-<payload_hash>1646126223</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
+<name>sys_ui_related_cmn_building_null</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_related sys_domain="global" table="cmn_building" version="2" view=""><sys_ui_related_list_entry action="INSERT_OR_UPDATE"><filter/><list_id display_value="Building - Default view" name="cmn_building" related_list="NULL" sys_domain="global" view="Default view">0c74a4d70f487300d12eba8ce1050e1e</list_id><order_by/><position>0</position><related_list/><sys_class_name>sys_ui_related_list_entry</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:45</sys_created_on><sys_id>c074a4d70f487300d12eba8ce1050e1f</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:45</sys_updated_on></sys_ui_related_list_entry><sys_ui_related_list action="INSERT_OR_UPDATE"><calculated_name>Building - Default view</calculated_name><filter/><name>cmn_building</name><order_by/><position/><related_list/><sys_class_name>sys_ui_related_list</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:45</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>0c74a4d70f487300d12eba8ce1050e1e</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Building - Default view</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_related_cmn_building_null</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:45</sys_updated_on><sys_user/><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_related_list></sys_ui_related></record_update>]]></payload>
+<payload_hash>1083063298</payload_hash>
+<remote_update_set display_value="Initial Update Set 2019-03-20">1665da4e0f987300d12eba8ce1050e1f</remote_update_set>
 <replace_on_upgrade>false</replace_on_upgrade>
 <sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>21641d26db202300dbf62a9a48961916</sys_id>
+<sys_created_on>2019-03-21 17:03:38</sys_created_on>
+<sys_id>1665da4e0f987300d12eba8ce1050e20</sys_id>
 <sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ed190000001</sys_recorded_at>
+<sys_recorded_at>169737167f30000001</sys_recorded_at>
 <sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table/>
-<target_name>0600 - 1800 Weekdays Excl Holidays</target_name>
-<type>Schedule</type>
+<sys_updated_on>2019-03-21 17:03:38</sys_updated_on>
+<table>cmn_building</table>
+<target_name>Building</target_name>
+<type>Related Lists</type>
 <update_domain>global</update_domain>
-<update_guid>9dc455ccb7641300e1d7efd292aaca11</update_guid>
-<update_guid_history>9dc455ccb7641300e1d7efd292aaca11:1646126223</update_guid_history>
+<update_guid>c074e4d7aa4873006280fac7cc3f5ec7</update_guid>
+<update_guid_history>c074e4d7aa4873006280fac7cc3f5ec7:1083063298</update_guid_history>
 <update_set display_value=""/>
-<view/>
+<view>Default view</view>
 </sys_update_xml>
 <sys_update_xml action="INSERT_OR_UPDATE">
 <action>INSERT_OR_UPDATE</action>
 <application display_value="Global">global</application>
 <category>customer</category>
 <comments/>
-<name>sys_email_layout_f4a2950cdb64130093da55d0cf9619ea</name>
-<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_email_layout"&gt;&lt;sys_email_layout action="INSERT_OR_UPDATE"&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;advanced_layout&gt;&lt;![CDATA[&lt;style&gt;
-	#snc_notification_preference {
-		text-decoration: none;
-	}
-	
-	#snc_notification_unsubscribe {
-		text-decoration: none;
-	}
-	
-	.army_classification_banner {
-		text-decoration: none;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-		font-size: medium;
-		color: #cccccc;
-		background-color: #007f00;
-		text-align: center;
-		padding: 2px;
-		border: 1px solid #003f00;
-		margin: 0px;
-	}
-&lt;/style&gt;
-&lt;div class="army_classification_banner" style="margin-bottom:8px"&gt;CLASSIFICATION: &lt;strong&gt;UNCLASSIFIED//FOR OFFICIAL USE ONLY&lt;/strong&gt;&lt;/div&gt;
-
-${notification:body}
-
-&lt;br&gt;&lt;/br&gt;
-
-${NOTIF_UNSUB} | ${NOTIF_PREFS}
-&lt;div class="army_classification_banner" style="margin-top:8px"&gt;CLASSIFICATION: &lt;strong&gt;UNCLASSIFIED//FOR OFFICIAL USE ONLY&lt;/strong&gt;&lt;/div&gt;]]&gt;&lt;/advanced_layout&gt;&lt;description&gt;Adds footer to email containing links to unsubscribe and notification preferences along with security classification.&lt;/description&gt;&lt;layout/&gt;&lt;name&gt;Classification Unsubscribe and Preferences&lt;/name&gt;&lt;sys_class_name&gt;sys_email_layout&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-23 00:57:26&lt;/sys_created_on&gt;&lt;sys_id&gt;f4a2950cdb64130093da55d0cf9619ea&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Classification Unsubscribe and Preferences&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_email_layout_f4a2950cdb64130093da55d0cf9619ea&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-02-23 00:57:26&lt;/sys_updated_on&gt;&lt;/sys_email_layout&gt;&lt;/record_update&gt;</payload>
-<payload_hash>-280728814</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
+<name>sys_ui_related_business_unit_null</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_related sys_domain="global" table="business_unit" version="2" view=""><sys_ui_related_list_entry action="INSERT_OR_UPDATE"><filter/><list_id display_value="Business Unit - Default view" name="business_unit" related_list="NULL" sys_domain="global" view="Default view">a0002c170f487300d12eba8ce1050e3f</list_id><order_by/><position>0</position><related_list>cmn_department.business_unit</related_list><sys_class_name>sys_ui_related_list_entry</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:27:24</sys_created_on><sys_id>20002c170f487300d12eba8ce1050e40</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:27:24</sys_updated_on></sys_ui_related_list_entry><sys_ui_related_list action="INSERT_OR_UPDATE"><calculated_name>Business Unit - Default view</calculated_name><filter/><name>business_unit</name><order_by/><position/><related_list/><sys_class_name>sys_ui_related_list</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:27:24</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>a0002c170f487300d12eba8ce1050e3f</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Business Unit - Default view</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_related_business_unit_null</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:27:24</sys_updated_on><sys_user/><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_related_list></sys_ui_related></record_update>]]></payload>
+<payload_hash>-809483855</payload_hash>
+<remote_update_set display_value="Initial Update Set 2019-03-20">1665da4e0f987300d12eba8ce1050e1f</remote_update_set>
 <replace_on_upgrade>false</replace_on_upgrade>
 <sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>21641d26db202300dbf62a9a48961919</sys_id>
+<sys_created_on>2019-03-21 17:03:38</sys_created_on>
+<sys_id>5265da4e0f987300d12eba8ce1050e20</sys_id>
 <sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ed080000001</sys_recorded_at>
+<sys_recorded_at>169735fae190000001</sys_recorded_at>
 <sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table/>
-<target_name>Classification Unsubscribe and Preferences</target_name>
-<type>Email Layout</type>
+<sys_updated_on>2019-03-21 17:03:38</sys_updated_on>
+<table>business_unit</table>
+<target_name>Business Unit</target_name>
+<type>Related Lists</type>
 <update_domain>global</update_domain>
-<update_guid>b0a2950c3d64130064bbbe6b59c50ceb</update_guid>
-<update_guid_history>b0a2950c3d64130064bbbe6b59c50ceb:-280728814</update_guid_history>
+<update_guid>28002c17b3487300a7935f31f5f94541</update_guid>
+<update_guid_history>28002c17b3487300a7935f31f5f94541:-809483855</update_guid_history>
 <update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_documentation_sys_user_u_rank_en</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_documentation element="u_rank" label="Rank" language="en" table="sys_user"><sys_documentation action="INSERT_OR_UPDATE"><element>u_rank</element><help/><hint/><label>Rank</label><language>en</language><name>sys_user</name><plural>Ranks</plural><sys_class_name>sys_documentation</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:26:03</sys_created_on><sys_id>c57b4548db64130093da55d0cf961995</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Rank</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_documentation_sys_user_u_rank_en</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:26:03</sys_updated_on><url/><url_target/></sys_documentation></sys_documentation></record_update>]]></payload>
-<payload_hash>773727877</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>25641d26db202300dbf62a9a48961918</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ece10000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User.Rank</target_name>
-<type>Field Label</type>
-<update_domain>global</update_domain>
-<update_guid>857b4548316413006509c737aa540c9d</update_guid>
-<update_guid_history>857b4548316413006509c737aa540c9d:773727877</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_dictionary_sys_user_u_red_phone</name>
-<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update&gt;&lt;sys_dictionary action="INSERT_OR_UPDATE" element="u_red_phone" table="sys_user"&gt;&lt;active&gt;true&lt;/active&gt;&lt;array&gt;false&lt;/array&gt;&lt;array_denormalized&gt;false&lt;/array_denormalized&gt;&lt;attributes/&gt;&lt;audit&gt;false&lt;/audit&gt;&lt;calculation&gt;&lt;![CDATA[(function calculatedFieldValue(current) {
-
-	// Add your code here
-	return '';  // return the calculated value
-
-})(current);]]&gt;&lt;/calculation&gt;&lt;choice/&gt;&lt;choice_field/&gt;&lt;choice_table/&gt;&lt;column_label&gt;Red Phone&lt;/column_label&gt;&lt;comments/&gt;&lt;create_roles/&gt;&lt;default_value/&gt;&lt;defaultsort/&gt;&lt;delete_roles/&gt;&lt;dependent/&gt;&lt;dependent_on_field/&gt;&lt;display&gt;false&lt;/display&gt;&lt;dynamic_creation&gt;false&lt;/dynamic_creation&gt;&lt;dynamic_creation_script/&gt;&lt;dynamic_default_value/&gt;&lt;dynamic_ref_qual/&gt;&lt;element&gt;u_red_phone&lt;/element&gt;&lt;element_reference&gt;false&lt;/element_reference&gt;&lt;foreign_database/&gt;&lt;function_definition/&gt;&lt;function_field&gt;false&lt;/function_field&gt;&lt;internal_type display_value="String"&gt;string&lt;/internal_type&gt;&lt;mandatory&gt;false&lt;/mandatory&gt;&lt;max_length&gt;40&lt;/max_length&gt;&lt;name&gt;sys_user&lt;/name&gt;&lt;next_element/&gt;&lt;primary&gt;false&lt;/primary&gt;&lt;read_only&gt;false&lt;/read_only&gt;&lt;read_roles/&gt;&lt;reference/&gt;&lt;reference_cascade_rule/&gt;&lt;reference_floats&gt;false&lt;/reference_floats&gt;&lt;reference_key/&gt;&lt;reference_qual/&gt;&lt;reference_qual_condition/&gt;&lt;reference_type/&gt;&lt;sizeclass/&gt;&lt;spell_check&gt;false&lt;/spell_check&gt;&lt;staged&gt;false&lt;/staged&gt;&lt;sys_class_name&gt;sys_dictionary&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-23 00:24:37&lt;/sys_created_on&gt;&lt;sys_id&gt;e80bcd08db64130093da55d0cf96192f&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Red Phone&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_dictionary_sys_user_u_red_phone&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-02-23 00:24:37&lt;/sys_updated_on&gt;&lt;table_reference&gt;false&lt;/table_reference&gt;&lt;text_index&gt;false&lt;/text_index&gt;&lt;unique&gt;false&lt;/unique&gt;&lt;use_dependent_field&gt;false&lt;/use_dependent_field&gt;&lt;use_dynamic_default&gt;false&lt;/use_dynamic_default&gt;&lt;use_reference_qualifier&gt;simple&lt;/use_reference_qualifier&gt;&lt;virtual&gt;false&lt;/virtual&gt;&lt;widget/&gt;&lt;write_roles/&gt;&lt;xml_view&gt;false&lt;/xml_view&gt;&lt;/sys_dictionary&gt;&lt;/record_update&gt;</payload>
-<payload_hash>-816135557</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>29641d26db202300dbf62a9a48961917</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ecc70000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User.Red Phone</target_name>
-<type>Dictionary</type>
-<update_domain>global</update_domain>
-<update_guid>c82b0148e66413003afdcc1575a47d43</update_guid>
-<update_guid_history>c82b0148e66413003afdcc1575a47d43:-816135557</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sysevent_email_template_9553950cdb64130093da55d0cf9619f0</name>
-<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sysevent_email_template"&gt;&lt;sysevent_email_template action="INSERT_OR_UPDATE"&gt;&lt;collection&gt;change_request&lt;/collection&gt;&lt;email_layout display_value="Classification Unsubscribe and Preferences"&gt;f4a2950cdb64130093da55d0cf9619ea&lt;/email_layout&gt;&lt;message/&gt;&lt;message_html&gt;&lt;![CDATA[&lt;div&gt;Short description: ${short_description}&lt;/div&gt;
-&lt;div&gt;&amp;nbsp;&lt;/div&gt;
-&lt;div&gt;Click here to view Change Request: ${URI_REF}&lt;/div&gt;
-&lt;div&gt;
-&lt;div&gt;&lt;hr /&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;div&gt;${mail_script:attach_links}&lt;/div&gt;
-&lt;div&gt;Comments:&lt;/div&gt;
-&lt;div&gt;${comments}&lt;/div&gt;]]&gt;&lt;/message_html&gt;&lt;message_list/&gt;&lt;message_text/&gt;&lt;name&gt;army.change.ess.role&lt;/name&gt;&lt;sms_alternate/&gt;&lt;subject&gt;Change Request ${number} comments added -- ${short_description}&lt;/subject&gt;&lt;sys_class_name&gt;sysevent_email_template&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-23 01:00:28&lt;/sys_created_on&gt;&lt;sys_id&gt;9553950cdb64130093da55d0cf9619f0&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;army.change.ess.role&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_email_template_9553950cdb64130093da55d0cf9619f0&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-02-23 01:00:28&lt;/sys_updated_on&gt;&lt;sys_version&gt;2&lt;/sys_version&gt;&lt;/sysevent_email_template&gt;&lt;/record_update&gt;</payload>
-<payload_hash>1045436507</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>2d641d26db202300dbf62a9a48961916</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ed0d0000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>change_request</table>
-<target_name>army.change.ess.role</target_name>
-<type>Email Template</type>
-<update_domain>global</update_domain>
-<update_guid>9553950c11641300a8ee9b18ba9e84f1</update_guid>
-<update_guid_history>9553950c11641300a8ee9b18ba9e84f1:1045436507</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_ui_section_5134502bc611227c019dbdc4d7e32319</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="" section_id="5134502bc611227c019dbdc4d7e32319" sys_domain="global" table="sys_user" version="3" view=""><sys_ui_element action="INSERT_OR_UPDATE"><element>vip</element><position>0</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>aadc0548db64130093da55d0cf961975</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>user_name</element><position>1</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>2edc0548db64130093da55d0cf961975</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>first_name</element><position>2</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>aedc0548db64130093da55d0cf961975</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>last_name</element><position>3</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>22dc0548db64130093da55d0cf961976</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>title</element><position>4</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>a2dc0548db64130093da55d0cf961976</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>u_rank</element><position>5</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>26dc0548db64130093da55d0cf961976</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>company</element><position>6</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>a6dc0548db64130093da55d0cf961976</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>department</element><position>7</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>2adc0548db64130093da55d0cf961976</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>u_tda_position</element><position>8</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>aadc0548db64130093da55d0cf961976</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>u_red_phone</element><position>9</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>2edc0548db64130093da55d0cf961976</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>u_grey_phone</element><position>10</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>aedc0548db64130093da55d0cf961976</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>phone</element><position>11</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>22dc0548db64130093da55d0cf961977</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.split</element><position>12</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>a2dc0548db64130093da55d0cf961977</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type>.split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>email</element><position>13</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>26dc0548db64130093da55d0cf961977</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>notification</element><position>14</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>aadcc188db64130093da55d0cf9619d1</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>location</element><position>15</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>2edcc188db64130093da55d0cf9619d1</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>time_zone</element><position>16</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>aedcc188db64130093da55d0cf9619d1</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>date_format</element><position>17</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>22dcc188db64130093da55d0cf9619d2</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>photo</element><position>18</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>a2dcc188db64130093da55d0cf9619d2</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>manager</element><position>19</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>26dcc188db64130093da55d0cf9619d2</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>active</element><position>20</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>a6dcc188db64130093da55d0cf9619d2</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>mobile_phone</element><position>21</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>2adcc188db64130093da55d0cf9619d2</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>home_phone</element><position>22</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:10</sys_created_on><sys_id>aadcc188db64130093da55d0cf9619d2</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:10</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption/><header>false</header><name>sys_user</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>GUEST</sys_created_by><sys_created_on>2004-05-02 00:00:00</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>5134502bc611227c019dbdc4d7e32319</sys_id><sys_mod_count>3</sys_mod_count><sys_name>sys_user</sys_name><sys_overrides/><sys_package display_value="Non Interactive Sessions" source="com.glide.security.non_interactive_users">4107e67bb8930300651775b34d8f51aa</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_section_5134502bc611227c019dbdc4d7e32319</sys_update_name><sys_updated_by>system</sys_updated_by><sys_updated_on>2012-07-24 20:17:36</sys_updated_on><sys_user/><title>true</title><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
-<payload_hash>31568804</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>2d641d26db202300dbf62a9a48961919</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ecf00000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User</target_name>
-<type>Form Layout</type>
-<update_domain>global</update_domain>
-<update_guid>e6dcc18847641300b37904c57b37ced6</update_guid>
-<update_guid_history>e6dcc18847641300b37904c57b37ced6:31568804,768bc5480864130056715f069675bf0d:-1014467514,897b45482364130084591c4e78560e94:-1212417435,002b0148d864130078ee34e506a4043c:60996274,17fa8d082b641300ffdfe6d6e6186f77:510226230</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_documentation_sys_user_u_grey_phone_en</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_documentation element="u_grey_phone" label="Grey Phone" language="en" table="sys_user"><sys_documentation action="INSERT_OR_UPDATE"><element>u_grey_phone</element><help/><hint/><label>Grey Phone</label><language>en</language><name>sys_user</name><plural>Grey Phones</plural><sys_class_name>sys_documentation</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:24:01</sys_created_on><sys_id>dffa8d08db64130093da55d0cf961977</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Grey Phone</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_documentation_sys_user_u_grey_phone_en</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:24:01</sys_updated_on><url/><url_target/></sys_documentation></sys_documentation></record_update>]]></payload>
-<payload_hash>-829375931</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>61641d26db202300dbf62a9a48961918</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ecc10000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User.Grey Phone</target_name>
-<type>Field Label</type>
-<update_domain>global</update_domain>
-<update_guid>63fa8d083a6413008b644618f8d69f80</update_guid>
-<update_guid_history>63fa8d083a6413008b644618f8d69f80:-829375931</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_dictionary_sys_user_u_rank</name>
-<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update&gt;&lt;sys_dictionary action="INSERT_OR_UPDATE" element="u_rank" table="sys_user"&gt;&lt;active&gt;true&lt;/active&gt;&lt;array&gt;false&lt;/array&gt;&lt;array_denormalized&gt;false&lt;/array_denormalized&gt;&lt;attributes/&gt;&lt;audit&gt;false&lt;/audit&gt;&lt;calculation&gt;&lt;![CDATA[(function calculatedFieldValue(current) {
-
-	// Add your code here
-	return '';  // return the calculated value
-
-})(current);]]&gt;&lt;/calculation&gt;&lt;choice/&gt;&lt;choice_field/&gt;&lt;choice_table/&gt;&lt;column_label&gt;Rank&lt;/column_label&gt;&lt;comments/&gt;&lt;create_roles/&gt;&lt;default_value/&gt;&lt;defaultsort/&gt;&lt;delete_roles/&gt;&lt;dependent/&gt;&lt;dependent_on_field/&gt;&lt;display&gt;false&lt;/display&gt;&lt;dynamic_creation&gt;false&lt;/dynamic_creation&gt;&lt;dynamic_creation_script/&gt;&lt;dynamic_default_value/&gt;&lt;dynamic_ref_qual/&gt;&lt;element&gt;u_rank&lt;/element&gt;&lt;element_reference&gt;false&lt;/element_reference&gt;&lt;foreign_database/&gt;&lt;function_definition/&gt;&lt;function_field&gt;false&lt;/function_field&gt;&lt;internal_type display_value="String"&gt;string&lt;/internal_type&gt;&lt;mandatory&gt;false&lt;/mandatory&gt;&lt;max_length&gt;40&lt;/max_length&gt;&lt;name&gt;sys_user&lt;/name&gt;&lt;next_element/&gt;&lt;primary&gt;false&lt;/primary&gt;&lt;read_only&gt;false&lt;/read_only&gt;&lt;read_roles/&gt;&lt;reference/&gt;&lt;reference_cascade_rule/&gt;&lt;reference_floats&gt;false&lt;/reference_floats&gt;&lt;reference_key/&gt;&lt;reference_qual/&gt;&lt;reference_qual_condition/&gt;&lt;reference_type/&gt;&lt;sizeclass/&gt;&lt;spell_check&gt;false&lt;/spell_check&gt;&lt;staged&gt;false&lt;/staged&gt;&lt;sys_class_name&gt;sys_dictionary&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-23 00:26:03&lt;/sys_created_on&gt;&lt;sys_id&gt;1a5b0548db64130093da55d0cf96194e&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Rank&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_dictionary_sys_user_u_rank&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-02-23 00:26:03&lt;/sys_updated_on&gt;&lt;table_reference&gt;false&lt;/table_reference&gt;&lt;text_index&gt;false&lt;/text_index&gt;&lt;unique&gt;false&lt;/unique&gt;&lt;use_dependent_field&gt;false&lt;/use_dependent_field&gt;&lt;use_dynamic_default&gt;false&lt;/use_dynamic_default&gt;&lt;use_reference_qualifier&gt;simple&lt;/use_reference_qualifier&gt;&lt;virtual&gt;false&lt;/virtual&gt;&lt;widget/&gt;&lt;write_roles/&gt;&lt;xml_view&gt;false&lt;/xml_view&gt;&lt;/sys_dictionary&gt;&lt;/record_update&gt;</payload>
-<payload_hash>-1547871975</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>65641d26db202300dbf62a9a48961917</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ecdc0000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User.Rank</target_name>
-<type>Dictionary</type>
-<update_domain>global</update_domain>
-<update_guid>817b45483064130046d5d056fc4f339c</update_guid>
-<update_guid_history>817b45483064130046d5d056fc4f339c:-1547871975</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>cmn_schedule_span_d330910cdb64130093da55d0cf961956</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="cmn_schedule_span"><cmn_schedule_span action="INSERT_OR_UPDATE"><all_day>false</all_day><days_of_week>1</days_of_week><end_date_time>20180222T180000</end_date_time><float_day>1</float_day><float_week>1</float_week><month>1</month><monthly_type>dom</monthly_type><name>0600 - 1800 Weekdays</name><notes/><override_start_date>00000000</override_start_date><parent/><repeat_count>1</repeat_count><repeat_type>weekdays</repeat_type><repeat_until>00000000</repeat_until><schedule display_value="0600 - 1800 Weekdays Incl Holidays">649f89c8db64130093da55d0cf9619d1</schedule><show_as>busy</show_as><start_date_time>20180222T060000</start_date_time><sys_class_name>cmn_schedule_span</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:47:46</sys_created_on><sys_id>d330910cdb64130093da55d0cf961956</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:47:46</sys_updated_on><type/><yearly_type>doy</yearly_type></cmn_schedule_span></record_update>]]></payload>
-<payload_hash>-577746091</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>69641d26db202300dbf62a9a48961916</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ed300000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table/>
-<target_name>0600 - 1800 Weekdays</target_name>
-<type>Schedule Entry</type>
-<update_domain>global</update_domain>
-<update_guid>09f495ccaf641300c00793dfaea32ddd</update_guid>
-<update_guid_history>09f495ccaf641300c00793dfaea32ddd:-577746091</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_ui_form_sections_e4fc8948db64130093da55d0cf9619eb</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_form_sections form_id="e4fc8948db64130093da55d0cf9619eb" sys_domain="global" table="sys_user" version="3"><sys_ui_form_section action="INSERT_OR_UPDATE"><position>0</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:35</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>60fc8948db64130093da55d0cf9619ec</sys_id><sys_mod_count>0</sys_mod_count><sys_overrides/><sys_ui_form display_value="sys_user" name="sys_user" sys_domain="global" view="Default view">e4fc8948db64130093da55d0cf9619eb</sys_ui_form><sys_ui_section caption="NULL" display_value="" name="sys_user" sys_domain="global" view="Default view">5134502bc611227c019dbdc4d7e32319</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:35</sys_updated_on></sys_ui_form_section><sys_ui_form_section action="INSERT_OR_UPDATE"><position>1</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:35</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>60fc4588db64130093da55d0cf96199e</sys_id><sys_mod_count>0</sys_mod_count><sys_overrides/><sys_ui_form display_value="sys_user" name="sys_user" sys_domain="global" view="Default view">e4fc8948db64130093da55d0cf9619eb</sys_ui_form><sys_ui_section caption="Integration" display_value="Integration" name="sys_user" sys_domain="global" view="Default view">a8fc8948db64130093da55d0cf9619ec</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:35</sys_updated_on></sys_ui_form_section><sys_ui_form action="INSERT_OR_UPDATE"><name>sys_user</name><roles/><sys_class_name>sys_ui_form</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:34</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>e4fc8948db64130093da55d0cf9619eb</sys_id><sys_mod_count>0</sys_mod_count><sys_name>sys_user</sys_name><sys_overrides/><sys_package display_value="Non Interactive Sessions" source="com.glide.security.non_interactive_users">4107e67bb8930300651775b34d8f51aa</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_form_sections_e4fc8948db64130093da55d0cf9619eb</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:34</sys_updated_on><sys_user/><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_form></sys_ui_form_sections></record_update>]]></payload>
-<payload_hash>1409200316</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>69641d26db202300dbf62a9a48961919</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ecf70000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User</target_name>
-<type>Form Sections</type>
-<update_domain>global</update_domain>
-<update_guid>70fc458821641300995d1575907e82a1</update_guid>
-<update_guid_history>70fc458821641300995d1575907e82a1:1409200316,b8fc4588896413007407217a2a909a9f:1409200316</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>cmn_schedule_649f89c8db64130093da55d0cf9619d1</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="cmn_schedule"><cmn_schedule action="INSERT_OR_UPDATE"><description>0600 - 1800 Weekdays, Including Holidays</description><document/><document_key/><name>0600 - 1800 Weekdays Incl Holidays</name><parent/><read_only>false</read_only><sys_class_name>cmn_schedule</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:44:19</sys_created_on><sys_id>649f89c8db64130093da55d0cf9619d1</sys_id><sys_mod_count>1</sys_mod_count><sys_name>0600 - 1800 Weekdays Incl Holidays</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>cmn_schedule_649f89c8db64130093da55d0cf9619d1</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:47:46</sys_updated_on><time_zone/><type/></cmn_schedule></record_update>]]></payload>
-<payload_hash>-2046664803</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>6d641d26db202300dbf62a9a48961915</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ed1f0000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table/>
-<target_name>0600 - 1800 Weekdays Incl Holidays</target_name>
-<type>Schedule</type>
-<update_domain>global</update_domain>
-<update_guid>7ac4d1cc9f64130065f7969ec3955ed4</update_guid>
-<update_guid_history>7ac4d1cc9f64130065f7969ec3955ed4:-2046664803</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_email_layout_62e1950cdb64130093da55d0cf9619e8</name>
-<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_email_layout"&gt;&lt;sys_email_layout action="INSERT_OR_UPDATE"&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;advanced_layout&gt;&lt;![CDATA[&lt;style&gt;
-	#snc_notification_preference {
-		text-decoration: none;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-		font-size: medium;
-		color: #278efc;
-	}
-	
-	#snc_notification_unsubscribe {
-		text-decoration: none;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-		font-size: medium;
-		color: #278efc;
-	}
-	
-	.army_classification_banner {
-		text-decoration: none;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-		font-size: medium;
-		color: #cccccc;
-		background-color: #007f00;
-		text-align: center;
-		padding: 2px;
-		border: 1px solid #003f00;
-		margin: 0px;
-	}
-&lt;/style&gt;
-&lt;div class="army_classification_banner" style="margin-bottom:8px"&gt;CLASSIFICATION: &lt;strong&gt;UNCLASSIFIED//FOR OFFICIAL USE ONLY&lt;/strong&gt;&lt;/div&gt;
-
-${notification:body}
-
-&lt;br&gt;&lt;/br&gt;
-
-${NOTIF_UNSUB}  | ${NOTIF_PREFS}
-&lt;div class="army_classification_banner" style="margin-top:8px"&gt;CLASSIFICATION: &lt;strong&gt;UNCLASSIFIED//FOR OFFICIAL USE ONLY&lt;/strong&gt;&lt;/div&gt;]]&gt;&lt;/advanced_layout&gt;&lt;description&gt;Adds classification header to top and bottom.&lt;/description&gt;&lt;layout/&gt;&lt;name&gt;Classification Unsubscribe and Preferences Helvetica&lt;/name&gt;&lt;sys_class_name&gt;sys_email_layout&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-23 00:54:17&lt;/sys_created_on&gt;&lt;sys_id&gt;62e1950cdb64130093da55d0cf9619e8&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Classification Unsubscribe and Preferences Helvetica&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_email_layout_62e1950cdb64130093da55d0cf9619e8&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-02-23 00:54:17&lt;/sys_updated_on&gt;&lt;/sys_email_layout&gt;&lt;/record_update&gt;</payload>
-<payload_hash>-613337001</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>6d641d26db202300dbf62a9a48961918</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ed020000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table/>
-<target_name>Classification Unsubscribe and Preferences Helvetica</target_name>
-<type>Email Layout</type>
-<update_domain>global</update_domain>
-<update_guid>62e1950c17641300e802669948aa13e9</update_guid>
-<update_guid_history>62e1950c17641300e802669948aa13e9:-613337001</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_dictionary_sys_user_u_grey_phone</name>
-<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update&gt;&lt;sys_dictionary action="INSERT_OR_UPDATE" element="u_grey_phone" table="sys_user"&gt;&lt;active&gt;true&lt;/active&gt;&lt;array&gt;false&lt;/array&gt;&lt;array_denormalized&gt;false&lt;/array_denormalized&gt;&lt;attributes/&gt;&lt;audit&gt;false&lt;/audit&gt;&lt;calculation&gt;&lt;![CDATA[(function calculatedFieldValue(current) {
-
-	// Add your code here
-	return '';  // return the calculated value
-
-})(current);]]&gt;&lt;/calculation&gt;&lt;choice/&gt;&lt;choice_field/&gt;&lt;choice_table/&gt;&lt;column_label&gt;Grey Phone&lt;/column_label&gt;&lt;comments/&gt;&lt;create_roles/&gt;&lt;default_value/&gt;&lt;defaultsort/&gt;&lt;delete_roles/&gt;&lt;dependent/&gt;&lt;dependent_on_field/&gt;&lt;display&gt;false&lt;/display&gt;&lt;dynamic_creation&gt;false&lt;/dynamic_creation&gt;&lt;dynamic_creation_script/&gt;&lt;dynamic_default_value/&gt;&lt;dynamic_ref_qual/&gt;&lt;element&gt;u_grey_phone&lt;/element&gt;&lt;element_reference&gt;false&lt;/element_reference&gt;&lt;foreign_database/&gt;&lt;function_definition/&gt;&lt;function_field&gt;false&lt;/function_field&gt;&lt;internal_type display_value="String"&gt;string&lt;/internal_type&gt;&lt;mandatory&gt;false&lt;/mandatory&gt;&lt;max_length&gt;40&lt;/max_length&gt;&lt;name&gt;sys_user&lt;/name&gt;&lt;next_element/&gt;&lt;primary&gt;false&lt;/primary&gt;&lt;read_only&gt;false&lt;/read_only&gt;&lt;read_roles/&gt;&lt;reference/&gt;&lt;reference_cascade_rule/&gt;&lt;reference_floats&gt;false&lt;/reference_floats&gt;&lt;reference_key/&gt;&lt;reference_qual/&gt;&lt;reference_qual_condition/&gt;&lt;reference_type/&gt;&lt;sizeclass/&gt;&lt;spell_check&gt;false&lt;/spell_check&gt;&lt;staged&gt;false&lt;/staged&gt;&lt;sys_class_name&gt;sys_dictionary&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-23 00:24:01&lt;/sys_created_on&gt;&lt;sys_id&gt;e6ca0d08db64130093da55d0cf961997&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Grey Phone&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_dictionary_sys_user_u_grey_phone&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-02-23 00:24:01&lt;/sys_updated_on&gt;&lt;table_reference&gt;false&lt;/table_reference&gt;&lt;text_index&gt;false&lt;/text_index&gt;&lt;unique&gt;false&lt;/unique&gt;&lt;use_dependent_field&gt;false&lt;/use_dependent_field&gt;&lt;use_dynamic_default&gt;false&lt;/use_dynamic_default&gt;&lt;use_reference_qualifier&gt;simple&lt;/use_reference_qualifier&gt;&lt;virtual&gt;false&lt;/virtual&gt;&lt;widget/&gt;&lt;write_roles/&gt;&lt;xml_view&gt;false&lt;/xml_view&gt;&lt;/sys_dictionary&gt;&lt;/record_update&gt;</payload>
-<payload_hash>553924729</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>a1641d26db202300dbf62a9a48961917</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ecaa0000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User.Grey Phone</target_name>
-<type>Dictionary</type>
-<update_domain>global</update_domain>
-<update_guid>ebfa8d081f641300390a23c36e2ca97e</update_guid>
-<update_guid_history>ebfa8d081f641300390a23c36e2ca97e:553924729</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>cmn_schedule_051fc9c8db64130093da55d0cf9619b8</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="cmn_schedule"><cmn_schedule action="INSERT_OR_UPDATE"><description>0600 - 1800 Every Day, Including Weekend and Holidays</description><document/><document_key/><name>0600 - 1800 Every Day Incl Weekend and Holidays</name><parent/><read_only>false</read_only><sys_class_name>cmn_schedule</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:42:55</sys_created_on><sys_id>051fc9c8db64130093da55d0cf9619b8</sys_id><sys_mod_count>1</sys_mod_count><sys_name>0600 - 1800 Every Day Incl Weekend and Holidays</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>cmn_schedule_051fc9c8db64130093da55d0cf9619b8</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:45:45</sys_updated_on><time_zone/><type/></cmn_schedule></record_update>]]></payload>
-<payload_hash>1432801703</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>a5641d26db202300dbf62a9a48961915</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ed130000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table/>
-<target_name>0600 - 1800 Every Day Incl Weekend and Holidays</target_name>
-<type>Schedule</type>
-<update_domain>global</update_domain>
-<update_guid>f2b411cc7b641300180f49513e344751</update_guid>
-<update_guid_history>f2b411cc7b641300180f49513e344751:1432801703</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>cmn_schedule_span_9300510cdb64130093da55d0cf9619eb</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="cmn_schedule_span"><cmn_schedule_span action="INSERT_OR_UPDATE"><all_day>false</all_day><days_of_week>1</days_of_week><end_date_time>20180222T180000</end_date_time><float_day>1</float_day><float_week>1</float_week><month>1</month><monthly_type>dom</monthly_type><name>0600 - 1800 Weekdays</name><notes/><override_start_date>00000000</override_start_date><parent/><repeat_count>1</repeat_count><repeat_type>weekdays</repeat_type><repeat_until>00000000</repeat_until><schedule display_value="0600 - 1800 Weekdays Excl Holidays">696fc988db64130093da55d0cf9619e0</schedule><show_as>busy</show_as><start_date_time>20180222T060000</start_date_time><sys_class_name>cmn_schedule_span</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:46:40</sys_created_on><sys_id>9300510cdb64130093da55d0cf9619eb</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:46:40</sys_updated_on><type/><yearly_type>doy</yearly_type></cmn_schedule_span></record_update>]]></payload>
-<payload_hash>1721233373</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>a5641d26db202300dbf62a9a48961916</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ed2b0000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table/>
-<target_name>0600 - 1800 Weekdays</target_name>
-<type>Schedule Entry</type>
-<update_domain>global</update_domain>
-<update_guid>96e495cccf6413002b49b2893cfc457a</update_guid>
-<update_guid_history>96e495cccf6413002b49b2893cfc457a:1721233373</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_script_fix_c4cf8a68dbe31300e298771ebf9619a3</name>
-<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_fix"&gt;&lt;sys_script_fix action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;before&gt;false&lt;/before&gt;&lt;description&gt;Bulk activation of plugins&lt;/description&gt;&lt;flush_cache&gt;false&lt;/flush_cache&gt;&lt;name&gt;Army Bulk Plugin Activation&lt;/name&gt;&lt;run_once&gt;true&lt;/run_once&gt;&lt;script&gt;&lt;![CDATA[// Array of IDs for plugins that should be activated.
-var pluginIds = [
-    "com.glide.quiz_designer",
-    "com.glide.ui.list_v3",
-    "com.glide.web_service_provider_v2",
-    "com.glideapp.live_feed_v2",
-    "com.glideapp.report_statreports",
-    "com.snc.automatic_assignment",
-    "com.snc.bestpractice.bulkchange",
-    "com.snc.change_management.risk_assessment",
-    "com.snc.extended_cmdb",
-    "com.snc.field_normalization",
-    "com.snc.financial_planning_pmo",
-    "com.snc.iam",
-    "com.snc.knowledge_document",
-    "com.snc.pa.configurationgenerator",
-    "com.snc.procurement",
-    "com.snc.required_form_fields",
-    "com.snc.sc_catalog_manager",
-    "com.snc.sdlc.agile.2.0",
-    "com.snc.service_portfolio.sla",
-    "com.snc.sla.contract2",
-    "com.snc.task_activity",
-    "com.snc.treemap",
-    "com.snc.undelete",
-    "com.snc.vendor_performance",
-    "com.snc.whtp"
-];
-function isQueuedPluginActivation(obj) {
-    return obj.status == "waiting";
-}
-function isFailedPluginActivation(obj) {
-    return obj.status == "failed";
-}
-var resultInfo = {
-    items: [],
-    startTime: new GlideDateTime()
-};
-try {
-    var gpm_1 = new GlidePluginManager();
-    var servletUri_1 = gs.getProperty('glide.servlet.uri');
-    resultInfo.items = pluginIds.map(function (id) {
-        var pluginGlideRecord = new GlideRecord("v_plugin");
-        pluginGlideRecord.addQuery("id", id);
-        try {
-            pluginGlideRecord.query();
-            if (pluginGlideRecord.next()) {
-                if (gpm_1.isActive(id))
-                    return {
-                        id: id,
-                        name: pluginGlideRecord.getValue("name"),
-                        status: "activated",
-                        message: "Plugin was already activated",
-                        pluginLink: servletUri_1 + pluginGlideRecord.getLink(true)
-                    };
-                return {
-                    id: id,
-                    name: pluginGlideRecord.getValue("name"),
-                    status: "waiting",
-                    pluginLink: servletUri_1 + pluginGlideRecord.getLink(true)
-                };
-            }
-            else
-                return {
-                    id: id,
-                    status: "failed",
-                    message: "Plugin with id of " + JSON.stringify(id) + " not found."
-                };
-        }
-        catch (e) {
-            var eType = e.name;
-            eType = (typeof (eType) != "string") ? "" : eType.trim();
-            if (eType.length == 0)
-                eType = "error";
-            gs.error(e);
-            gs.warn("Unexpected " + eType + " while trying to get status of plugin with id of " + JSON.stringify(id));
-            return {
-                id: id,
-                status: "failed",
-                message: "Unexpected " + eType + " while trying to get status of plugin with id of " + JSON.stringify(id) + ": " + e,
-                details: (typeof (e.stack) == "undefined" || e.stack === null) ? "" : ((typeof (e.stack) == "string") ? e.stack : e.stack + "").trim()
-            };
-        }
-    }, gpm_1);
-    var queue = resultInfo.items.filter(isQueuedPluginActivation);
-    if (queue.length &gt; 0) {
-        gs.info("Activating " + ((queue.length == 1) ? "1 plugin" : queue.length + " plugin"));
-        resultInfo.startTime = new GlideDateTime();
-        for (var index = 0; index &lt; resultInfo.items.length; index++) {
-            var pluginInfo = resultInfo.items[index];
-            if (!isQueuedPluginActivation(pluginInfo))
-                continue;
-            if (gpm_1.isActive(pluginInfo.id)) {
-                resultInfo.items[index] = {
-                    id: pluginInfo.id,
-                    name: pluginInfo.name,
-                    status: "succeeded",
-                    message: "Plugin auto-activated",
-                    pluginLink: pluginInfo.pluginLink
-                };
-                continue;
-            }
-            try {
-                var worker = new GlidePluginManagerWorker();
-                worker.setPluginId(pluginInfo.id);
-                worker.setIncludeDemoData(false);
-                worker.setProgressName("Activate " + ((typeof (pluginInfo.name) == "string" &amp;&amp; pluginInfo.name.trim().length &gt; 0) ? pluginInfo.name : pluginInfo.id));
-                worker.setBackground(false);
-                worker.start();
-                var progressId = worker.getProgressID();
-                var progressGlideRecord = new GlideRecord("sys_progress_worker");
-                progressGlideRecord.addQuery("sys_id", progressId);
-                progressGlideRecord.query();
-                if (!progressGlideRecord.next())
-                    throw new Error("Unable to find progress record " + progressId + " for " + ((typeof (pluginInfo.name) == "string" &amp;&amp; pluginInfo.name.trim().length &gt; 0) ? pluginInfo.name : pluginInfo.id));
-                var completion_code = progressGlideRecord.getValue("state");
-                gs.info("state is " + completion_code);
-                if (completion_code == "complete" || completion_code == "cancelled") {
-                    var c = progressGlideRecord.getValue("state_code");
-                    if (!gs.nil(c) &amp;&amp; c.length &gt; 0)
-                        completion_code = c;
-                }
-                var r = "";
-                var success = false;
-                switch (completion_code) {
-                    case "success":
-                        success = true;
-                        r = "Activated plugin";
-                        break;
-                    case "complete":
-                        success = true;
-                        r = "Activation completed for plugin";
-                        break;
-                    case "cancelled":
-                        r = "Activated cancelled for";
-                        break;
-                    case "error":
-                        r = "Error activating plugin";
-                        break;
-                    default:
-                        r = "Unexpected result { Code: " + completion_code + "; ProgressID: " + progressId + "} while activating plugin";
-                        break;
-                }
-                var msg = progressGlideRecord.getValue("message");
-                msg = (typeof (msg) === "string") ? msg.trim() : "";
-                if (success)
-                    resultInfo.items[index] = {
-                        id: pluginInfo.id,
-                        name: pluginInfo.name,
-                        status: "succeeded",
-                        completion_code: completion_code,
-                        progressId: progressId,
-                        message: r,
-                        details: msg,
-                        pluginLink: pluginInfo.pluginLink,
-                        progressLink: servletUri_1 + progressGlideRecord.getLink(true)
-                    };
-                else {
-                    var e = progressGlideRecord.getValue("error_message");
-                    e = (typeof (e) === "string") ? e.trim() : "";
-                    if (msg.length == 0)
-                        msg = e;
-                    else if (e.length &gt; 0 &amp;&amp; e != msg)
-                        msg += " (" + e + ")";
-                    resultInfo.items[index] = {
-                        id: pluginInfo.id,
-                        name: pluginInfo.name,
-                        status: "failed",
-                        message: r,
-                        details: msg,
-                        pluginLink: pluginInfo.pluginLink,
-                        progressLink: servletUri_1 + progressGlideRecord.getLink(true)
-                    };
-                }
-            }
-            catch (err) {
-                var eType = err.name;
-                eType = (typeof (eType) != "string") ? "" : eType.trim();
-                if (eType.length == 0)
-                    eType = "error";
-                gs.error(err);
-                gs.warn("Unexpected " + eType + " while trying to activate plugin with id of " + JSON.stringify(pluginInfo.id));
-                resultInfo.items[index] = {
-                    id: pluginInfo.id,
-                    name: pluginInfo.name,
-                    status: "failed",
-                    pluginLink: pluginInfo.pluginLink,
-                    message: "Unexpected " + eType + " while trying to activate plugin with id of " + JSON.stringify(pluginInfo.id) + ": " + err,
-                    details: (typeof (err.stack) == "undefined" || err.stack === null) ? "" : ((typeof (err.stack) == "string") ? err.stack : err.stack + "").trim()
-                };
-            }
-        }
-    }
-}
-catch (unhandledErr) {
-    var eType = unhandledErr.name;
-    eType = (typeof (eType) != "string") ? "" : eType.trim();
-    if (eType.length == 0)
-        eType = "error";
-    gs.error(unhandledErr);
-    gs.warn("Unhandled " + eType + "in script");
-    resultInfo.items.push({
-        id: "",
-        name: "",
-        status: "failed",
-        message: "Unhandled " + eType + "in script: " + unhandledErr,
-        details: (typeof (unhandledErr.stack) == "undefined" || unhandledErr.stack === null) ? "" : ((typeof (unhandledErr.stack) == "string") ? unhandledErr.stack : unhandledErr.stack + "").trim()
-    });
-}
-finally {
-    var failed = resultInfo.items.filter(isFailedPluginActivation);
-    var incomplete = resultInfo.items.filter(isQueuedPluginActivation);
-    if (incomplete.length &gt; 0) {
-        gs.warn("Alloted Activation Timeframe Expired");
-        if (failed.length == 1)
-            gs.error("1 error has occurred");
-        else if (failed.length &gt; 1)
-            gs.error(failed.length + " errors have occurred");
-        gs.warn("Not all activation attempts completed before alotted timespan elapsed. Execute background script again to activate the remaining " +
-            ((incomplete.length == 1) ? "plugin" : incomplete.length + " plugins"));
-    }
-    else if (failed.length &gt; 0) {
-        gs.error("Activation Attempts Completed");
-        if (failed.length == 1)
-            gs.error("1 error has occurred");
-        else if (failed.length &gt; 1)
-            gs.error(failed.length + " errors have occurred");
-    }
-    else
-        gs.error("Activations Completed");
-    for (var index = 0; index &lt; resultInfo.items.length; index++) {
-        var pluginInfo = resultInfo.items[index];
-        var messageText = (typeof (pluginInfo.name) == "string" &amp;&amp; pluginInfo.name.trim().length &gt; 0 &amp;&amp; pluginInfo.name != pluginInfo.id) ?
-            pluginInfo.name + " (" + pluginInfo.id + ")&lt;/em&gt;" : pluginInfo.id;
-        if (typeof (pluginInfo.pluginLink) == "string" &amp;&amp; pluginInfo.pluginLink.trim().length &gt; 0)
-            messageText += " [" + pluginInfo.pluginLink + "]";
-        var detailsCode = "";
-        var level = 1;
-        if (isQueuedPluginActivation(pluginInfo))
-            messageText += " Not Activated";
-        else {
-            if (isFailedPluginActivation(pluginInfo)) {
-                level = 2;
-                messageText += " Failed";
-            }
-            else {
-                level = 0;
-                messageText += " Activated";
-            }
-            if (typeof (pluginInfo.completion_code) == "string" &amp;&amp; pluginInfo.completion_code.length &gt; 0)
-                messageText += "; Code: " + pluginInfo.completion_code;
-            if (typeof (pluginInfo.message) == "string" &amp;&amp; pluginInfo.message.trim().length &gt; 0)
-                messageText += "; Message: " + pluginInfo.message;
-            if (typeof (pluginInfo.details) == "string" &amp;&amp; pluginInfo.details.trim().length &gt; 0)
-                detailsCode = pluginInfo.details;
-        }
-        if (level == 0)
-            gs.info(messageText);
-        else if (level == 1)
-            gs.warn(messageText);
-        else
-            gs.error(messageText);
-        if (detailsCode.length &gt; 0) {
-            if (level == 0)
-                gs.info(detailsCode);
-            else if (level == 1)
-                gs.warn(detailsCode);
-            else
-                gs.error(detailsCode);
-        }
-    }
-}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_fix&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-07-23 21:50:32&lt;/sys_created_on&gt;&lt;sys_id&gt;c4cf8a68dbe31300e298771ebf9619a3&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;Army Bulk Plugin Activation&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_fix_c4cf8a68dbe31300e298771ebf9619a3&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-09-07 19:48:31&lt;/sys_updated_on&gt;&lt;unloadable&gt;false&lt;/unloadable&gt;&lt;/sys_script_fix&gt;&lt;/record_update&gt;</payload>
-<payload_hash>-357706379</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>a5641d26db202300dbf62a9a48961919</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b5942ac80000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table/>
-<target_name>Army Bulk Plugin Activation</target_name>
-<type>Fix Script</type>
-<update_domain>global</update_domain>
-<update_guid>182de29b4ad42300db5865019bd6e3d0</update_guid>
-<update_guid_history>182de29b4ad42300db5865019bd6e3d0:-357706379,3fff4a2499e31300699efda057f3dd38:1705416391,9fef8a6871e3130034d294e60bc142a6:1743905096</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_documentation_sys_user_u_tda_position_en</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_documentation element="u_tda_position" label="TDA Position" language="en" table="sys_user"><sys_documentation action="INSERT_OR_UPDATE"><element>u_tda_position</element><help/><hint/><label>TDA Position</label><language>en</language><name>sys_user</name><plural>TDA Positions</plural><sys_class_name>sys_documentation</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:26:27</sys_created_on><sys_id>b28bc548db64130093da55d0cf96190e</sys_id><sys_mod_count>0</sys_mod_count><sys_name>TDA Position</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_documentation_sys_user_u_tda_position_en</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:26:27</sys_updated_on><url/><url_target/></sys_documentation></sys_documentation></record_update>]]></payload>
-<payload_hash>-624420821</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>a9641d26db202300dbf62a9a48961918</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576eceb0000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User.TDA Position</target_name>
-<type>Field Label</type>
-<update_domain>global</update_domain>
-<update_guid>728bc5489f641300deb1463db0fba116</update_guid>
-<update_guid_history>728bc5489f641300deb1463db0fba116:-624420821</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_documentation_sys_user_phone_en</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_documentation element="phone" label="Black phone" language="en" table="sys_user"><sys_documentation action="INSERT_OR_UPDATE"><element>phone</element><help/><hint/><label>Black phone</label><language>en</language><name>sys_user</name><plural>Black phones</plural><sys_class_name>sys_documentation</sys_class_name><sys_created_by>system</sys_created_by><sys_created_on>2018-01-03 19:07:47</sys_created_on><sys_id>6b13aa33b8130300651775b34d8f51af</sys_id><sys_mod_count>1</sys_mod_count><sys_name>Black phone</sys_name><sys_package display_value="System (apps/system_user)" source="apps/system_user">db13aa33b8130300651775b34d8f5110</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_documentation_sys_user_phone_en</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:25:18</sys_updated_on><url/><url_target/></sys_documentation></sys_documentation></record_update>]]></payload>
-<payload_hash>1745092523</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>ad641d26db202300dbf62a9a48961917</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ecd20000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User.Black phone</target_name>
-<type>Field Label</type>
-<update_domain>global</update_domain>
-<update_guid>c64b8148976413009e37b8a1696f71c5</update_guid>
-<update_guid_history>c64b8148976413009e37b8a1696f71c5:1745092523,4a4b814864641300b38600bf7bf857c2:-1766296057</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>cmn_schedule_span_60cf810cdb64130093da55d0cf9619bd</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="cmn_schedule_span"><cmn_schedule_span action="INSERT_OR_UPDATE"><all_day>false</all_day><days_of_week>1</days_of_week><end_date_time>20180222T180000</end_date_time><float_day>1</float_day><float_week>1</float_week><month>1</month><monthly_type>dom</monthly_type><name>0800 - 1800 Every Day</name><notes/><override_start_date>00000000</override_start_date><parent/><repeat_count>1</repeat_count><repeat_type>daily</repeat_type><repeat_until>00000000</repeat_until><schedule display_value="0600 - 1800 Every Day Incl Weekend and Holidays">051fc9c8db64130093da55d0cf9619b8</schedule><show_as>busy</show_as><start_date_time>20180222T060000</start_date_time><sys_class_name>cmn_schedule_span</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:45:45</sys_created_on><sys_id>60cf810cdb64130093da55d0cf9619bd</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:45:45</sys_updated_on><type/><yearly_type>doy</yearly_type></cmn_schedule_span></record_update>]]></payload>
-<payload_hash>2100892812</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>e1641d26db202300dbf62a9a48961916</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ed240000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table/>
-<target_name>0800 - 1800 Every Day</target_name>
-<type>Schedule Entry</type>
-<update_domain>global</update_domain>
-<update_guid>23d495cc93641300b19c258c1c28c129</update_guid>
-<update_guid_history>23d495cc93641300b19c258c1c28c129:2100892812</update_guid_history>
-<update_set display_value=""/>
-<view/>
+<view>Default view</view>
 </sys_update_xml>
 <sys_update_xml action="INSERT_OR_UPDATE">
 <action>INSERT_OR_UPDATE</action>
@@ -886,7 +87,7 @@ finally {
 <category>customer</category>
 <comments/>
 <name>sys_script_fix_64638a60dbe31300e298771ebf96193a</name>
-<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_fix"&gt;&lt;sys_script_fix action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;before&gt;false&lt;/before&gt;&lt;description&gt;Performs initial configuration and UI modifications for SDLC stage of server.&lt;/description&gt;&lt;flush_cache&gt;false&lt;/flush_cache&gt;&lt;name&gt;Initial Army Config&lt;/name&gt;&lt;run_once&gt;true&lt;/run_once&gt;&lt;script&gt;&lt;![CDATA[// Following is an array of properties that will be configured by this script.
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_fix"&gt;&lt;sys_script_fix action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;before&gt;false&lt;/before&gt;&lt;description&gt;Performs initial configuration and UI modifications for SDLC stage of server.&lt;/description&gt;&lt;flush_cache&gt;false&lt;/flush_cache&gt;&lt;name&gt;Initial Army Config&lt;/name&gt;&lt;record_for_rollback&gt;false&lt;/record_for_rollback&gt;&lt;run_once&gt;true&lt;/run_once&gt;&lt;script&gt;&lt;![CDATA[// Following is an array of properties that will be configured by this script.
 var sys_properties = [
     { name: "glide.sys.default.tz", type: "timezone", description: "System timezone for all users unless overridden in the user's record", sys_package: "glidesoft",
         prod: "US/Eastern", uat: "US/Eastern", test: "US/Eastern", dev: "US/Eastern", sb: "US/Eastern" },
@@ -895,35 +96,35 @@ var sys_properties = [
     { name: "glide.product.description", type: "string", description: "Page header caption", sys_package: "apps/system2",
         prod: "Enterprise Service Tool", uat: "Enterprise Service Tool", test: "Enterprise Service Tool", dev: "Enterprise Service Tool", sb: "Enterprise Service Tool" },
     { name: "css.base.color", type: "color", description: "Banner and list caption background color", sys_package: "apps/system2",
-        prod: "#985252", uat: "#526498", test: "#526498", dev: "#649852", sb: "#645298" },
+        prod: "#985252", uat: "#526498", test: "#767676", dev: "#649852", sb: "#645298" },
     { name: "css.banner.description.color", type: "color", description: "Banner text color", sys_package: "glidesoft",
-        prod: "#d58181", uat: "#8196d5", test: "#8196d5", dev: "#96d581", sb: "#96d581" },
+        prod: "#d58181", uat: "#8196d5", test: "#AAAAAA", dev: "#96d581", sb: "#96d581" },
     { name: "css.$navpage-header-bg", type: "color", description: "Header Background Color", sys_package: "com.glide.ui.ui16",
-        prod: "#5b1a1a", uat: "#1a2a5b", test: "#1a2a5b", dev: "#2a5b1a", sb: "#9681d5" },
+        prod: "#5b1a1a", uat: "#1a2a5b", test: "#303a46", dev: "#2a5b1a", sb: "#9681d5" },
     { name: "css.$navpage-header-color", type: "color", description: "Header Background Color", sys_package: "com.glide.ui.ui16",
-        prod: "#fafad2", uat: "#fafad2", test: "#fafad2", dev: "#fafad2", sb: "#fafad2" },
+        prod: "#fafad2", uat: "#fafad2", test: "#ffffff", dev: "#fafad2", sb: "#fafad2" },
     { name: "css.$navpage-header-divider-color", type: "color", description: "Header divider stripe color", sys_package: "global",
-        prod: "#822626", uat: "#263d82", test: "#263d82", dev: "#3d8226", sb: "#3d2682" },
+        prod: "#822626", uat: "#263d82", test: "#455464", dev: "#3d8226", sb: "#3d2682" },
     { name: "css.$navpage-nav-bg", type: "color", description: "Navigation Header/Footer", sys_package: "com.glide.ui.ui16",
-        prod: "#5b1a1a", uat: "#1a2a5b", test: "#1a2a5b", dev: "#2a5b1a", sb: "#9681d5" },
+        prod: "#5b1a1a", uat: "#1a2a5b", test: "#303A46", dev: "#2a5b1a", sb: "#9681d5" },
     { name: "css.$subnav-background-color", type: "color", description: "Navigation background expanded items", sys_package: "com.glide.ui.ui16",
         prod: "#592222", uat: "#223d59", test: "#223d59", dev: "#2f5922", sb: "#2f2259" },
     { name: "css.$navpage-nav-color-sub", type: "color", description: "Module text color for UI16&lt;br/&gt;Also affects unselected navigation tab icon and favorite icons color.", sys_package: "com.glide.ui.ui16",
-        prod: "#d7d7ac", uat: "#d7d7ac", test: "#d7d7ac", dev: "#dde1ee", sb: "#d7d7ac" },
+        prod: "#d7d7ac", uat: "#d7d7ac", test: "#bec1c6", dev: "#dde1ee", sb: "#d7d7ac" },
     { name: "css.$navpage-nav-selected-bg", type: "color", description: "Navigation selected tab background color", sys_package: "com.glide.ui.ui16",
-        prod: "#7e2a2a", uat: "#2a3f7e", test: "#2a3f7e", dev: "#3f7e2a", sb: "#3f2a7e" },
+        prod: "#7e2a2a", uat: "#2a3f7e", test: "#4B545F", dev: "#3f7e2a", sb: "#3f2a7e" },
     { name: "css.$nav-hr-color", type: "color", description: "Navigation separator color", sys_package: "com.glide.ui.ui16",
-        prod: "#7e2a2a", uat: "#2a3f7e", test: "#2a3f7e", dev: "#3f7e2a", sb: "#3f2a7e" },
+        prod: "#7e2a2a", uat: "#2a3f7e", test: "#303a46", dev: "#3f7e2a", sb: "#3f2a7e" },
     { name: "css.$navpage-nav-bg-sub", type: "color", description: "Background for navigator and sidebars", sys_package: "com.glide.ui.ui16",
-        prod: "#822626", uat: "#263d82", test: "#263d82", dev: "#3d8226", sb: "#3d2682" },
+        prod: "#822626", uat: "#263d82", test: "#455464", dev: "#3d8226", sb: "#3d2682" },
     { name: "css.$navpage-nav-unselected-color", type: "color", description: "Unselected navigation tab icon and favorite icons color", sys_package: "global",
-        prod: "#e0a3a3", uat: "#a3c2e0", test: "#a3c2e0", dev: "#b3e0a3", sb: "#b3a3e0" },
+        prod: "#e0a3a3", uat: "#a3c2e0", test: "#bec1c6", dev: "#b3e0a3", sb: "#b3a3e0" },
     { name: "css.$navpage-nav-selected-color", type: "color", description: "Currently selected Navigation tab icon color for UI16", sys_package: "",
-        prod: "#afeeee", uat: "#f08080", test: "#f08080", dev: "#f08080", sb: "#f08080" },
+        prod: "#afeeee", uat: "#f08080", test: "#ffffff", dev: "#f08080", sb: "#f08080" },
     { name: "css.$navpage-nav-border", type: "color", description: "Border color for UI16", sys_package: "com.glide.ui.ui16",
-        prod: "#eecdcd", uat: "#ced6ee", test: "#ced6ee", dev: "#d6eece", sb: "#d6ceee" },
+        prod: "#eecdcd", uat: "#ced6ee", test: "#ddd", dev: "#d6eece", sb: "#d6ceee" },
     { name: "css.$nav-highlight-main", type: "color", description: "Navigation highlight background color", sys_package: "com.glide.ui.ui16",
-        prod: "#493131", uat: "#2e3d4d", test: "#2e3d4d", dev: "#374931", sb: "#373149" }
+        prod: "#493131", uat: "#2e3d4d", test: "#3D4853", dev: "#374931", sb: "#373149" }
 ];
 function getStageProperty(index, stage) {
     var p = sys_properties[index];
@@ -1004,23 +205,23 @@ else {
         gs.info("You may need to refresh your browser to see the changes.");
     else if (errorCount == 0)
         gs.info("No changes were required.");
-}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_fix&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-07-23 21:03:34&lt;/sys_created_on&gt;&lt;sys_id&gt;64638a60dbe31300e298771ebf96193a&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;Initial Army Config&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_fix_64638a60dbe31300e298771ebf96193a&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-09-07 19:26:39&lt;/sys_updated_on&gt;&lt;unloadable&gt;false&lt;/unloadable&gt;&lt;/sys_script_fix&gt;&lt;/record_update&gt;</payload>
-<payload_hash>2093697041</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_fix&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-07-23 21:03:34&lt;/sys_created_on&gt;&lt;sys_id&gt;64638a60dbe31300e298771ebf96193a&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name&gt;Initial Army Config&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_fix_64638a60dbe31300e298771ebf96193a&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-03-20 15:47:57&lt;/sys_updated_on&gt;&lt;unloadable&gt;false&lt;/unloadable&gt;&lt;/sys_script_fix&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-18029373</payload_hash>
+<remote_update_set display_value="Initial Update Set 2019-03-20">1665da4e0f987300d12eba8ce1050e1f</remote_update_set>
 <replace_on_upgrade>false</replace_on_upgrade>
 <sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>e1641d26db202300dbf62a9a48961919</sys_id>
+<sys_created_on>2019-03-21 17:03:38</sys_created_on>
+<sys_id>5a65da4e0f987300d12eba8ce1050e1f</sys_id>
 <sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b58028ac0000001</sys_recorded_at>
+<sys_recorded_at>1699bc9a7cc0000001</sys_recorded_at>
 <sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
+<sys_updated_on>2019-03-21 17:03:38</sys_updated_on>
 <table/>
 <target_name>Initial Army Config</target_name>
 <type>Fix Script</type>
 <update_domain>global</update_domain>
-<update_guid>4828e29709d423003e80c0e3531e1cca</update_guid>
-<update_guid_history>4828e29709d423003e80c0e3531e1cca:2093697041,269f4a240ce31300c9e329eafa2b7822:-747236912,0325caa038e31300f1a956a1ef08ed5c:-1010469965</update_guid_history>
+<update_guid>c08a38f54bd833003dc09bf157d6a2f3</update_guid>
+<update_guid_history>c08a38f54bd833003dc09bf157d6a2f3:-18029373,4828e29709d423003e80c0e3531e1cca:2093697041,269f4a240ce31300c9e329eafa2b7822:-747236912,0325caa038e31300f1a956a1ef08ed5c:-1010469965</update_guid_history>
 <update_set display_value=""/>
 <view/>
 </sys_update_xml>
@@ -1029,108 +230,77 @@ else {
 <application display_value="Global">global</application>
 <category>customer</category>
 <comments/>
-<name>sys_documentation_sys_user_u_red_phone_en</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_documentation element="u_red_phone" label="Red Phone" language="en" table="sys_user"><sys_documentation action="INSERT_OR_UPDATE"><element>u_red_phone</element><help/><hint/><label>Red Phone</label><language>en</language><name>sys_user</name><plural>Red Phones</plural><sys_class_name>sys_documentation</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:24:37</sys_created_on><sys_id>002b0148db64130093da55d0cf96193d</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Red Phone</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_documentation_sys_user_u_red_phone_en</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:24:37</sys_updated_on><url/><url_target/></sys_documentation></sys_documentation></record_update>]]></payload>
-<payload_hash>-1055969737</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
+<name>sys_ui_section_815428970f487300d12eba8ce1050ed4</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="" section_id="815428970f487300d12eba8ce1050ed4" sys_domain="global" table="cmn_building" version="3" view=""><sys_ui_element action="INSERT_OR_UPDATE"><element>.begin_split</element><position>0</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:16</sys_created_on><sys_id>815428970f487300d12eba8ce1050eda</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_building" sys_domain="global" view="Default view">815428970f487300d12eba8ce1050ed4</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:16</sys_updated_on><sys_user/><type>.begin_split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>contact</element><position>1</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:16</sys_created_on><sys_id>055428970f487300d12eba8ce1050eda</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_building" sys_domain="global" view="Default view">815428970f487300d12eba8ce1050ed4</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:16</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>floors</element><position>2</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:16</sys_created_on><sys_id>855428970f487300d12eba8ce1050eda</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_building" sys_domain="global" view="Default view">815428970f487300d12eba8ce1050ed4</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:16</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.split</element><position>3</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:16</sys_created_on><sys_id>095428970f487300d12eba8ce1050eda</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_building" sys_domain="global" view="Default view">815428970f487300d12eba8ce1050ed4</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:16</sys_updated_on><sys_user/><type>.split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>location</element><position>4</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:16</sys_created_on><sys_id>895428970f487300d12eba8ce1050eda</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_building" sys_domain="global" view="Default view">815428970f487300d12eba8ce1050ed4</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:16</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.end_split</element><position>5</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:16</sys_created_on><sys_id>0d5428970f487300d12eba8ce1050eda</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_building" sys_domain="global" view="Default view">815428970f487300d12eba8ce1050ed4</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:16</sys_updated_on><sys_user/><type>.end_split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>name</element><position>6</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:16</sys_created_on><sys_id>8d5428970f487300d12eba8ce1050eda</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_building" sys_domain="global" view="Default view">815428970f487300d12eba8ce1050ed4</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:16</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>notes</element><position>7</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:16</sys_created_on><sys_id>015428970f487300d12eba8ce1050edb</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_building" sys_domain="global" view="Default view">815428970f487300d12eba8ce1050ed4</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:16</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption/><header>false</header><name>cmn_building</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:16</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>815428970f487300d12eba8ce1050ed4</sys_id><sys_mod_count>0</sys_mod_count><sys_name>cmn_building</sys_name><sys_overrides/><sys_package display_value="System (apps/system_user)" source="apps/system_user">9a6c783365022300aadb05e0fb3edfec</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_section_815428970f487300d12eba8ce1050ed4</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:16</sys_updated_on><sys_user/><title>true</title><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
+<payload_hash>-1628233186</payload_hash>
+<remote_update_set display_value="Initial Update Set 2019-03-20">1665da4e0f987300d12eba8ce1050e1f</remote_update_set>
 <replace_on_upgrade>false</replace_on_upgrade>
 <sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>e5641d26db202300dbf62a9a48961918</sys_id>
+<sys_created_on>2019-03-21 17:03:38</sys_created_on>
+<sys_id>5e65da4e0f987300d12eba8ce1050e20</sys_id>
 <sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576eccd0000001</sys_recorded_at>
+<sys_recorded_at>1697370f66e0000001</sys_recorded_at>
 <sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User.Red Phone</target_name>
-<type>Field Label</type>
-<update_domain>global</update_domain>
-<update_guid>cc2b0148546413005c07ad288b44ff44</update_guid>
-<update_guid_history>cc2b0148546413005c07ad288b44ff44:-1055969737</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_dictionary_sys_user_u_tda_position</name>
-<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update&gt;&lt;sys_dictionary action="INSERT_OR_UPDATE" element="u_tda_position" table="sys_user"&gt;&lt;active&gt;true&lt;/active&gt;&lt;array&gt;false&lt;/array&gt;&lt;array_denormalized&gt;false&lt;/array_denormalized&gt;&lt;attributes/&gt;&lt;audit&gt;false&lt;/audit&gt;&lt;calculation&gt;&lt;![CDATA[(function calculatedFieldValue(current) {
-
-	// Add your code here
-	return '';  // return the calculated value
-
-})(current);]]&gt;&lt;/calculation&gt;&lt;choice/&gt;&lt;choice_field/&gt;&lt;choice_table/&gt;&lt;column_label&gt;TDA Position&lt;/column_label&gt;&lt;comments/&gt;&lt;create_roles/&gt;&lt;default_value/&gt;&lt;defaultsort/&gt;&lt;delete_roles/&gt;&lt;dependent/&gt;&lt;dependent_on_field/&gt;&lt;display&gt;false&lt;/display&gt;&lt;dynamic_creation&gt;false&lt;/dynamic_creation&gt;&lt;dynamic_creation_script/&gt;&lt;dynamic_default_value/&gt;&lt;dynamic_ref_qual/&gt;&lt;element&gt;u_tda_position&lt;/element&gt;&lt;element_reference&gt;false&lt;/element_reference&gt;&lt;foreign_database/&gt;&lt;function_definition/&gt;&lt;function_field&gt;false&lt;/function_field&gt;&lt;internal_type display_value="String"&gt;string&lt;/internal_type&gt;&lt;mandatory&gt;false&lt;/mandatory&gt;&lt;max_length&gt;40&lt;/max_length&gt;&lt;name&gt;sys_user&lt;/name&gt;&lt;next_element/&gt;&lt;primary&gt;false&lt;/primary&gt;&lt;read_only&gt;false&lt;/read_only&gt;&lt;read_roles/&gt;&lt;reference/&gt;&lt;reference_cascade_rule/&gt;&lt;reference_floats&gt;false&lt;/reference_floats&gt;&lt;reference_key/&gt;&lt;reference_qual/&gt;&lt;reference_qual_condition/&gt;&lt;reference_type/&gt;&lt;sizeclass/&gt;&lt;spell_check&gt;false&lt;/spell_check&gt;&lt;staged&gt;false&lt;/staged&gt;&lt;sys_class_name&gt;sys_dictionary&lt;/sys_class_name&gt;&lt;sys_created_by&gt;erwinel_da&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-02-23 00:26:26&lt;/sys_created_on&gt;&lt;sys_id&gt;a27b8548db64130093da55d0cf96196a&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;TDA Position&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_dictionary_sys_user_u_tda_position&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-02-23 00:26:26&lt;/sys_updated_on&gt;&lt;table_reference&gt;false&lt;/table_reference&gt;&lt;text_index&gt;false&lt;/text_index&gt;&lt;unique&gt;false&lt;/unique&gt;&lt;use_dependent_field&gt;false&lt;/use_dependent_field&gt;&lt;use_dynamic_default&gt;false&lt;/use_dynamic_default&gt;&lt;use_reference_qualifier&gt;simple&lt;/use_reference_qualifier&gt;&lt;virtual&gt;false&lt;/virtual&gt;&lt;widget/&gt;&lt;write_roles/&gt;&lt;xml_view&gt;false&lt;/xml_view&gt;&lt;/sys_dictionary&gt;&lt;/record_update&gt;</payload>
-<payload_hash>-886611847</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>e9641d26db202300dbf62a9a48961917</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ece60000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User.TDA Position</target_name>
-<type>Dictionary</type>
-<update_domain>global</update_domain>
-<update_guid>7e8bc5487464130036daee5c47503e14</update_guid>
-<update_guid_history>7e8bc5487464130036daee5c47503e14:-886611847</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_dictionary_sys_user_phone</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_dictionary action="INSERT_OR_UPDATE" element="phone" table="sys_user"><active>true</active><array>false</array><array_denormalized>false</array_denormalized><attributes/><audit>false</audit><calculation/><choice/><choice_field/><choice_table/><column_label>Black phone</column_label><comments/><create_roles/><default_value/><defaultsort/><delete_roles/><dependent/><dependent_on_field/><display>false</display><dynamic_creation>false</dynamic_creation><dynamic_creation_script/><dynamic_default_value/><dynamic_ref_qual/><element>phone</element><element_reference>false</element_reference><foreign_database/><function_definition/><function_field>false</function_field><internal_type display_value="">ph_number</internal_type><mandatory>false</mandatory><max_length>40</max_length><name>sys_user</name><next_element/><primary>false</primary><read_only>false</read_only><read_roles/><reference/><reference_cascade_rule/><reference_floats>false</reference_floats><reference_key/><reference_qual/><reference_qual_condition/><reference_type/><sizeclass/><spell_check>false</spell_check><staged>false</staged><sys_class_name>sys_dictionary</sys_class_name><sys_created_by>system</sys_created_by><sys_created_on>2018-01-03 19:07:47</sys_created_on><sys_id>e713aa33b8130300651775b34d8f51af</sys_id><sys_mod_count>1</sys_mod_count><sys_name>Black phone</sys_name><sys_package display_value="System (apps/system_user)" source="apps/system_user">db13aa33b8130300651775b34d8f5110</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_dictionary_sys_user_phone</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:25:18</sys_updated_on><table_reference>false</table_reference><text_index>false</text_index><unique>false</unique><use_dependent_field>false</use_dependent_field><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><virtual>false</virtual><widget/><write_roles/><xml_view>false</xml_view></sys_dictionary></record_update>]]></payload>
-<payload_hash>456809403</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>ed641d26db202300dbf62a9a48961916</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ecd70000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User.Black phone</target_name>
-<type>Dictionary</type>
-<update_domain>global</update_domain>
-<update_guid>0e4b8148836413007072843cabbb73c6</update_guid>
-<update_guid_history>0e4b8148836413007072843cabbb73c6:456809403,c24b01488a64130046bc7cc03cf75848:334157880</update_guid_history>
-<update_set display_value=""/>
-<view/>
-</sys_update_xml>
-<sys_update_xml action="INSERT_OR_UPDATE">
-<action>INSERT_OR_UPDATE</action>
-<application display_value="Global">global</application>
-<category>customer</category>
-<comments/>
-<name>sys_ui_section_a8fc8948db64130093da55d0cf9619ec</name>
-<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="Integration" section_id="a8fc8948db64130093da55d0cf9619ec" sys_domain="global" table="sys_user" version="3" view=""><sys_ui_element action="INSERT_OR_UPDATE"><element>internal_integration_user</element><position>0</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:34:49</sys_created_on><sys_id>9d7d4588db64130093da55d0cf961960</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="Integration" display_value="Integration" name="sys_user" sys_domain="global" view="Default view">a8fc8948db64130093da55d0cf9619ec</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:34:49</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>calendar_integration</element><position>1</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:34:49</sys_created_on><sys_id>117d4588db64130093da55d0cf961961</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="Integration" display_value="Integration" name="sys_user" sys_domain="global" view="Default view">a8fc8948db64130093da55d0cf9619ec</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:34:49</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>ldap_server</element><position>2</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:34:49</sys_created_on><sys_id>917d4588db64130093da55d0cf961961</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="Integration" display_value="Integration" name="sys_user" sys_domain="global" view="Default view">a8fc8948db64130093da55d0cf9619ec</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:34:49</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.split</element><position>3</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:34:49</sys_created_on><sys_id>157d4588db64130093da55d0cf961961</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="Integration" display_value="Integration" name="sys_user" sys_domain="global" view="Default view">a8fc8948db64130093da55d0cf9619ec</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:34:49</sys_updated_on><sys_user/><type>.split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>user_password</element><position>4</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:34:49</sys_created_on><sys_id>957d4588db64130093da55d0cf961961</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="Integration" display_value="Integration" name="sys_user" sys_domain="global" view="Default view">a8fc8948db64130093da55d0cf9619ec</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:34:49</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>password_needs_reset</element><position>5</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:34:49</sys_created_on><sys_id>197d4588db64130093da55d0cf961961</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="Integration" display_value="Integration" name="sys_user" sys_domain="global" view="Default view">a8fc8948db64130093da55d0cf9619ec</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:34:49</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>locked_out</element><position>6</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:34:49</sys_created_on><sys_id>997d4588db64130093da55d0cf961961</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="Integration" display_value="Integration" name="sys_user" sys_domain="global" view="Default view">a8fc8948db64130093da55d0cf9619ec</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:34:49</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>web_service_access_only</element><position>7</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:34:49</sys_created_on><sys_id>1d7d4588db64130093da55d0cf961961</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="Integration" display_value="Integration" name="sys_user" sys_domain="global" view="Default view">a8fc8948db64130093da55d0cf9619ec</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:34:49</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.end_split</element><position>8</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:34:49</sys_created_on><sys_id>9d7d4588db64130093da55d0cf961961</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="Integration" display_value="Integration" name="sys_user" sys_domain="global" view="Default view">a8fc8948db64130093da55d0cf9619ec</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:34:49</sys_updated_on><sys_user/><type>.end_split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>source</element><position>9</position><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:34:49</sys_created_on><sys_id>117d4588db64130093da55d0cf961962</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="Integration" display_value="Integration" name="sys_user" sys_domain="global" view="Default view">a8fc8948db64130093da55d0cf9619ec</sys_ui_section><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:34:49</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption>Integration</caption><header>false</header><name>sys_user</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>erwinel_da</sys_created_by><sys_created_on>2018-02-23 00:32:35</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>a8fc8948db64130093da55d0cf9619ec</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Integration</sys_name><sys_overrides/><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_section_a8fc8948db64130093da55d0cf9619ec</sys_update_name><sys_updated_by>erwinel_da</sys_updated_by><sys_updated_on>2018-02-23 00:32:35</sys_updated_on><sys_user/><title>false</title><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
-<payload_hash>-32662529</payload_hash>
-<remote_update_set display_value="Initial Update Set 2018-09-07">e964d926db202300dbf62a9a48961998</remote_update_set>
-<replace_on_upgrade>false</replace_on_upgrade>
-<sys_created_by>admin</sys_created_by>
-<sys_created_on>2018-09-17 15:41:06</sys_created_on>
-<sys_id>ed641d26db202300dbf62a9a48961919</sys_id>
-<sys_mod_count>0</sys_mod_count>
-<sys_recorded_at>165b576ecfc0000001</sys_recorded_at>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2018-09-17 15:41:06</sys_updated_on>
-<table>sys_user</table>
-<target_name>User</target_name>
+<sys_updated_on>2019-03-21 17:03:38</sys_updated_on>
+<table>cmn_building</table>
+<target_name>Building</target_name>
 <type>Form Layout</type>
 <update_domain>global</update_domain>
-<update_guid>d17d45886a6413009588b04685a88564</update_guid>
-<update_guid_history>d17d45886a6413009588b04685a88564:-32662529</update_guid_history>
+<update_guid>8154a4d7bf487300e1b90b29dd033790</update_guid>
+<update_guid_history>8154a4d7bf487300e1b90b29dd033790:-1628233186,45542897604873009bf239f2f98fd7d6:-1006342714</update_guid_history>
 <update_set display_value=""/>
 <view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_section_19cd9044c0a8016400a6cf28513a496a</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="" section_id="19cd9044c0a8016400a6cf28513a496a" sys_domain="global" table="cmn_department" version="3" view=""><sys_ui_element action="INSERT_OR_UPDATE"><element>name</element><position>0</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:32:09</sys_created_on><sys_id>da1128570f487300d12eba8ce1050e0a</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_department" sys_domain="global" view="Default view">19cd9044c0a8016400a6cf28513a496a</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:32:09</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>id</element><position>1</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:32:09</sys_created_on><sys_id>921128570f487300d12eba8ce1050e0b</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_department" sys_domain="global" view="Default view">19cd9044c0a8016400a6cf28513a496a</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:32:09</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>parent</element><position>2</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:32:09</sys_created_on><sys_id>161128570f487300d12eba8ce1050e0b</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_department" sys_domain="global" view="Default view">19cd9044c0a8016400a6cf28513a496a</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:32:09</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.split</element><position>3</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:32:09</sys_created_on><sys_id>961128570f487300d12eba8ce1050e0b</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_department" sys_domain="global" view="Default view">19cd9044c0a8016400a6cf28513a496a</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:32:09</sys_updated_on><sys_user/><type>.split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>dept_head</element><position>4</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:32:09</sys_created_on><sys_id>1a1128570f487300d12eba8ce1050e0b</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_department" sys_domain="global" view="Default view">19cd9044c0a8016400a6cf28513a496a</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:32:09</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>primary_contact</element><position>5</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:32:09</sys_created_on><sys_id>9a1128570f487300d12eba8ce1050e0b</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_department" sys_domain="global" view="Default view">19cd9044c0a8016400a6cf28513a496a</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:32:09</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>business_unit</element><position>6</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:32:09</sys_created_on><sys_id>1e1128570f487300d12eba8ce1050e0b</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_department" sys_domain="global" view="Default view">19cd9044c0a8016400a6cf28513a496a</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:32:09</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>company</element><position>7</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:32:09</sys_created_on><sys_id>9e1128570f487300d12eba8ce1050e0b</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_department" sys_domain="global" view="Default view">19cd9044c0a8016400a6cf28513a496a</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:32:09</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.end_split</element><position>8</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:32:09</sys_created_on><sys_id>121128570f487300d12eba8ce1050e0c</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_department" sys_domain="global" view="Default view">19cd9044c0a8016400a6cf28513a496a</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:32:09</sys_updated_on><sys_user/><type>.end_split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>description</element><position>9</position><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:32:09</sys_created_on><sys_id>921128570f487300d12eba8ce1050e0c</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_department" sys_domain="global" view="Default view">19cd9044c0a8016400a6cf28513a496a</sys_ui_section><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:32:09</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption/><header>false</header><name>cmn_department</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2005-02-16 06:14:24</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>19cd9044c0a8016400a6cf28513a496a</sys_id><sys_mod_count>1</sys_mod_count><sys_name>cmn_department</sys_name><sys_overrides/><sys_package display_value="System (glidesoft)" source="glidesoft">ff6c3c3365022300aadb05e0fb3edf85</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_section_19cd9044c0a8016400a6cf28513a496a</sys_update_name><sys_updated_by>system</sys_updated_by><sys_updated_on>2018-12-05 00:43:12</sys_updated_on><sys_user/><title>true</title><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
+<payload_hash>-199256125</payload_hash>
+<remote_update_set display_value="Initial Update Set 2019-03-20">1665da4e0f987300d12eba8ce1050e1f</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2019-03-21 17:03:38</sys_created_on>
+<sys_id>9a65da4e0f987300d12eba8ce1050e20</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16973640aa60000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2019-03-21 17:03:38</sys_updated_on>
+<table>cmn_department</table>
+<target_name>Department</target_name>
+<type>Form Layout</type>
+<update_domain>global</update_domain>
+<update_guid>1e112857be48730021289525ca8fce1a</update_guid>
+<update_guid_history>1e112857be48730021289525ca8fce1a:-199256125,561128578248730031213aef383f1d08:64146087</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_related_cmn_location_null</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_related sys_domain="global" table="cmn_location" version="2" view=""><sys_ui_related_list_entry action="INSERT_OR_UPDATE"><filter/><list_id display_value="Location - Default view" name="cmn_location" related_list="NULL" sys_domain="global" view="Default view">4a4464d70f487300d12eba8ce1050ee0</list_id><order_by/><position>0</position><related_list>cmn_location.parent</related_list><sys_class_name>sys_ui_related_list_entry</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:04</sys_created_on><sys_id>ce4464d70f487300d12eba8ce1050ee0</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:04</sys_updated_on></sys_ui_related_list_entry><sys_ui_related_list_entry action="INSERT_OR_UPDATE"><filter/><list_id display_value="Location - Default view" name="cmn_location" related_list="NULL" sys_domain="global" view="Default view">4a4464d70f487300d12eba8ce1050ee0</list_id><order_by/><position>1</position><related_list>cmn_building.location</related_list><sys_class_name>sys_ui_related_list_entry</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:04</sys_created_on><sys_id>c24464d70f487300d12eba8ce1050ee1</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:04</sys_updated_on></sys_ui_related_list_entry><sys_ui_related_list action="INSERT_OR_UPDATE"><calculated_name>Location - Default view</calculated_name><filter/><name>cmn_location</name><order_by/><position/><related_list/><sys_class_name>sys_ui_related_list</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2019-03-12 19:46:04</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>4a4464d70f487300d12eba8ce1050ee0</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Location - Default view</sys_name><sys_package display_value="System (glidesoft)" source="glidesoft">ff6c3c3365022300aadb05e0fb3edf85</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_related_cmn_location_null</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2019-03-12 19:46:04</sys_updated_on><sys_user/><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_related_list></sys_ui_related></record_update>]]></payload>
+<payload_hash>826991513</payload_hash>
+<remote_update_set display_value="Initial Update Set 2019-03-20">1665da4e0f987300d12eba8ce1050e1f</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2019-03-21 17:03:38</sys_created_on>
+<sys_id>d665da4e0f987300d12eba8ce1050e20</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1697370c7df0000001</sys_recorded_at>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2019-03-21 17:03:38</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location</target_name>
+<type>Related Lists</type>
+<update_domain>global</update_domain>
+<update_guid>c64464d7524873002ab89ccd53e100e2</update_guid>
+<update_guid_history>c64464d7524873002ab89ccd53e100e2:826991513,3714e0d7444873004c639534009604f0:1790108056,2f14e0d73f4873001b4d6c51cbf3f5a6:-139312179</update_guid_history>
+<update_set display_value=""/>
+<view>Default view</view>
 </sys_update_xml>
 </unload>
