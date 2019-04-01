@@ -31,7 +31,7 @@
                                 <div class="card-header"><h4>Force to Update Set</h4></div>
                                 <div class="card-body">
                                     With Validation:
-                                    <code class="pre-scrollable text-monospace">//Commit any changes to the record
+                                    <code><pre class="pre-scrollable text-monospace">//Commit any changes to the record
 current.update();
 
 //Check to make sure the table isn&#39;t synchronized already
@@ -52,9 +52,9 @@ if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl ==
    //Display info message and reload the form
    gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
    action.setRedirectURL(current);
-}</code>
+}</pre></code>
                                     No Validation:
-                                    <code class="pre-scrollable text-monospace">//Commit any changes to the record
+                                    <code><pre class="pre-scrollable text-monospace">//Commit any changes to the record
 current.update();
 //Push the update into the current update set
 var um = new GlideUpdateManager2();
@@ -67,7 +67,7 @@ us.get(setID);
 
 //Display info message and reload the form
 gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
-action.setRedirectURL(current);</code>
+action.setRedirectURL(current);</pre></code>
                                 </div>
                             </div>
                         </div>
