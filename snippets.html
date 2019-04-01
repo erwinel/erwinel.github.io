@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=1024, initial-scale=1.0"/>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+        <meta charset="utf-8" />
+        <title>ServiceNow Code Snippets</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap-grid.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap-table/bootstrap-table.css" />
+        <script type="text/javascript" src="script/api/jquery/jquery.js"></script>
+        <script type="text/javascript" src="script/api/bootstrap/js/bootstrap.bundle.js"></script>
+    </head>
+    <body>
+        <header class="container-fluid border border-secondary p-sm-1"><h1>ServiceNow Code Snippets</h1></header>
+        <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item border border-secondary bg-dark"><a href="index.html" class="nav-link text-light">Home</a></li>
+                <li class="nav-item border border-secondary bg-dark"><a href="initialConfig.html" class="nav-link text-light">Server Setup Instructions</a></li>
+                <li class="active nav-item border border-secondary bg-dark"><a href="#" class="active nav-link text-light" onclick="return false;">Code Snippets</a></li>
+            </ul>
+        </nav>
+        <section class="container-fluid border border-light p-md-3 text-dark" ng-app="mainModule" ng-controller="mainController">
+            <div class="card">
+                <div class="card-header"><h2>Server-Side Snippets</h2></div>
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-header"><h3>UI Actions</h3></div>
+                        <div class="card-body">
+                            <div class="card">
+                                <div class="card-header"><h4>Force to Update Set</h4></div>
+                                <div class="card-body">
+                                    With Validation:
+                                    <code>//Commit any changes to the record
+current.update();
+
+//Check to make sure the table isn&#39;t synchronized already
+var tbl = current.getTableName();
+if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl == &#39;sys_choice&#39; || current.getED().getBooleanAttribute(&#39;update_synch&#39;) || current.getED().getBooleanAttribute(&#39;update_synch_custom&#39;)){
+   gs.addErrorMessage(&#39;Updates are already being recorded for this table.&#39;);
+   action.setRedirectURL(current);  
+} else {
+   //Push the update into the current update set
+   var um = new GlideUpdateManager2();
+   um.saveRecord(current);
+
+   //Query for the current update set to display info message
+   var setID = gs.getPreference(&#39;sys_update_set&#39;);
+   var us = new GlideRecord(&#39;sys_update_set&#39;);
+   us.get(setID);
+
+   //Display info message and reload the form
+   gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
+   action.setRedirectURL(current);
+}</code>
+                                    No Validation:
+                                    <code>//Commit any changes to the record
+current.update();
+//Push the update into the current update set
+var um = new GlideUpdateManager2();
+um.saveRecord(current);
+
+//Query for the current update set to display info message
+var setID = gs.getPreference(&#39;sys_update_set&#39;);
+var us = new GlideRecord(&#39;sys_update_set&#39;);
+us.get(setID);
+
+//Display info message and reload the form
+gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
+action.setRedirectURL(current);</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="container-fluid border border-secondary p-sm-1 bg-secondary">It all ends with the footer.</footer>
+    </body>
+</html>
