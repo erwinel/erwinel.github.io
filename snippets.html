@@ -31,7 +31,7 @@
                                 <div class="card-header"><h4>Force to Update Set</h4></div>
                                 <div class="card-body">
                                     With Validation:
-                                    <code>//Commit any changes to the record
+                                    <code class="pre-scrollable text-monospace">//Commit any changes to the record
 current.update();
 
 //Check to make sure the table isn&#39;t synchronized already
@@ -54,7 +54,7 @@ if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl ==
    action.setRedirectURL(current);
 }</code>
                                     No Validation:
-                                    <code>//Commit any changes to the record
+                                    <code class="pre-scrollable text-monospace">//Commit any changes to the record
 current.update();
 //Push the update into the current update set
 var um = new GlideUpdateManager2();
