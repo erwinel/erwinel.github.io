@@ -68,31 +68,31 @@ mainModule.controller("mainController", function($scope) {
     $scope.setTopLevelCardVisible((Utility.isNil(s) || s.length == 0) ? "adminLogins" : s);
 
     $scope.repositoryBaseUrl = 'https://github.com/erwinel';
-})
-.controller("adminLoginsController", function($scope) {
+});
+mainModule.controller("adminLoginsController", function($scope) {
     setupTopLevelCardChange($scope, "adminLogins", "Add Administrative Logins");
-})
-.controller("importInitiaUpdateSetController", function($scope) {
+});
+mainModule.controller("importInitiaUpdateSetController", function($scope) {
     setupTopLevelCardChange($scope, "importInitiaUpdateSet", "Import Initial Update Set");
-})
-.controller("importUtilityAppController", function($scope) {
+});
+mainModule.controller("importUtilityAppController", function($scope) {
     setupTopLevelCardChange($scope, "importUtilityApp", "Import Utility Application");
-})
-.controller("initialConfigController", function($scope) {
+});
+mainModule.controller("initialConfigController", function($scope) {
     setupTopLevelCardChange($scope, "initialConfig", "Initial Config");
-})
-.controller("uploadLogoImageController", function($scope) {
+});
+mainModule.controller("uploadLogoImageController", function($scope) {
     setupTopLevelCardChange($scope, "uploadLogoImage", "Upload logo image");
-})
-.controller("bulkPluginActivationController", function($scope) {
+});
+mainModule.controller("bulkPluginActivationController", function($scope) {
     setupTopLevelCardChange($scope, "bulkPluginActivation", "Bulk Plugin Activation");
-})
-.controller("activeDirectoryImportController", function($scope) {
+});
+mainModule.controller("activeDirectoryImportController", function($scope) {
     setupTopLevelCardChange($scope, "activeDirectoryImport", "Configure Active Directory Import");
-})
-.controller("importPhysNetworksController", function($scope) {
+});
+mainModule.controller("importPhysNetworksController", function($scope) {
     setupTopLevelCardChange($scope, "importPhysNetworks", "Import Physical Networks Application");
-})
-.controller("serviceCatalogConfigController", function($scope) {
+});
+mainModule.controller("serviceCatalogConfigController", function($scope) {
     setupTopLevelCardChange($scope, "serviceCatalogConfig", "Import Service Catalog Update Set");
 });
