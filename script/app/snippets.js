@@ -1,5 +1,5 @@
 // Configures scope variables related to showing and hiding cards.
-function setupTopLevelCardChange($scope, name, headingText) {
+function setupTopLevelCardChange($scope, name) {
     function onTopLevelCardChanged() {
         if ($scope.currentTopLevelCard === name) {
             $scope.topLevelCardVisible = true;
@@ -11,8 +11,7 @@ function setupTopLevelCardChange($scope, name, headingText) {
             $scope.topLevelIconVerb = "Expand";
         }
     }
-    $scope.cardHeadingText = headingText;
-    $scope.cardNumber = $scope.addNotifyTopLevelCardSelect(onTopLevelCardChanged);
+    $scope.addNotifyTopLevelCardSelect(onTopLevelCardChanged);
     $scope.toggleTopLevelCardSelect = function() {
         if ($scope.currentTopLevelCard === name)
             $scope.currentTopLevelCard = "";
@@ -28,7 +27,6 @@ mainModule.controller("mainController", function($scope) {
     $scope.addNotifyTopLevelCardSelect = function(f) {
         if (typeof(f) === "function")
             notifyCardChange.push(f);
-        return notifyCardChange.length;
     };
     $scope.setTopLevelCardVisible = function(n) {
         if (n === $scope.currentTopLevelCard)
@@ -66,33 +64,25 @@ mainModule.controller("mainController", function($scope) {
 
     var s = localStorage.getItem("currentTopLevelCard");
     $scope.setTopLevelCardVisible((Utility.isNil(s) || s.length == 0) ? "adminLogins" : s);
-
-    $scope.repositoryBaseUrl = 'https://github.com/erwinel';
 })
 .controller("adminLoginsController", function($scope) {
-    setupTopLevelCardChange($scope, "adminLogins", "Add Administrative Logins");
+    setupTopLevelCardChange($scope, "adminLogins");
 })
-.controller("importInitiaUpdateSetController", function($scope) {
-    setupTopLevelCardChange($scope, "importInitiaUpdateSet", "Import Initial Update Set");
+.controller("initialConfigurationController", function($scope) {
+    setupTopLevelCardChange($scope, "initialConfiguration");
 })
-.controller("importUtilityAppController", function($scope) {
-    setupTopLevelCardChange($scope, "importUtilityApp", "Import Utility Application");
+.controller("pluginActivationController", function($scope) {
+    setupTopLevelCardChange($scope, "pluginActivation");
 })
-.controller("initialConfigController", function($scope) {
-    setupTopLevelCardChange($scope, "initialConfig", "Initial Config");
+.controller("importCustomApplicationController", function($scope) {
+    setupTopLevelCardChange($scope, "importCustomApplication");
 })
-.controller("uploadLogoImageController", function($scope) {
-    setupTopLevelCardChange($scope, "uploadLogoImage", "Upload logo image");
+.controller("applyInitialUpdateSetsController", function($scope) {
+    setupTopLevelCardChange($scope, "applyInitialUpdateSets");
 })
-.controller("bulkPluginActivationController", function($scope) {
-    setupTopLevelCardChange($scope, "bulkPluginActivation", "Bulk Plugin Activation");
+.controller("initializationScriptController", function($scope) {
+    setupInitialConfigurationCardChange($scope, "initializationScript");
 })
-.controller("activeDirectoryImportController", function($scope) {
-    setupTopLevelCardChange($scope, "activeDirectoryImport", "Configure Active Directory Import");
-})
-.controller("importPhysNetworksController", function($scope) {
-    setupTopLevelCardChange($scope, "importPhysNetworks", "Import Physical Networks Application");
-})
-.controller("serviceCatalogConfigController", function($scope) {
-    setupTopLevelCardChange($scope, "serviceCatalogConfig", "Import Service Catalog Update Set");
+.controller("createPersonalAdminAcctController", function($scope) {
+    setupInitialConfigurationCardChange($scope, "createPersonalAdminAcct");
 });

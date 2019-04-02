@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2019-04-01 17:25:46">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description/>
+<inserted/>
+<name>Initial Update Set 2019-04-01</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date>2019-04-01 17:25:23</release_date>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>d2ea72a10f603300d12eba8ce1050e90</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-04-01 17:25:45</sys_created_on>
+<sys_id>2df38be90f243300d12eba8ce1050eac</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-04-01 17:25:45</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_script_fix_c4cf8a68dbe31300e298771ebf9619a3</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_fix"&gt;&lt;sys_script_fix action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;before&gt;false&lt;/before&gt;&lt;description&gt;Bulk activation of plugins&lt;/description&gt;&lt;flush_cache&gt;false&lt;/flush_cache&gt;&lt;name&gt;Army Bulk Plugin Activation&lt;/name&gt;&lt;record_for_rollback&gt;false&lt;/record_for_rollback&gt;&lt;run_once&gt;true&lt;/run_once&gt;&lt;script&gt;&lt;![CDATA[// Array of IDs for plugins that should be activated.
+var pluginIds = [
+    "com.glide.quiz_designer",
+    "com.glide.ui.list_v3_components",
+    "com.glide.web_service_provider_v2",
+    "com.glideapp.live_feed_v2",
+    "com.glideapp.report_statreports",
+    "com.snc.automatic_assignment",
+    "com.snc.bestpractice.bulkchange",
+    "com.snc.change_management.risk_assessment",
+    "com.snc.extended_cmdb",
+    "com.snc.field_normalization",
+    "com.snc.financial_planning_pmo",
+    "com.snc.iam",
+    "com.snc.knowledge_document",
+    "com.snc.pa.configurationgenerator",
+    "com.snc.procurement",
+    "com.snc.required_form_fields",
+    "com.snc.sc_catalog_manager",
+    "com.snc.sdlc.agile.2.0",
+    "com.snc.service_portfolio.sla",
+    "com.snc.sla.contract2",
+    "com.snc.task_activity",
+    "com.snc.treemap",
+    "com.snc.undelete",
+    "com.snc.vendor_performance",
+    "com.snc.whtp"
+];
+function isQueuedPluginActivation(obj) {
+    return obj.status == "waiting";
+}
+function isFailedPluginActivation(obj) {
+    return obj.status == "failed";
+}
+var resultInfo = {
+    items: [],
+    startTime: new GlideDateTime()
+};
+try {
+    var gpm_1 = new GlidePluginManager();
+    var servletUri_1 = gs.getProperty('glide.servlet.uri');
+    resultInfo.items = pluginIds.map(function (id) {
+        var pluginGlideRecord = new GlideRecord("v_plugin");
+        pluginGlideRecord.addQuery("id", id);
+        try {
+            pluginGlideRecord.query();
+            if (pluginGlideRecord.next()) {
+                if (gpm_1.isActive(id))
+                    return {
+                        id: id,
+                        name: pluginGlideRecord.getValue("name"),
+                        status: "activated",
+                        message: "Plugin was already activated",
+                        pluginLink: servletUri_1 + pluginGlideRecord.getLink(true)
+                    };
+                return {
+                    id: id,
+                    name: pluginGlideRecord.getValue("name"),
+                    status: "waiting",
+                    pluginLink: servletUri_1 + pluginGlideRecord.getLink(true)
+                };
+            }
+            else
+                return {
+                    id: id,
+                    status: "failed",
+                    message: "Plugin with id of " + JSON.stringify(id) + " not found."
+                };
+        }
+        catch (e) {
+            var eType = e.name;
+            eType = (typeof (eType) != "string") ? "" : eType.trim();
+            if (eType.length == 0)
+                eType = "error";
+            gs.error(e);
+            gs.warn("Unexpected " + eType + " while trying to get status of plugin with id of " + JSON.stringify(id));
+            return {
+                id: id,
+                status: "failed",
+                message: "Unexpected " + eType + " while trying to get status of plugin with id of " + JSON.stringify(id) + ": " + e,
+                details: (typeof (e.stack) == "undefined" || e.stack === null) ? "" : ((typeof (e.stack) == "string") ? e.stack : e.stack + "").trim()
+            };
+        }
+    }, gpm_1);
+    var queue = resultInfo.items.filter(isQueuedPluginActivation);
+    if (queue.length &gt; 0) {
+        gs.info("Activating " + ((queue.length == 1) ? "1 plugin" : queue.length + " plugin"));
+        resultInfo.startTime = new GlideDateTime();
+        for (var index = 0; index &lt; resultInfo.items.length; index++) {
+            var pluginInfo = resultInfo.items[index];
+            if (!isQueuedPluginActivation(pluginInfo))
+                continue;
+            if (gpm_1.isActive(pluginInfo.id)) {
+                resultInfo.items[index] = {
+                    id: pluginInfo.id,
+                    name: pluginInfo.name,
+                    status: "succeeded",
+                    message: "Plugin auto-activated",
+                    pluginLink: pluginInfo.pluginLink
+                };
+                continue;
+            }
+            try {
+                var worker = new GlidePluginManagerWorker();
+                worker.setPluginId(pluginInfo.id);
+                worker.setIncludeDemoData(false);
+                worker.setProgressName("Activate " + ((typeof (pluginInfo.name) == "string" &amp;&amp; pluginInfo.name.trim().length &gt; 0) ? pluginInfo.name : pluginInfo.id));
+                worker.setBackground(false);
+                worker.start();
+                var progressId = worker.getProgressID();
+                var progressGlideRecord = new GlideRecord("sys_progress_worker");
+                progressGlideRecord.addQuery("sys_id", progressId);
+                progressGlideRecord.query();
+                if (!progressGlideRecord.next())
+                    throw new Error("Unable to find progress record " + progressId + " for " + ((typeof (pluginInfo.name) == "string" &amp;&amp; pluginInfo.name.trim().length &gt; 0) ? pluginInfo.name : pluginInfo.id));
+                var completion_code = progressGlideRecord.getValue("state");
+                gs.info("state is " + completion_code);
+                if (completion_code == "complete" || completion_code == "cancelled") {
+                    var c = progressGlideRecord.getValue("state_code");
+                    if (!gs.nil(c) &amp;&amp; c.length &gt; 0)
+                        completion_code = c;
+                }
+                var r = "";
+                var success = false;
+                switch (completion_code) {
+                    case "success":
+                        success = true;
+                        r = "Activated plugin";
+                        break;
+                    case "complete":
+                        success = true;
+                        r = "Activation completed for plugin";
+                        break;
+                    case "cancelled":
+                        r = "Activated cancelled for";
+                        break;
+                    case "error":
+                        r = "Error activating plugin";
+                        break;
+                    default:
+                        r = "Unexpected result { Code: " + completion_code + "; ProgressID: " + progressId + "} while activating plugin";
+                        break;
+                }
+                var msg = progressGlideRecord.getValue("message");
+                msg = (typeof (msg) === "string") ? msg.trim() : "";
+                if (success)
+                    resultInfo.items[index] = {
+                        id: pluginInfo.id,
+                        name: pluginInfo.name,
+                        status: "succeeded",
+                        completion_code: completion_code,
+                        progressId: progressId,
+                        message: r,
+                        details: msg,
+                        pluginLink: pluginInfo.pluginLink,
+                        progressLink: servletUri_1 + progressGlideRecord.getLink(true)
+                    };
+                else {
+                    var e = progressGlideRecord.getValue("error_message");
+                    e = (typeof (e) === "string") ? e.trim() : "";
+                    if (msg.length == 0)
+                        msg = e;
+                    else if (e.length &gt; 0 &amp;&amp; e != msg)
+                        msg += " (" + e + ")";
+                    resultInfo.items[index] = {
+                        id: pluginInfo.id,
+                        name: pluginInfo.name,
+                        status: "failed",
+                        message: r,
+                        details: msg,
+                        pluginLink: pluginInfo.pluginLink,
+                        progressLink: servletUri_1 + progressGlideRecord.getLink(true)
+                    };
+                }
+            }
+            catch (err) {
+                var eType = err.name;
+                eType = (typeof (eType) != "string") ? "" : eType.trim();
+                if (eType.length == 0)
+                    eType = "error";
+                gs.error(err);
+                gs.warn("Unexpected " + eType + " while trying to activate plugin with id of " + JSON.stringify(pluginInfo.id));
+                resultInfo.items[index] = {
+                    id: pluginInfo.id,
+                    name: pluginInfo.name,
+                    status: "failed",
+                    pluginLink: pluginInfo.pluginLink,
+                    message: "Unexpected " + eType + " while trying to activate plugin with id of " + JSON.stringify(pluginInfo.id) + ": " + err,
+                    details: (typeof (err.stack) == "undefined" || err.stack === null) ? "" : ((typeof (err.stack) == "string") ? err.stack : err.stack + "").trim()
+                };
+            }
+        }
+    }
+}
+catch (unhandledErr) {
+    var eType = unhandledErr.name;
+    eType = (typeof (eType) != "string") ? "" : eType.trim();
+    if (eType.length == 0)
+        eType = "error";
+    gs.error(unhandledErr);
+    gs.warn("Unhandled " + eType + "in script");
+    resultInfo.items.push({
+        id: "",
+        name: "",
+        status: "failed",
+        message: "Unhandled " + eType + "in script: " + unhandledErr,
+        details: (typeof (unhandledErr.stack) == "undefined" || unhandledErr.stack === null) ? "" : ((typeof (unhandledErr.stack) == "string") ? unhandledErr.stack : unhandledErr.stack + "").trim()
+    });
+}
+finally {
+    var failed = resultInfo.items.filter(isFailedPluginActivation);
+    var incomplete = resultInfo.items.filter(isQueuedPluginActivation);
+    if (incomplete.length &gt; 0) {
+        gs.warn("Alloted Activation Timeframe Expired");
+        if (failed.length == 1)
+            gs.error("1 error has occurred");
+        else if (failed.length &gt; 1)
+            gs.error(failed.length + " errors have occurred");
+        gs.warn("Not all activation attempts completed before alotted timespan elapsed. Execute background script again to activate the remaining " +
+            ((incomplete.length == 1) ? "plugin" : incomplete.length + " plugins"));
+    }
+    else if (failed.length &gt; 0) {
+        gs.error("Activation Attempts Completed");
+        if (failed.length == 1)
+            gs.error("1 error has occurred");
+        else if (failed.length &gt; 1)
+            gs.error(failed.length + " errors have occurred");
+    }
+    else
+        gs.error("Activations Completed");
+    for (var index = 0; index &lt; resultInfo.items.length; index++) {
+        var pluginInfo = resultInfo.items[index];
+        var messageText = (typeof (pluginInfo.name) == "string" &amp;&amp; pluginInfo.name.trim().length &gt; 0 &amp;&amp; pluginInfo.name != pluginInfo.id) ?
+            pluginInfo.name + " (" + pluginInfo.id + ")&lt;/em&gt;" : pluginInfo.id;
+        if (typeof (pluginInfo.pluginLink) == "string" &amp;&amp; pluginInfo.pluginLink.trim().length &gt; 0)
+            messageText += " [" + pluginInfo.pluginLink + "]";
+        var detailsCode = "";
+        var level = 1;
+        if (isQueuedPluginActivation(pluginInfo))
+            messageText += " Not Activated";
+        else {
+            if (isFailedPluginActivation(pluginInfo)) {
+                level = 2;
+                messageText += " Failed";
+            }
+            else {
+                level = 0;
+                messageText += " Activated";
+            }
+            if (typeof (pluginInfo.completion_code) == "string" &amp;&amp; pluginInfo.completion_code.length &gt; 0)
+                messageText += "; Code: " + pluginInfo.completion_code;
+            if (typeof (pluginInfo.message) == "string" &amp;&amp; pluginInfo.message.trim().length &gt; 0)
+                messageText += "; Message: " + pluginInfo.message;
+            if (typeof (pluginInfo.details) == "string" &amp;&amp; pluginInfo.details.trim().length &gt; 0)
+                detailsCode = pluginInfo.details;
+        }
+        if (level == 0)
+            gs.info(messageText);
+        else if (level == 1)
+            gs.warn(messageText);
+        else
+            gs.error(messageText);
+        if (detailsCode.length &gt; 0) {
+            if (level == 0)
+                gs.info(detailsCode);
+            else if (level == 1)
+                gs.warn(detailsCode);
+            else
+                gs.error(detailsCode);
+        }
+    }
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_fix&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2018-07-23 21:50:32&lt;/sys_created_on&gt;&lt;sys_id&gt;c4cf8a68dbe31300e298771ebf9619a3&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name&gt;Army Bulk Plugin Activation&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_fix_c4cf8a68dbe31300e298771ebf9619a3&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-04-01 16:45:58&lt;/sys_updated_on&gt;&lt;unloadable&gt;false&lt;/unloadable&gt;&lt;/sys_script_fix&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1982158398</payload_hash>
+<remote_update_set display_value="Initial Update Set 2019-04-01">2df38be90f243300d12eba8ce1050eac</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-04-01 17:25:45</sys_created_on>
+<sys_id>61f38be90f243300d12eba8ce1050ead</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>169d9cb136a0000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-04-01 17:25:45</sys_updated_on>
+<table/>
+<target_name>Army Bulk Plugin Activation</target_name>
+<type>Fix Script</type>
+<update_domain>global</update_domain>
+<update_guid>b2da32a1cf6033007a0303ee9aedbbbe</update_guid>
+<update_guid_history>b2da32a1cf6033007a0303ee9aedbbbe:1982158398,182de29b4ad42300db5865019bd6e3d0:-357706379,182de29b4ad42300db5865019bd6e3d0:-357706379,3fff4a2499e31300699efda057f3dd38:1705416391,9fef8a6871e3130034d294e60bc142a6:1743905096</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>

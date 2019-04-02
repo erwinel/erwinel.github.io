@@ -30,7 +30,9 @@
                             <div class="card">
                                 <div class="card-header"><h4>Force to Update Set</h4></div>
                                 <div class="card-body">
-                                    With Validation:
+                                    <h5>With Validation</h5>
+                                    <bold>Condition:</bold><code>hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code>
+                                    <br/><bold>Script:</bold>
                                     <code><pre class="pre-scrollable text-monospace">//Commit any changes to the record
 current.update();
 
@@ -53,7 +55,9 @@ if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl ==
    gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
    action.setRedirectURL(current);
 }</pre></code>
-                                    No Validation:
+                                    <h5>No Validation</h5>
+                                    <bold>Condition:</bold><code>hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code>
+                                    <br/><bold>Script:</bold>
                                     <code><pre class="pre-scrollable text-monospace">//Commit any changes to the record
 current.update();
 //Push the update into the current update set
