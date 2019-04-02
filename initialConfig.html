@@ -15,12 +15,6 @@
         <script type="text/javascript" src="script/Utility.js"></script>
         <script type="text/javascript" src="script/ColorInfo.js"></script>
         <script type="text/javascript" src="script/app/initialConfig.js"></script>
-        <script type="text/javascript">
-var defaultSettings = {
-    snServerUrl: 'https://dev30744.service-now.com',
-    gitServerUrl: 'https://github.com/erwinel/SN_CustomSettings'
-};
-        </script>
     </head>
     <body>
         <header class="container-fluid border border-secondary p-sm-1"><h1>Initial Configuration Instructions</h1></header>
@@ -123,7 +117,7 @@ var defaultSettings = {
                                 <li>Navigate to
                                     <samp>System Properties</samp> &rArr;
                                     <samp>Basic Configuration</samp>. If you are in the &quot;Util&quot; application scope, you will see the following message:
-                                    <img src="assets/images/initialConfig/globalApplicationWarning.png" alt="Example of application selection dialog" class="figure-img img-fluid rounded" />
+                                    <img src="images/initialConfig/globalApplicationWarning.png" alt="Example of application selection dialog" class="figure-img img-fluid rounded" />
                                     This is intentional. It is important to ensure you are in the &quot;Util&quot; application scope, otherwise the
                                     next change will not be saved.
                                 </li>
@@ -142,8 +136,8 @@ var defaultSettings = {
                                     you chose to let it run in the foreground, the logged output that occurred during script execution will be displayed
                                     when it is finished. At the bottom of the output, you should see a line that indicates it has succeeded.
                                     <br />
-                                    <button (click)="openFigure('Example of completed fix script', 'assets/images/initialConfig/initialArmyConfigSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
-                                        <img src="assets/images/initialConfig/initialArmyConfigSuccess_sm.png" alt="Click to view example of completed fix script" class="figure-img img-fluid rounded" />
+                                    <button (click)="openFigure('Example of completed fix script', 'images/initialConfig/initialArmyConfigSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
+                                        <img src="images/initialConfig/initialArmyConfigSuccess_sm.png" alt="Click to view example of completed fix script" class="figure-img img-fluid rounded" />
                                     </button> Refresh the browser page to see the applied color scheme.
                                 </li>
                             </ol>
@@ -171,42 +165,42 @@ var defaultSettings = {
                             </li>
                             <li>Scroll to the &quot;Banner Image&quot; property and click on the
                                 <samp>+</samp> icon to upload the banner image.
-                                <button (click)="openFigure('Example of banner image setting', 'assets/images/initialConfig/bannerImageSetting_lg.png')"
+                                <button (click)="openFigure('Example of banner image setting', 'images/initialConfig/bannerImageSetting_lg.png')"
                                     class="btn btn-outline-primary mb-2 mr-2">
-                                    <img src="assets/images/initialConfig/bannerImageSetting_sm.png" alt="Click to view example of banner image setting" class="figure-img img-fluid rounded" />
+                                    <img src="images/initialConfig/bannerImageSetting_sm.png" alt="Click to view example of banner image setting" class="figure-img img-fluid rounded" />
                                 </button>
                             </li>
                             <li>Upload the logo image corresponding to the SDLC stage you previously configured. You can download an image from one
                                 of the following links:
                                 <ul>
                                     <li>
-                                        <a href="assets/downloads/Logo/logo_army_prod.png">
-                                            <img src="assets/downloads/Logo/logo_army_prod.png" alt="Production Banner Logo" class="figure-img img-fluid rounded" /> Production
+                                        <a href="downloads/Logo/logo_army_prod.png">
+                                            <img src="downloads/Logo/logo_army_prod.png" alt="Production Banner Logo" class="figure-img img-fluid rounded" /> Production
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="assets/downloads/Logo/logo_army_uat.png">
-                                            <img src="assets/downloads/Logo/logo_army_uat.png" alt="UAT Banner Logo" class="figure-img img-fluid rounded" /> UAT
+                                        <a href="downloads/Logo/logo_army_uat.png">
+                                            <img src="downloads/Logo/logo_army_uat.png" alt="UAT Banner Logo" class="figure-img img-fluid rounded" /> UAT
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="assets/downloads/Logo/logo_army_test.png">
-                                            <img src="assets/downloads/Logo/logo_army_test.png" alt="Test Banner Logo" class="figure-img img-fluid rounded" /> Test
+                                        <a href="downloads/Logo/logo_army_test.png">
+                                            <img src="downloads/Logo/logo_army_test.png" alt="Test Banner Logo" class="figure-img img-fluid rounded" /> Test
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="assets/downloads/Logo/logo_army_dev.png">
-                                            <img src="assets/downloads/Logo/logo_army_dev.png" alt="Dev Banner Logo" class="figure-img img-fluid rounded" /> Dev
+                                        <a href="downloads/Logo/logo_army_dev.png">
+                                            <img src="downloads/Logo/logo_army_dev.png" alt="Dev Banner Logo" class="figure-img img-fluid rounded" /> Dev
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="assets/downloads/Logo/logo_army_sb.png">
-                                            <img src="assets/downloads/Logo/logo_army_sb.png" alt="Sandbox Banner Logo" class="figure-img img-fluid rounded" /> Sandbox
+                                        <a href="downloads/Logo/logo_army_sb.png">
+                                            <img src="downloads/Logo/logo_army_sb.png" alt="Sandbox Banner Logo" class="figure-img img-fluid rounded" /> Sandbox
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="assets/downloads/Logo/logo_service-now.png">
-                                            <img src="assets/downloads/Logo/logo_service-now.png" alt="OOTB Banner Logo" class="figure-img img-fluid rounded" /> Out-of-the-box
+                                        <a href="downloads/Logo/logo_service-now.png">
+                                            <img src="downloads/Logo/logo_service-now.png" alt="OOTB Banner Logo" class="figure-img img-fluid rounded" /> Out-of-the-box
                                         </a>
                                     </li>
                                 </ul>
