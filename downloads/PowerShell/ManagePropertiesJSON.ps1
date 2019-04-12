@@ -503,248 +503,7 @@ Function Move-Color {
     }
 }
 
-Function Merge-Color {
-    [CmdletBinding(DefaultParameterSetName = 'Alpha')]
-    Param(
-      [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-      [System.Drawing.Color[]]$InputColor
-    )
-    
-    Begin { [float[]]$Hue = @(); $Saturation = $Brightness = $Alpha = 0.0; $Count = 0 }
-    
-    Process {
-        $Count += $InputColor.Length;
-        $InputColor | ForEach-Object {
-            $Hue += @($_.GetHue());
-            $Saturation += [double]($_.GetSaturation());
-            $Brightness += [double]($_.GetBrightness());
-            $Alpha += [double]($_.A) / 255.0;
-        }
-    }
 
-    End {
-        if ($Hue.Count -eq 1) {
-            New-Color -Hue $Hue[0] -Saturation $Saturation -Brightness $Brightness -Alpha $Alpha;
-        } else {
-            $h = $RightHue = $LeftHue = [double]($Hue[0]);
-            ($Hue | Select-Object -Skip 1) | ForEach-Object {
-                [double]$d = $_;
-                if ($h -lt 
-                $diff = [Math]::Abs($RightHue - $d);
-                if ($diff -gt 180.0) {
-                    $diff = 360.0 - $diff;
-
-                } else {
-                }
-
-                @(
-                    @{ X = 0; Y = 90; Z = 45; E1 = 45; E2 = 45 },
-                    @{ X = 90; Y = 0; Z = 45; E1 = 45; E2 = 45 },
-                    @{ X = 45; Y = 135; Z = 90; E1 = 90; E2 = 90 },
-                    @{ X = 135; Y = 45; Z = 90; E1 = 90; E2 = 90 },
-                    @{ X = 90; Y = 180; Z = 135; E1 = 315; E2 = 135 },
-                    @{ X = 180; Y = 90; Z = 135; E1 = 315; E2 = 135 },
-                    @{ X = 135; Y = 225; Z = 180; E1 = 0; E2 = 180 },
-                    @{ X = 225; Y = 135; Z = 180; E1 = 0; E2 = 180 },
-                    @{ X = 180; Y = 270; Z = 225; E1 = 225; E2 = 225 },
-                    @{ X = 270; Y = 180; Z = 225; E1 = 225; E2 = 225 },
-                    @{ X = 225; Y = 315; Z = 270; E1 = 270; E2 = 270 },
-                    @{ X = 315; Y = 225; Z = 270; E1 = 270; E2 = 270 },
-                    @{ X = 0; Y = 90; Z = 180; E1 = 45; E2 = -30 },
-                    @{ X = 90; Y = 0; Z = 180; E1 = 45; E2 = -30 },
-                    @{ X = 0; Y = 180; Z = 90; E1 = 180; E2 = -30 },
-                    @{ X = 180; Y = 0; Z = 90; E1 = 180; E2 = -30 },
-                    @{ X = 90; Y = 180; Z = 0; E1 = 315; E2 = -30 },
-                    @{ X = 180; Y = 90; Z = 0; E1 = 315; E2 = -30 },
-                    @{ X = 45; Y = 135; Z = 225; E1 = 90; E2 = 15 },
-                    @{ X = 135; Y = 45; Z = 225; E1 = 90; E2 = 15 },
-                    @{ X = 45; Y = 225; Z = 135; E1 = 225; E2 = 15 },
-                    @{ X = 225; Y = 45; Z = 135; E1 = 225; E2 = 15 },
-                    @{ X = 135; Y = 225; Z = 45; E1 = 0; E2 = 15 },
-                    @{ X = 225; Y = 135; Z = 45; E1 = 0; E2 = 15 },
-                    @{ X = 90; Y = 180; Z = 270; E1 = 315; E2 = 300 },
-                    @{ X = 180; Y = 90; Z = 270; E1 = 315; E2 = 300 },
-                    @{ X = 90; Y = 270; Z = 180; E1 = 270; E2 = 300 },
-                    @{ X = 270; Y = 90; Z = 180; E1 = 270; E2 = 300 },
-                    @{ X = 180; Y = 270; Z = 90; E1 = 225; E2 = 300 },
-                    @{ X = 270; Y = 180; Z = 90; E1 = 225; E2 = 300 },
-                    @{ X = 135; Y = 225; Z = 315; E1 = 0; E2 = 345 },
-                    @{ X = 225; Y = 135; Z = 315; E1 = 0; E2 = 345 },
-                    @{ X = 135; Y = 315; Z = 225; E1 = 315; E2 = 345 },
-                    @{ X = 315; Y = 135; Z = 225; E1 = 315; E2 = 345 },
-                    @{ X = 225; Y = 315; Z = 135; E1 = 270; E2 = 345 },
-                    @{ X = 315; Y = 225; Z = 135; E1 = 270; E2 = 345 },
-                    @{ X = 0; Y = 50; Z = 40; E1 = 25; E2 = 30 },
-                    @{ X = 0; Y = 40; Z = 50; E1 = 20; E2 = 30 },
-                    @{ X = 40; Y = 50; Z = 0; E1 = 45; E2 = 30 },
-                    @{ X = 50; Y = 40; Z = 0; E1 = 45; E2 = 30 },
-                    @{ X = 0; Y = 120; Z = 270; E1 = 60; E2 = 10 },
-                    @{ X = 0; Y = 270; Z = 120; E1 = 315; E2 = 10 },
-                    @{ X = 270; Y = 120; Z = 0; E1 = 15; E2 = 10 },
-                    @{ X = 120; Y = 270; Z = 0; E1 = 15; E2 = 10 },
-                    @{ X = 0; Y = 50; Z = 40; E1 = 25; E2 = 30 },
-                    @{ X = 0; Y = 40; Z = 50; E1 = 20; E2 = 30 },
-                    @{ X = 40; Y = 50; Z = 0; E1 = 45; E2 = 30 },
-                    @{ X = 50; Y = 40; Z = 0; E1 = 45; E2 = 30 },
-                    @{ X = 0; Y = 120; Z = 270; E1 = 60; E2 = 10 },
-                    @{ X = 0; Y = 270; Z = 120; E1 = 315; E2 = 10 },
-                    @{ X = 270; Y = 120; Z = 0; E1 = 15; E2 = 10 },
-                    @{ X = 120; Y = 270; Z = 0; E1 = 15; E2 = 10 },
-                    @{ X = 45; Y = 95; Z = 85; E1 = 70; E2 = 75 },
-                    @{ X = 315; Y = 5; Z = 355; E1 = 340; E2 = 345 },
-                    @{ X = 180; Y = 5; Z = -5; E1 = 272.5; E2 = -60 },
-                    @{ X = 45; Y = 85; Z = 95; E1 = 65; E2 = 75 },
-                    @{ X = 315; Y = 355; Z = 5; E1 = 335; E2 = 345 },
-                    @{ X = 180; Y = -5; Z = 5; E1 = 267.5; E2 = -60 },
-                    @{ X = 85; Y = 95; Z = 45; E1 = 90; E2 = 75 },
-                    @{ X = 355; Y = 5; Z = 315; E1 = 0; E2 = 345 },
-                    @{ X = 220; Y = 5; Z = -45; E1 = 292.5; E2 = -60 },
-                    @{ X = 95; Y = 85; Z = 45; E1 = 90; E2 = 75 },
-                    @{ X = 5; Y = 355; Z = 315; E1 = 0; E2 = 345 },
-                    @{ X = 230; Y = -5; Z = -45; E1 = 292.5; E2 = -60 },
-                    @{ X = 45; Y = 165; Z = 315; E1 = 105; E2 = 55 },
-                    @{ X = 315; Y = 75; Z = 225; E1 = 15; E2 = 325 },
-                    @{ X = 180; Y = 75; Z = 225; E1 = 307.5; E2 = 160 },
-                    @{ X = 45; Y = 315; Z = 165; E1 = 0; E2 = 55 },
-                    @{ X = 315; Y = 225; Z = 75; E1 = 270; E2 = 325 },
-                    @{ X = 180; Y = 225; Z = 75; E1 = 202.5; E2 = 160 },
-                    @{ X = 315; Y = 165; Z = 45; E1 = 60; E2 = 55 },
-                    @{ X = 225; Y = 75; Z = 315; E1 = 330; E2 = 325 },
-                    @{ X = 90; Y = 75; Z = -45; E1 = 82.5; E2 = 40 },
-                    @{ X = 165; Y = 315; Z = 45; E1 = 60; E2 = 55 },
-                    @{ X = 75; Y = 225; Z = 315; E1 = 330; E2 = 325 },
-                    @{ X = 300; Y = 225; Z = -45; E1 = 262.5; E2 = 280 },
-                    @{ X = 0; Y = 50; Z = 40; E1 = 25; E2 = 30 },
-                    @{ X = 45; Y = 95; Z = 85; E1 = 70; E2 = 75 },
-                    @{ X = 315; Y = 5; Z = 355; E1 = 340; E2 = 345 },
-                    @{ X = 180; Y = 230; Z = 220; E1 = 205; E2 = 210 },
-                    @{ X = 0; Y = 40; Z = 50; E1 = 20; E2 = 30 },
-                    @{ X = 45; Y = 85; Z = 95; E1 = 65; E2 = 75 },
-                    @{ X = 315; Y = 355; Z = 5; E1 = 335; E2 = 345 },
-                    @{ X = 180; Y = 220; Z = 230; E1 = 200; E2 = 210 },
-                    @{ X = 50; Y = 0; Z = 40; E1 = 25; E2 = 30 },
-                    @{ X = 95; Y = 45; Z = 85; E1 = 70; E2 = 75 },
-                    @{ X = 5; Y = 315; Z = 355; E1 = 340; E2 = 345 },
-                    @{ X = 230; Y = 180; Z = 220; E1 = 205; E2 = 210 },
-                    @{ X = 40; Y = 50; Z = 0; E1 = 45; E2 = 30 },
-                    @{ X = 85; Y = 95; Z = 45; E1 = 90; E2 = 75 },
-                    @{ X = 355; Y = 5; Z = 315; E1 = 0; E2 = 345 },
-                    @{ X = 220; Y = 230; Z = 180; E1 = 225; E2 = 210 },
-                    @{ X = 0; Y = 120; Z = 270; E1 = 60; E2 = 10 },
-                    @{ X = 45; Y = 165; Z = 315; E1 = 105; E2 = 55 },
-                    @{ X = 315; Y = 75; Z = 225; E1 = 15; E2 = 325 },
-                    @{ X = 180; Y = 300; Z = 90; E1 = 240; E2 = 310 },
-                    @{ X = 0; Y = 270; Z = 120; E1 = 315; E2 = 10 },
-                    @{ X = 45; Y = 315; Z = 165; E1 = 0; E2 = 55 },
-                    @{ X = 315; Y = 225; Z = 75; E1 = 270; E2 = 325 },
-                    @{ X = 180; Y = 90; Z = 300; E1 = 315; E2 = 310 },
-                    @{ X = 120; Y = 0; Z = 270; E1 = 60; E2 = 10 },
-                    @{ X = 165; Y = 45; Z = 315; E1 = 105; E2 = 55 },
-                    @{ X = 75; Y = 315; Z = 225; E1 = 15; E2 = 325 },
-                    @{ X = 300; Y = 180; Z = 90; E1 = 240; E2 = 310 },
-                    @{ X = 270; Y = 120; Z = 0; E1 = 15; E2 = 10 },
-                    @{ X = 315; Y = 165; Z = 45; E1 = 60; E2 = 55 },
-                    @{ X = 225; Y = 75; Z = 315; E1 = 330; E2 = 325 },
-                    @{ X = 90; Y = 300; Z = 180; E1 = 15; E2 = 310 }
-                ) | ForEach-Object {
-                    [float]$x = $_.X;
-                    [float]$y = $_.Y;
-                    [float]$z = $_.Z;
-                    $x = 0.0; $y = 315.0; $z = 045.0;
-                    ($v1, $v2, $v3) = @($x, $y, $z) | Sort-Object;
-                    $e2 = 0;
-                    if (($v3 - $v1) -lt 180 -or ($v2 - $v1) -le ($v3 - $v2)) {
-                        ($v1 + $v2 + $v3) / 3.0;
-                    } else {
-                        ($v1 + $v2 + $v3 + 360.0) / 3.0
-                    }
-
-                    $e1 = ($x + $y) / 2.0;
-                    $x = 315; $y = 45
-                    if ($x -gt 180.0) {
-                        if ($y -lt 180.0) {
-                            $e1 = ($x + $y) / 2.0;
-                        }
-                    } else {
-                        if ($y -gt 180) {
-                            $e1 = ((360.0 - $y) + $x) / 2.0;
-                        } else {
-                            $e1 = ($x + $y) / 2.0;
-                        }
-                    }
-                    $diff = [Math]::Abs($x - $y);
-                    if ($diff -gt 180.0) { $diff = 360 - 180 }
-                    if ($x -lt $y) {
-                        if (($e1 - $x) -ne $diff) {
-                            "Expected Diff ($x, $y): $($e1 - $x); Actual: $diff";
-                        }
-                    } else {
-                        if (($e1 - $y) -ne $diff) {
-                            "Expected Diff ($x, $y): $($e1 - $y); Actual: $diff";
-                        }
-                    }
-                }
-                (360-315)+5
-                <#
-                          0
-                      315   045
-                    270       090
-                      225   135
-                         180
-                #>
-                <#
-                Expected AVG(180, 0): 270; Actual 90
-                Expected AVG(225, 45): 315; Actual 135
-                Expected AVG(270, 90): 0; Actual 180
-                Expected AVG(315, 135): 45; Actual 225
-                Expected AVG(270, 0): 315; Actual 135
-                Expected AVG(315, 45): 0; Actual 180
-
-                    @{ X = 0; Y = 90; Z = 180; E1 = 45; E2 = 90 },
-                    @{ X = 45; Y = 135; Z = 225; E1 = 90; E2 = 135 },
-                    @{ X = 315; Y = 45; Z = 135; E1 = 0; E2 = 45 },
-                    @{ X = 0; Y = 180; Z = ; E1 = 270 },
-                    @{ X = 45; Y = 225; E1 = 315 },
-                    @{ X = 90; Y = 270; E1 = 0 },
-                    @{ X = 0; Y = 40; E1 = 20 },
-                    0, 45, 90, 135, 180, 225, 270, 315, 0, 45, 90, 135, 180, 225, 270, 315, 0, 45, 90, 135, 180, 225, 270, 315, 0
-
-
-                    X = 0; Y = 180; Z = 90; AVG(0, 180) = 90; AVG(0, 180, 90) = 90
-                    X = 45; Y = 225; Z = 135; AVG(45, 225) = 135; AVG(45, 225, 135) = 135
-                    X = 90; Y = 270; Z = 180; AVG(90, 270) = 180; AVG(90, 270, 180) = 180
-                    X = 135; Y = 315; Z = 225; AVG(135, 315) = 225; AVG(135, 315, 225) = 225
-                    X = 180; Y = 0; Z = 270; AVG(180, 0) = 270; AVG(180, 0, 270) = 270
-                    X = 225; Y = 45; Z = 315; AVG(225, 45) = 315; AVG(225, 45, 315) = 315
-                    X = 270; Y = 90; Z = 0; AVG(270, 90) = 0; AVG(270, 90, 0) = 0
-                    X = 315; Y = 135; Z = 45; AVG(315, 135) = 45; AVG(315, 135, 45) = 45
-                    X = 0; Y = 90; Z = 45; AVG(0, 90) = 45; AVG(0, 90, 45) = 45
-                    X = 45; Y = 135; Z = 90; AVG(45, 135) = 90; AVG(45, 135, 90) = 90
-                    X = 90; Y = 180; Z = 135; AVG(90, 180) = 135; AVG(90, 180, 135) = 135
-                    X = 135; Y = 225; Z = 180; AVG(135, 225) = 180; AVG(135, 225, 180) = 180
-                    X = 180; Y = 270; Z = 225; AVG(180, 270) = 225; AVG(180, 270, 225) = 225
-                    X = 225; Y = 315; Z = 270; AVG(225, 315) = 270; AVG(225, 315, 270) = 270
-                    X = 270; Y = 0; Z = 315; AVG(270, 0) = 315; AVG(270, 0, 315) = 315
-                    X = 315; Y = 45; Z = 0; AVG(315, 45) = 0; AVG(315, 45, 0) = 0
-                    X = 0; Y = 40; Z = 50; AVG(0, 40) = 20; AVG(0, 40, 50) = 30
-                    X = 45; Y = 85; Z = 95; AVG(45, 85) = 65; AVG(45, 85, 95) = 75
-                    X = 90; Y = 130; Z = 140; AVG(90, 130) = 110; AVG(90, 130, 140) = 120
-                    X = 135; Y = 175; Z = 185; AVG(135, 175) = 155; AVG(135, 175, 185) = 165
-                    X = 180; Y = 220; Z = 230; AVG(180, 220) = 200; AVG(180, 220, 230) = 210
-                    X = 225; Y = 265; Z = 275; AVG(225, 265) = 245; AVG(225, 265, 275) = 255
-                    X = 270; Y = 310; Z = 320; AVG(270, 310) = 290; AVG(270, 310, 320) = 300
-                    X = 315; Y = 355; Z = 5; AVG(315, 355) = 335; AVG(315, 355, 5) = 345
-
-                #>
-                if ($d -lt $MinHue) {
-                    $diffMin = $MaxHue - $d;
-                } else {
-                    $diffMin = $d - $MaxHue;
-                }
-            }
-        }
-    }
-}
 $JsonText = @'
 [
 	{ name: "glide.sys.default.tz", type: "timezone", description: "System timezone for all users unless overridden in the user\u0027s record", sys_package: "glidesoft",
@@ -790,136 +549,198 @@ $JsonText = @'
 ]
 '@;
 
-@(&{
-    $t = @([System.Collections.Generic.IEnumerator[System.Collections.Generic.KeyValuePair`2]], [System.Collections.IDictionaryEnumerator], [System.Collections.Generic.IEnumerator`1]);
-    $t += @($t | ForEach-Object { $_.GetInterfaces() } | Select-Object -Unique);
-    ($t | ForEach-Object { $_.GetProperties() } | Sort-Object -Property 'Name') | ForEach-Object {
-        if ($_.CanRead) {
-            if ($_.CanWrite) {
-                "$($_.PropertyType) $($_.DeclaringType).$($_.Name) {"
-                if ($_.CanRead) { "    get { throw new NotImplementedException(); }" }
-                if ($_.CanWrite) { "    set { throw new NotImplementedException(); }" }
-                "}";
-            } else {
-                "$($_.PropertyType) $($_.DeclaringType).$($_.Name) { get { throw new NotImplementedException(); } }";
-            }
-        } else {
-            "$($_.PropertyType) $($_.DeclaringType).$($_.Name) { set { throw new NotImplementedException(); } }";
-        }
-    }
-    ($t | ForEach-Object { $_.GetMethods() } | Sort-Object -Property 'Name') | ForEach-Object {
-        if (-not $_.IsSpecialName) {
-            if (([System.Reflection.MethodInfo]$_).IsGenericMethod) {
-                "$($_.ReturnType) $($_.DeclaringType).$($_.Name)<$((([System.Reflection.MethodInfo]$_).GetGenericArguments() | ForEach-Object { $_.ToString() }) -join ',')>($(($_.GetParameters() | ForEach-Object { $_.ToString() }) -join ', ')) { throw new NotImplementedException(); }";
-            } else {
-                "$($_.ReturnType) $($_.DeclaringType).$($_.Name)($(($_.GetParameters() | ForEach-Object { $_.ToString() }) -join ', ')) { throw new NotImplementedException(); }";
-            }
-        }
-    }
-}) | ForEach-Object { $_.Replace('[TKey,TValue]', '<TKey,TValue>').Replace('[TKey]', '<TValue>').Replace('[TValue]', '<TValue>').Replace('[System.Object]', '<object>').Replace('System.Collections.Generic.', '').Replace('System.Collections.', '').Replace('System.Object', 'object').Replace('System.Int32', 'int').Replace('System.Boolean', 'bool').Replace('System.', '').Replace('[KeyValuePair<TKey,TValue>]', '<KeyValuePair<TKey,TValue>>').Replace('`1', '').Replace('`2', '') }
-# | ForEach-Object { $_.Replace('[T]', '<T>').Replace('[System.Object]', '<object>').Replace('System.Collections.Generic.', '').Replace('System.Collections.', '').Replace('System.Object', 'object').Replace('System.Int32', 'int').Replace('System.Boolean', 'bool').Replace('System.', '').Replace('`1', '') }
-# | ForEach-Object { $_.Replace('[TKey,TValue]', '<TKey,TValue>').Replace('[TKey]', '<TValue>').Replace('[TValue]', '<TValue>').Replace('[System.Object]', '<object>').Replace('System.Collections.Generic.', '').Replace('System.Collections.', '').Replace('System.Object', 'object').Replace('System.Int32', 'int').Replace('System.Boolean', 'bool').Replace('System.', '').Replace('[KeyValuePair<TKey,TValue>]', '<KeyValuePair<TKey,TValue>>').Replace('`1', '').Replace('`2', '') }
-
-[System.Threading.Monitor]
 Add-Type -AssemblyName 'System.Web' -ErrorAction Stop;
 Add-Type -AssemblyName 'System.Web.Abstractions' -ErrorAction Stop;
 Add-Type -AssemblyName 'System.Web.Extensions' -ErrorAction Stop;
 
-$InputText = Read-Host -Prompt 'Enter ServiceNow URL (blank to skip out-of-the-box value validation)';
-$XmlDocument = $null;
-if (-not [string]::IsNullOrWhiteSpace($InputText)) {
-    $Uri = $null;
-    if (-not [Uri]::TryCreate($InputText.Trim(), [UriKind]::Absolute, [ref]$Uri)) {
-        Write-Warning -Message 'Aborting: Invalid URI';
-        return;
-    }
-    $UriBuilder = New-Object -TypeName 'System.UriBuilder' -ArgumentList $Uri;
-    $UriBuilder.Path = '/sys_properties_list.do';
-    $UriBuilder.Query = 'sysparm_query=type%3Dcolor%5EORnameLIKEcolor%5EORnameSTARTSWITHglide.product.&XML';
-    $UriBuilder.Fragment = '';
-    (
-        'Using a web browser, download the XML from the following URL:',
-        "`t$($UriBuilder.Uri.AbsoluteUri)"
-    ) | Write-Host;
-    $InputText = Read-Host -Prompt 'Path to downloaded XML';
-    if ([string]::IsNullOrWhiteSpace($InputText)) {
-        Write-Warning -Message 'Aborting: Path not provided.';
-        return;
-    }
-    if (-not ($InputText | Test-Path -PathType Leaf)) {
-        Write-Warning -Message 'Aborting: File not found.';
-        return;
-    }
-    $XmlDocument = New-Object -TypeName 'System.Xml.XmlDocument';
-    $XmlDocument.Load($InputText);
-    if ($null -eq $XmlDocument.DocumentElement) {
-        Write-Warning -Message 'Aborting: Failed to load XML data.';
-        return;
-    }
-}
-
 $JavaScriptSerializer = New-Object -TypeName 'System.Web.Script.Serialization.JavaScriptSerializer';
 
 [System.Collections.ObjectModel.Collection[System.Collections.Generic.Dictionary`2[System.String,System.Object]]]$SettingsValues = $JavaScriptSerializer.DeserializeObject($JsonText);
-$Path = $PSScriptRoot | Join-Path -ChildPath 'sys_properties_config.json';
-
-if ($null -ne $XmlDocument) {
-    for ($SettingIndex = 0; $SettingIndex -lt $SettingsValues.Count; $SettingIndex++) {
-        $SettingsValues[$SettingIndex]['name'];
-        $XmlValue = $null;
-        $XmlElement = $XmlDocument.SelectSingleNode("/xml/sys_properties[./name=`"$($SettingsValues[$SettingIndex]['name'])`"]");
-        if ($null -eq $XmlElement) {
-            Write-Warning -Message "Setting named `"$($SettingsValues[$SettingIndex]['name'])`" does not have a corresponding sys_properties element in source data.";
-        } else {
-            $ValueElement = $XmlElement.SelectSingleNode('value');
-            if ($null -eq $ValueElement -or $ValueElement.IsEmpty) {
-                Write-Warning -Message "Setting named `"$($SettingsValues[$SettingIndex]['name'])`" has no value in source data.";
-            } else {
-                $XmlValue = $ValueElement.InnerText;
-            }
-        }
-
-        if ([string]::IsNullOrEmpty($XmlValue)) {
-            if ($SettingsValues[$SettingIndex].ContainsKey('ootb')) { $SettingsValues[$SettingIndex].Remove('ootb') | Out-Null }
-        } else {
-            if ($SettingsValues[$SettingIndex].ContainsKey('ootb')) {
-                $SettingsValues[$SettingIndex]['ootb'] = $XmlValue;
-            } else {
-                $SettingsValues[$SettingIndex].Add('ootb', $XmlValue);
-            }
-        }
-        
-        if ($null -ne $XmlElement) {
-            $ValueElement = $XmlElement.SelectSingleNode('description');
-            if ($null -ne $ValueElement -and -not ($ValueElement.IsEmpty -or [string]::IsNullOrWhiteSpace($ValueElement.InnerText))) {
-                if ($SettingsValues[$SettingIndex].ContainsKey('description')) {
-                    if ([string]::IsNullOrWhiteSpace($SettingsValues[$SettingIndex]['description'])) { $SettingsValues[$SettingIndex]['description'] = $ValueElement.InnerText.Trim() }
-                } else {
-                    $SettingsValues[$SettingIndex].Add('description', $ValueElement.InnerText.Trim());
+$JsonPath = $PSScriptRoot | Join-Path -ChildPath 'sys_properties_config.json';
+#[System.IO.File]::ReadAllText($Path);
+[Xml]$HtmlDocument = @'
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=1024, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta charset="utf-8" />
+    <title>Color Settings</title>
+</head>
+</html>
+'@;
+$CaptionMappings = @{
+    ootb = 'Out-of-the-box';
+    prod = 'Production';
+    uat = 'UAT';
+    test = 'Test';
+    dev = 'Development';
+    sb = 'Sandbox';
+}
+$BodyElement = $HtmlDocument.DocumentElement.AppendChild($HtmlDocument.CreateElement('body'));
+foreach ($stage in @('ootb', 'prod', 'uat', 'test', 'dev', 'sb')) {
+    $TableElement = $BodyElement.AppendChild($HtmlDocument.CreateElement('table'));
+    $TableElement.AppendChild($HtmlDocument.CreateElement('caption')).InnerText = $CaptionMappings[$stage];
+    $TableElement.Attributes.Append($HtmlDocument.CreateAttribute('style')).Value = 'border-collapse:collapse;border:1px solid black';
+    $TrElement = $TableElement.AppendChild($HtmlDocument.CreateElement('thead')).AppendChild($HtmlDocument.CreateElement('tr'));
+    $ThElement = $TrElement.AppendChild($HtmlDocument.CreateElement('th'));
+    $ThElement.Attributes.Append($HtmlDocument.CreateAttribute('scope')).Value = 'Col';
+    $ThElement.InnerText = 'Name';
+    $ThElement = $TrElement.AppendChild($HtmlDocument.CreateElement('th'));
+    $ThElement.Attributes.Append($HtmlDocument.CreateAttribute('scope')).Value = 'Col';
+    $ThElement.InnerText = 'R';
+    $ThElement = $TrElement.AppendChild($HtmlDocument.CreateElement('th'));
+    $ThElement.Attributes.Append($HtmlDocument.CreateAttribute('scope')).Value = 'Col';
+    $ThElement.InnerText = 'G';
+    $ThElement = $TrElement.AppendChild($HtmlDocument.CreateElement('th'));
+    $ThElement.Attributes.Append($HtmlDocument.CreateAttribute('scope')).Value = 'Col';
+    $ThElement.InnerText = 'B';
+    $ThElement = $TrElement.AppendChild($HtmlDocument.CreateElement('th'));
+    $ThElement.Attributes.Append($HtmlDocument.CreateAttribute('scope')).Value = 'Col';
+    $ThElement.InnerText = 'H';
+    $ThElement = $TrElement.AppendChild($HtmlDocument.CreateElement('th'));
+    $ThElement.Attributes.Append($HtmlDocument.CreateAttribute('scope')).Value = 'Col';
+    $ThElement.InnerText = 'S';
+    $ThElement = $TrElement.AppendChild($HtmlDocument.CreateElement('th'));
+    $ThElement.Attributes.Append($HtmlDocument.CreateAttribute('scope')).Value = 'Col';
+    $ThElement.InnerText = 'B';
+    $TBodyElement = $TableElement.AppendChild($HtmlDocument.CreateElement('tbody'));
+    foreach ($Dictionary in $SettingsValues) {
+        if ($Dictionary.ContainsKey($stage) -and $Dictionary['type'] -eq 'color') {
+            $BgRed, $BgGreen, $BgBlue = $BgHue = $BgSaturation = $BgBrightness = $null;
+            switch ($stage) {
+                'prod' {
+                    $cv = $Dictionary['ootb'].Substring(1);
+                    if ($cv.Length -eq 3) { $cv = "$($cv[0])$($cv[0])$($cv[1])$($cv[1])$($cv[2])$($cv[2])" }
+                    $BgRed = [int]::Parse($cv.Substring(0, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    $BgGreen = [int]::Parse($cv.Substring(2, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    $BgBlue = [int]::Parse($cv.Substring(4, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    ($BgHue, $BgSaturation, $BgBrightness) = Convert-RgbToHsb -R (([double]$BgRed) / 255.0) -G (([double]$BgGreen) / 255.0) -B (([double]$BgBlue) / 255.0);
+                    $BgHue -= 210.0;
+                    if ($BgHue -lt 0.0) { $BgHue += 360.0 }
+                    if ($BgSaturation -ne 0.0) {
+                        $BgSaturation += ((1.0 - $BgSaturation) * 0.65);
+                    }
+                    if ($Dictionary['name'] -eq 'css.$navpage-nav-color-sub') {
+                        $BgBrightness += ((1.0 - $BgBrightness) * 0.25);
+                    }
+                    ($BgRed, $BgGreen, $BgBlue) = Convert-HsbToRgb -Hue $BgHue -Saturation $BgSaturation -Brightness $BgBrightness;
+                    $Dictionary[$stage] = "#$($BgRed.ToString('x2'))$($BgGreen.ToString('x2'))$($BgBlue.ToString('x2'))";
+                    break;
+                }
+                'uat' {
+                    $cv = $Dictionary['ootb'].Substring(1);
+                    if ($cv.Length -eq 3) { $cv = "$($cv[0])$($cv[0])$($cv[1])$($cv[1])$($cv[2])$($cv[2])" }
+                    $BgRed = [int]::Parse($cv.Substring(0, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    $BgGreen = [int]::Parse($cv.Substring(2, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    $BgBlue = [int]::Parse($cv.Substring(4, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    ($BgHue, $BgSaturation, $BgBrightness) = Convert-RgbToHsb -R (([double]$BgRed) / 255.0) -G (([double]$BgGreen) / 255.0) -B (([double]$BgBlue) / 255.0);
+                    $BgHue += 20.0;
+                    if ($BgHue -gt 360.0) { $BgHue -= 360.0 }
+                    if ($BgSaturation -ne 0.0) {
+                        $BgSaturation += ((1.0 - $BgSaturation) * 0.65);
+                    }
+                    if ($Dictionary['name'] -eq 'css.$navpage-nav-color-sub') {
+                        $BgBrightness += ((1.0 - $BgBrightness) * 0.25);
+                    }
+                    ($BgRed, $BgGreen, $BgBlue) = Convert-HsbToRgb -Hue $BgHue -Saturation $BgSaturation -Brightness $BgBrightness;
+                    $Dictionary[$stage] = "#$($BgRed.ToString('x2'))$($BgGreen.ToString('x2'))$($BgBlue.ToString('x2'))";
+                    break;
+                }
+                'dev' {
+                    $cv = $Dictionary['ootb'].Substring(1);
+                    if ($cv.Length -eq 3) { $cv = "$($cv[0])$($cv[0])$($cv[1])$($cv[1])$($cv[2])$($cv[2])" }
+                    $BgRed = [int]::Parse($cv.Substring(0, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    $BgGreen = [int]::Parse($cv.Substring(2, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    $BgBlue = [int]::Parse($cv.Substring(4, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    ($BgHue, $BgSaturation, $BgBrightness) = Convert-RgbToHsb -R (([double]$BgRed) / 255.0) -G (([double]$BgGreen) / 255.0) -B (([double]$BgBlue) / 255.0);
+                    $BgHue -= 120.0;
+                    if ($BgHue -lt 0.0) { $BgHue += 360.0 }
+                    if ($BgSaturation -ne 0.0) {
+                        $BgSaturation += ((1.0 - $BgSaturation) * 0.65);
+                    }
+                    if ($Dictionary['name'] -eq 'css.$navpage-nav-color-sub') {
+                        $BgBrightness += ((1.0 - $BgBrightness) * 0.25);
+                    }
+                    ($BgRed, $BgGreen, $BgBlue) = Convert-HsbToRgb -Hue $BgHue -Saturation $BgSaturation -Brightness $BgBrightness;
+                    $Dictionary[$stage] = "#$($BgRed.ToString('x2'))$($BgGreen.ToString('x2'))$($BgBlue.ToString('x2'))";
+                    break;
+                }
+                'test' {
+                    $cv = $Dictionary['ootb'].Substring(1);
+                    if ($cv.Length -eq 3) { $cv = "$($cv[0])$($cv[0])$($cv[1])$($cv[1])$($cv[2])$($cv[2])" }
+                    $BgRed = [int]::Parse($cv.Substring(0, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    $BgGreen = [int]::Parse($cv.Substring(2, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    $BgBlue = [int]::Parse($cv.Substring(4, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    ($BgHue, $BgSaturation, $BgBrightness) = Convert-RgbToHsb -R (([double]$BgRed) / 255.0) -G (([double]$BgGreen) / 255.0) -B (([double]$BgBlue) / 255.0);
+                    $BgHue -= 20.0;
+                    if ($BgHue -lt 0.0) { $BgHue += 360.0 }
+                    if ($BgSaturation -ne 0.0) {
+                        $BgSaturation += ((1.0 - $BgSaturation) * 0.65);
+                    }
+                    if ($Dictionary['name'] -eq 'css.$navpage-nav-color-sub') {
+                        $BgBrightness += ((1.0 - $BgBrightness) * 0.25);
+                    }
+                    ($BgRed, $BgGreen, $BgBlue) = Convert-HsbToRgb -Hue $BgHue -Saturation $BgSaturation -Brightness $BgBrightness;
+                    $Dictionary[$stage] = "#$($BgRed.ToString('x2'))$($BgGreen.ToString('x2'))$($BgBlue.ToString('x2'))";
+                    break;
+                }
+                default {
+                    $cv = $Dictionary[$stage].Substring(1);
+                    if ($cv.Length -eq 3) { $cv = "$($cv[0])$($cv[0])$($cv[1])$($cv[1])$($cv[2])$($cv[2])" }
+                    $BgRed = [int]::Parse($cv.Substring(0, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    $BgGreen = [int]::Parse($cv.Substring(2, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    $BgBlue = [int]::Parse($cv.Substring(4, 2), [System.Globalization.NumberStyles]::HexNumber);
+                    ($BgHue, $BgSaturation, $BgBrightness) = Convert-RgbToHsb -R (([double]$BgRed) / 255.0) -G (([double]$BgGreen) / 255.0) -B (([double]$BgBlue) / 255.0);
+                    break;
                 }
             }
-        }
-        
-        if ($SettingsValues[$SettingIndex].ContainsKey('ootb')) {
-            ('prod', 'uat', 'test', 'dev', 'sb') | ForEach-Object {
-                if (-not $SettingsValues[$SettingIndex].ContainsKey($_)) { $SettingsValues[$SettingIndex].Add($_, $SettingsValues[$SettingIndex]['ootb']) }
+            $FgRed = 255 - $BgRed;
+            $FgGreen = 255 - $BgGreen;
+            $FgBlue = 255 - $BgBlue;
+            ($FgHue, $FgSaturation, $FgBrightness) = Convert-RgbToHsb -R (([double]$FgRed) / 255.0) -G (([double]$FgGreen) / 255.0) -B (([double]$FgBlue) / 255.0);
+            if ($FgSaturation -lt 0.25) {
+                if ($FgBrightness -gt 0.35 -and $FgBrightness -lt 0.65) {
+                    if ($FgBrightness -lt 0.5) {
+                        $FgBrightness = 1.0;
+                    } else {
+                        $FgBrightness = 0.0;
+                    }
+                }
+                ($FgRed, $FgGreen, $FgBlue) = Convert-HsbToRgb -Hue $FgHue -Saturation $FgSaturation -Brightness $FgBrightness;
             }
+            $TrElement = $TBodyElement.AppendChild($HtmlDocument.CreateElement('tr'));
+            $ThElement = $TrElement.AppendChild($HtmlDocument.CreateElement('th'));
+            $ThElement.Attributes.Append($HtmlDocument.CreateAttribute('scope')).Value = 'Row';
+            $CssText = "border:1px solid black;color:#$($FgRed.ToString('x2'))$($FgGreen.ToString('x2'))$($FgBlue.ToString('x2'));background-color:#$($BgRed.ToString('x2'))$($BgGreen.ToString('x2'))$($BgBlue.ToString('x2'));";
+            $ThElement.Attributes.Append($HtmlDocument.CreateAttribute('style')).Value = $CssText;
+            $ThElement.InnerText = $Dictionary['name'];
+        
+            $TdElement = $TrElement.AppendChild($HtmlDocument.CreateElement('td'));
+            $TdElement.Attributes.Append($HtmlDocument.CreateAttribute('style')).Value = $CssText;
+            $TdElement.InnerText = $BgRed.ToString();
+        
+            $TdElement = $TrElement.AppendChild($HtmlDocument.CreateElement('td'));
+            $TdElement.Attributes.Append($HtmlDocument.CreateAttribute('style')).Value = $CssText;
+            $TdElement.InnerText = $BgGreen.ToString();
+        
+            $TdElement = $TrElement.AppendChild($HtmlDocument.CreateElement('td'));
+            $TdElement.Attributes.Append($HtmlDocument.CreateAttribute('style')).Value = $CssText;
+            $TdElement.InnerText = $BgBlue.ToString();
+        
+            $TdElement = $TrElement.AppendChild($HtmlDocument.CreateElement('td'));
+            $TdElement.Attributes.Append($HtmlDocument.CreateAttribute('style')).Value = $CssText;
+            $TdElement.InnerText = $BgHue.ToString();
+        
+            $TdElement = $TrElement.AppendChild($HtmlDocument.CreateElement('td'));
+            $TdElement.Attributes.Append($HtmlDocument.CreateAttribute('style')).Value = $CssText;
+            $TdElement.InnerText = $BgSaturation.ToString();
+        
+            $TdElement = $TrElement.AppendChild($HtmlDocument.CreateElement('td'));
+            $TdElement.Attributes.Append($HtmlDocument.CreateAttribute('style')).Value = $CssText;
+            $TdElement.InnerText = $BgBrightness.ToString();
         }
     }
 }
-
-foreach ($Dictionary in $SettingsValues) {
-    if ($Dictionary.ContainsKey('ootb') -and $Dictionary['type'] -eq 'color') {
-        $cv = $Dictionary['ootb'].Substring(1);
-        if ($cv.Length -eq 3) { $cv += $cv }
-        $Red =  [int]::Parse($cv.Substring(0, 2), [System.Globalization.NumberStyles]::HexNumber);
-        $Green =  [int]::Parse($cv.Substring(2, 2), [System.Globalization.NumberStyles]::HexNumber);
-        $Blue =  [int]::Parse($cv.Substring(4, 2), [System.Globalization.NumberStyles]::HexNumber);
-        ($Hue, $Saturation, $Brightness) = Convert-RgbToHsb -R (([double]$Red) / 255.0) -G (([double]$Green) / 255.0) -B (([double]$Blue) / 255.0);
-        Write-Information -MessageData "($Red, $Green, $Blue) => ($Hue, $Saturation, $Brightness)" -InformationAction Continue;
-    }
-}
-
 $StringBuilder = New-Object -TypeName 'System.Text.StringBuilder';
 $StringBuilder.AppendLine("[") | Out-Null;
 
@@ -949,7 +770,19 @@ for ($SettingIndex = 0; $SettingIndex -lt $SettingsValues.Count; $SettingIndex++
     }
     $StringBuilder.Append(' }') | Out-Null;
 }
-[System.Windows.Forms.Clipboard]::SetText($StringBuilder.AppendLine().Append(']').ToString());
+[System.IO.File]::WriteAllText($JsonPath, $StringBuilder.AppendLine().Append(']').ToString(), (New-Object -TypeName 'System.Text.UTF8Encoding' -ArgumentList $false, $false));
+"JSON saved to $JsonPath" | Write-Host;
+$HtmlPath = $PSScriptRoot | Join-Path -ChildPath 'sys_properties_config.html';
+$XmlWriterSettings = New-Object -TypeName 'System.Xml.XmlWriterSettings';
+$XmlWriterSettings.Indent = $true;
+$XmlWriterSettings.CheckCharacters = $false;
+$XmlWriterSettings.Encoding = New-Object -TypeName 'System.Text.UTF8Encoding' -ArgumentList $false, $false;
+$XmlWriter = [System.Xml.XmlWriter]::Create($HtmlPath, $XmlWriterSettings);
+try {
+    $HtmlDocument.WriteTo($XmlWriter);
+    $XmlWriter.Flush();
+} finally { $XmlWriter.Close() }
+"HTML saved to $HtmlPath" | Write-Host;
 <#
 { name: "css.$nav-highlight-main", type: "color", description: "Navigation highlight background color", sys_package: "com.glide.ui.ui16",
         prod: "#493131", uat: "#2e3d4d", sb: "#3D4853", dev: "#374931", test: "#373149" }
