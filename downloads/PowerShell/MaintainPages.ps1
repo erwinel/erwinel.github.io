@@ -1,4 +1,5 @@
-﻿$DocTypeXml = (@('<!DOCTYPE html [') + ((@'
+﻿
+$DocTypeXml = (@('<!DOCTYPE html [') + ((@'
 nbsp=160;iexcl=161;cent=162;pound=163;curren=164;yen=165;brvbar=166;sect=167;uml=168;copy=169;ordf=170;laquo=171;not=172;shy=173;reg=174;macr=175;deg=176;plusmn=177;sup2=178;sup3=179;acute=180;micro=181;para=182;middot=183;
 cedil=184;sup1=185;ordm=186;raquo=187;frac14=188;frac12=189;frac34=190;iquest=191;Agrave=192;Aacute=193;Acirc=194;Atilde=195;Auml=196;Aring=197;AElig=198;Ccedil=199;Egrave=200;Eacute=201;Ecirc=202;Euml=203;Igrave=204;
 Iacute=205;Icirc=206;Iuml=207;ETH=208;Ntilde=209;Ograve=210;Oacute=211;Ocirc=212;Otilde=213;Ouml=214;times=215;Oslash=216;Ugrave=217;Uacute=218;Ucirc=219;Uuml=220;Yacute=221;THORN=222;szlig=223;agrave=224;aacute=225;
@@ -12,6 +13,246 @@ forall=8704;part=8706;exist=8707;empty=8709;nabla=8711;isin=8712;notin=8713;ni=8
 sim=8764;cong=8773;asymp=8776;ne=8800;equiv=8801;le=8804;ge=8805;sub=8834;sup=8835;nsub=8836;nsup=8837;sube=8838;supe=8839;oplus=8853;otimes=8855;perp=8869;sdot=8901;lceil=8968;rceil=8969;lfloor=8970;rfloor=8971;loz=9674;
 spades=9824;clubs=9827;hearts=9829;diams=9830;lang=10216;rang=10217
 '@ -split ';\s*') | ForEach-Object { ($k, $v) = $_.Split('='); "    <!ENTITY $k `"&#$v;`">" }) + @(']>')) | Out-String;
+
+Function Get-HtmlXmlEntityTranslate {
+    Param(
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [string]$Path
+    )
+
+    if ($null -eq $Script:__Get_HtmlXmlEntityTranslate) {
+        $XmlResolver = New-Object -TypeName 'System.Xml.Resolvers.XmlPreloadedResolver' -ArgumentList ([System.Xml.Resolvers.XmlKnownDtds]::Xhtml10);
+        $Script:__Get_HtmlXmlEntityTranslate = [System.Collections.Generic.Dictionary[System.Char,System.String]]::new();
+        @('http://www.w3.org/TR/xhtml1/DTD/xhtml-symbol.ent', 'http://www.w3.org/TR/xhtml1/DTD/xhtml-special.ent', 'http://www.w3.org/TR/xhtml1/DTD/xhtml-special.ent') | ForEach-Object {
+            [System.IO.Stream]$Stream = $Script:__Get_HtmlXmlEntityTranslate.GetEntity($_, $null, [System.IO.Stream]);
+            $DtdDocument = New-Object -TypeName 'System.Xml.XmlDocument';
+            try {
+                $StreamReader = [System.IO.StreamReader]::new($Stream);
+                try { $DtdDocument.LoadXml("<!DOCTYPE html [$($StreamReader.ReadToEnd())]><html />"); }
+                finally { $StreamReader.Close() }
+            } finally { $Stream.Close() }
+            $DtdDocument.ChildNodes | Where-Object { $_ -is [System.Xml.XmlDocumentType] } | ForEach-Object {
+                @($_.Entities) | ForEach-Object {
+                    if ($_.InnerText.Length -eq 1) {
+                        [char]$c = $_.InnerText[0];
+                        if ($c -ne '>' -and $c -ne '&' -and $c -ne '>' -and -not $EntityTranslate.ContainsKey($c)) { $EntityTranslate.Add($c, $_.Name) }
+                    }
+                }
+            }
+        }
+    }
+
+    (,$Script:__Get_HtmlXmlEntityTranslate) | Write-Output;
+}
+
+Function Load-HtmlDocument {
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [string]$Path
+    )
+
+    Begin {
+        if ($null -eq $Script:__LoadHtmlDocument_Settings) {
+            $Script:__LoadHtmlDocument_Settings = New-Object -TypeName 'System.Xml.XmlReaderSettings' -Property @{
+                XmlResolver = New-Object -TypeName 'System.Xml.Resolvers.XmlPreloadedResolver' -ArgumentList ([System.Xml.Resolvers.XmlKnownDtds]::Xhtml10);
+                ProhibitDtd = $false;
+                ValidationType = [System.Xml.ValidationType]::None;
+                ValidationFlags = ([System.Xml.Schema.XmlSchemaValidationFlags]([System.Xml.Schema.XmlSchemaValidationFlags]::AllowXmlAttributes -bor [System.Xml.Schema.XmlSchemaValidationFlags]::ProcessIdentityConstraints -bor [System.Xml.Schema.XmlSchemaValidationFlags]::ProcessInlineSchema));
+            };
+        }
+    }
+
+    Process {
+        $XmlDocument = New-Object -TypeName 'System.Xml.XmlDocument';
+        $XmlDocument.XmlResolver = $Script:__LoadHtmlDocument_Settings.XmlResolver;
+        $Content = $null;
+        if ($Path | Test-Path) {
+            $Content = ((Get-Content -Path $Path) | Out-String).Trim() -replace '^<!DOCTYPE[^>]*>\s*', '<!DOCTYPE html SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+        } else {
+            $Content = @'
+<!DOCTYPE html SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" />
+'@;
+        }
+        if ($null -ne $Content) {
+            $StringReader = [System.IO.StringReader]::new($Content);
+            try {
+                $XmlReader = [System.Xml.XmlReader]::Create($StringReader, $XmlReaderSettings);
+                try { $XmlDocument.Load($XmlReader) }
+                finally { $XmlReader.Close(); }
+            } finally { $StringReader.Dispose() }
+            $XmlDocument | Write-Output;
+        }
+    }
+}
+
+Function Test-HtmlDocument {
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [AllowNull()]
+        [string]$XmlDocument
+    )
+
+    Process {
+        ($null -ne $XmlDocument -and $null -ne $XmlDocument.DocumentElement -and $XmlDocument.DocumentElement.LocalName -ceq 'html' -and $XmlDocument.DocumentElement.NamespaceURI -ceq 'http://www.w3.org/1999/xhtml' -and $null -ne $XmlDocument.DocumentType -and $XmlDocument.DocumentType.Name -ceq 'html' -and $XmlDocument.DocumentType.SystemId -ceq 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd') | Write-Output;
+    }
+}
+
+Function Save-HtmlDocument {
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path,
+        
+        [Parameter(Mandatory = $true)]
+        [ValidateScript({ $_ | Test-HtmlDocument })]
+        [string]$XmlDocument
+    )
+    
+    if ($null -eq $Script:__Save_HtmlDocument_Translate) {
+        $XmlResolver = New-Object -TypeName 'System.Xml.Resolvers.XmlPreloadedResolver' -ArgumentList ([System.Xml.Resolvers.XmlKnownDtds]::Xhtml10);
+        $Script:__Save_HtmlDocument_Translate = [System.Collections.Generic.Dictionary[System.Char,System.String]]::new();
+        @('http://www.w3.org/TR/xhtml1/DTD/xhtml-symbol.ent', 'http://www.w3.org/TR/xhtml1/DTD/xhtml-special.ent', 'http://www.w3.org/TR/xhtml1/DTD/xhtml-special.ent') | ForEach-Object {
+            [System.IO.Stream]$Stream = $Script:__Save_HtmlDocument_Translate.GetEntity($_, $null, [System.IO.Stream]);
+            $DtdDocument = New-Object -TypeName 'System.Xml.XmlDocument';
+            try {
+                $StreamReader = [System.IO.StreamReader]::new($Stream);
+                try { $DtdDocument.LoadXml("<!DOCTYPE html [$($StreamReader.ReadToEnd())]><html />"); }
+                finally { $StreamReader.Close() }
+            } finally { $Stream.Close() }
+            $DtdDocument.ChildNodes | Where-Object { $_ -is [System.Xml.XmlDocumentType] } | ForEach-Object {
+                @($_.Entities) | ForEach-Object {
+                    if ($_.InnerText.Length -eq 1) {
+                        [char]$c = $_.InnerText[0];
+                        if ($c -ne '>' -and $c -ne '&' -and $c -ne '>' -and -not $EntityTranslate.ContainsKey($c)) { $EntityTranslate.Add($c, $_.Name) }
+                    }
+                }
+            }
+        }
+    }
+
+    $ConvertedDocument = New-Object -TypeName 'System.Xml.XmlDocument';
+    $ConvertedDocument.LoadXml($XmlDocument.OuterXml);
+    foreach ($TextNode in @(@($ConvertedDocument.SelectNodes('//text()')) | Where-Object { $_ -isnot [System.Xml.XmlCDataSection] })) {
+        $Text = $TextNode.InnerText;
+        $Indexes = @($EntityTranslate.Keys | ForEach-Object {
+            $i = $Text.IndexOf($_);
+            if ($i -ge 0) { $i | Write-Output }
+        } | Sort-Object);
+        if ($Indexes.Count -gt 0) {
+            $Position = 0;
+            $Nodes = @($Indexes | ForEach-Object {
+                if ($Position -lt $_) { $ConvertedDocument.CreateTextNode($Text.Substring($Position, $_ - $Position)) }
+                $Position = $_ + 1;
+                $XmlDocument.CreateEntityReference($EntityTranslate[$Text[$_]]);
+            });
+            $LastNode = $Nodes[0];
+            $TextNode.ParentNode.ReplaceChild($Nodes[0], $TextNode);
+            ($Nodes | Select-Object -Skip 1) | ForEach-Object {
+                $LastNode.ParentNode.InsertAfter($_, $LastNode);
+                $LastNode = $_;
+            }
+            if ($Position -lt $Text.Length) { $LastNode.ParentNode.InsertAfter($ConvertedDocument.CreateTextNode($Text.Substring($Position)), $LastNode) }
+        }
+    }
+    foreach ($XmlAttribute in @($ConvertedDocument.SelectNodes('//@*'))) {
+        foreach ($TextNode in @($XmlAttribute.ChildNodes)) {
+            $Text = $TextNode.InnerText;
+            $Indexes = @($EntityTranslate.Keys | ForEach-Object {
+                $i = $Text.IndexOf($_);
+                if ($i -ge 0) { $i | Write-Output }
+            } | Sort-Object);
+            if ($Indexes.Count -gt 0) {
+                $Position = 0;
+                $Nodes = @($Indexes | ForEach-Object {
+                    if ($Position -lt $_) { $ConvertedDocument.CreateTextNode($Text.Substring($Position, $_ - $Position)) }
+                    $Position = $_ + 1;
+                    $ConvertedDocument.CreateEntityReference($EntityTranslate[$Text[$_]]);
+                });
+                $LastNode = $Nodes[0];
+                $XmlAttribute.ReplaceChild($Nodes[0], $TextNode);
+                ($Nodes | Select-Object -Skip 1) | ForEach-Object {
+                    $XmlAttribute.InsertAfter($_, $LastNode);
+                    $LastNode = $_;
+                }
+                if ($Position -lt $Text.Length) { XmlAttribute.InsertAfter($ConvertedDocument.CreateTextNode($Text.Substring($Position)), $LastNode) }
+            }
+        }
+    }
+    $XmlWriterSettings = [System.Xml.XmlWriterSettings]::new();
+    $XmlWriterSettings.OmitXmlDeclaration = $true;
+    $XmlWriterSettings.Encoding = New-Object -TypeName 'System.Text.UTF8Encoding' -ArgumentList $false, $false;
+    $XmlWriterSettings.Indent = $true;
+    $XmlWriterSettings.CheckCharacters = $false;
+    $MemoryStream = [System.IO.MemoryStream]::new();
+    try {
+        $XmlWriter = [System.Xml.XmlWriter]::Create($MemoryStream, $XmlWriterSettings);
+        try {
+            $ConvertedDocument.WriteTo($XmlWriter);
+            $XmlWriter.Flush();
+            $Content = $XmlWriterSettings.Encoding.GetString($MemoryStream.ToArray()) -replace '^<!DOCTYPE[^>]*>\s*', '<!DOCTYPE html>';
+            Set-Content -Path $Path -Value $Content -Encoding UTF8;
+        } finally { $XmlWriter.Close() }
+    } finally { $MemoryStream.Dispose() }
+}
+
+Function Get-DocumentHead {
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory = $true)]
+        [ValidateScript({ $_ | Test-HtmlDocument })]
+        [string]$XmlDocument
+    )
+
+    $nsmgr = New-Object -TypeName 'System.Xml.XmlNamespaceManager' -ArgumentList $XmlDocument.NameTable;
+    $nsmgr.AddNamespace('h', 'http://www.w3.org/1999/xhtml');
+    $XmlElement = $XmlDocument.DocumentElement.SelectSingleNode('h:head', $nsmgr);
+    if ($null -ne $XmlElement) { return $XmlElement }
+    $XmlElement = $XmlDocument.SelectSingleNode('*', $nsmgr);
+    if ($null -eq $XmlElement) {
+        return $XmlDocument.DocumentElement.AppendChild($XmlDocument.CreateElement('head', 'http://www.w3.org/1999/xhtml'));
+    }
+    return $XmlDocument.DocumentElement.InsertBefore($XmlDocument.CreateElement('head', 'http://www.w3.org/1999/xhtml'), $XmlElement);
+}
+
+Function Get-DocumentBody {
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory = $true)]
+        [string]$XmlDocument
+    )
+    $nsmgr = New-Object -TypeName 'System.Xml.XmlNamespaceManager' -ArgumentList $XmlDocument.NameTable;
+    $nsmgr.AddNamespace('h', 'http://www.w3.org/1999/xhtml');
+    $XmlElement = $XmlDocument.DocumentElement.SelectSingleNode('h:body', $nsmgr);
+    if ($null -ne $XmlElement) { return $XmlElement }
+    $XmlElement = $XmlDocument.DocumentElement.SelectSingleNode('h:head', $nsmgr);
+    if ($null -ne $Xmlelement) {
+        $XmlDocument.DocumentElement.InsertAfter($XmlDocument.CreateElement('body', 'http://www.w3.org/1999/xhtml'), $XmlElement);
+    }
+    $XmlElement = $XmlDocument.SelectSingleNode('*', $nsmgr);
+    if ($null -eq $XmlElement) {
+        return $XmlDocument.DocumentElement.AppendChild($XmlDocument.CreateElement('body', 'http://www.w3.org/1999/xhtml'));
+    }
+    return $XmlDocument.DocumentElement.InsertBefore($XmlDocument.CreateElement('body', 'http://www.w3.org/1999/xhtml'), $XmlElement);
+}
+
+Function Set-PageNavigation {
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path,
+        
+        [Parameter(Mandatory = $true)]
+        [string]$XmlDocument
+    )
+}
+
+$XmlDocument.OuterXml;
+
+$Content
+
 
 $HtmlRoot = (($PSScriptRoot | Join-Path -ChildPath '../..') | Resolve-Path).Path;
 

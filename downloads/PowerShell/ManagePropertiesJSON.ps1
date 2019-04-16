@@ -787,3 +787,4 @@ try {
 { name: "css.$nav-highlight-main", type: "color", description: "Navigation highlight background color", sys_package: "com.glide.ui.ui16",
         prod: "#493131", uat: "#2e3d4d", sb: "#3D4853", dev: "#374931", test: "#373149" }
 #>
+[System.IConvertible].GetMethods() | ForEach-Object { "$($_.ReturnType.FullName) IConvertible.$($_.Name)($(($_.GetParameters() | ForEach-Object { $_.ToString() }) -join ', ')) { throw new NotImplementedException(); }".Replace('System.String', 'string').Replace('System.Boolean', 'bool').Replace('System.', '') }
