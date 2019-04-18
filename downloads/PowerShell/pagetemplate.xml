@@ -1,0 +1,45 @@
+<!DOCTYPE html SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:tpl="">
+    <head>
+        <meta name="viewport" content="width=1024, initial-scale=1.0"/>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+        <meta charset="utf-8" />
+        <title>Initial Configuration Instructions</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap-grid.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap-table/bootstrap-table.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="script/api/angular/angular-csp.css" tpl:angular="true" />
+        <script type="text/javascript" src="script/api/jquery/jquery.js"></script>
+        <script type="text/javascript" src="script/api/bootstrap/js/bootstrap.bundle.js"></script>
+        <script type="text/javascript" src="script/api/angular/angular.js" tpl:angular="true"></script>
+    </head>
+    <body>
+        <header class="container-fluid border border-secondary p-sm-1"><h1>Initial Configuration Instructions</h1></header>
+        <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item border border-secondary bg-dark"><a href="index.html" class="nav-link text-light">Home</a></li>
+                <li class="active nav-item border border-secondary bg-dark"><a href="#" class="active nav-link text-light" onclick="return false;">Initial Config</a></li>
+                <li class="nav-item border border-secondary bg-dark"><a href="snippets.html" class="nav-link text-light">Code Snippets</a></li>
+            </ul>
+        </nav>
+        <section class="container-fluid border border-light p-md-3 text-dark" tpl:aside="false">
+        </section>
+        <div class="container" tpl:aside="true">
+            <div class="row flex-nowrap">
+                <section class="container-fluid border border-light col-md-9 text-dark">
+                </section>
+                <aside class="container-fluid border border-secondary bg-secondary text-secondary col-md-3">
+                    <div class="card">
+                        <div class="card-header"><h4>Modules</h4></div>
+                        <div class="card-body">
+                            <ul>
+                                <li><a href="ServiceCatalog.html">Service Catalog</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+        <footer class="container-fluid border border-secondary p-sm-1 bg-secondary">It all ends with the footer.</footer>
+    </body>
+</html>

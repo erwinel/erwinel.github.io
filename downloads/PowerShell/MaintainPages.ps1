@@ -1,18 +1,366 @@
-﻿
-$DocTypeXml = (@('<!DOCTYPE html [') + ((@'
-nbsp=160;iexcl=161;cent=162;pound=163;curren=164;yen=165;brvbar=166;sect=167;uml=168;copy=169;ordf=170;laquo=171;not=172;shy=173;reg=174;macr=175;deg=176;plusmn=177;sup2=178;sup3=179;acute=180;micro=181;para=182;middot=183;
-cedil=184;sup1=185;ordm=186;raquo=187;frac14=188;frac12=189;frac34=190;iquest=191;Agrave=192;Aacute=193;Acirc=194;Atilde=195;Auml=196;Aring=197;AElig=198;Ccedil=199;Egrave=200;Eacute=201;Ecirc=202;Euml=203;Igrave=204;
-Iacute=205;Icirc=206;Iuml=207;ETH=208;Ntilde=209;Ograve=210;Oacute=211;Ocirc=212;Otilde=213;Ouml=214;times=215;Oslash=216;Ugrave=217;Uacute=218;Ucirc=219;Uuml=220;Yacute=221;THORN=222;szlig=223;agrave=224;aacute=225;
-acirc=226;atilde=227;auml=228;aring=229;aelig=230;ccedil=231;egrave=232;eacute=233;ecirc=234;euml=235;igrave=236;iacute=237;icirc=238;iuml=239;eth=240;ntilde=241;ograve=242;oacute=243;ocirc=244;otilde=245;ouml=246;divide=247;
-oslash=248;ugrave=249;uacute=250;ucirc=251;uuml=252;yacute=253;thorn=254;yuml=255;OElig=338;oelig=339;Scaron=352;scaron=353;Yuml=376;fnof=402;circ=710;tilde=732;Alpha=913;Beta=914;Gamma=915;Delta=916;Epsilon=917;Zeta=918;
-Eta=919;Theta=920;Iota=921;Kappa=922;Lambda=923;Mu=924;Nu=925;Xi=926;Omicron=927;Pi=928;Rho=929;Sigma=931;Tau=932;Upsilon=933;Phi=934;Chi=935;Psi=936;Omega=937;alpha=945;beta=946;gamma=947;delta=948;epsilon=949;zeta=950;
-eta=951;theta=952;iota=953;kappa=954;lambda=955;mu=956;nu=957;xi=958;omicron=959;pi=960;rho=961;sigmaf=962;sigma=963;tau=964;upsilon=965;phi=966;chi=967;psi=968;omega=969;thetasym=977;upsih=978;piv=982;ensp=8194;emsp=8195;
-thinsp=8201;zwnj=8204;zwj=8205;lrm=8206;rlm=8207;ndash=8211;mdash=8212;lsquo=8216;rsquo=8217;sbquo=8218;ldquo=8220;rdquo=8221;bdquo=8222;dagger=8224;Dagger=8225;bull=8226;hellip=8230;permil=8240;prime=8242;Prime=8243;
-lsaquo=8249;rsaquo=8250;oline=8254;frasl=8260;euro=8364;image=8465;weierp=8472;real=8476;trade=8482;alefsym=8501;larr=8592;uarr=8593;rarr=8594;darr=8595;harr=8596;crarr=8629;lArr=8656;uArr=8657;rArr=8658;dArr=8659;hArr=8660;
-forall=8704;part=8706;exist=8707;empty=8709;nabla=8711;isin=8712;notin=8713;ni=8715;prod=8719;sum=8721;minus=8722;lowast=8727;radic=8730;prop=8733;infin=8734;ang=8736;and=8743;or=8744;cap=8745;cup=8746;int=8747;there4=8756;
-sim=8764;cong=8773;asymp=8776;ne=8800;equiv=8801;le=8804;ge=8805;sub=8834;sup=8835;nsub=8836;nsup=8837;sube=8838;supe=8839;oplus=8853;otimes=8855;perp=8869;sdot=8901;lceil=8968;rceil=8969;lfloor=8970;rfloor=8971;loz=9674;
-spades=9824;clubs=9827;hearts=9829;diams=9830;lang=10216;rang=10217
-'@ -split ';\s*') | ForEach-Object { ($k, $v) = $_.Split('='); "    <!ENTITY $k `"&#$v;`">" }) + @(']>')) | Out-String;
+﻿Add-Type -TypeDefinition @'
+namespace XmlUtil {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Xml;
+    using System.Xml.Resolvers;
+    public interface IProtectedNodeBase {
+        XmlNode Node { get; }
+        bool Disabled { get; set; }
+        bool CanChangeText { get; }
+    }
+    public interface IProtectedNode : IProtectedNodeBase {
+        bool OtherChildNodesAllowed { get; }
+        IList<string> AttributeNames { get; }
+        bool Protects(string attributeName);
+    }
+    public abstract class ProtectedNode<T> : IProtectedNodeBase
+        where T : XmlNode
+    {
+        public T Node { get; }
+        XmlNode IProtectedNodeBase.Node { get { return Node; } }
+        public bool Disabled { get; set; }
+        public bool CanChangeText { get; }
+        protected ProtectedNode(T node, bool canChangeText) {
+            Node = node;
+            CanChangeText = canChangeText;
+        }
+    }
+    public class ProtectedElement : ProtectedNode<XmlElement>, IProtectedNode {
+        private string[] _attributeNames;
+        public bool OtherChildNodesAllowed { get; }
+        public ReadOnlyCollection<string> AttributeNames { get; }
+        IList<string> IProtectedNode.AttributeNames { get { return AttributeNames; } }
+        public bool Protects(string attributeName) { return !Disabled && _attributeNames.Any(s => s == attributeName); }
+        public ProtectedElement(XmlElement element, bool canChangeText, bool otherChildNodesAllowed, params string[] attributeNames) : base(element) {
+            OtherChildNodesAllowed = otherChildNodesAllowed;
+            _attributeNames = (attributeNames == null || attributeNames.Length == 0) ? new string[0] : attributeNames.Where(s => !String.IsNullOrWhiteSpace(s)).ToArray();
+            AttributeNames = new ReadOnlyCollection<string>(_attributeNames);
+        }
+        public ProtectedElement(XmlNode node, bool canChangeText, params string[] attributeNames) : this(element, canChangeText, false, attributeNames) { }
+        public ProtectedElement(XmlNode node, params string[] attributeNames) : this(element, false, false, attributeNames) { }
+    }
+    public class ProtectedNode : ProtectedNode<XmlNode>, IProtectedNode {
+        bool IProtectedNode.OtherChildNodesAllowed { get { return false; } }
+        IList<string> IProtectedNode.AttributeNames { get { return new string[0]; } }
+        public ProtectedNode(XmlNode node) : base(node) { }
+        bool IProtectedNode.Protects(string attributeName) { return false; }
+    }
+    public class HtmlDocument {
+        public const string DefaultDTD = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd";
+        public const string RelativeUrl_BootstrapCss = "script/api/bootstrap/css/bootstrap.css";
+        public const string RelativeUrl_BootstrapGridCss = "script/api/bootstrap/css/bootstrap-grid.css";
+        public const string RelativeUrl_BootstrapTableCss = script/api/bootstrap-table/bootstrap-table.css";
+        public const string RelativeUrl_AngularCss = "script/api/angular/angular-csp.css";
+        public const string RelativeUrl_jQuery = "script/api/jquery/jquery.js";
+        public const string RelativeUrl_BootstrapJs = "script/api/bootstrap/js/bootstrap.bundle.js";
+        public const string RelativeUrl_AngularJs = "script/api/angular/angular.js";
+        private ProtectedElement _htmlHeadElement;
+        private ProtectedElement _titleElement;
+        private ProtectedElement _bootstrapTableCssElement;
+        private ProtectedElement _angularCssElement;
+        private ProtectedElement _bootstrapJsElement;
+        private ProtectedElement _angularJsElement;
+        private ProtectedElement _htmlBodyElement;
+        private ProtectedElement _bodyHeaderElement;
+        private ProtectedElement _topNavElement;
+
+        public XmlPreloadedResolver Resolver { get; }
+        public XmlDocument Document { get; }
+        public XmlNamespaceManager Nsmgr { get; }
+
+        public HtmlDocument(XmlDocument source, bool angular, bool aside) {
+            Resolver = new XmlPreloadedResolver(XmlKnownDtds.Xhtml10);
+            Document = new XmlDocument();
+            Document.Resolver = Resolver;
+            List<ProtectedNode> protectedNodes = new List<ProtectedNode>();
+            Document.AppendChild(Document.CreateDocumentType("html", null, DefaultDTD, null));
+            Document.AppendChild(Document.CreateElement("html", XHtmlExtensions.NamespaceURI_xhtml));
+            Document.DocumentElement.SetAttribute("lang", "en");
+            protectedNodes.Add(new ProtectedNode(Document.DocumentElement, "lang"));
+            
+            XmlElement parent = Document.DocumentElement.AppendElement("head");
+            _htmlHeadElement = new ProtectedElement(parent, false, true);
+            protectedNodes.Add(_htmlHeadElement);
+
+            XmlElement element = parent.AppendElement("meta");
+            element.SetAttribute("name", "viewport");
+            element.SetAttribute("content", "width=1024, initial-scale=1.0");
+            protectedNodes.Add(new ProtectedElement(element, "name", "content"));
+            
+            element = parent.AppendElement("meta");
+            element.SetAttribute("http-equiv", "X-UA-Compatible");
+            element.SetAttribute("content", "ie=edge");
+            protectedNodes.Add(new ProtectedElement(element, "http-equiv", "content"));
+
+            element = parent.AppendElement("meta");
+            element.SetAttribute("charset", "utf-8");
+            protectedNodes.Add(new ProtectedElement(element, "charset"));
+
+            _titleElement = new ProtectedElement(parent.AppendElement("title"));
+            protectedNodes.Add(_titleElement);
+            
+            element = parent.AppendElement("link");
+            element.SetAttribute("rel", "stylesheet");
+            element.SetAttribute("type", "text/css");
+            element.SetAttribute("media", "screen");
+            element.SetAttribute("href", RelativeUrl_BootstrapCss);
+            protectedNodes.Add(new ProtectedElement(element, "rel", "type", "media", "href"));
+            
+            element = parent.AppendElement("link");
+            element.SetAttribute("rel", "stylesheet");
+            element.SetAttribute("type", "text/css");
+            element.SetAttribute("media", "screen");
+            element.SetAttribute("href", RelativeUrl_BootstrapGridCss);
+            protectedNodes.Add(new ProtectedElement(element, "rel", "type", "media", "href"));
+
+            element = parent.AppendElement("link");
+            element.SetAttribute("rel", "stylesheet");
+            element.SetAttribute("type", "text/css");
+            element.SetAttribute("media", "screen");
+            element.SetAttribute("href", RelativeUrl_BootstrapTableCss);
+            _bootstrapTableCssElement = new ProtectedElement(element, "rel", "type", "media", "href");
+            protectedNodes.Add(_bootstrapTableCssElement);
+            
+            if (angular) {
+                element = parent.AppendElement("link");
+                element.SetAttribute("rel", "stylesheet");
+                element.SetAttribute("type", "text/css");
+                element.SetAttribute("media", "screen");
+                element.SetAttribute("href", RelativeUrl_AngularCss);
+                _angularCssElement = new ProtectedElement(element, "rel", "type", "media", "href");
+                protectedNodes.Add(_angularCssElement);
+            } else
+                _angularCssElement = null;
+
+            element = parent.AppendElement("script");
+            element.SetAttribute("type", "text/javascript");
+            element.SetAttribute("src", RelativeUrl_jQuery);
+            protectedNodes.Add(new ProtectedElement(element, "type", "src"));
+
+            element = parent.AppendElement("script");
+            element.SetAttribute("type", "text/javascript");
+            element.SetAttribute("src", RelativeUrl_BootstrapJs);
+            _bootstrapJsElement = new ProtectedElement(element, "type", "src"));
+            protectedNodes.Add(_bootstrapJsElement);
+            
+            if (angular) {
+                element = parent.AppendElement("script");
+                element.SetAttribute("type", "text/javascript");
+                element.SetAttribute("src", RelativeUrl_AngularJs);
+                _angularJsElement = new ProtectedElement(element, "type", "src"));
+                protectedNodes.Add(_angularJsElement);
+            } else
+                _angularJsElement = null;
+            
+            parent = Document.DocumentElement.AppendElement("body");
+            _htmlBodyElement = new ProtectedNode(parent);
+            protectedNodes.Add(_htmlBodyElement);
+            
+            element = parent.AppendElement("header");
+            element.SetAttribute("class", "container-fluid border border-secondary p-sm-1");
+            _bodyHeaderElement = new ProtectedElement(element, "class");
+            protectedNodes.Add(_bodyHeaderElement);
+            
+            element = parent.AppendElement("nav");
+            element.SetAttribute("class", "container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3");
+            protectedNodes.Add(new ProtectedElement(element, "class"));
+            
+            element = element.AppendElement("ul");
+            element.SetAttribute("class", "navbar-nav mr-auto");
+            _topNavElement = new ProtectedElement(element, "class");
+            protectedNodes.Add(_topNavElement);
+            
+
+        }
+    }
+    public static class XHtmlExtensions {
+        public const string NamespaceURI_xhtml = "http://www.w3.org/1999/xhtml";
+        public static IProtectedNode GetProtection(this IEnumerable<IProtectedNode> protectedNodes, XmlNode node) {
+            IProtectedNode pn = protectedNodes.FirstOrDefault(p => ReferenceEquals(p.Node, element));
+            if (pn == null && node is XmlAttribute) {
+                XmlAttribute a = (XmlAttribute)node;
+                if (a.NamespaceURI.Length == 0) {
+                    XmlElement e = a.OwnerElement;
+                    if (e != null && (pn = protectedNodes.FirstOrDefault(p => ReferenceEquals(p.Node, e))) != null && !pn.Protects(a.LocalName))
+                        pn = null;
+                }
+            }
+            return pn;
+        }
+        public static bool AllowsOtherChildNodes(this IEnumerable<IProtectedNode> protectedNodes, XmlElement element) {
+            IProtectedNode pn = protectedNodes.FirstOrDefault(p => ReferenceEquals(p.Node, element));
+            return pn == null || pn.Disabled || pn.OtherChildNodesAllowed;
+        }
+        public static bool CanChangeText(this IEnumerable<IProtectedNode> protectedNodes, XmlNode node) {
+            IProtectedNode pn = protectedNodes.FirstOrDefault(p => ReferenceEquals(p.Node, element));
+            if (pn != null)
+                return pn.Disabled || pn.CanChangeText;
+            if (node is XmlAttribute) {
+                XmlAttribute a = (XmlAttribute)node;
+                if (a.NamespaceURI.Length > 0)
+                    return true;
+                XmlElement e = a.OwnerElement;
+                if (e != null && (pn = protectedNodes.FirstOrDefault(p => ReferenceEquals(p.Node, e))) != null)
+                    return !pn.Protects(a.LocalName);
+            }
+            return true;
+        }
+        public static bool IsProtected(this IEnumerable<IProtectedNode> protectedNodes, XmlNode node) {
+            IProtectedNode pn = protectedNodes.FirstOrDefault(p => ReferenceEquals(p.Node, element));
+            if (pn != null)
+                return !pn.Disabled;
+            if (node is XmlAttribute) {
+                XmlAttribute a = (XmlAttribute)node;
+                if (a.NamespaceURI.Length > 0)
+                    return false;
+                XmlElement e = a.OwnerElement;
+                if (e != null && (pn = protectedNodes.FirstOrDefault(p => ReferenceEquals(p.Node, e))) != null)
+                    return pn.Protects(a.LocalName);
+            }
+            return false;
+        }
+        public static XmlElement AppendElement(this XmlElement parent, string prefix, string localName, string namespaceURI) {
+            return (XmlElement)parent.AppendChild(parent.OwnerDocument.CreateElement(prefix, localName, namespaceURI));
+        }
+        public static XmlElement AppendElement(this XmlElement parent, string name, string namespaceURI) {
+            return (XmlElement)parent.AppendChild(parent.OwnerDocument.CreateElement(name, namespaceURI));
+        }
+        public static XmlElement AppendElement(this XmlElement parent, string name) { return parent.AppendElement(name, NamespaceURI_xhtml); }
+        public static IEnumerable<XmlCharacterData> GetTextNodes(this XmlElement element, bool ignoreOuterWhitespace) {
+            if (ignoreOuterWhitespace)
+                return  element.GetTextNodes().Reverse().SkipWhile(n => n.InnerText.Trim().Length == 0).Reverse().SkipWhile(n => n.InnerText.Trim().Length == 0);
+            return element.GetTextNodes();
+        }
+        public static IEnumerable<XmlCharacterData> GetTextNodes(this XmlElement element) {
+            return (element.IsEmpty) ? new XmlCharacterData[0] : element.ChildNodes.OfType<XmlCharacterData>();
+        }
+        public static IEnumerable<XmlElement> GetElementNodes(this XmlElement element, string localName, string namespaceURI, StringComparison nameComparison) {
+            if (namespaceURI == null)
+                namespaceURI = "";
+            return element.GetElementNodes().Where(element.NamespaceURI == namespaceURI && string.Equals(localName, element.LocalName, nameComparison));
+        }
+        public static IEnumerable<XmlElement> GetElementNodes(this XmlElement element, string localName, string namespaceURI, IEqualityComparer<string> nameComparer) {
+            if (namespaceURI == null)
+                namespaceURI = "";
+            return element.GetElementNodes().Where(element.NamespaceURI == namespaceURI && nameComparer.Equals(localName, element.LocalName));
+        }
+        public static IEnumerable<XmlElement> GetElementNodes(this XmlElement element, string localName, StringComparison nameComparison) {
+            return element.GetElementNodes(localName, NamespaceURI_xhtml, nameComparison);
+        }
+        public static IEnumerable<XmlElement> GetElementNodes(this XmlElement element, string localName, IEqualityComparer<string> nameComparer) {
+            return element.GetElementNodes(localName, NamespaceURI_xhtml, nameComparer);
+        }
+        public static IEnumerable<XmlElement> GetElementNodes(this XmlElement element, string localName, string namespaceURI) {
+            return element.GetElementNodes().Where(element.NamespaceURI == namespaceURI && element.LocalName == localName);
+        }
+        public static IEnumerable<XmlElement> GetElementNodes(this XmlElement element, string localName) { return element.GetElementNodes(localName, NamespaceURI_xhtml); }
+        public static IEnumerable<XmlElement> GetElementNodes(this XmlElement element) { return (element.IsEmpty) ? new XmlElement[0] : element.ChildNodes.OfType<XmlElement>(); }
+        public static void ClearInnerText(this XmlElement element) {
+            foreach (XmlCharacterData textNode in element.GetTextNodes().ToArray())
+                element.RemoveChild(textNode);
+        }
+        public static void SetInnerText(this XmlElement element, string text, bool asCData) {
+            XmlCharacterData[] textNodes = element.GetTextNodes().ToArray();
+            if (textNodes.Length == 0)
+                element.AppendChild((asCData) ? element.OwnerDocument.CreateCDataSection(text) : element.OwnerDocument.CreateTextNode(text));
+            if (textNodes.Length == 1) {
+                if (asCData) {
+                    if (textNodes[0] is XmlCDataSection)
+                        textNodes[0].InnerText = text;
+                    else
+                        element.ReplaceChild(element.OwnerDocument.CreateCDataSection(text), textNodes[0]);
+                } else if (textNodes[0] is XmlText)
+                    textNodes[0].InnerText = text;
+                else
+                    element.ReplaceChild(element.OwnerDocument.CreateTextNode(text), textNodes[0]);
+                return;
+            }
+            
+            XmlCharacterData node = textNodes[0];
+            for (int i = 0; i < textNodes.Length; i++) {
+                if (textNodes[i].InnerText.Trim().Length > 0) {
+                    node = textNodes[i];
+                    break;
+                }
+            }
+            
+            if (asCData) {
+                if (node is XmlCDataSection)
+                    node.InnerText = text;
+                else {
+                    XmlCDataSection cData = element.OwnerDocument.CreateCDataSection(text);
+                    element.ReplaceChild(cData, node);
+                    node = cData;
+                }
+            } else if (node is XmlText)
+                node.InnerText = text;
+            else {
+                XmlText xmlText = element.OwnerDocument.CreateTextNode(text);
+                element.ReplaceChild(xmlText, node);
+                node = xmlText;
+            }
+            while (node.PreviousSibling != null && node.PreviousSibling is XmlCharacterData)
+                element.RemoveChild(node.PreviousSibling);
+            while (node.NextSibling != null && node.NextSibling is XmlCharacterData)
+                element.RemoveChild(node.NextSibling);
+            if (node.NextSibling == null)
+                return;
+            for (XmlNode node = node.NextSibling.NextSibling; node != null; node = node.NextSibling) {
+                if (node is XmlCharacterData && ((XmlCharacterData)node).InnerText.Trim().Length > 0) {
+                    XmlNode n = node;
+                    node = n.PreviousSibling;
+                    element.RemoveChild(n);
+                }
+            }
+        }
+        public static void SetInnerText(this XmlElement element, string text) { return element.SetInnerText(text, false); }
+        public static void SetInnerTextOptimal(this XmlElement element, string text)
+        {
+            XmlCharacterData[] textNodes = element.GetTextNodes().ToArray();
+            XmlText xmlText = element.OwnerDocument.CreateTextNode(text);
+            XmlCDataSection cData;
+            XmlCharacterData node;
+            if (text.Length == 0 || !(char.IsWhiteSpace(text[0]) || (text.Length > 1 && char.IsWhiteSpace(text[text.Length - 1])) || text.IndexOfAny(new char[] { '\t', '\r', '\n' }) > -1))
+                cData = null;
+            else
+            {
+                cData = element.OwnerDocument.CreateCDataSection(text);
+                if (cData.OuterXml.Length < xmlText.OuterXml.Length)
+                    xmlText = null;
+            }
+            if (xmlText == null) {
+                if (node is XmlCDataSection)
+                    node.InnerText = text;
+                else {
+                    element.ReplaceChild(cData, node);
+                    node = cData;
+                }
+            } else if (node is XmlText)
+                node.InnerText = text;
+            else {
+                element.ReplaceChild(xmlText, node);
+                node = xmlText;
+            }
+            while (node.PreviousSibling != null && node.PreviousSibling is XmlCharacterData)
+                element.RemoveChild(node.PreviousSibling);
+            while (node.NextSibling != null && node.NextSibling is XmlCharacterData)
+                element.RemoveChild(node.NextSibling);
+            if (node.NextSibling == null)
+                return;
+            for (XmlNode node = node.NextSibling.NextSibling; node != null; node = node.NextSibling) {
+                if (node is XmlCharacterData && ((XmlCharacterData)node).InnerText.Trim().Length > 0) {
+                    XmlNode n = node;
+                    node = n.PreviousSibling;
+                    element.RemoveChild(n);
+                }
+            }
+        }
+    }
+}
+'@ -ReferencedAssemblies 'System.Xml' -ErrorAction Stop;
 
 Function Test-NCName {
     <#
@@ -959,6 +1307,69 @@ Function Test-XmlDocument {
             $Success | Write-Output;
         }
     }
+}
+
+Function New-HtmlDocument {
+    [CmdletBinding()]
+    [OutputType([System.Xml.XmlDocument])]
+    Param(
+        [bool]$Aside = $false,
+        [bool]$Angular = $false
+    )
+    $XmlDocument.CreateDocumentType
+    $HtmlDocument = New-Object -TypeName 'System.Xml.XmlDocument';
+    $HtmlDocument.XmlResolver = New-Object -TypeName 'System.Xml.Resolvers.XmlPreloadedResolver' -ArgumentList ([System.Xml.Resolvers.XmlKnownDtds]::Xhtml10);
+    $ns = 'http://www.w3.org/1999/xhtml';
+    $HtmlDocument.AppendChild($HtmlDocument.CreateElement('html', $ns));
+    $HtmlDocument.DocumentElement.Attributes.Append($HtmlDocument.CreateAttribute('lang')).Value = 'en';
+    $HeadElement = $HtmlDocument.DocumentElement.AppendChild($HtmlDocument.CreateElement('head'));
+    $XmlElement = $HeadElement.AppendChild($HtmlDocument.CreateElement('meta'));
+    $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('name')).Value = 'viewport';
+    $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('content')).Value = 'width=1024, initial-scale=1.0';
+    $XmlElement = $HeadElement.AppendChild($HtmlDocument.CreateElement('meta'));
+    $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('http-equiv')).Value = 'X-UA-Compatible';
+    $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('content')).Value = 'ie=edge';
+    $XmlElement = $HeadElement.AppendChild($HtmlDocument.CreateElement('meta'));
+    $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('charset')).Value = 'utf-8';
+    $HeadElement.AppendChild($HtmlDocument.CreateElement('meta')).InnerText = $Title | Select-Object -Last 1;
+    $CssFiles = @('bootstrap/css/bootstrap.css', 'bootstrap/css/bootstrap-grid.css', 'bootstrap-table/bootstrap-table.css');
+    $JsFiles = @('/jquery/jquery.js', 'bootstrap/js/bootstrap.bundle.js');
+    if ($Angular) {
+        $CssFiles += @('angular/angular-csp.css');
+        $JsFiles += @('angular/angular.js');
+    }
+    $CssFiles | ForEach-Object {
+        $XmlElement = $HeadElement.AppendChild($HtmlDocument.CreateElement('link'));
+        $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('rel')).Value = 'stylesheet';
+        $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('type')).Value = 'text/css';
+        $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('media')).Value = 'screen';
+        $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('href')).Value = "script/api/$_";
+    }
+    $JsFiles | ForEach-Object {
+        $XmlElement = $HeadElement.AppendChild($HtmlDocument.CreateElement('script'));
+        $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('type')).Value = 'text/javascript';
+        $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('src')).Value = "script/api/$_";
+        $XmlElement.InnerText = '';
+    }
+    $BodyElement = $HtmlDocument.DocumentElement.AppendChild($HtmlDocument.CreateElement('head'));
+    $XmlElement = $BodyElement.AppendChild($HtmlDocument.CreateElement('header'));
+    $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('class')).Value = 'container-fluid border border-secondary p-sm-1';
+    $XmlElement = $BodyElement.AppendChild($HtmlDocument.CreateElement('nav'));
+    $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('class')).Value = 'container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3';
+    $XmlElement = $XmlElement.AppendChild($HtmlDocument.CreateElement('ul'));
+    $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('class')).Value = 'navbar-nav mr-auto';
+    if ($Aside) {
+        $XmlElement = $BodyElement.AppendChild($HtmlDocument.CreateElement('div'));
+        $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('class')).Value = 'class';
+        $XmlElement = $XmlElement.AppendChild($HtmlDocument.CreateElement('div'));
+        $XmlElement.Attributes.Append($HtmlDocument.CreateAttribute('class')).Value = 'row flex-nowrap';
+        $XmlElement.AppendChild($HtmlDocument.CreateElement('section')).Attributes.Append($HtmlDocument.CreateAttribute('class')).Value = 'container-fluid border border-light col-md-9 text-dark';
+        $XmlElement.AppendChild($HtmlDocument.CreateElement('aside')).Attributes.Append($HtmlDocument.CreateAttribute('class')).Value = 'container-fluid border border-secondary bg-secondary text-secondary col-md-3';
+    } else {
+        $BodyElement.AppendChild($HtmlDocument.CreateElement('section')).Attributes.Append($HtmlDocument.CreateAttribute('class')).Value = 'container-fluid border border-light p-md-3 text-dark';
+    }
+    $BodyElement.AppendChild($HtmlDocument.CreateElement('footer')).Attributes.Append($HtmlDocument.CreateAttribute('class')).Value = 'container-fluid border border-secondary p-sm-1 bg-secondary';
+    return $HtmlDocument;
 }
 
 Function Get-HtmlXmlEntityTranslate {
