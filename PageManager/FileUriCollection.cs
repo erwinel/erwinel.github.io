@@ -5,26 +5,40 @@ using System.Threading;
 
 namespace PageManager
 {
-    public partial class UriCollection : IList<FileUri>, IList
+    public partial class FileUriCollection : IList<FileUri>, IList
     {
         private List<FileUri> _innerList = new List<FileUri>();
 
-        public FileUri this[int index] {
-            get
-            {
-                Monitor.Enter(SyncRoot);
-                try { throw new NotImplementedException(); }
-                finally { Monitor.Exit(SyncRoot); }
-            }
+        public FileUri this[int index]
+        {
+            get { return _innerList[index]; }
             set
             {
+                if (value == null)
+                    throw new ArgumentNullException();
                 Monitor.Enter(SyncRoot);
-                try { throw new NotImplementedException(); }
+                try
+                {
+                    int i = _innerList.IndexOf(value);
+                    if (i == index)
+                    {
+                        if (ReferenceEquals(_innerList[i], value))
+                            return;
+                    }
+                    else if (i > -1)
+                    {
+                        _innerList.RemoveAt(i);
+                        if (i < index)
+                            index--;
+
+                    }
+                    _innerList[index] = value;
+                }
                 finally { Monitor.Exit(SyncRoot); }
             }
         }
 
-        object IList.this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        object IList.this[int index] { get { return _innerList[index]; } set { this[index] = ExtensionMethods.ConvertToFileUri(value); } }
 
         public int Count { get { return _innerList.Count; } }
 
@@ -65,7 +79,7 @@ namespace PageManager
             Monitor.Enter(SyncRoot);
             try
             {
-                FileUri item = FileUri.AsFileUri(value);
+                FileUri item = ExtensionMethods.ConvertToFileUri(value);
                 index = IndexOf(item);
                 if (index < 0)
                 {
@@ -88,7 +102,7 @@ namespace PageManager
 
         public bool Contains(FileUri item) { return _innerList.Contains(item); }
 
-        bool IList.Contains(object value) { return FileUri.TryCastAsFileUri(value, out FileUri item) && _innerList.Contains(item); }
+        bool IList.Contains(object value) { return ExtensionMethods.TryConvertToFileUri(value, out FileUri item) && _innerList.Contains(item); }
 
         public void CopyTo(FileUri[] array, int arrayIndex) { _innerList.CopyTo(array, arrayIndex); }
 
@@ -100,7 +114,7 @@ namespace PageManager
 
         public int IndexOf(FileUri item) { return _innerList.IndexOf(item); }
 
-        int IList.IndexOf(object value) { return (FileUri.TryCastAsFileUri(value, out FileUri item)) ? _innerList.IndexOf(item) : -1; }
+        int IList.IndexOf(object value) { return (ExtensionMethods.TryConvertToFileUri(value, out FileUri item)) ? _innerList.IndexOf(item) : -1; }
 
         public void Insert(int index, FileUri item)
         {
@@ -126,7 +140,7 @@ namespace PageManager
             finally { Monitor.Exit(SyncRoot); }
         }
 
-        void IList.Insert(int index, object value) { Insert(index, FileUri.AsFileUri(value)); }
+        void IList.Insert(int index, object value) { Insert(index, ExtensionMethods.ConvertToFileUri(value)); }
 
         public bool Remove(FileUri item)
         {
@@ -139,7 +153,7 @@ namespace PageManager
 
         void IList.Remove(object value)
         {
-            if (FileUri.TryCastAsFileUri(value, out FileUri item))
+            if (ExtensionMethods.TryConvertToFileUri(value, out FileUri item))
                 _innerList.Remove(item);
         }
 

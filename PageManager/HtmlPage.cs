@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -21,25 +22,23 @@ namespace PageManager
         public static readonly Regex NormalizeWhitespaceRegex = new Regex(@"\p{C}[\s\p{C}]*| [\s\p{C}]+", RegexOptions.Compiled);
         public static readonly Regex AngularIdentifierName = new Regex(@"^[a-z_][a-z\d_]*$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         public static readonly Regex ItemUrlRegex = new Regex(@"^(?<a>file:///|http(s)?://[\w\-]+(?:\.[\w\-]+)*)?(?<p>/?((?=[^/]+/(?![?#]|$))[\w \-._~:\[\]@!\$&'()*+,;=]+/)*)(?<n>[\w \-._~:\[\]@!\$&'()*+,;=]+)/?(?<q>\?[\w \-._~:/?\[\]@!\$&'()*+,;=]*)?(?<f>#[\w \-._~:/?#\[\]@!\$&'()*+,;=]*)?$");
-        
+
         public const string ElementName_Pages = "Pages";
         public const string ElementName_Page = "Page";
         public const string ElementName_OtherCssUrls = "OtherCssUrls";
         public const string ElementName_OtherJsUrls = "OtherJsUrls";
         public const string ElementName_Url = "Url";
-        public const string ElementName_ = "";
         public const string AttributeName_Heading = "Heading";
         public const string AttributeName_Name = "Name";
         public const string AttributeName_Title = "Title";
         public const string AttributeName_NgApp = "ng-app";
         public const string AttributeName_NgController = "ng-controller";
         public const string AttributeName_AngularScriptUri = "AngularScriptUri";
-        public const string AttributeName_ = "";
 
         private Collection _childPages = null;
         private Collection _parentCollection = null;
-        private UriCollection.UriStrings _otherCssUrls = new UriCollection.UriStrings();
-        private UriCollection.UriStrings _otherJsUrls = new UriCollection.UriStrings();
+        private FileUriCollection.UriStrings _otherCssUrls = new FileUriCollection.UriStrings();
+        private FileUriCollection.UriStrings _otherJsUrls = new FileUriCollection.UriStrings();
         private string _heading = null;
         private string _name = null;
         private string _title = null;
@@ -58,7 +57,12 @@ namespace PageManager
                 FileUri uri = AngularScriptUri;
                 return (uri == null) ? null : uri.ToString();
             }
-            set { AngularScriptUri = (string.IsNullOrWhiteSpace(value)) ? null : FileUri.AsFileUri(value); }
+            set
+            {
+                Monitor.Enter(SyncRoot);
+                try { AngularScriptUri = (string.IsNullOrWhiteSpace(value)) ? null : ExtensionMethods.ConvertToFileUri(value); }
+                finally { Monitor.Exit(SyncRoot); }
+            }
         }
 
         [XmlArray(ElementName = ElementName_Page, IsNullable = false)]
@@ -105,14 +109,45 @@ namespace PageManager
         public string Heading
         {
             get { return _heading; }
-            set { _heading = AsNormalizedString(value, true); }
+            set
+            {
+                Monitor.Enter(SyncRoot);
+                try { _heading = AsNormalizedString(value, true); }
+                finally { Monitor.Exit(SyncRoot); }
+            }
         }
 
         [XmlAttribute(AttributeName = AttributeName_Name)]
         public string Name
         {
             get { return _name; }
-            set { _name = AsNormalizedString(value, true); }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException();
+                string s = AsNormalizedString(value, true);
+                if (s.Length == 0)
+                    throw new ArgumentOutOfRangeException("Name cannot be empty");
+                Monitor.Enter(SyncRoot);
+                try
+                {
+                    switch (Path.GetExtension(s).ToLower())
+                    {
+                        case ".html":
+                        case ".htm":
+                            _name = Path.GetFileNameWithoutExtension(s);
+                            break;
+                        default:
+                            _name = Path.GetFileName(s);
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new ArgumentOutOfRangeException((string.IsNullOrWhiteSpace(e.Message)) ? "Invalid name" : "Invalid name: " + e.Message.TrimStart());
+                }
+                finally { Monitor.Exit(SyncRoot); }
+            }
         }
 
         [XmlAttribute(AttributeName = AttributeName_NgApp)]
@@ -121,15 +156,20 @@ namespace PageManager
             get { return _ngApp; }
             set
             {
-                string ngApp;
-                if (value == null || (ngApp = value.Trim()).Length == 0)
-                    _ngApp = null;
-                else
+                Monitor.Enter(SyncRoot);
+                try
                 {
-                    if (!AngularIdentifierName.IsMatch(ngApp))
-                        throw new ArgumentOutOfRangeException("Invalid Angular Application Name");
-                    _ngApp = ngApp;
+                    string ngApp;
+                    if (value == null || (ngApp = value.Trim()).Length == 0)
+                        _ngApp = null;
+                    else
+                    {
+                        if (!AngularIdentifierName.IsMatch(ngApp))
+                            throw new ArgumentOutOfRangeException("Invalid Angular Application Name");
+                        _ngApp = ngApp;
+                    }
                 }
+                finally { Monitor.Exit(SyncRoot); }
             }
         }
 
@@ -139,15 +179,20 @@ namespace PageManager
             get { return _ngController; }
             set
             {
-                string ngController;
-                if (value == null || (ngController = value.Trim()).Length == 0)
-                    _ngController = null;
-                else
+                Monitor.Enter(SyncRoot);
+                try
                 {
-                    if (!AngularIdentifierName.IsMatch(ngController))
-                        throw new ArgumentOutOfRangeException("Invalid Angular Controller Name");
-                    _ngController = ngController;
+                    string ngController;
+                    if (value == null || (ngController = value.Trim()).Length == 0)
+                        _ngController = null;
+                    else
+                    {
+                        if (!AngularIdentifierName.IsMatch(ngController))
+                            throw new ArgumentOutOfRangeException("Invalid Angular Controller Name");
+                        _ngController = ngController;
+                    }
                 }
+                finally { Monitor.Exit(SyncRoot); }
             }
         }
 
@@ -155,18 +200,36 @@ namespace PageManager
         public bool UsesAngular { get { return NgApp == null && NgController == null && AngularScriptUri == null; } }
 
         [XmlIgnore]
-        public UriCollection OtherCssUrls { get { return _otherCssUrls.InnerList; } }
+        public FileUriCollection OtherCssUrls { get { return _otherCssUrls.InnerList; } }
 
         [XmlArray(ElementName = ElementName_OtherCssUrls, IsNullable = false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public UriCollection.UriStrings __OtherCssUrls { get { return _otherCssUrls; } set { _otherCssUrls = value ?? new UriCollection.UriStrings(); } }
+        public FileUriCollection.UriStrings __OtherCssUrls
+        {
+            get { return _otherCssUrls; }
+            set
+            {
+                Monitor.Enter(SyncRoot);
+                try { _otherCssUrls = value ?? new FileUriCollection.UriStrings(); }
+                finally { Monitor.Exit(SyncRoot); }
+            }
+        }
 
         [XmlIgnore]
-        public UriCollection OtherJsUrls { get { return _otherJsUrls.InnerList; } }
+        public FileUriCollection OtherJsUrls { get { return _otherJsUrls.InnerList; } }
 
         [XmlArray(ElementName = ElementName_OtherJsUrls, IsNullable = false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public UriCollection.UriStrings __OtherJsUrls { get { return _otherJsUrls; } set { _otherJsUrls = value ?? new UriCollection.UriStrings(); } }
+        public FileUriCollection.UriStrings __OtherJsUrls
+        {
+            get { return _otherJsUrls; }
+            set
+            {
+                Monitor.Enter(SyncRoot);
+                try { _otherJsUrls = value ?? new FileUriCollection.UriStrings(); }
+                finally { Monitor.Exit(SyncRoot); }
+            }
+        }
 
         [XmlIgnore]
         public HtmlPage Parent
@@ -186,13 +249,56 @@ namespace PageManager
         public string Title
         {
             get { return _title; }
-            set { _title = AsNormalizedString(value, true); }
+            set
+            {
+                Monitor.Enter(SyncRoot);
+                try { _title = AsNormalizedString(value, true); }
+                finally { Monitor.Exit(SyncRoot); }
+            }
         }
 
+        private Collection<XmlNode> _content = null;
+
         [XmlIgnore]
-        public Collection<XmlNode> Content { get; set; }
+        public Collection<XmlNode> Content
+        {
+            get
+            {
+                Monitor.Enter(SyncRoot);
+                try
+                {
+                    if (_content == null)
+                        _content = new Collection<XmlNode>();
+                    return _content;
+                }
+                finally { Monitor.Exit(SyncRoot); }
+            }
+            set
+            {
+                Monitor.Enter(SyncRoot);
+                try { _content = value; }
+                finally { Monitor.Exit(SyncRoot); }
+            }
+        }
 
         public HtmlPage() { Content = new Collection<XmlNode>(); }
+
+        public Collection GetTopLevelNavItems()
+        {
+            HtmlPage parent = Parent;
+            if (parent != null)
+                return parent.GetTopLevelNavItems();
+
+            return ChildPages;
+        }
+
+        public IList<HtmlPage> GetSideNavItems()
+        {
+            HtmlPage parent = Parent;
+            if (parent == null || parent.Parent == null)
+                return new HtmlPage[0];
+            return parent.ChildPages;
+        }
 
         public static string AsNormalizedString(string value, bool emptyIsNull)
         {
@@ -267,7 +373,19 @@ namespace PageManager
 
         private void LoadContents(HtmlReaderWriter reader)
         {
-            throw new NotImplementedException();
+            Monitor.Enter(SyncRoot);
+            try
+            {
+                if (_name == null)
+                    throw new InvalidOperationException("Page name is not defined");
+                reader.FillContents(Content, GetSideNavItems().Count > 0, _name);
+                if (_childPages != null)
+                {
+                    foreach (HtmlPage page in _childPages.ToArray())
+                        page.LoadContents(reader);
+                }
+            }
+            finally { Monitor.Exit(SyncRoot); }
         }
 
         public void Save(string path)

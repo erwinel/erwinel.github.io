@@ -72,13 +72,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CssClassNameCollection.cs" />
+    <Compile Include="EntityMapDictionary.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="FileUri.cs" />
     <Compile Include="HtmlPage.Collection.cs" />
     <Compile Include="HtmlPage.cs" />
     <Compile Include="HtmlReaderWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UriCollection.cs" />
-    <Compile Include="UriCollection.UriStrings.cs" />
+    <Compile Include="FileUriCollection.cs" />
+    <Compile Include="FileUriCollection.UriStrings.cs" />
+    <Compile Include="XmlContent.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XmlContent.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XmlContent.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>XmlContent.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\FromXhtmlTransform.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Test.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
