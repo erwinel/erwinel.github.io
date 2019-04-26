@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Management.Automation;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace PageManager
 {
@@ -691,5 +692,137 @@ namespace PageManager
         /// <param name="leafName">The name of the leaf segment or <c>null</c> if the source <seealso cref="Uri"/> is empty or null.</param>
         /// <returns>The parent path of the <see cref="Uri"/> or <c>null</c> if <seealso cref="Uri"/> is relative and contains no path specification.</returns>
         public static string SplitUriPath(this Uri uri, out string leafName) { return SplitUriPath(uri, out leafName); }
+
+        public const string NamespaceURI_Xhtml = "http://www.w3.org/1999/xhtml";
+
+        public static XmlElement AppendElement(this XmlElement parent, string prefix, string localName, string namespaceURI)
+        {
+            return (XmlElement)parent.AppendChild(parent.OwnerDocument.CreateElement(prefix, localName, namespaceURI));
+        }
+
+        public static XmlElement AppendElement(this XmlElement parent, string name, string namespaceURI)
+        {
+            return (XmlElement)parent.AppendChild(parent.OwnerDocument.CreateElement(name, namespaceURI ?? NamespaceURI_Xhtml));
+        }
+
+        public static XmlElement AppendElement(this XmlElement parent, string localName)
+        {
+            return (XmlElement)parent.AppendChild(parent.OwnerDocument.CreateElement(localName, NamespaceURI_Xhtml));
+        }
+
+        public static XmlElement ApplyAttribute(this XmlElement element, string prefix, string localName, string namespaceURI, string value)
+        {
+            XmlAttribute attribute = element.Attributes[localName, namespaceURI];
+            if (attribute == null)
+            {
+                if (value != null)
+                    element.Attributes.Append(element.OwnerDocument.CreateAttribute(prefix, localName, namespaceURI)).Value = value;
+            }
+            else if (value == null)
+                element.Attributes.Remove(attribute);
+            else
+                attribute.Value = value;
+            return element;
+        }
+
+        public static XmlElement ApplyAttribute(this XmlElement element, string name, string namespaceURI, string value)
+        {
+            if (namespaceURI == null)
+                namespaceURI = "";
+            XmlAttribute attribute = element.Attributes[name, namespaceURI];
+            if (attribute == null)
+            {
+                if (value != null)
+                    element.Attributes.Append(element.OwnerDocument.CreateAttribute(name, namespaceURI)).Value = value;
+            }
+            else if (value == null)
+                element.Attributes.Remove(attribute);
+            else
+                attribute.Value = value;
+            return element;
+        }
+
+        public static XmlElement ApplyAttribute(this XmlElement element, string localName, string value)
+        {
+            XmlAttribute attribute = element.Attributes[localName];
+            if (attribute == null)
+            {
+                if (value != null)
+                    element.Attributes.Append(element.OwnerDocument.CreateAttribute(localName)).Value = value;
+            }
+            else if (value == null)
+                element.Attributes.Remove(attribute);
+            else
+                attribute.Value = value;
+            return element;
+        }
+
+        public static bool IsXhtml(this XmlElement element, string localName)
+        {
+            return element != null && element.NamespaceURI == NamespaceURI_Xhtml && element.LocalName == localName;
+        }
+
+        public static bool IsXhtml(this XmlElement element)
+        {
+            return element != null && element.NamespaceURI == NamespaceURI_Xhtml;
+        }
+
+        public static IEnumerable<XmlElement> GetXhtmlElements(this XmlElement parent)
+        {
+            if (parent != null && !parent.IsEmpty)
+            {
+                foreach (XmlNode node in parent.ChildNodes)
+                {
+                    if (node is XmlElement e && e.IsXhtml())
+                        yield return e;
+                }
+            }
+        }
+
+        public static IEnumerable<XmlElement> GetXhtmlElements(this XmlElement parent, string localName) { return GetXhtmlElements(parent).Where(e => e.LocalName == localName); }
+
+        public static XmlElement GetHtmlHeadElement(this XmlDocument document)
+        {
+            XmlElement documentElement;
+            return (document != null && (documentElement = document.DocumentElement).IsXhtml("html")) ? documentElement.GetXhtmlElements("head").FirstOrDefault() : null;
+        }
+
+        public static XmlElement GetHtmlBodyElement(this XmlDocument document)
+        {
+            XmlElement documentElement;
+            return (document != null && (documentElement = document.DocumentElement).IsXhtml("html")) ? documentElement.GetXhtmlElements("body").FirstOrDefault() : null;
+        }
+
+        public static XmlElement GetHtml5SectionElement(this XmlElement element)
+        {
+            return element?.GetXhtmlElements("section").FirstOrDefault();
+        }
+
+        public static XmlElement ImportAsXhtml(this XmlDocument document, XmlElement target)
+        {
+            if (target == null)
+                return null;
+            if (target.NamespaceURI.Length > 0)
+                return (XmlElement)document.ImportNode(target, true);
+            XmlElement result = document.CreateElement(target.LocalName, NamespaceURI_Xhtml);
+            if (target.HasAttributes)
+            {
+                foreach (XmlAttribute attribute in target.Attributes)
+                    result.Attributes.Append((XmlAttribute)document.ImportNode(attribute, true));
+            }
+            if (!target.IsEmpty)
+            {
+                foreach (XmlNode node in target.ChildNodes)
+                {
+                    if (node is XmlElement)
+                        result.AppendChild(ImportAsXhtml(document, (XmlElement)node));
+                    else
+                        result.AppendChild(document.ImportNode(node, true));
+                }
+            }
+            return result;
+        }
+
+        public static XmlElement ImportAsXhtml(this XmlNode node, XmlElement target) { return ImportAsXhtml((node is XmlDocument) ? (XmlDocument)node : node.OwnerDocument, target); }
     }
 }

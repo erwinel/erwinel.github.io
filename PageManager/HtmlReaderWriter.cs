@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Management.Automation;
+using System.Management.Automation.Host;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -21,6 +23,7 @@ namespace PageManager
     public class HtmlReaderWriter
     {
         public const string NamespaceURI_Xhtml = "http://www.w3.org/1999/xhtml";
+        public const string MimeType_Xhtml = "application/xhtml+xml";
         public const string XPath_Abs_Html = "/h:html";
         public const string XPath_Rel_Body = "h:body";
         public const string XPath_Rel_Section = "h:section";
@@ -31,9 +34,11 @@ namespace PageManager
 
         public string BasePath { get; }
 
+        public PSHost Host { get; }
+
         public CssClassNameCollection PageHeadingClass { get; set; }
 
-        public HtmlReaderWriter(string basePath)
+        public HtmlReaderWriter(string basePath, PSHost host)
         {
             if (basePath == null)
                 throw new ArgumentNullException(basePath);
@@ -46,6 +51,7 @@ namespace PageManager
                     basePath = s;
             }
             BasePath = basePath;
+            Host = host;
         }
 
         internal string GetPath(string name)
@@ -100,40 +106,56 @@ namespace PageManager
             yield return "/" + XPath_Rel_Section;
         }
 
-        internal void FillContents(Collection<XmlNode> content, bool hasAside, string name)
+        public static XmlDocument CreateHtml5Document(bool hasAside, XmlPreloadedResolver resolver, out XmlElement sectionElement)
         {
-            if (content == null)
-                throw new ArgumentNullException("content");
+            XmlDocument resultDocument = CreateHtml5Document(resolver);
+            XmlElement xmlElement = resultDocument.GetHtmlBodyElement();
+            if (hasAside)
+                xmlElement = xmlElement.AppendElement("div").ApplyAttribute("class", "container").AppendElement("div").ApplyAttribute("class", "row");
+            sectionElement = xmlElement.AppendElement("section");
+            return resultDocument;
+        }
+
+        public static XmlDocument CreateHtml5Document(bool hasAside, out XmlElement sectionElement) { return CreateHtml5Document(hasAside, null, out sectionElement); }
+
+        public static XmlDocument CreateHtml5Document(XmlPreloadedResolver resolver)
+        {
+            XmlDocument resultDocument = new XmlDocument { XmlResolver = resolver ?? new XmlPreloadedResolver(XmlKnownDtds.Xhtml10) };
+            resultDocument.AppendChild(resultDocument.CreateDocumentType("html", "", EntityMapDictionary.DtdURI_Xhtml_Transitional, ""));
+            XmlElement xmlElement = ((XmlElement)resultDocument.AppendChild(resultDocument.CreateElement("html", NamespaceURI_Xhtml))).AppendElement("head");
+            xmlElement.AppendElement("meta").ApplyAttribute("name", "viewport").ApplyAttribute("content", "width=1024, initial-scale=1.0");
+            xmlElement.AppendElement("meta").ApplyAttribute("http-equiv", "X-UA-Compatible").ApplyAttribute("content", "utf-8");
+            xmlElement.AppendElement("meta").ApplyAttribute("charset", "ie=edge");
+            xmlElement.AppendElement("title").InnerText = "";
+            xmlElement = resultDocument.DocumentElement.AppendElement("body");
+            return resultDocument;
+        }
+
+        public static XmlDocument CreateHtml5Document() { return CreateHtml5Document(null); }
+
+        internal XmlElement GetContent(bool hasAside, string name)
+        {
             XmlDocument htmlDocument = LoadHtml(GetPath(name), out XmlPreloadedResolver resolver);
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(htmlDocument.NameTable);
             nsmgr.AddNamespace("h", htmlDocument.DocumentElement.NamespaceURI);
+            XmlDocument result = CreateHtml5Document(hasAside, resolver, out XmlElement sectionElement);
             XmlElement element = GetSectionXPaths(hasAside).Select(x => htmlDocument.SelectSingleNode(x, nsmgr)).Cast<XmlElement>().FirstOrDefault(e => e != null);
-            content.Clear();
             if (element == null || element.IsEmpty)
-                return;
-            XmlDocument resultDocument = new XmlDocument();
-            resultDocument.XmlResolver = resolver;
-            resultDocument.AppendChild(resultDocument.ImportNode(htmlDocument.DocumentType, true));
-            string ns = htmlDocument.DocumentElement.NamespaceURI;
-            resultDocument.AppendChild(resultDocument.CreateElement("html", ns)).AppendChild(resultDocument.CreateElement("head", ns)).InnerText = "";
-            XmlElement parentElement = (XmlElement)resultDocument.DocumentElement.AppendChild(resultDocument.CreateElement("body", ns));
-            if (hasAside)
-            {
-                parentElement = (XmlElement)parentElement.AppendChild(resultDocument.CreateElement("div", ns));
-                parentElement.Attributes.Append(resultDocument.CreateAttribute("class")).Value = "container";
-                parentElement = (XmlElement)parentElement.AppendChild(resultDocument.CreateElement("div", ns));
-                parentElement.Attributes.Append(resultDocument.CreateAttribute("class")).Value = "row";
-            }
-            parentElement = (XmlElement)resultDocument.DocumentElement.AppendChild(resultDocument.CreateElement("section", ns));
+                return sectionElement;
             foreach (XmlNode node in element.ChildNodes)
-                content.Add(parentElement.AppendChild(resultDocument.ImportNode(node, true)));
+            {
+                if (node is XmlElement)
+                    sectionElement.AppendChild(result.ImportAsXhtml((XmlElement)node));
+                else
+                    sectionElement.AppendChild(result.ImportNode(node, true));
+            }
+            return sectionElement;
         }
 
         public static XmlDocument LoadHtml(string path, out XmlPreloadedResolver resolver)
         {
             resolver = new XmlPreloadedResolver(XmlKnownDtds.Xhtml10);
-            XmlDocument htmlDocument = new XmlDocument();
-            htmlDocument.XmlResolver = resolver;
+            XmlDocument htmlDocument = new XmlDocument { XmlResolver = resolver };
             htmlDocument.AppendChild(htmlDocument.CreateDocumentType("html", "", EntityMapDictionary.DtdURI_Xhtml_Transitional, ""));
             htmlDocument.AppendChild(htmlDocument.CreateElement("html", NamespaceURI_Xhtml));
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
@@ -223,33 +245,157 @@ namespace PageManager
             }
         }
 
-        public static string FromXhtml(XmlDocument source, out Encoding encoding)
-        {
-            XslCompiledTransform transform = new XslCompiledTransform();
-            XmlDocument document = new XmlDocument();
-            document.LoadXml(XmlContent.FromXhtmlTransform);
-            transform.Load(document);
-            XmlWriterSettings settings = new XmlWriterSettings { CheckCharacters = false, Encoding = (encoding = new UTF8Encoding(false, false)), Indent = true, OmitXmlDeclaration = true, CloseOutput = false };
-            string text;
-            using (MemoryStream stream = new MemoryStream())
-            {
-                using (XmlWriter xmlWriter = XmlWriter.Create(stream, settings))
-                {
-                    transform.Transform(source, xmlWriter);
-                    xmlWriter.Flush();
-                }
-                stream.Seek(0L, SeekOrigin.Begin);
-                using (StreamReader reader = new StreamReader(stream, settings.Encoding))
-                    text = reader.ReadToEnd();
-            }
-            Match m = DocTypeRegex.Match(text);
-            return "<!DOCTYPE html>" + Environment.NewLine + ((m.Success) ? text.Substring(m.Length) : text);
-        }
-
-        public static void SaveHtml(string path, XmlDocument document)
+        public static byte[] ToBytes(XmlDocument document, Encoding encoding)
         {
             ConvertElementContentToEntities(document, EntityMapDictionary.Default, document.DocumentElement);
-            File.WriteAllText(path, FromXhtml(document, out Encoding encoding), encoding);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (XmlWriter writer = XmlWriter.Create(stream, new XmlWriterSettings
+                {
+                    CheckCharacters = false,
+                    Encoding = encoding ?? new UTF8Encoding(false, false),
+                    Indent = true,
+                    OmitXmlDeclaration = true,
+                    CloseOutput = false
+                }))
+                {
+                    writer.WriteDocType("html", null, null, null);
+                    document.DocumentElement.WriteTo(writer);
+                    writer.Flush();
+                }
+                return stream.ToArray();
+            }
+        }
+
+        public static byte[] ToBytes(XmlDocument document) { return ToBytes(document, null); }
+
+        public static void SaveHtml(string path, XmlDocument document, Encoding encoding)
+        {
+            File.WriteAllBytes(path, ToBytes(document, encoding));
+        }
+
+        public const string ProgressActivity_SavePages = "Saving Page Content";
+
+        public void SavePages(IEnumerable<HtmlPage> pages)
+        {
+            HtmlPage[] pageArray = pages.ToArray();
+            int total = pageArray.Length;
+            for (int pageIndex = 0; pageIndex < pageArray.Length; pageIndex++)
+            {
+                HtmlPage page = pageArray[pageIndex];
+                if (Host != null)
+                    Host.UI.WriteProgress(1L, new ProgressRecord(0, ProgressActivity_SavePages, "Saving page " + (pageIndex + 1).ToString() + " of " + total.ToString())
+                    {
+                        CurrentOperation = page.Title,
+                        PercentComplete = Convert.ToInt32(Convert.ToSingle(pageIndex * 100) / Convert.ToSingle(total))
+                    });
+                try
+                {
+                    XmlDocument document = CreateHtml5Document();
+                    XmlElement element = document.GetHtmlHeadElement();
+                    element.GetXhtmlElements("title").First().InnerText = page.Title;
+                    element.AppendElement("link").ApplyAttribute("rel", "stylesheet").ApplyAttribute("type", "text/css").ApplyAttribute("media", "screen").ApplyAttribute("href", "script/api/bootstrap/css/bootstrap.css");
+                    element.AppendElement("link").ApplyAttribute("rel", "stylesheet").ApplyAttribute("type", "text/css").ApplyAttribute("media", "screen").ApplyAttribute("href", "script/api/bootstrap/css/bootstrap-grid.css");
+                    element.AppendElement("link").ApplyAttribute("rel", "stylesheet").ApplyAttribute("type", "text/css").ApplyAttribute("media", "screen").ApplyAttribute("href", "script/api/bootstrap-table/bootstrap-table.css");
+                    if (page.UsesAngular)
+                        element.AppendElement("link").ApplyAttribute("rel", "stylesheet").ApplyAttribute("type", "text/css").ApplyAttribute("media", "screen").ApplyAttribute("href", "script/api/angular/angular-csp.css");
+                    foreach (FileUri uri in page.OtherCssUrls)
+                        element.AppendElement("link").ApplyAttribute("rel", "stylesheet").ApplyAttribute("type", "text/css").ApplyAttribute("media", "screen").ApplyAttribute("href", uri.ToString());
+                    element.AppendElement("script").ApplyAttribute("type", "text/javascript").ApplyAttribute("href", "script/api/jquery/jquery.js").InnerText = "";
+                    element.AppendElement("script").ApplyAttribute("type", "text/javascript").ApplyAttribute("href", "script/api/bootstrap/js/bootstrap.bundle.js").InnerText = "";
+                    if (page.UsesAngular)
+                        element.AppendElement("script").ApplyAttribute("type", "text/javascript").ApplyAttribute("href", "script/api/angular/angular.js").InnerText = "";
+                    foreach (FileUri uri in page.OtherJsUrls)
+                        element.AppendElement("script").ApplyAttribute("type", "text/javascript").ApplyAttribute("href", uri.ToString()).InnerText = "";
+                    element = document.GetHtmlBodyElement();
+                    XmlElement parentElement = element.AppendElement("header").ApplyAttribute("class", "container-fluid border border-secondary p-sm-1");
+                    HtmlPage parentPage = page.Parent;
+                    int level = 1;
+                    if (parentPage != null && parentPage.Parent != null)
+                    {
+                        do { parentElement.AppendElement((level < 6) ? "h" + level.ToString() : "h6").InnerText = parentPage.Heading; }
+                        while ((parentPage = parentPage.Parent) != null && parentPage.Parent != null);
+                    }
+                    parentElement.AppendElement((level < 6) ? "h" + level.ToString() : "h6").InnerText = page.Heading;
+                    parentElement = element.AppendElement("nav").ApplyAttribute("class", "container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3")
+                        .AppendElement("ul").ApplyAttribute("class", "navbar-nav mr-auto");
+                    foreach (HtmlPage navPage in page.GetTopLevelNavItems())
+                    {
+                        if (ReferenceEquals(navPage, page))
+                            parentElement.AppendElement("li").ApplyAttribute("class", "active nav-item border border-secondary bg-dark")
+                                .AppendElement("a").ApplyAttribute("href", "#").ApplyAttribute("class", "active nav-link text-light").ApplyAttribute("onclick", "return false;")
+                                .InnerText = navPage.LinkName;
+                        else if (page.IsContainedBy(navPage))
+                            parentElement.AppendElement("li").ApplyAttribute("class", "active nav-item border border-secondary bg-dark")
+                                .AppendElement("a").ApplyAttribute("href", navPage.FileName + ".html").ApplyAttribute("class", "active nav-link text-light")
+                                .InnerText = navPage.LinkName;
+                        else
+                            parentElement.AppendElement("li").ApplyAttribute("class", "nav-item border border-secondary bg-dark")
+                                .AppendElement("a").ApplyAttribute("href", navPage.FileName + ".html").ApplyAttribute("class", "nav-link text-light")
+                                .InnerText = navPage.LinkName;
+                    }
+                    IList<HtmlPage> sideNav = page.GetSideNavItems();
+                    if (sideNav.Count == 0)
+                        parentElement = element.AppendElement("section").ApplyAttribute("class", "container-fluid border border-light p-md-3 text-dark");
+                    else
+                    {
+                        XmlElement containerElement = element.AppendElement("div").ApplyAttribute("class", "container").AppendElement("div").ApplyAttribute("class", "row flex-nowrap");
+                        parentElement = containerElement.AppendElement("section").ApplyAttribute("class", "container-fluid border border-light col-md-9 text-dark");
+                        containerElement = containerElement.AppendElement("aside").ApplyAttribute("class", "coontainer-fluid border border-secondary bg-secondary text-secondary col-md-3");
+                        foreach (HtmlPage navPage in sideNav)
+                        {
+                            if (ReferenceEquals(navPage, page))
+                                containerElement.AppendElement("li").ApplyAttribute("class", "active nav-item border border-secondary bg-dark")
+                                    .AppendElement("a").ApplyAttribute("href", "#").ApplyAttribute("class", "active nav-link text-light").ApplyAttribute("onclick", "return false;")
+                                    .InnerText = navPage.LinkName;
+                            else
+                                containerElement.AppendElement("li").ApplyAttribute("class", "nav-item border border-secondary bg-dark")
+                                    .AppendElement("a").ApplyAttribute("href", navPage.FileName + ".html").ApplyAttribute("class", "nav-link text-light")
+                                    .InnerText = navPage.LinkName;
+                        }
+                    }
+                    string text = page.NgApp;
+                    if (text != null)
+                        parentElement.SetAttribute("ng-app", text);
+                    text = page.NgController;
+                    if (text != null)
+                        parentElement.SetAttribute("ng-controller", text);
+                    XmlElement content = page.Content;
+                    if (!content.IsEmpty)
+                    {
+                        foreach (XmlNode node in content.ChildNodes)
+                        {
+                            if (node is XmlElement)
+                                parentElement.AppendChild(document.ImportAsXhtml((XmlElement)node));
+                            else
+                                parentElement.AppendChild(document.ImportNode(node, true));
+                        }
+                    }
+                    element.AppendElement("footer").ApplyAttribute("class", "container-fluid border border-secondary p-sm-1 bg-secondary").InnerText = "Notice goes here";
+                    SaveHtml(GetPath(page.FileName), document, null);
+                }
+                catch (Exception exception)
+                {
+                    if (Host != null)
+                    {
+                        string message = "Error saving page " + (pageIndex + 1).ToString() + ": " + exception.ToString();
+                        Host.UI.WriteProgress(1L, new ProgressRecord(0, ProgressActivity_SavePages, message)
+                        {
+                            CurrentOperation = page.Title,
+                            PercentComplete = Convert.ToInt32(Convert.ToSingle(pageIndex * 100) / Convert.ToSingle(total)),
+                            RecordType = ProgressRecordType.Completed
+                        });
+                        Host.UI.WriteErrorLine(message);
+                    }
+                    throw;
+                }
+            }
+            if (Host != null)
+                Host.UI.WriteProgress(1L, new ProgressRecord(0, ProgressActivity_SavePages, "Completed")
+                {
+                    PercentComplete = 100,
+                    RecordType = ProgressRecordType.Completed
+                });
         }
     }
 }

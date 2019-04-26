@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Management.Automation;
+using System.Management.Automation.Host;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -29,7 +31,8 @@ namespace PageManager
         public const string ElementName_OtherJsUrls = "OtherJsUrls";
         public const string ElementName_Url = "Url";
         public const string AttributeName_Heading = "Heading";
-        public const string AttributeName_Name = "Name";
+        public const string AttributeName_FileName = "FileName";
+        public const string AttributeName_LinkName = "LinkName";
         public const string AttributeName_Title = "Title";
         public const string AttributeName_NgApp = "ng-app";
         public const string AttributeName_NgController = "ng-controller";
@@ -40,7 +43,8 @@ namespace PageManager
         private FileUriCollection.UriStrings _otherCssUrls = new FileUriCollection.UriStrings();
         private FileUriCollection.UriStrings _otherJsUrls = new FileUriCollection.UriStrings();
         private string _heading = null;
-        private string _name = null;
+        private string _fileName = null;
+        private string _linkName = null;
         private string _title = null;
         private string _ngApp = null;
         private string _ngController = null;
@@ -105,10 +109,47 @@ namespace PageManager
             }
         }
 
+        [XmlAttribute(AttributeName = AttributeName_Title)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string __Title
+        {
+            get
+            {
+                string value = _title;
+                return (value == null || _fileName != value) ? value : null;
+            }
+            set { Title = value; }
+        }
+
+        [XmlIgnore]
+        public string Title
+        {
+            get { return ((_title ?? _heading) ?? _linkName) ?? _fileName; }
+            set
+            {
+                Monitor.Enter(SyncRoot);
+                try { _title = AsNormalizedString(value, true); }
+                finally { Monitor.Exit(SyncRoot); }
+            }
+        }
+
         [XmlAttribute(AttributeName = AttributeName_Heading)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string __Heading
+        {
+            get
+            {
+                string value = _heading;
+                string title;
+                return (value == null || (((title = _title) == null || title != value) && _fileName != value)) ? value : null;
+            }
+            set { Heading = value; }
+        }
+
+        [XmlIgnore]
         public string Heading
         {
-            get { return _heading; }
+            get { return ((_heading ?? _title) ?? _linkName) ?? _fileName; }
             set
             {
                 Monitor.Enter(SyncRoot);
@@ -117,16 +158,41 @@ namespace PageManager
             }
         }
 
-        [XmlAttribute(AttributeName = AttributeName_Name)]
-        public string Name
+        [XmlAttribute(AttributeName = AttributeName_LinkName)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string __LinkName
         {
-            get { return _name; }
+            get
+            {
+                string value = _linkName;
+                string title;
+                return (value == null || (((title = _title) == null || title != value) && _fileName != value)) ? value : null;
+            }
+            set { LinkName = value; }
+        }
+
+        [XmlIgnore]
+        public string LinkName
+        {
+            get { return ((_linkName ?? _title) ?? _heading) ?? _fileName; }
+            set
+            {
+                Monitor.Enter(SyncRoot);
+                try { _linkName = AsNormalizedString(value, true); }
+                finally { Monitor.Exit(SyncRoot); }
+            }
+        }
+
+        [XmlAttribute(AttributeName = AttributeName_FileName)]
+        public string FileName
+        {
+            get { return _fileName; }
             set
             {
                 if (value == null)
                     throw new ArgumentNullException();
                 string s = AsNormalizedString(value, true);
-                if (s.Length == 0)
+                if (s == null)
                     throw new ArgumentOutOfRangeException("Name cannot be empty");
                 Monitor.Enter(SyncRoot);
                 try
@@ -135,10 +201,10 @@ namespace PageManager
                     {
                         case ".html":
                         case ".htm":
-                            _name = Path.GetFileNameWithoutExtension(s);
+                            _fileName = Path.GetFileNameWithoutExtension(s);
                             break;
                         default:
-                            _name = Path.GetFileName(s);
+                            _fileName = Path.GetFileName(s);
                             break;
                     }
                 }
@@ -245,22 +311,10 @@ namespace PageManager
         [XmlIgnore]
         public object SyncRoot { get; } = new object();
 
-        [XmlAttribute(AttributeName = AttributeName_Title)]
-        public string Title
-        {
-            get { return _title; }
-            set
-            {
-                Monitor.Enter(SyncRoot);
-                try { _title = AsNormalizedString(value, true); }
-                finally { Monitor.Exit(SyncRoot); }
-            }
-        }
-
-        private Collection<XmlNode> _content = null;
+        private XmlElement _content = null;
 
         [XmlIgnore]
-        public Collection<XmlNode> Content
+        public XmlElement Content
         {
             get
             {
@@ -268,7 +322,10 @@ namespace PageManager
                 try
                 {
                     if (_content == null)
-                        _content = new Collection<XmlNode>();
+                    {
+                        HtmlReaderWriter.CreateHtml5Document(GetSideNavItems().Count > 0, out XmlElement content);
+                        _content = content;
+                    }
                     return _content;
                 }
                 finally { Monitor.Exit(SyncRoot); }
@@ -280,8 +337,6 @@ namespace PageManager
                 finally { Monitor.Exit(SyncRoot); }
             }
         }
-
-        public HtmlPage() { Content = new Collection<XmlNode>(); }
 
         public Collection GetTopLevelNavItems()
         {
@@ -329,7 +384,29 @@ namespace PageManager
 
         public override bool Equals(object obj) { return obj != null && Collection.TryCastAsHtmlPage(obj, out HtmlPage result) && ReferenceEquals(this, result); }
 
-        public override int GetHashCode() { return Name.GetHashCode(); }
+        public override int GetHashCode() { return FileName.GetHashCode(); }
+
+        public IEnumerable<HtmlPage> GetAllChildPages()
+        {
+            Collection childPages = _childPages;
+            if (childPages != null)
+            {
+                foreach (HtmlPage page in childPages)
+                {
+                    yield return page;
+                    foreach (HtmlPage p in page.GetAllChildPages())
+                        yield return p;
+                }
+            }
+        }
+
+        public IEnumerable<HtmlPage> GetAllPages()
+        {
+            HtmlPage parent = Parent;
+            if (parent != null)
+                return parent.GetAllPages();
+            return (new HtmlPage[] { this }).Concat(GetAllChildPages());
+        }
 
         public bool IsContainedBy(HtmlPage other)
         {
@@ -369,22 +446,31 @@ namespace PageManager
             return (HtmlPage)serializer.Deserialize(reader);
         }
 
-        public void LoadContents(string basePath) { LoadContents(new HtmlReaderWriter(basePath)); }
+        public void LoadContents(string basePath, PSHost host) { LoadContents(new HtmlReaderWriter(basePath, host)); }
 
-        private void LoadContents(HtmlReaderWriter reader)
+        public void LoadContents(HtmlReaderWriter reader)
         {
             Monitor.Enter(SyncRoot);
             try
             {
-                if (_name == null)
+                if (_fileName == null)
                     throw new InvalidOperationException("Page name is not defined");
-                reader.FillContents(Content, GetSideNavItems().Count > 0, _name);
+                Content = reader.GetContent(GetSideNavItems().Count > 0, _fileName);
                 if (_childPages != null)
                 {
                     foreach (HtmlPage page in _childPages.ToArray())
                         page.LoadContents(reader);
                 }
             }
+            finally { Monitor.Exit(SyncRoot); }
+        }
+
+        public void SaveContents(string basePath, PSHost host) { SaveContents(new HtmlReaderWriter(basePath, host)); }
+
+        public void SaveContents(HtmlReaderWriter writer)
+        {
+            Monitor.Enter(SyncRoot);
+            try { writer.SavePages((new HtmlPage[] { this }).Concat(GetAllChildPages())); }
             finally { Monitor.Exit(SyncRoot); }
         }
 

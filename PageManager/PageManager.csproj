@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\FromXhtmlTransform.xslt" />
+    <Content Include="Resources\HTML5Page1.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Test.ps1" />
