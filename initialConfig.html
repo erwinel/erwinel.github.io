@@ -9,24 +9,27 @@
     <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap-grid.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap-table/bootstrap-table.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="script/api/angular/angular-csp.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="style/theme.css" />
     <script type="text/javascript" src="script/api/jquery/jquery.js"></script>
+    <!-- <script type="text/javascript" src="script/api/popper.js/popper.js"></script> -->
     <script type="text/javascript" src="script/api/bootstrap/js/bootstrap.bundle.js"></script>
     <script type="text/javascript" src="script/api/angular/angular.js"></script>
-    <script type="text/javascript" src="script/Utility.js"></script>
-    <script type="text/javascript" src="script/ColorInfo.js"></script>
-    <script type="text/javascript" src="script/app/initialConfig.js"></script>
+    <!-- <script type="text/javascript" src="script/Utility.js"></script> -->
+    <!-- <script type="text/javascript" src="script/ColorInfo.js"></script> -->
+    <script type="text/javascript" src="script/app/InitialConfig.js"></script>
 </head>
 <body>
-    <header class="container-fluid border border-secondary p-sm-1"><h1>Initial Configuration Instructions</h1></header>
-    <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light border border-light p-sm-1 mr-md-3">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item border border-secondary bg-dark"><a href="index.html" class="nav-link text-light">Home</a></li>
-            <li class="active nav-item border border-secondary bg-dark"><a href="#" class="active nav-link text-light" onclick="return false;">Initial Config</a></li>
-            <li class="nav-item border border-secondary bg-dark"><a href="snippets.html" class="nav-link text-light">Code Snippets</a></li>
+    <header class="container-fluid p-1"><h1>Initial Configuration Instructions</h1></header>
+    <nav class="container-fluid navbar navbar-expand-sm p-1">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="ImplementationNotes.html" class="nav-link">Implementation Notes</a></li>
+            <li class="nav-item"><a href="#" class="active nav-link" onclick="return false;">Initial Config</a></li>
+            <li class="nav-item"><a href="DevResources.html" class="nav-link">Dev Resources</a></li>
         </ul>
     </nav>
-    <section class="container-fluid border border-light p-md-3 text-dark" ng-app="mainModule" ng-controller="mainController">
-        <form id="setupOverviewTasksForm" action="default.html">
+    <section class="container-fluid" ng-app="mainModule" ng-controller="mainController">
+        <form id="setupOverviewTasksForm" action="initialConfig.html">
             <div class="card" ng-controller="adminLoginsController">
                 <div class="card-header p-1">
                     <h2 class="card-title mb-0">
@@ -44,6 +47,10 @@
                             <li>admin</li>
                             <li>security_admin</li>
                         </ul>
+                        <p class="alert-info">
+                            <strong>Note:</strong>
+                            In order to be able to add the security_admin role, you will need to elevate roles to security_admin.
+                        </p>2019-04-22 15:04:43
                     </div>
                     <div class="card">
                         <div class="card-header">
@@ -639,6 +646,6 @@
             </div>
         </form>
     </section>
-    <footer class="container-fluid border border-secondary p-sm-1 bg-secondary">It all ends with the footer.</footer>
+    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
 </body>
 </html>

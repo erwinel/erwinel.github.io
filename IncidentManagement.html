@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=1024, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta charset="utf-8" />
+    <title>ServiceNow Implementation Notes - Incident Management</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap-grid.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap-table/bootstrap-table.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="script/api/angular/angular-csp.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="style/theme.css" />
+    <script type="text/javascript" src="script/api/jquery/jquery.js"></script>
+    <script type="text/javascript" src="script/api/bootstrap/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="script/api/angular/angular.js"></script>
+    <script type="text/javascript" src="script/app/IncidentManagement.js"></script>
+</head>
+<body>
+    <header class="container-fluid p-1">
+        <h1>ServiceNow Implementation Notes: Incident Management</h1>
+    </header>
+    <nav class="container-fluid navbar navbar-expand-sm p-1">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="ImplementationNotes.html" class="active nav-link">Implementation Notes</a></li>
+            <li class="nav-item"><a href="InitialConfig.html" class="nav-link">Initial Config</a></li>
+            <li class="nav-item"><a href="DevResources.html" class="nav-link">Dev Resources</a></li>
+        </ul>
+    </nav>
+    <form id="setupOverviewTasksForm" action="initialConfig.html">
+        <div class="container-fluid" ng-app="mainModule" ng-controller="mainController">
+            <div class="row flex-nowrap">
+                <section class="container-fluid col-8 col-lg-9">
+                    <div class="card" ng-controller="priorityExampleController">
+                        <div class="card-header">
+                            <h2 class="card-title">Priority Assessment</h2>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                Incidents submitted using the &quot;Submit a New Incident&quot; service catalog item prompt the user to provide information, which is used to calculate the
+                                initial Impact and Urgency values for the incident. In turn, the Impact and Urgency values, together with the user's VIP status determine the actual incident property.
+                            </div>
+                            <div>
+                                The following form uses a copy of the actual JavaScript code from ServiceNow to demonstrate the results of urgency, impact and priority value calculations.
+                            </div>
+                            <div class="container-fluid">
+                                <div class="row flex-nowrap form-group">
+                                    <label for="users_impacted" class="col-2 text-right pr-1 font-weight-bold pl-0">{{ users_impacted.label }}:</label>
+                                    <select class="form-control col-10 pl-1" id="users_impacted" name="users_impacted" ng-model="users_impacted.selected" ng-change="onOptionChange()">
+                                        <option ng-repeat="u in users_impacted.options" ng-value="u.value">{{ u.text }}</option>
+                                    </select>
+                                </div>
+                                <div class="row flex-nowrap form-group">
+                                    <label for="productivity_impact" class="col-2 text-right font-weight-bold pr-1 pl-0">{{ productivity_impact.label }}:</label>
+                                    <select class="form-control col-10 pl-1" id="productivity_impact" name="productivity_impact" ng-model="productivity_impact.selected" ng-change="onOptionChange()">
+                                        <option ng-repeat="u in productivity_impact.options" ng-value="u.value">{{ u.text }}</option>
+                                    </select>
+                                </div>
+                                <div class="row flex-nowrap">
+                                    <label class="col-2 text-right font-weight-bold pr-1 pl-0">{{ is_mission_related.label }}:</label>
+                                    <div class="col-2 form-group pl-1">
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" id="is_mission_related_yes" name="is_mission_related" ng-model="is_mission_related.value" value="Yes" ng-change="onOptionChange()" />
+                                            <label class="form-check-label" for="is_mission_related_yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="fform-check-input" id="is_mission_related_no" name="is_mission_related" ng-model="is_mission_related.value" value="No" ng-change="onOptionChange()" />
+                                            <label class="form-check-label" for="is_mission_related_no">No</label>
+                                        </div>
+                                    </div>
+                                    <label class="col-2 text-right font-weight-bold pr-1 pl-0">{{ caller_vip.label }}:</label>
+                                    <div class="col-6 form-group pl-1">
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" id="caller_vip_yes" name="caller_vip" ng-model="caller_vip.value" ng-value="true" ng-change="onOptionChange()" />
+                                            <label class="form-check-label" for="caller_vip_yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" id="caller_vip_no" name="caller_vip" ng-model="caller_vip.value" ng-value="false" ng-change="onOptionChange()" />
+                                            <label class="form-check-label" for="caller_vip_no">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row flex-nowrap">
+                                    <div class="col-2 text-right font-weight-bold pr-0 pl-0">Impact:</div>
+                                    <div class="col-2 pl-1 pr-2">{{ get3TierDescription(impact.rounded) }}</div>
+                                    <div class="col-2 text-right font-weight-bold pr-0 pl-1">Urgency:</div>
+                                    <div class="col-2 pl-1 pr-2">{{ get3TierDescription(urgency.rounded) }}</div>
+                                    <div class="col-2 text-right font-weight-bold pr-0 pl-1">Priority:</div>
+                                    <div class="col-2 pl-1 pr-2">{{ get3TierDescription(priority) }}</div>
+                                </div>
+                                <div class="row flex-nowrap">
+                                    <div class="col-12"><h3>Calculations</h3></div>
+                                </div>
+                                <div class="row flex-nowrap" ng-show="users_impacted.isAutoValue || productivity_impact.isAutoValue">
+                                    <div class="col-2"></div>
+                                    <div class="col-10 alert-info">
+                                        <div class="font-weight-bold">Using assumed values</div>
+                                        <span ng-show="users_impacted.isAutoValue">
+                                            <span ng-show="productivity_impact.isAutoValue">
+                                                When neither <code class="codeLabel codeGroup1">{{ users_impacted.label }}</code> nor <code class="codeLabel codeGroup2">{{ productivity_impact.label }}</code>
+                                                are selected for <span ng-hide="is_mission_related.value == 'Yes'">non-</span>mission-related incidents for
+                                                <span ng-hide="caller_vip.value">non-</span>VIP users, a value of {{ productivity_impact.value }} is assumed.
+                                            </span>
+                                            <span ng-hide="productivity_impact.isAutoValue">
+                                                <code class="codeLabel codeGroup1">{{ users_impacted.label }}</code> is not specified: Assuming same value as the <code class="codeLabel codeGroup2">{{ productivity_impact.label }}</code> selection.
+                                            </span>
+                                        </span>
+                                        <span ng-hide="users_impacted.isAutoValue">
+                                            <code class="codeLabel codeGroup2">{{ productivity_impact.label }}</code> is not specified: Assuming same value as the <code class="codeLabel codeGroup1">{{ users_impacted.label }}</code> selection.
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row flex-nowrap bg-light">
+                                    <div class="col-2 text-right"><h4>Impact</h4></div>
+                                    <div class="col-10 pl-0">
+                                        <pre><code>Impact = Math.round(
+    (
+        (<span class="codeLabel codeGroup1">[{{ users_impacted.label }}]</span> + <span class="codeLabel codeGroup2">[{{ productivity_impact.label }}]</span>)
+        &times;
+        (<span class="codeLabel codeGroup3">[{{ is_mission_related.label }} Delta]</span> + <span class="codeLabel codeGroup4">[{{ caller_vip.label }} Delta]</span>)
+    ) / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>)
+);</code></pre>
+                                    </div>
+                                </div>
+                                <div class="row flex-nowrap">
+                                    <div class="col-2"></div>
+                                    <div class="col-10 pl-0">
+                                        <pre>&rArr;     <code>(
+        <span class="codeGroup5" style="padding: 2px">(<span class="codeNumber codeGroup1">{{ users_impacted.value }}</span> + <span class="codeNumber codeGroup2">{{ productivity_impact.value }}</span>)</span> &times; <span class="codeGroup6" style="padding: 2px">(<span class="codeNumber codeGroup3">{{ is_mission_related.operand }}</span> + <span class="codeNumber codeGroup4">{{ caller_vip.operand }}</span>)</span>
+      ) / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>)</code></pre>
+                                    </div>
+                                </div>
+                                <div class="row flex-nowrap">
+                                    <div class="col-2"></div>
+                                    <div class="col-10 pl-0">
+                                        <pre>&rArr;    <code><span class="codeGroup3" style="padding: 2px">(<span class="codeNumber codeGroup5">{{ users_impacted.value + productivity_impact.value }}</span> &times; <span class="codeNumber codeGroup6">{{ is_mission_related.operand + caller_vip.operand }}</span>)</span> / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>)</code></pre>
+                                    </div>
+                                </div>
+                                <div class="row flex-nowrap">
+                                    <div class="col-2"></div>
+                                    <div class="col-10 pl-0">
+                                        <pre>&rArr;    <code><strong>{{ impact.value }}</strong> = <span class="codeNumber codeGroup3">{{ (users_impacted.value + productivity_impact.value) * (is_mission_related.operand + caller_vip.operand) }}</span> / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>);</code></pre>
+                                        <pre class="alert-success"><code><strong>Result: {{ impact.rounded }}</strong> = Math.round(<strong>{{ impact.value }}</strong>);</code></pre>
+                                    </div>
+                                </div>
+                                <div class="row flex-nowrap bg-light">
+                                    <div class="col-2 text-right"><h4>Urgency</h4></div>
+                                    <div class="col-10 pl-0">
+                                        <pre><code>current.urgency = Math.round(
+    (
+        <span class="codeLabel codeGroup2">[{{ productivity_impact.label }}]</span> + (
+            (<span class="codeLabel codeGroup4">[{{ caller_vip.label }}]</span> == true) ?
+                ((<span class="codeLabel codeGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">1</span> : <span class="codeNumber">2</span>) :
+                ((<span class="codeLabel codeGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">3</span> : <span class="codeNumber">4</span>)
+        )
+    ) * <span class="codeNumber">0.35</span>
+);</code></pre>
+                                    </div>
+                                </div>
+                                <div class="row flex-nowrap">
+                                    <div class="col-2"></div>
+                                    <div class="col-10 pl-0">
+                                        <pre>&rArr;  <code>( <span class="codeLabel codeGroup2">{{ productivity_impact.value }}</span> + <strong>(</strong>
+        (<span class="codeNumber codeGroup4">[{{ caller_vip.label }}: {{ caller_vip.value }}]</span> == true) ?
+            ((<span class="codeLabel codeGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">1</span> : <span class="codeNumber">2</span>) :
+            ((<span class="codeLabel codeGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">3</span> : <span class="codeNumber">4</span>)
+    <strong>)</strong> ) * <span class="codeNumber">0.35</span></code></pre>
+                                    </div>
+                                </div>
+                                <div class="row flex-nowrap">
+                                    <div class="col-2"></div>
+                                    <div class="col-10 pl-0">
+                                        <pre>&rArr;  <code>( <span class="codeNumber codeGroup2">{{ productivity_impact.value }}</span> + <strong>(</strong>
+        (<span class="codeLabel codeGroup3">[{{ is_mission_related.label }}: {{ is_mission_related.value == "Yes" }}]</span> == true) ? <span class="codeNumber">{{ (caller_vip.value) ? 1 : 3 }}</span> : <span class="codeNumber">{{ (caller_vip.value) ? 2 : 4 }}</span>
+    <strong>)</strong> ) * <span class="codeNumber">0.35</span></code></pre>
+                                    </div>
+                                </div>
+                                <div class="row flex-nowrap">
+                                    <div class="col-2"></div>
+                                    <div class="col-10 pl-0">
+                                        <pre>&rArr;  <code><strong>{{ urgency.value }}</strong> = (<span class="codeNumber codeGroup2">{{ productivity_impact.value }}</span> + <span class="codeNumber">{{ (caller_vip.value) ? ((is_mission_related.value == "Yes") ? 1 : 2) : ((is_mission_related.value == "Yes") ? 3 : 4) }}</span>) * <span class="codeNumber">0.35</span></code></pre>
+                                        <pre class="alert-success"><code><strong>Result: {{ urgency.rounded }}</strong> = Math.round(<strong>{{ urgency.value }}</strong>);</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table>
+                            <caption>Other Incident Management Behaviors</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Property</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Auto-Close</th>
+                                    <td>7 days after incident is <strong>resolved</strong>.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <aside class="container-fluid col-4 col-lg-3">
+                    <div class="card">
+                        <div class="card-header"><h4>Modules</h4></div>
+                        <div class="card-body">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"><a href="ServiceCatalog.html" class="nav-link">Service Catalog</a></li>
+                                <li class="nav-item"><a class="active nav-link" href="#" onclick="return false;">Incident Management</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </form>
+    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+</body>
+</html>
