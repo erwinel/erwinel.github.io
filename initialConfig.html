@@ -14,7 +14,7 @@
     <!-- <script type="text/javascript" src="script/api/popper.js/popper.js"></script> -->
     <script type="text/javascript" src="script/api/bootstrap/js/bootstrap.bundle.js"></script>
     <script type="text/javascript" src="script/api/angular/angular.js"></script>
-    <!-- <script type="text/javascript" src="script/Utility.js"></script> -->
+    <script type="text/javascript" src="script/Utility.js"></script> 
     <!-- <script type="text/javascript" src="script/ColorInfo.js"></script> -->
     <script type="text/javascript" src="script/app/InitialConfig.js"></script>
 </head>
@@ -30,6 +30,28 @@
     </nav>
     <section class="container-fluid" ng-app="mainModule" ng-controller="mainController">
         <form id="setupOverviewTasksForm" action="initialConfig.html">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">protocol:</div>
+                    <div class="col">{{ protocol }}</div>
+                </div>
+                <div class="row">
+                    <div class="col">pathname:</div>
+                    <div class="col">{{ pathname }}</div>
+                </div>
+                <div class="row">
+                    <div class="col">qp1:</div>
+                    <div class="col">{{ qp1 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col">qp2:</div>
+                    <div class="col">{{ qp2 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col">hash:</div>
+                    <div class="col">{{ hash }}</div>
+                </div>
+            </div>
             <div class="card" ng-controller="adminLoginsController">
                 <div class="card-header p-1">
                     <h2 class="card-title mb-0">

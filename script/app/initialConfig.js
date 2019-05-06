@@ -25,6 +25,16 @@ function setupTopLevelCardChange($scope, name, headingText) {
 var mainModule = angular.module("mainModule", []);
 mainModule.controller("mainController", function($scope) {
     var notifyCardChange = [];
+    var uri = new URL('http://tempuri.org/my%20path/my name/mypage.aspx?yours=mine+theirs&see&me=%20#hash%3Ddone');
+    $scope.protocol = uri.protocol;
+    $scope.pathname = uri.pathname;
+    var iterator = uri.searchParams[Symbol.iterator]();
+    var r = iterator.next();
+    var v = r.value[0];
+    $scope.qp1 = (typeof (v) === 'string') ? JSON.stringify(v) : typeof (v);
+    v = r.value[1];
+    $scope.qp2 = (typeof (v) === 'string') ? JSON.stringify(v) : typeof (v);
+    $scope.hash = uri.hash;
     $scope.addNotifyTopLevelCardSelect = function(f) {
         if (typeof(f) === "function")
             notifyCardChange.push(f);
