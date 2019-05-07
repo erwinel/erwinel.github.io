@@ -1,7 +1,404 @@
-/// <reference path="Utility.ts" />
+/// <reference path="CommonJsUtility.ts" />
 
-import * as Utility from "./Utility";
-import { Util } from "../../script/api/bootstrap/js/bootstrap";
+import * as CJU from "./CommonJsUtility";
+
+class UriBuilderScheme {
+    private _origin: UriBuilderOrigin;
+
+    constructor(origin: UriBuilderOrigin) { this._origin = origin; }
+
+    get name(): string { throw new Error("Property not implemented."); }
+    set name(value: string) { throw new Error("Property not implemented."); }
+
+    get protocol(): string { throw new Error("Property not implemented."); }
+    set protocol(value: string) { throw new Error("Property not implemented."); }
+
+    get separator(): string { throw new Error("Property not implemented."); }
+}
+
+class UriBuilderUser {
+    private _origin: UriBuilderOrigin;
+
+    constructor(origin: UriBuilderOrigin) { this._origin = origin; }
+
+    get name(): string { throw new Error("Property not implemented."); }
+    set name(value: string) { throw new Error("Property not implemented."); }
+
+    get password(): string | undefined { throw new Error("Property not implemented."); }
+    set password(value: string | undefined) { throw new Error("Property not implemented."); }
+}
+
+class UriBuilderHost {
+    private _origin: UriBuilderOrigin;
+
+    constructor(origin: UriBuilderOrigin) { this._origin = origin; }
+
+    get hostname(): string { throw new Error("Property not implemented."); }
+    set hostname(value: string) { throw new Error("Property not implemented."); }
+
+    get port(): string | undefined { throw new Error("Property not implemented."); }
+    set port(value: string | undefined) { throw new Error("Property not implemented."); }
+
+    get portNumber(): number | undefined { throw new Error("Property not implemented."); }
+    set portNumber(value: number | undefined) { throw new Error("Property not implemented."); }
+}
+class UriBuilderOrigin {
+    private _href: UriBuilderHref;
+    private _scheme: UriBuilderScheme;
+    private _user?: UriBuilderUser = undefined;
+    private _host?: UriBuilderHost = undefined;
+
+    get protocol(): string { throw new Error("Property not implemented."); }
+    set protocol(value: string) { throw new Error("Property not implemented."); }
+
+    get scheme(): string | undefined { throw new Error("Property not implemented."); }
+    set scheme(value: string | undefined) { throw new Error("Property not implemented."); }
+
+    get separator(): string { throw new Error("Property not implemented."); }
+
+    get username(): string | undefined { throw new Error("Property not implemented."); }
+    set username(value: string | undefined) { throw new Error("Property not implemented."); }
+
+    get password(): string | undefined { throw new Error("Property not implemented."); }
+    set password(value: string | undefined) { throw new Error("Property not implemented."); }
+
+    get host(): string { throw new Error("Property not implemented."); }
+    set host(value: string) { throw new Error("Property not implemented."); }
+
+    get hostname(): string | undefined { throw new Error("Property not implemented."); }
+    set hostname(value: string | undefined) { throw new Error("Property not implemented."); }
+
+    get port(): string | undefined { throw new Error("Property not implemented."); }
+    set port(value: string | undefined) { throw new Error("Property not implemented."); }
+
+    get portNumber(): number | undefined { throw new Error("Property not implemented."); }
+    set portNumber(value: number | undefined) { throw new Error("Property not implemented."); }
+
+    constructor(href: UriBuilderHref) {
+        this._href = href;
+        this._scheme = new UriBuilderScheme(this);
+    }
+
+    raiseSchemeChanged(): void {
+        this._href.raiseOrginChanged();
+    }
+
+    raiseUserChanged(): void {
+        this._href.raiseOrginChanged();
+    }
+
+    raiseHostChanged(): void {
+        this._href.raiseOrginChanged();
+    }
+}
+
+class UriBuilderPath implements Iterable<string> {
+    static readonly PathSeperatorPattern: RegExp = /[\/\\]+/;
+
+    private _href: UriBuilderHref;
+
+    get pathname(): string { throw new Error("Property not implemented."); }
+    set pathname(value: string) { throw new Error("Property not implemented."); }
+
+    constructor(href: UriBuilderHref) { this._href = href; }
+
+    [Symbol.iterator](): Iterator<string> {
+        throw new Error("Method not implemented.");
+    }
+}
+
+class UriBuilderQuery implements URLSearchParams {
+    reset(value: URLSearchParams): any {
+        throw new Error("Method not implemented.");
+    }
+    private _href: UriBuilderHref;
+
+    get search(): string { throw new Error("Property not implemented."); }
+    set search(value: string) { throw new Error("Property not implemented."); }
+
+    constructor(href: UriBuilderHref) { this._href = href; }
+
+
+    append(name: string, value: string): void {
+        throw new Error("Method not implemented.");
+    }
+
+    delete(name: string): void {
+        throw new Error("Method not implemented.");
+    }
+    get(name: string): string {
+        throw new Error("Method not implemented.");
+    }
+    getAll(name: string): string[] {
+        throw new Error("Method not implemented.");
+    }
+    has(name: string): boolean {
+        throw new Error("Method not implemented.");
+    }
+    set(name: string, value: string): void {
+        throw new Error("Method not implemented.");
+    }
+    sort(): void {
+        throw new Error("Method not implemented.");
+    }
+    forEach(callbackfn: (value: string, key: string, parent: URLSearchParams) => void, thisArg?: any): void {
+        throw new Error("Method not implemented.");
+    }
+    [Symbol.iterator](): IterableIterator<[string, string]> {
+        throw new Error("Method not implemented.");
+    }
+    entries(): IterableIterator<[string, string]> {
+        throw new Error("Method not implemented.");
+    }
+    keys(): IterableIterator<string> {
+        throw new Error("Method not implemented.");
+    }
+    values(): IterableIterator<string> {
+        throw new Error("Method not implemented.");
+    }
+}
+
+class UriBuilderHref {
+    private _href: string = '';
+    private _origin?: UriBuilderOrigin = undefined;
+    private _path: UriBuilderPath;
+    private _query?: UriBuilderQuery = undefined;
+    private _fragment?: string = undefined;
+
+    get href(): string { return this._href; }
+    set href(value: string) {
+        if (typeof (value) !== 'string')
+            value = '';
+    }
+
+    get protocol(): string { return (typeof (this._origin) === 'undefined') ? '' : this._origin.protocol; }
+    set protocol(value: string) {
+        if (typeof (this._origin) === 'undefined') {
+            if (CJU.isEmptyOrNotString(value))
+                return;
+            this._origin = new UriBuilderOrigin(this);
+        }
+        this._origin.protocol = value;
+    }
+
+    get scheme(): string | undefined {
+        if (typeof (this._origin) !== 'undefined')
+            return this._origin.scheme;
+    }
+    set scheme(value: string | undefined) {
+        if (typeof (this._origin) === 'undefined') {
+            if (typeof (value) !== 'string')
+                return;
+            this._origin = new UriBuilderOrigin(this);
+        }
+        this._origin.scheme = value;
+    }
+
+    get separator(): string { return (typeof (this._origin) !== 'undefined') ? this._origin.separator : ''; }
+
+    get username(): string | undefined {
+        if (typeof (this._origin) !== 'undefined')
+            return this._origin.username;
+    }
+    set username(value: string | undefined) {
+        if (typeof (this._origin) === 'undefined') {
+            if (typeof (value) !== 'string')
+                return;
+            this._origin = new UriBuilderOrigin(this);
+        }
+        this._origin.username = value;
+    }
+
+    get password(): string | undefined {
+        if (typeof (this._origin) !== 'undefined')
+            return this._origin.password;
+    }
+    set password(value: string | undefined) {
+        if (typeof (this._origin) === 'undefined') {
+            if (typeof (value) !== 'string')
+                return;
+            this._origin = new UriBuilderOrigin(this);
+        }
+        this._origin.password = value;
+    }
+
+    get host(): string { return (typeof (this._origin) !== 'undefined') ? this._origin.host : ''; }
+    set host(value: string) {
+        if (typeof (this._origin) === 'undefined') {
+            if (CJU.isEmptyOrNotString(value))
+                return;
+            this._origin = new UriBuilderOrigin(this);
+        }
+        this._origin.host = value;
+    }
+
+    get hostname(): string | undefined {
+        if (typeof (this._origin) !== 'undefined')
+            return this._origin.hostname;
+    }
+    set hostname(value: string | undefined) {
+        if (typeof (this._origin) === 'undefined') {
+            if (typeof (value) !== 'string')
+                return;
+            this._origin = new UriBuilderOrigin(this);
+        }
+        this._origin.hostname = value;
+    }
+
+    get port(): string | undefined {
+        if (typeof (this._origin) !== 'undefined')
+            return this._origin.port;
+    }
+    set port(value: string | undefined) {
+        if (typeof (this._origin) === 'undefined') {
+            if (typeof (value) !== 'string')
+                return;
+            this._origin = new UriBuilderOrigin(this);
+        }
+        this._origin.port = value;
+    }
+
+    get portNumber(): number | undefined { return (typeof (this._origin) !== 'undefined') ? this._origin.portNumber : NaN; }
+    set portNumber(value: number | undefined) {
+        if (typeof (this._origin) === 'undefined') {
+            if (typeof (value) !== 'number' || isNaN(value))
+                return;
+            this._origin = new UriBuilderOrigin(this);
+        }
+        this._origin.portNumber = value;
+    }
+
+    get pathname(): string { return this._path.pathname; }
+    set pathname(value: string) { this._path.pathname = value; }
+
+    get search(): string { return (typeof (this._query) !== 'undefined') ? this._query.search : ''; }
+    set search(value: string) {
+        if (typeof (this._query) === 'undefined') {
+            if (CJU.isEmptyOrNotString(value))
+                return;
+            this._query = new UriBuilderQuery(this);
+        }
+        this._query.search = value;
+    }
+
+    get searchParams(): URLSearchParams {
+        if (typeof (this._query) === 'undefined')
+            this._query = new UriBuilderQuery(this);
+        return this._query;
+    }
+    set searchParams(value: URLSearchParams) {
+        if (CJU.isNil(value)) {
+            if (typeof (this._query) === 'undefined')
+                return;
+            this._query = undefined;
+            this.raiseHrefChanged();
+        } else
+            this._query.reset(value);
+    }
+
+    get fragment(): string | undefined { return this._fragment; }
+    set fragment(value: string | undefined) {
+        if (typeof (value) === 'string') {
+            if (this._fragment === value)
+                return;
+            this._fragment = value;
+        } else {
+            if (typeof (this._fragment) !== 'string')
+                return;
+            this._fragment = undefined;
+        }
+        this.raiseHrefChanged();
+    }
+
+    get hash(): string { return (typeof (this._fragment) !== 'undefined') ? '#' + this._fragment : ''; }
+    set hash(value: string) {
+        if (CJU.isEmptyOrNotString(value)) {
+            if (typeof (this._fragment) === 'undefined')
+                return;
+            this._fragment = undefined;
+        } else {
+            if (value.startsWith('#'))
+                value = value.substr(1);
+            if (this._fragment === value)
+                return;
+            this._fragment = value;
+        }
+        this.raiseHrefChanged();
+    }
+
+    constructor() {
+        this._path = new UriBuilderPath(this);
+    }
+
+    raiseOrginChanged(): void {
+        this.raiseHrefChanged();
+    }
+
+    raisePathChanged(): void {
+        this.raiseHrefChanged();
+    }
+
+    raiseQueryChanged(): void {
+        this.raiseHrefChanged();
+    }
+
+    private raiseHrefChanged(): void {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export class UriBuilder implements URL {
+    static readonly UrlPattern: RegExp = /^(?:([^#?:\/\\@]*)(:(?:[\\\/][\\\/]?)?)(?:([^#?:\/\\@]*):([^#?:\/\\@]*)@)?(?:([^#?:\/\\@]*):(\d+))?)?([^#?]*)?(?:\?([^#]*))?(?:#(.*))?$/;
+
+    private _href: UriBuilderHref = new UriBuilderHref();
+
+    constructor(uri?: string) {
+
+    }
+
+    get href(): string { throw new Error("Property not implemented."); }
+    set href(value: string) { throw new Error("Property not implemented."); }
+
+    get origin(): string { throw new Error("Property not implemented."); }
+    set origin(value: string) { throw new Error("Property not implemented."); }
+
+    get protocol(): string { throw new Error("Property not implemented."); }
+    set protocol(value: string) { throw new Error("Property not implemented."); }
+
+    get username(): string { throw new Error("Property not implemented."); }
+    set username(value: string) { throw new Error("Property not implemented."); }
+
+    get password(): string { throw new Error("Property not implemented."); }
+    set password(value: string) { throw new Error("Property not implemented."); }
+
+    get host(): string { throw new Error("Property not implemented."); }
+    set host(value: string) { throw new Error("Property not implemented."); }
+
+    get hostname(): string { throw new Error("Property not implemented."); }
+    set hostname(value: string) { throw new Error("Property not implemented."); }
+
+    get pathname(): string { throw new Error("Property not implemented."); }
+    set pathname(value: string) { throw new Error("Property not implemented."); }
+
+    get port(): string { throw new Error("Property not implemented."); }
+    set port(value: string) { throw new Error("Property not implemented."); }
+
+    get search(): string { throw new Error("Property not implemented."); }
+    set search(value: string) { throw new Error("Property not implemented."); }
+
+    get searchParams(): URLSearchParams { throw new Error("Property not implemented."); }
+    set searchParams(value: URLSearchParams) { throw new Error("Property not implemented."); }
+
+    get hash(): string { throw new Error("Property not implemented."); }
+    set hash(value: string) { throw new Error("Property not implemented."); }
+
+    toJSON(): string {
+        throw new Error("Method not implemented.");
+    }
+
+
+}
+
 
 interface IUrlProperties {
     isAbsoluteUri: boolean;
@@ -88,7 +485,7 @@ export class UrlQuery implements URLSearchParams {
             } else {
                 this._properties = { pathName: '', pathSegments: [], queryParams: [], isAbsoluteUri: false, isDirty: false, schemeDefinition: new KnownSchemeDefinition() };
                 searchParams.forEach((value: string, key: string) => {
-                    this._properties.queryParams.push({ name: key, value: Utility.asStringOrNull(value) });
+                    this._properties.queryParams.push({ name: key, value: CJU.asStringOrNull(value) });
                 }, this);
                 this.updateQueryString();
             }
@@ -98,7 +495,7 @@ export class UrlQuery implements URLSearchParams {
     append(name: string, value: string | null): void {
         if (typeof(name) !== 'string')
             throw new Error("Name must be a string value.");
-        this._properties.queryParams.push({ name: name, value: Utility.asStringOrNull(value) });
+        this._properties.queryParams.push({ name: name, value: CJU.asStringOrNull(value) });
         this.updateQueryString();
     }
 
@@ -179,8 +576,8 @@ export class UrlQuery implements URLSearchParams {
 
     sort(): void {
         this._properties.queryParams = this._properties.queryParams.sort((a: { name: string; value: string | null }, b: { name: string; value: string | null }) => {
-            let n: number = Utility.compareStrings(a.name, b.name);
-            return (n == 0) ? Utility.compareStrings(a.value, b.value) : n;
+            let n: number = CJU.compareStrings(a.name, b.name);
+            return (n == 0) ? CJU.compareStrings(a.value, b.value) : n;
         });
     }
 
@@ -408,9 +805,9 @@ export class PathNameCollection implements Iterable<string> {
         let pathName: string = this._properties.pathName;
         this._properties.pathSegments = segments.filter((s: string) => typeof (s) === 'string' && s.length > 0);
         this._properties.pathName = (this._properties.pathSegments.length == 0) ? '' : this._properties.pathSegments.join('/');
-        if (this._properties.isAbsoluteUri || (segments.length > 0 && Utility.isEmptyOrNotString(segments[0])))
+        if (this._properties.isAbsoluteUri || (segments.length > 0 && CJU.isEmptyOrNotString(segments[0])))
             this._properties.pathName = '/' + this._properties.pathName;
-        if (this._properties.pathSegments.length > 0 && Utility.isEmptyOrNotString(segments[segments.length - 1]))
+        if (this._properties.pathSegments.length > 0 && CJU.isEmptyOrNotString(segments[segments.length - 1]))
             this._properties.pathName += '/';
         if (pathName !== this._properties.pathName)
             this._properties.isDirty = true;
@@ -462,7 +859,7 @@ class KnownSchemeDefinition {
     get allowFragment(): boolean { return this._allowFragment; }
 
     constructor(name?: string) {
-        if (Utility.notNilOrEmpty(name)) {
+        if (CJU.notNilOrEmpty(name)) {
             this._name = name;
             switch (name) {
                 case 'http':
@@ -484,7 +881,7 @@ class KnownSchemeDefinition {
     }
 }
 
-export class UriBuilder implements URL {
+export class UriBuilderOld implements URL {
     private _properties: IUrlProperties;
     private _segments: PathNameCollection;
     private _searchParams?: UrlQuery;
@@ -498,7 +895,7 @@ export class UriBuilder implements URL {
     }
     set protocol(value: string) {
         let oldSchema: KnownSchemeDefinition = this._properties.schemeDefinition;
-        if (Utility.notNilOrEmpty(value)) {
+        if (CJU.notNilOrEmpty(value)) {
             if (value == this._properties.schemeDefinition.name)
                 return;
             this._properties.schemeDefinition = new KnownSchemeDefinition(value);
@@ -515,7 +912,7 @@ export class UriBuilder implements URL {
         this._properties.isDirty = true;
     }
 
-    get username(): string | undefined { return (Utility.notNil(this._properties.userName) || Utility.notString(this._properties.password)) ? this._properties.userName : ''; }
+    get username(): string | undefined { return (CJU.notNil(this._properties.userName) || CJU.notString(this._properties.password)) ? this._properties.userName : ''; }
     set username(value: string | undefined) { this._properties.userName = value; }
 
     get password(): string | undefined { return this._properties.password; }
@@ -523,10 +920,10 @@ export class UriBuilder implements URL {
 
     get host(): string {
         let h: string = this.hostname;
-        return (Utility.notNilOrEmpty(h)) ? ((Utility.notNilOrEmpty(this._properties.port)) ? h + ':' + this._properties.port : h) : '';
+        return (CJU.notNilOrEmpty(h)) ? ((CJU.notNilOrEmpty(this._properties.port)) ? h + ':' + this._properties.port : h) : '';
     }
     set host(value: string) {
-        if (Utility.notNilOrEmpty(value)) {
+        if (CJU.notNilOrEmpty(value)) {
             let index: number = value.lastIndexOf(':');
             if (index < 0) {
                 this.hostname = value;
@@ -540,17 +937,17 @@ export class UriBuilder implements URL {
     }
 
     get hostname(): string {
-        return (Utility.notNil(this._properties.hostName) || (this._properties.schemeDefinition.name.length == 0 && Utility.notString(this._properties.userName) &&
-            Utility.notString(this._properties.password) && Utility.notNilOrEmpty(this._properties.port)) ? this._properties.hostName :
+        return (CJU.notNil(this._properties.hostName) || (this._properties.schemeDefinition.name.length == 0 && CJU.notString(this._properties.userName) &&
+            CJU.notString(this._properties.password) && CJU.notNilOrEmpty(this._properties.port)) ? this._properties.hostName :
             "tempuri.org");
     }
     set hostname(value: string) {
-        if (Utility.notNil(value)) {
+        if (CJU.notNil(value)) {
             if (this._properties.hostName === value)
                 return;
             this._properties.hostName = value;
         } else {
-            if (Utility.notString(this._properties.hostName))
+            if (CJU.notString(this._properties.hostName))
                 return;
             this._properties.hostName = undefined;
         }
@@ -559,12 +956,12 @@ export class UriBuilder implements URL {
 
     get port(): string { return this._properties.port; }
     set port(value: string) {
-        if (Utility.notNil(value)) {
+        if (CJU.notNil(value)) {
             if (this._properties.port === value)
                 return;
             this._properties.port = value;
         } else {
-            if (Utility.notString(this._properties.port))
+            if (CJU.notString(this._properties.port))
                 return;
             this._properties.port = undefined;
         }
@@ -597,9 +994,9 @@ export class UriBuilder implements URL {
     get searchParams(): URLSearchParams { return this._searchParams; }
     set searchParams(value: URLSearchParams) { this._searchParams.reset(value); }
 
-    get hash(): string { return (Utility.notNilOrEmpty(this._properties.fragment)) ? '#' + this._properties.fragment : ''; }
+    get hash(): string { return (CJU.notNilOrEmpty(this._properties.fragment)) ? '#' + this._properties.fragment : ''; }
     set hash(value: string) {
-        if (Utility.notNilOrEmpty(value)) {
+        if (CJU.notNilOrEmpty(value)) {
             if (value.startsWith('#'))
                 value = value.substr(1);
             if (value === this._properties.fragment)
