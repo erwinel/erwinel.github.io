@@ -1,5 +1,4 @@
-/// <reference path="CommonJsUtility.ts" />
-//import * as CJS from './CommonJsUtility';
+/// <reference path="MainModule.ts" />
 class MyClass {
     constructor() {
         this.value = 0;

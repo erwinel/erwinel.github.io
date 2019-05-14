@@ -194,7 +194,7 @@ var cards;
             super($scope);
             this.$scope = $scope;
             this._name = _name;
-            $scope.currentCardName = name;
+            $scope.currentCardName = _name;
             $scope.cardHeadingText = headingText;
             let i = $scope.$parent.indexOfCard(_name);
             if (i < 0) {
@@ -207,7 +207,7 @@ var cards;
             $scope.expandCurrentCard = () => { return controller.expandCurrentCard(); };
             $scope.collapseCurrentCard = () => { return controller.collapseCurrentCard(); };
             $scope.toggleCurrentCard = () => { return controller.toggleCurrentCard(); };
-            if ($scope.$parent.selectedCardName === name || (i < 1 && typeof ($scope.$parent.selectedCardName) === 'undefined'))
+            if ($scope.$parent.selectedCardName === _name || (i < 1 && typeof ($scope.$parent.selectedCardName) === 'undefined'))
                 this.expandCurrentCard();
             else
                 this.collapseCurrentCard();

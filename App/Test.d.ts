@@ -1,3 +1,4 @@
+/// <reference path="MainModule.d.ts" />
 declare class MyClass {
     value: number;
 }

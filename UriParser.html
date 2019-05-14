@@ -15,29 +15,22 @@
   <script type="text/javascript" src="App/UriBuilderController.js"></script>
 </head>
 <body>
-  <header class="container-fluid p-1"><h1>{{ pageNavigation.pageTitle }}</h1></header>
-  <nav class="container-fluid navbar navbar-expand-sm p-1">
-    <ul class="navbar-nav">
-      <li class="nav-item" ng-repeat="i in pageNavigation.top.items"><a ng-href="{{i.href}}" ng-class="i.class" ng-click="return i.onClick()">{{ i.linkTitle }}</a></li>
-    </ul>
-  </nav>
-  <div class="container-fluid">
-    <div class="row flex-nowrap">
-      <section class="container-fluid col-8 col-lg-9" ng-controller="UriBuilderController">
-
-      </section>
-      <aside class="container-fluid col-4 col-lg-3">
-        <div class="card">
-          <div class="card-header"><h4>Resource Pages</h4></div>
-          <div class="card-body">
-            <ul class="nav flex-column">
-              <li class="nav-item" ng-repeat="i in pageNavigation.side.items"><a ng-href="{{i.href}}" ng-class="i.class" ng-click="return i.onClick()">{{ i.linkTitle }}</a></li>
-            </ul>
-          </div>
+    <main-app-page-head></main-app-page-head>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <section class="container-fluid col-8 col-lg-9" ng-controller="UriBuilderController"></section>
+            <aside class="container-fluid col-4 col-lg-3">
+                <div class="card">
+                    <div class="card-header"><h4>Resource Pages</h4></div>
+                    <div class="card-body">
+                        <ul class="nav flex-column">
+                            <li class="nav-item" ng-repeat="i in pageNavigation.side.items"><a ng-href="{{i.href}}" ng-class="i.class" ng-click="return i.onClick()">{{ i.linkTitle }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
         </div>
-      </aside>
     </div>
-  </div>
-  <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
 </body>
 </html>

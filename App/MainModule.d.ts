@@ -1,58 +1,6 @@
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
-declare namespace fieldEdit {
-    interface IFieldInputParentScope<TParent extends app.IMainControllerScope> extends app.INestedControllerScope<TParent> {
-        inputFieldValueChanged(name: string, value: any | undefined): void;
-        getInputFieldValue(name: string): any | undefined;
-    }
-    interface IFieldInputScope<TParent extends app.IMainControllerScope> extends IFieldInputParentScope<TParent>, app.INestedControllerScope<TParent> {
-        name: string;
-        label: string;
-        text: string;
-        value: any;
-        isRequired: boolean;
-        isValid: boolean;
-        $parent: TParent;
-        validationMessage: string;
-        cssClassNames: string[];
-    }
-    enum cssValidationClass {
-        isValid = "is-valid",
-        isInvalid = "is-invalid"
-    }
-    abstract class fieldEditController<TParentScope extends app.IMainControllerScope, TScope extends IFieldInputScope<TParentScope>> extends app.MainControllerChild<TScope> {
-        private _name;
-        private _text;
-        private _value?;
-        private _isRequired;
-        private _validationMessage;
-        readonly name: string;
-        text: string;
-        readonly isValid: boolean;
-        validationMessage: string;
-        constructor($scope: TScope, name: string, label?: string, isRequired?: boolean);
-        $doCheck(): void;
-        private onValidationChange;
-        protected coerceValue(value: any | null | undefined): any | null | undefined;
-        protected convertToString(value: any | null | undefined): string;
-        protected convertToValue(text: string, currentValue: any | null | undefined): any | null | undefined;
-        /**
-         * Re-validates the {@link IFieldInputScope#text} if any changes are detected.
-         *
-         * @returns {boolean} true if the {@link IFieldInputScope#text} is valid; otherwise, false.
-         */
-        validate(): boolean;
-        protected updateValidationMessage(): void;
-    }
-    interface IUrlFieldInputScope<TParent extends app.IMainControllerScope> extends IFieldInputScope<TParent> {
-        url?: URL;
-    }
-    abstract class urlFieldEditController<TParentScope extends app.IMainControllerScope, TScope extends IUrlFieldInputScope<TParentScope>> extends fieldEditController<TParentScope, TScope> {
-        constructor($scope: TScope, name: string, label?: string);
-        protected updateValidationMessage(): void;
-    }
-}
 declare namespace app {
     /**
     * The main module for this app.
@@ -121,6 +69,7 @@ declare namespace app {
      * @returns {string} Input value converted to a string.
      */
     function asString(value: any | null | undefined, trim?: boolean, allowNil?: boolean): any;
+    function stringBefore(source: string, search: string): string;
     /**
      * Ensures that a value is a floating-point number, converting it if necessary.
      * @param value
@@ -224,13 +173,25 @@ declare namespace app {
         isCurrent: boolean;
         onClick(): void;
     }
-    interface ISetupParameterDefinitionScope extends fieldEdit.IFieldInputParentScope<IMainControllerScope> {
+    interface INestedControllerScope<TParent extends IMainControllerScope> extends IMainControllerScope {
+        $parent: TParent;
+    }
+    interface IMainControllerScope extends ng.IScope {
         serviceNowUrl: string;
         gitRepositoryBaseUrl: string;
-        editDialogVisible: boolean;
-        showEditDialog(): void;
-        hideEditDialog(): void;
+        pageNavigation: PageNavigationScope;
+        showSetupParametersEditDialog(): void;
     }
+    abstract class MainControllerChild<TScope extends INestedControllerScope<IMainControllerScope>> implements ng.IController {
+        protected $scope: TScope;
+        $doCheck(): void;
+        constructor($scope: TScope);
+        showSetupParametersEditDialog(): void;
+        hideSetupParametersEditDialog(): void;
+        showModalDialogMessage(message: string, type?: DialogMessageType, title?: string): void;
+        hideModalDialogMessage(): void;
+    }
+    type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';
     interface IDialogScope extends INestedControllerScope<IMainControllerScope> {
         isVisible: boolean;
         title: string;
@@ -239,24 +200,63 @@ declare namespace app {
         show(message: string, type?: DialogMessageType, title?: string): any;
         close(): any;
     }
-    type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';
-    interface INestedControllerScope<TParent extends IMainControllerScope> extends IMainControllerScope {
-        $parent: TParent;
+    const BroadcastEvent_OpenMainModalPopupDialog: string;
+    const BroadcastEvent_CloseMainModalPopupDialog: string;
+    class mainModalPopupDialogController extends MainControllerChild<IDialogScope> {
+        static show($scope: ng.IScope, message: string, type?: DialogMessageType, title?: string): void;
+        static hide($scope: ng.IScope): void;
+        constructor($scope: IDialogScope, $rootScope: ng.IScope);
     }
-    interface IMainControllerScope extends ng.IScope {
-        setupParameterDefinitions: ISetupParameterDefinitionScope;
-        popupDialog: IDialogScope;
-        pageNavigation: PageNavigationScope;
+    const uriParseRegex: RegExp;
+    enum uriParseGroup {
+        all = 0,
+        origin = 1,
+        schemeName = 2,
+        schemeSeparator = 3,
+        userInfo = 4,
+        username = 5,
+        password = 6,
+        hostname = 7,
+        portnumber = 8,
+        path = 9
     }
-    abstract class MainControllerChild<TScope extends INestedControllerScope<IMainControllerScope>> implements ng.IController {
-        protected $scope: TScope;
+    enum cssValidationClass {
+        isValid = "is-valid",
+        isInvalid = "is-invalid"
+    }
+    enum cssFeedbackClass {
+        isValid = "is-valid",
+        isInvalid = "is-invalid"
+    }
+    interface ISetupParameterDefinitions {
+        serviceNowUrl: string;
+        gitRepositoryBaseUrl: string;
+    }
+    interface ISetupParameterFieldState extends INestedControllerScope<ISetupParameterDefinitionScope> {
+        original: string;
+        text: string;
+        isValid: boolean;
+        lastValidated: string;
+        validationMessage: string;
+        validationClass: string[];
+        messageClass: string[];
+    }
+    interface ISetupParameterDefinitionScope extends ISetupParameterDefinitions, INestedControllerScope<IMainControllerScope> {
+        cancel(): void;
+        accept(): void;
+        close(): void;
+        serviceNowUrlField: ISetupParameterFieldState;
+        gitRepositoryBaseUrlField: ISetupParameterFieldState;
+    }
+    const BroadcastEvent_SetupParametersChanged: string;
+    const BroadcastEvent_ShowSetupParametersDialog: string;
+    const BroadcastEvent_HideSetupParametersDialog: string;
+    class setupParameterDefinitionsController extends MainControllerChild<ISetupParameterDefinitionScope> {
+        constructor($scope: ISetupParameterDefinitionScope, $rootScope: ng.IScope);
+        private static _settings;
+        static getSettings(): ISetupParameterDefinitions;
         $doCheck(): void;
-        constructor($scope: TScope);
-        showSetupParametersEditDialog(): void;
-        hideSetupParametersEditDialog(): void;
-        showDialog(message: string, type?: DialogMessageType, title?: string): void;
-        closeDialog(): void;
-        setupParameterValueChanged(name: string, value: any | undefined): void;
-        getSetupParameterValue(name: string): any | undefined;
+        static show($scope: ng.IScope): void;
+        static hide($scope: ng.IScope): void;
     }
 }

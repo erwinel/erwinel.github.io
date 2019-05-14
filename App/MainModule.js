@@ -1,161 +1,6 @@
 /// <reference path="Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="Scripts/typings/jquery/jquery.d.ts" />
-var fieldEdit;
-(function (fieldEdit) {
-    // #region Field Edit
-    let cssValidationClass;
-    (function (cssValidationClass) {
-        cssValidationClass["isValid"] = "is-valid";
-        cssValidationClass["isInvalid"] = "is-invalid";
-    })(cssValidationClass = fieldEdit.cssValidationClass || (fieldEdit.cssValidationClass = {}));
-    class fieldEditController extends app.MainControllerChild {
-        constructor($scope, name, label, isRequired = false) {
-            super($scope);
-            this._text = '';
-            this._value = undefined;
-            this._isRequired = false;
-            this._validationMessage = '';
-            this._name = $scope.name = name;
-            $scope.label = (app.isNilOrWhiteSpace(label)) ? label : name;
-            this._value = $scope.value = this.coerceValue($scope.$parent.getInputFieldValue(name));
-            this._text = $scope.text = this.convertToString(this._value);
-            this._isRequired = $scope.isRequired = isRequired;
-            this._validationMessage = $scope.validationMessage = '';
-            this.$scope.isValid = true;
-            this.updateValidationMessage();
-            this.onValidationChange();
-        }
-        get name() { return this._name; }
-        get text() { return this._text; }
-        set text(value) {
-            value = app.asNotNil(value, '');
-            if (value === this._text)
-                return;
-            this._isRequired = this.$scope.isRequired == true;
-            this.$scope.validationMessage = '';
-            this._text = this.$scope.text = value;
-            this.updateValidationMessage();
-            this.$scope.isValid = (this.$scope.validationMessage.length == 0);
-            if (this.$scope.isValid)
-                this.$scope.value = this._value = this.convertToValue(this._text, this._value);
-        }
-        get isValid() {
-            if (typeof (this.$scope.isValid) !== 'boolean') {
-                this.updateValidationMessage();
-                this.$scope.isValid = (app.isNilOrWhiteSpace(this.$scope.validationMessage));
-            }
-            return this.$scope.isValid;
-        }
-        get validationMessage() {
-            if (typeof (this.$scope.validationMessage) !== 'string')
-                this.$scope.validationMessage = this._validationMessage;
-            return this.$scope.validationMessage;
-        }
-        set validationMessage(message) {
-            message = app.asNotNil(message, '').trim();
-            if (message === this.validationMessage)
-                return;
-            this.$scope.validationMessage = this._validationMessage = message;
-            this.onValidationChange();
-        }
-        $doCheck() {
-            if (this.$scope.text !== this._text || this.$scope.isRequired !== this._isRequired || typeof (this.$scope.validationMessage) !== 'string' || typeof (this.$scope.isValid) !== 'boolean')
-                this.validate();
-            else if (this._value !== this.$scope.value)
-                this.text = this.convertToString(this._value);
-        }
-        onValidationChange() {
-            let cssClassNames = app.asArray(this.$scope.cssClassNames);
-            let i;
-            if (this.$scope.validationMessage.length == 0) {
-                this.$scope.isValid = true;
-                if (cssClassNames.length > 0) {
-                    if ((i = cssClassNames.indexOf(cssValidationClass.isInvalid)) == 0)
-                        cssClassNames.shift();
-                    else if (i == cssClassNames.length - 1)
-                        cssClassNames.pop();
-                    else if (i > 0)
-                        cssClassNames.splice(i, 1);
-                }
-                if (cssClassNames.indexOf(cssValidationClass.isValid) < 0)
-                    cssClassNames.push(cssValidationClass.isValid);
-            }
-            else {
-                this.$scope.isValid = false;
-                if (cssClassNames.length > 0) {
-                    if ((i = cssClassNames.indexOf(cssValidationClass.isValid)) == 0)
-                        cssClassNames.shift();
-                    else if (i == cssClassNames.length - 1)
-                        cssClassNames.pop();
-                    else if (i > 0)
-                        cssClassNames.splice(i, 1);
-                }
-                if (cssClassNames.indexOf(cssValidationClass.isInvalid) < 0)
-                    cssClassNames.push(cssValidationClass.isInvalid);
-            }
-            this.$scope.cssClassNames = cssClassNames;
-        }
-        coerceValue(value) { return value; }
-        convertToString(value) { return app.asNotNil(value, ''); }
-        convertToValue(text, currentValue) { return text; }
-        /**
-         * Re-validates the {@link IFieldInputScope#text} if any changes are detected.
-         *
-         * @returns {boolean} true if the {@link IFieldInputScope#text} is valid; otherwise, false.
-         */
-        validate() {
-            if (this.$scope.text !== this._text) {
-                if (typeof (this.$scope.text) !== 'string')
-                    this.$scope.text = '';
-            }
-            else if (this.$scope.isRequired === this._isRequired && typeof (this.$scope.validationMessage) === 'string') {
-                if (this.$scope.validationMessage !== this._validationMessage) {
-                    this.$scope.isValid = (this._validationMessage = this.$scope.validationMessage.trim()).length == 0;
-                    if (this._validationMessage.length != this.$scope.validationMessage.length)
-                        this.$scope.validationMessage = this._validationMessage;
-                    return this.$scope.isValid;
-                }
-                else {
-                    if (typeof (this.$scope.isValid) != 'boolean')
-                        this.$scope.isValid = this._validationMessage.length == 0;
-                    return this.$scope.isValid;
-                }
-            }
-            if (typeof (this.$scope.isRequired) === 'boolean')
-                this._isRequired = this.$scope.isRequired;
-            else
-                this.$scope.isRequired = this._isRequired;
-            this._validationMessage = this.$scope.validationMessage = '';
-            let wasValid = this.$scope.isValid;
-            this.$scope.isValid = true;
-            this.updateValidationMessage();
-            if (typeof (this.$scope.validationMessage) !== 'string')
-                this.$scope.validationMessage = this._validationMessage;
-            else if (this.$scope.validationMessage !== this._validationMessage)
-                this._validationMessage = this.$scope.validationMessage;
-            let isValid = (this._validationMessage.length == 0);
-            if (isValid !== wasValid)
-                this.onValidationChange();
-            return this.$scope.isValid;
-        }
-        updateValidationMessage() {
-            if (this.$scope.isRequired && this._text.trim().length == 0)
-                this.$scope.validationMessage = 'Value is required.';
-        }
-    }
-    fieldEdit.fieldEditController = fieldEditController;
-    class urlFieldEditController extends fieldEditController {
-        constructor($scope, name, label) { super($scope, name); }
-        updateValidationMessage() {
-            if (this.$scope.isRequired && app.isNilOrWhiteSpace(this.text))
-                this.$scope.validationMessage = 'URL is required.';
-        }
-    }
-    fieldEdit.urlFieldEditController = urlFieldEditController;
-    // #endregion
-    // #endregion
-})(fieldEdit || (fieldEdit = {}));
 var app;
 (function (app) {
     /**
@@ -256,6 +101,11 @@ var app;
         return value;
     }
     app.asString = asString;
+    function stringBefore(source, search) {
+        let i = source.indexOf(search);
+        return (i < 0) ? source : source.substr(0, i);
+    }
+    app.stringBefore = stringBefore;
     /**
      * Ensures that a value is a floating-point number, converting it if necessary.
      * @param value
@@ -1309,9 +1159,8 @@ var app;
             item.class = config.otherItemClass;
             item.onClick = () => { return true; };
         }
-        if (isNilOrEmpty(definition.items))
-            item.items = [];
-        else {
+        item.items = [];
+        if (!isNilOrEmpty(definition.items)) {
             definition.items.forEach((d, index) => {
                 let childItem = toNavItem(pageName, config, item, d);
                 if ((childItem.isCurrent || childItem.currentItemIndex > -1) && item.currentItemIndex < 0) {
@@ -1323,108 +1172,255 @@ var app;
         container.items.push(item);
         return item;
     }
-    function initializeSetupParameterDefinitionScope(parentScope, controller) {
-        let scope = parentScope.setupParameterDefinitions = (parentScope.$new());
-        scope.serviceNowUrl = 'https://inscomscd.service-now.com';
-        scope.gitRepositoryBaseUrl = 'https://github.com/erwinel';
-        scope.editDialogVisible = true;
-        scope.showEditDialog = () => { controller.showSetupParametersEditDialog(); };
-        scope.hideEditDialog = () => { controller.hideSetupParametersEditDialog(); };
-        scope.inputFieldValueChanged = (name, value) => { controller.setupParameterValueChanged(name, value); };
-        scope.getInputFieldValue = (name) => { return controller.getSetupParameterValue(name); };
-    }
-    let SetupParameterFieldNames;
-    (function (SetupParameterFieldNames) {
-        SetupParameterFieldNames["serviceNowUrl"] = "serviceNowUrl";
-        SetupParameterFieldNames["gitRepositoryBaseUrl"] = "gitRepositoryBaseUrl";
-    })(SetupParameterFieldNames || (SetupParameterFieldNames = {}));
-    class serviceNowUrlFieldEditController extends fieldEdit.urlFieldEditController {
-        constructor($scope) { super($scope, SetupParameterFieldNames.serviceNowUrl, 'ServiceNow URL'); }
-    }
-    app.MainModule.controller("serviceNowUrlFieldEditController", ['$scope', serviceNowUrlFieldEditController]);
-    class gitRepositoryBaseUrlFieldEditController extends fieldEdit.urlFieldEditController {
-        constructor($scope) { super($scope, SetupParameterFieldNames.gitRepositoryBaseUrl, 'Git Repository Base URL'); }
-    }
-    app.MainModule.controller("gitRepositoryBaseUrlFieldEditController", ['$scope', gitRepositoryBaseUrlFieldEditController]);
-    function initializeDialogScope(parentScope, controller) {
-        let scope = parentScope.popupDialog = (parentScope.$new());
-        scope.isVisible = false;
-        scope.title = '';
-        scope.message = '';
-        scope.bodyClass = '';
-        scope.show = (message, type = 'info', title) => { controller.showDialog(message, type, title); };
-        scope.close = () => { controller.closeDialog(); };
-    }
+    // #endregion
+    app.MainModule.directive("mainAppPageHead", () => {
+        return {
+            restrict: "E",
+            scope: true,
+            templateUrl: 'Template/mainAppPageHead.htm'
+        };
+    });
     class MainController {
-        constructor($scope, $location, $http) {
+        constructor($scope, $rootScope, $location, $http) {
             this.$scope = $scope;
             this.$location = $location;
             this.$http = $http;
-            initializeSetupParameterDefinitionScope($scope, this);
-            initializeDialogScope($scope, this);
+            let settings = setupParameterDefinitionsController.getSettings();
+            $scope.serviceNowUrl = settings.serviceNowUrl;
+            $scope.gitRepositoryBaseUrl = settings.gitRepositoryBaseUrl;
+            $rootScope.$on(app.BroadcastEvent_SetupParametersChanged, (event, values) => {
+                $scope.serviceNowUrl = values.serviceNowUrl;
+                $scope.gitRepositoryBaseUrl = values.gitRepositoryBaseUrl;
+            });
             initializePageNavigationScope($scope, this, $location, $http);
+            $scope.showSetupParametersEditDialog = () => { setupParameterDefinitionsController.show($scope); };
         }
         $doCheck() { }
-        showSetupParametersEditDialog() { this.$scope.setupParameterDefinitions.editDialogVisible = true; }
-        hideSetupParametersEditDialog() { this.$scope.setupParameterDefinitions.editDialogVisible = false; }
-        showDialog(message, type = 'info', title) {
-            if (isNilOrWhiteSpace(title)) {
-                switch (type) {
-                    case 'warning':
-                        this.$scope.popupDialog.title = 'Warning';
-                        break;
-                    case 'danger':
-                        this.$scope.popupDialog.title = 'Critical';
-                        break;
-                    case 'success':
-                        this.$scope.popupDialog.title = 'Success';
-                        break;
-                    default:
-                        this.$scope.popupDialog.title = 'Notice';
-                }
-            }
-            else
-                this.$scope.popupDialog.title = title;
-            this.$scope.popupDialog.bodyClass = 'modal-body alert alert-' + type;
-            this.$scope.popupDialog.message = (isNil(message)) ? '' : message;
-            this.$scope.popupDialog.isVisible = true;
-        }
-        closeDialog() { this.$scope.popupDialog.isVisible = false; }
-        setupParameterValueChanged(name, value) {
-            switch (name) {
-                case SetupParameterFieldNames.serviceNowUrl:
-                    this.$scope.setupParameterDefinitions.serviceNowUrl = value;
-                    break;
-                case SetupParameterFieldNames.gitRepositoryBaseUrl:
-                    this.$scope.setupParameterDefinitions.gitRepositoryBaseUrl = value;
-                    break;
-            }
-        }
-        getSetupParameterValue(name) {
-            switch (name) {
-                case SetupParameterFieldNames.serviceNowUrl:
-                    return this.$scope.setupParameterDefinitions.serviceNowUrl;
-                case SetupParameterFieldNames.gitRepositoryBaseUrl:
-                    return this.$scope.setupParameterDefinitions.gitRepositoryBaseUrl;
-            }
-        }
+        showSetupParametersEditDialog() { setupParameterDefinitionsController.show(this.$scope); }
+        hideSetupParametersEditDialog() { setupParameterDefinitionsController.hide(this.$scope); }
+        showModalDialogMessage(message, type = 'info', title) { mainModalPopupDialogController.show(this.$scope, message, type, title); }
+        hideModalDialogMessage() { mainModalPopupDialogController.hide(this.$scope); }
     }
-    app.MainModule.controller("MainController", ['$scope', "$location", "$http", , MainController]);
+    app.MainModule.controller("MainController", ['$scope', '$rootScope', "$location", "$http", MainController]);
     class MainControllerChild {
         constructor($scope) {
             this.$scope = $scope;
         }
         $doCheck() { }
-        showSetupParametersEditDialog() { this.$scope.$parent.setupParameterDefinitions.showEditDialog(); }
-        hideSetupParametersEditDialog() { this.$scope.setupParameterDefinitions.setupParameterDefinitions.hideEditDialog(); }
-        showDialog(message, type = 'info', title) { this.$scope.popupDialog.show(message, type, title); }
-        ;
-        closeDialog() { this.$scope.popupDialog.isVisible = false; }
-        setupParameterValueChanged(name, value) { this.$scope.setupParameterDefinitions.inputFieldValueChanged(name, value); }
-        ;
-        getSetupParameterValue(name) { return this.$scope.setupParameterDefinitions.getInputFieldValue(name); }
-        ;
+        showSetupParametersEditDialog() { setupParameterDefinitionsController.show(this.$scope); }
+        hideSetupParametersEditDialog() { setupParameterDefinitionsController.hide(this.$scope); }
+        showModalDialogMessage(message, type = 'info', title) { mainModalPopupDialogController.show(this.$scope, message, type, title); }
+        hideModalDialogMessage() { mainModalPopupDialogController.hide(this.$scope); }
     }
     app.MainControllerChild = MainControllerChild;
+    app.BroadcastEvent_OpenMainModalPopupDialog = 'OpenMainModalPopupDialog';
+    app.BroadcastEvent_CloseMainModalPopupDialog = 'CloseMainModalPopupDialog';
+    class mainModalPopupDialogController extends MainControllerChild {
+        constructor($scope, $rootScope) {
+            super($scope);
+            $scope.title = '';
+            $scope.message = '';
+            $scope.bodyClass = '';
+            $scope.close = () => { $('#mainModalPopupDialog').modal('hide'); };
+            $rootScope.$on(app.BroadcastEvent_OpenMainModalPopupDialog, (event, message, type, title) => {
+                if (isNilOrWhiteSpace(title)) {
+                    switch (type) {
+                        case 'warning':
+                            $scope.title = 'Warning';
+                            break;
+                        case 'danger':
+                            $scope.title = 'Critical';
+                            break;
+                        case 'success':
+                            $scope.title = 'Success';
+                            break;
+                        default:
+                            $scope.title = 'Notice';
+                    }
+                }
+                else
+                    $scope.title = title;
+                $scope.bodyClass = 'modal-body alert alert-' + type;
+                $scope.message = (isNil(message)) ? '' : message;
+                $('#mainModalPopupDialog').modal('show');
+            });
+            $rootScope.$on(app.BroadcastEvent_CloseMainModalPopupDialog, (event) => { $('#mainModalPopupDialog').modal('hide'); });
+        }
+        static show($scope, message, type, title) {
+            $scope.$emit(app.BroadcastEvent_OpenMainModalPopupDialog, message, type, title);
+        }
+        static hide($scope) {
+            $scope.$emit(app.BroadcastEvent_CloseMainModalPopupDialog);
+        }
+    }
+    app.mainModalPopupDialogController = mainModalPopupDialogController;
+    app.MainModule.controller("mainModalPopupDialogController", ['$scope', '$rootScope', mainModalPopupDialogController]);
+    // #endregion
+    // #region SetupParameters
+    app.uriParseRegex = /^(([^\\\/@:]*)(:[\\\/]{0,2})((?=[^\\\/@:]*(?::[^\\\/@:]*)?@)([^\\\/@:]*)(:[^\\\/@:]*)?@)?([^\\\/@:]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?(.+)?$/;
+    let uriParseGroup;
+    (function (uriParseGroup) {
+        uriParseGroup[uriParseGroup["all"] = 0] = "all";
+        uriParseGroup[uriParseGroup["origin"] = 1] = "origin";
+        uriParseGroup[uriParseGroup["schemeName"] = 2] = "schemeName";
+        uriParseGroup[uriParseGroup["schemeSeparator"] = 3] = "schemeSeparator";
+        uriParseGroup[uriParseGroup["userInfo"] = 4] = "userInfo";
+        uriParseGroup[uriParseGroup["username"] = 5] = "username";
+        uriParseGroup[uriParseGroup["password"] = 6] = "password";
+        uriParseGroup[uriParseGroup["hostname"] = 7] = "hostname";
+        uriParseGroup[uriParseGroup["portnumber"] = 8] = "portnumber";
+        uriParseGroup[uriParseGroup["path"] = 9] = "path";
+    })(uriParseGroup = app.uriParseGroup || (app.uriParseGroup = {}));
+    let cssValidationClass;
+    (function (cssValidationClass) {
+        cssValidationClass["isValid"] = "is-valid";
+        cssValidationClass["isInvalid"] = "is-invalid";
+    })(cssValidationClass = app.cssValidationClass || (app.cssValidationClass = {}));
+    let cssFeedbackClass;
+    (function (cssFeedbackClass) {
+        cssFeedbackClass["isValid"] = "is-valid";
+        cssFeedbackClass["isInvalid"] = "is-invalid";
+    })(cssFeedbackClass = app.cssFeedbackClass || (app.cssFeedbackClass = {}));
+    app.BroadcastEvent_SetupParametersChanged = 'setupParameterDefinitionsChanged';
+    app.BroadcastEvent_ShowSetupParametersDialog = 'showSetupParameterDefinitionsControllerDialog';
+    app.BroadcastEvent_HideSetupParametersDialog = 'hideSetupParameterDefinitionsControllerDialog';
+    class setupParameterDefinitionsController extends MainControllerChild {
+        constructor($scope, $rootScope) {
+            super($scope);
+            let settings = setupParameterDefinitionsController.getSettings();
+            $scope.serviceNowUrlField = ($scope.$new());
+            $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = settings.serviceNowUrl;
+            $scope.serviceNowUrlField.validationMessage = '';
+            $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+            $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
+            $scope.serviceNowUrlField.isValid = true;
+            $scope.gitRepositoryBaseUrlField = ($scope.$new());
+            $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = settings.gitRepositoryBaseUrl;
+            $scope.gitRepositoryBaseUrlField.validationMessage = '';
+            $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+            $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
+            $scope.gitRepositoryBaseUrlField.isValid = true;
+            $scope.message = '';
+            $scope.bodyClass = '';
+            $scope.close = () => { $('#setupParametersDialog').modal('hide'); };
+            $scope.cancel = () => {
+                $scope.serviceNowUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.original;
+                $scope.serviceNowUrlField.validationMessage = '';
+                $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+                $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
+                $scope.serviceNowUrlField.isValid = true;
+                $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.original;
+                $scope.gitRepositoryBaseUrlField.validationMessage = '';
+                $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+                $scope.gitRepositoryBaseUrlField.isValid = true;
+                $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
+                $('#setupParametersDialog').modal('hide');
+            };
+            $scope.accept = () => {
+                this.$doCheck();
+                if (!$scope.serviceNowUrlField.isValid) {
+                    if (!$scope.gitRepositoryBaseUrlField.isValid)
+                        alert("ServiceNow URL and GIT Repository Base URL are not valid.");
+                    alert("ServiceNow URL is not valid.");
+                    return;
+                }
+                if (!$scope.gitRepositoryBaseUrlField.isValid) {
+                    alert("GIT Repository Base URL is not valid.");
+                    return;
+                }
+                $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.text = stringBefore(stringBefore($scope.serviceNowUrlField.text, '#'), '?');
+                $scope.serviceNowUrlField.validationMessage = '';
+                $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+                $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
+                $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.text = stringBefore(stringBefore($scope.gitRepositoryBaseUrlField.text, '#'), '?');
+                $scope.gitRepositoryBaseUrlField.validationMessage = '';
+                $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+                $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
+                $('#setupParametersDialog').modal('hide');
+                setupParameterDefinitionsController._settings = { serviceNowUrl: $scope.serviceNowUrlField.original, gitRepositoryBaseUrl: $scope.gitRepositoryBaseUrlField.original };
+                localStorage.setItem("SetupParameterDefinitions", JSON.stringify(setupParameterDefinitionsController._settings));
+                $rootScope.$broadcast(app.BroadcastEvent_SetupParametersChanged, setupParameterDefinitionsController._settings);
+            };
+            $rootScope.$on(app.BroadcastEvent_ShowSetupParametersDialog, (event) => {
+                $('#setupParametersDialog').modal('show');
+            });
+            $rootScope.$on(app.BroadcastEvent_HideSetupParametersDialog, (event) => { $('#setupParametersDialog').modal('hide'); });
+            $scope.$broadcast(app.BroadcastEvent_SetupParametersChanged, {
+                serviceNowUrl: $scope.serviceNowUrlField.original,
+                gitRepositoryBaseUrl: $scope.gitRepositoryBaseUrlField.original
+            });
+        }
+        static getSettings() {
+            let settings = setupParameterDefinitionsController._settings;
+            if (isNil(settings)) {
+                let s = asString(localStorage.getItem("SetupParameterDefinitions"), true);
+                if (!isNilOrWhiteSpace(s))
+                    try {
+                        settings = (JSON.parse(s));
+                    }
+                    catch (_a) { }
+                if (isNil(settings))
+                    settings = {};
+                if (isNilOrWhiteSpace(settings.serviceNowUrl))
+                    settings.serviceNowUrl = 'https://inscomscd.service-now.com';
+                if (isNilOrWhiteSpace(settings.gitRepositoryBaseUrl))
+                    settings.gitRepositoryBaseUrl = 'https://github.com/erwinel';
+                setupParameterDefinitionsController._settings = settings;
+            }
+            return settings;
+        }
+        $doCheck() {
+            super.$doCheck();
+            [this.$scope.serviceNowUrlField, this.$scope.gitRepositoryBaseUrlField].forEach((item) => {
+                if (item.lastValidated === item.text)
+                    return;
+                let uri = asString(item.text, true, '');
+                item.lastValidated = uri;
+                if (uri.length === 0)
+                    item.validationMessage = 'URL is required.';
+                else {
+                    let fragment = '', query = '';
+                    let i = uri.indexOf('#');
+                    if (i > -1) {
+                        fragment = uri.substr(i);
+                        uri = uri.substr(0, i);
+                    }
+                    i = uri.indexOf('?');
+                    if (i > -1) {
+                        fragment = uri.substr(i);
+                        uri = uri.substr(0, i);
+                    }
+                    let match;
+                    if (uri.length > 0)
+                        match = app.uriParseRegex.exec(uri);
+                    if (isNilOrEmpty(match))
+                        item.validationMessage = 'Invalid URL.';
+                    else if (isNilOrWhiteSpace(match[uriParseGroup.origin]))
+                        item.validationMessage = 'URL cannot be relative.';
+                    else if (isNilOrWhiteSpace(match[uriParseGroup.schemeName]) || isNilOrWhiteSpace(match[uriParseGroup.hostname]))
+                        item.validationMessage = 'Invalid URL.';
+                    else {
+                        item.isValid = true;
+                        if (query.length > 0)
+                            item.validationMessage = 'URI query string will be ignored.';
+                        else if (fragment.length > 0)
+                            item.validationMessage = 'URI fragment (hash) will be ignored.';
+                        else
+                            return;
+                        item.validationClass = ['form-control', cssValidationClass.isInvalid];
+                        item.messageClass = ['invalid-feedback', 'text-warning'];
+                        return;
+                    }
+                }
+                item.isValid = false;
+                item.validationClass = ['form-control', cssValidationClass.isInvalid];
+                item.messageClass = ['invalid-feedback'];
+            });
+        }
+        static show($scope) { $scope.$emit(app.BroadcastEvent_ShowSetupParametersDialog); }
+        static hide($scope) { $scope.$emit(app.BroadcastEvent_HideSetupParametersDialog); }
+    }
+    app.setupParameterDefinitionsController = setupParameterDefinitionsController;
+    app.MainModule.controller("setupParameterDefinitionsController", ['$scope', '$rootScope', setupParameterDefinitionsController]);
     // #endregion
 })(app || (app = {}));
