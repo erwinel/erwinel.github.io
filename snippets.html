@@ -1,51 +1,48 @@
-﻿<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="MainModule" ng-controller="MainController">
 <head>
-    <meta name="viewport" content="width=1024, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta charset="utf-8" />
-    <title>ServiceNow Code Snippets</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap-grid.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap-table/bootstrap-table.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="style/theme.css" />
-    <script type="text/javascript" src="script/api/jquery/jquery.js"></script>
-    <!-- <script type="text/javascript" src="script/api/popper.js/popper.js"></script> -->
-    <script type="text/javascript" src="script/api/bootstrap/js/bootstrap.bundle.js"></script>
+  <meta name="viewport" content="width=1024, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta charset="utf-8" />
+  <title>{{ pageNavigation.pageTitle }}</title>
+  <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
+  <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+  <script type="text/javascript" src="lib/twitter-bootstrap/js/bootstrap.bundle.js"></script>
+  <script type="text/javascript" src="lib/angular.js/angular.js"></script>
+  <script type="text/javascript" src="App/MainModule.js"></script>
 </head>
 <body>
-    <header class="container-fluid p-1"><h1>ServiceNow Code Snippets</h1></header>
-    <nav class="container-fluid navbar navbar-expand-sm p-1">
-        <ul class="navbar-nav">
-            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-            <li class="nav-item"><a href="ImplementationNotes.html" class="nav-link">Implementation Notes</a></li>
-            <li class="nav-item"><a href="InitialConfig.html" class="nav-link">Initial Config</a></li>
-            <li class="nav-item"><a href="DevResources.html" class="active nav-link">Dev Resources</a></li>
-        </ul>
-    </nav>
-    <div class="container-fluid" ng-app="mainModule" ng-controller="mainController">
-        <div class="row flex-nowrap">
-            <section class="container-fluid col-8 col-lg-9">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title mb-0">UI Actions</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title mb-0">Force to Update Set</h3>
-                            </div>
-                            <div class="card-body" ng-show="selectedCardId == 'forceToUpdateSet'">
-                                <h4>With Validation</h4>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-auto font-weight-bold">Condition:</div>
-                                        <div class="col"><code class="text-monospace">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-auto font-weight-bold">Script:</div>
-                                        <div class="col">
-                                            <pre class="pre-scrollable"><code class="text-monospace">// Commit any changes to the record
+  <header class="container-fluid p-1"><h1>{{ pageNavigation.pageTitle }}</h1></header>
+  <nav class="container-fluid navbar navbar-expand-sm p-1">
+    <ul class="navbar-nav">
+      <li class="nav-item" ng-repeat="i in pageNavigation.top.items"><a ng-href="{{i.href}}" ng-class="i.class" ng-click="return i.onClick()">{{ i.linkTitle }}</a></li>
+    </ul>
+  </nav>
+  <div class="container-fluid">
+    <div class="row flex-nowrap">
+      <section class="container-fluid col-8 col-lg-9">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title mb-0">UI Actions</h2>
+          </div>
+          <div class="card-body">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title mb-0">Force to Update Set</h3>
+              </div>
+              <div class="card-body" ng-show="selectedCardId == 'forceToUpdateSet'">
+                <h4>With Validation</h4>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-auto font-weight-bold">Condition:</div>
+                    <div class="col"><code class="text-monospace">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-auto font-weight-bold">Script:</div>
+                    <div class="col">
+                      <pre class="pre-scrollable"><code class="text-monospace">// Commit any changes to the record
 current.update();
 
 // Check to make sure the table isn&#39;t synchronized already
@@ -68,19 +65,19 @@ if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl ==
     gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
     action.setRedirectURL(current);
 }</code></pre>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h4>No Validation</h4>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-auto font-weight-bold">Condition:</div>
-                                        <div class="col"><code class="text-monospace">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-auto font-weight-bold">Script:</div>
-                                        <div class="col">
-                                            <pre class="pre-scrollable"><code class="text-monospace">// Commit any changes to the record
+                    </div>
+                  </div>
+                </div>
+                <h4>No Validation</h4>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-auto font-weight-bold">Condition:</div>
+                    <div class="col"><code class="text-monospace">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-auto font-weight-bold">Script:</div>
+                    <div class="col">
+                      <pre class="pre-scrollable"><code class="text-monospace">// Commit any changes to the record
 current.update();
 // Push the update into the current update set
 var um = new GlideUpdateManager2();
@@ -94,28 +91,26 @@ gr.get(setID);
 // Display info message and reload the form
 gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
 action.setRedirectURL(current);</code></pre>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+                  </div>
                 </div>
-            </section>
-            <aside class="container-fluid col-4 col-lg-3">
-                <div class="card">
-                    <div class="card-header"><h4>Resource Pages</h4></div>
-                    <div class="card-body">
-                        <ul class="nav flex-column">
-                            <li class="nav-item"><a class="active nav-link" href="#" onclick="return false;">Code Snippets</a></li>
-                            <li class="nav-item"><a href="UriParser.html" class="nav-link">URI Parser</a></li>
-                            <li class="nav-item"><a href="ColorEditor.html" class="nav-link">Color Editor</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </aside>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+      <aside class="container-fluid col-4 col-lg-3">
+        <div class="card">
+          <div class="card-header"><h4>Resource Pages</h4></div>
+          <div class="card-body">
+            <ul class="nav flex-column">
+              <li class="nav-item" ng-repeat="i in pageNavigation.side.items"><a ng-href="{{i.href}}" ng-class="i.class" ng-click="return i.onClick()">{{ i.linkTitle }}</a></li>
+            </ul>
+          </div>
+        </div>
+      </aside>
     </div>
-    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+  </div>
+  <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
 </body>
 </html>

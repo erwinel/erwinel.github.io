@@ -1,9 +1,0 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/.vs/erwinel.github.io/v16/Server/sqlite3
-/.vs
-/PageManager/obj/Debug
-/PageManager/bin/Debug
-/PageManager/obj/Release

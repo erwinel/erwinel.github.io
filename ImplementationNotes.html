@@ -1,39 +1,36 @@
-﻿<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="MainModule" ng-controller="MainController">
 <head>
-    <meta name="viewport" content="width=1024, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta charset="utf-8" />
-    <title>ServiceNow Implementation Notes</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap-grid.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap-table/bootstrap-table.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="style/theme.css" />
-    <script type="text/javascript" src="script/api/jquery/jquery.js"></script>
-    <!-- <script type="text/javascript" src="script/api/popper.js/popper.js"></script> -->
-    <script type="text/javascript" src="script/api/bootstrap/js/bootstrap.bundle.js"></script>
+  <meta name="viewport" content="width=1024, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta charset="utf-8" />
+  <title>{{ pageNavigation.pageTitle }}</title>
+  <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
+  <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+  <script type="text/javascript" src="lib/twitter-bootstrap/js/bootstrap.bundle.js"></script>
+  <script type="text/javascript" src="lib/angular.js/angular.js"></script>
+  <script type="text/javascript" src="App/MainModule.js"></script>
 </head>
 <body>
-    <header class="container-fluid p-1"><h1>ServiceNow Implementation Notes</h1></header>
-    <nav class="container-fluid navbar navbar-expand-sm p-1">
-        <ul class="navbar-nav">
-            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-            <li class="nav-item"><a href="#" class="active nav-link" onclick="return false;">Implementation Notes</a></li>
-            <li class="nav-item"><a href="InitialConfig.html" class="nav-link">Initial Config</a></li>
-            <li class="nav-item"><a href="DevResources.html" class="nav-link">Dev Resources</a></li>
+  <header class="container-fluid p-1"><h1>{{ pageNavigation.pageTitle }}</h1></header>
+  <nav class="container-fluid navbar navbar-expand-sm p-1">
+    <ul class="navbar-nav">
+      <li class="nav-item" ng-repeat="i in pageNavigation.top.items"><a ng-href="{{i.href}}" ng-class="i.class" ng-click="return i.onClick()">{{ i.linkTitle }}</a></li>
+    </ul>
+  </nav>
+  <section class="container-fluid">
+    <div class="card">
+      <div class="card-header"><h2>Modules</h2></div>
+      <div class="card-body">
+        <ul>
+          <li><a href="ServiceCatalog.html">Service Catalog</a></li>
+          <li><a href="IncidentManagement.html">Incident Management</a></li>
         </ul>
-    </nav>
-    <section class="container-fluid">
-        <div class="card">
-            <div class="card-header"><h2>Modules</h2></div>
-            <div class="card-body">
-                <ul>
-                    <li><a href="ServiceCatalog.html">Service Catalog</a></li>
-                    <li><a href="IncidentManagement.html">Incident Management</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+      </div>
+    </div>
+  </section>
+  <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
 </body>
 </html>

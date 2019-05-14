@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="MainModule" ng-controller="MainController">
+<head>
+  <meta name="viewport" content="width=1024, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta charset="utf-8" />
+  <title>{{ pageNavigation.pageTitle }}</title>
+  <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
+  <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+  <script type="text/javascript" src="lib/twitter-bootstrap/js/bootstrap.bundle.js"></script>
+  <script type="text/javascript" src="lib/angular.js/angular.js"></script>
+  <script type="text/javascript" src="App/MainModule.js"></script>
+  <script type="text/javascript" src="App/Test.js"></script>
+</head>
+<body>
+  <header class="container-fluid p-1"><h1>{{ pageNavigation.pageTitle }}</h1></header>
+  <nav class="container-fluid navbar navbar-expand-sm p-1">
+    <ul class="navbar-nav">
+      <li class="nav-item" ng-repeat="i in pageNavigation.top.items"><a ng-href="{{i.href}}" ng-class="i.class" ng-click="return i.onClick()">{{ i.linkTitle }}</a></li>
+    </ul>
+  </nav>
+  <div class="container-fluid">
+    <form id="setupOverviewTasksForm" action="initialConfig.html">
+      <div class="card">
+        <div class="card-header"><h2>mainController scope</h2></div>
+        <div class="card-body">
+          <div class="card">
+            <div class="card-header"><h4>Current</h4></div>
+            <div class="card-body container-fluid">
+              <div class="row">
+                <div class="col-2">baseValue:</div>
+                <div class="col-1">{{ baseValue }}</div>
+                <div class="col-8">$scope.baseValue++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incBaseValue()" onclick="return false;">Inc</button></div>
+              </div>
+              <div class="row">
+                <div class="col-2">baseObj:</div>
+                <div class="col-1">{{ baseObj.value }}</div>
+                <div class="col-8">$scope.baseObj.value++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incBaseObj()" onclick="return false;">Inc</button></div>
+              </div>
+              <div class="row">
+                <div class="col-2">manual.baseValue:</div>
+                <div class="col-1">{{ manual.baseValue }}</div>
+                <div class="col-8">$scope.manual.baseValue++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incManualBaseValue()" onclick="return false;">Inc</button></div>
+              </div>
+              <div class="row">
+                <div class="col-2">manual.baseObj:</div>
+                <div class="col-1">{{ manual.baseObj.value }}</div>
+                <div class="col-8">$scope.manual.baseObj.value++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incManualBaseObj()" onclick="return false;">Inc</button></div>
+              </div>
+              <div class="row">
+                <div class="col-2">manual.manualValue:</div>
+                <div class="col-1">{{ manual.manualValue }}</div>
+                <div class="col-8">$scope.manual.manualValue++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incManualValue()" onclick="return false;">Inc</button></div>
+              </div>
+              <div class="row">
+                <div class="col-2">manual.manualObj:</div>
+                <div class="col-1">{{ manual.manualObj.value }}</div>
+                <div class="col-8">$scope.manual.manualObj.value++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incManualObj()" onclick="return false;">Inc</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>manual scope</h3></div>
+            <div class="card-body container-fluid">
+              <div class="row">
+                <div class="col-2 alert-warning">baseValue:</div>
+                <div class="col-1">{{ baseValue }}</div>
+                <div class="col-2">baseObj:</div>
+                <div class="col-1">{{ baseObj.value }}</div>
+              </div>
+              <div class="row">
+                <div class="col-2">manualValue:</div>
+                <div class="col-1">{{ manualValue }}</div>
+                <div class="col-2">manualObj:</div>
+                <div class="col-1">{{ manualObj.value }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" " ng-controller="nestedController">
+            <div class="card-header"><h3>nestedController scope</h3></div>
+            <div class="card-body container-fluid">
+              <div class="row">
+                <div class="col-2">baseValue:</div>
+                <div class="col-1">{{ baseValue }}</div>
+                <div class="col-6">$scope.baseValue++;  $scope.$parent.baseValue++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incBaseValue()" onclick="return false;">Nested</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="nestedIncBaseValue()" onclick="return false;">Base</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="parentIncBaseValue()" onclick="return false;">Parent</button></div>
+              </div>
+              <div class="row">
+                <div class="col-2">baseObj:</div>
+                <div class="col-1">{{ baseObj.value }}</div>
+                <div class="col-6">$scope.baseObj.value++; $scope.$parent.baseObj.value++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incBaseObj()" onclick="return false;">Nested</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="nestedIncBaseObj()" onclick="return false;">Base</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="parentIncBaseObj()" onclick="return false;">Parent</button></div>
+              </div>
+              <div class="row">
+                <div class="col-2">manual.baseValue:</div>
+                <div class="col-1">{{ manual.baseValue }}</div>
+                <div class="col-6">$scope.manual.baseValue++; $scope.$parent.manual.baseValue++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incManualBaseValue()" onclick="return false;">Nested</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="nestedIncManualBaseValue()" onclick="return false;">Base</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="parentIncManualBaseValue()" onclick="return false;">Parent</button></div>
+              </div>
+              <div class="row">
+                <div class="col-2">manual.baseObj:</div>
+                <div class="col-1">{{ manual.baseObj.value }}</div>
+                <div class="col-6">$scope.manual.baseObj.value++; $scope.$parent.manual.baseObj.value++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incManualBaseObj()" onclick="return false;">Nested</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="nestedIncManualBaseObj()" onclick="return false;">Base</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="parentIncManualBaseObj()" onclick="return false;">Parent</button></div>
+              </div>
+              <div class="row">
+                <div class="col-2">manual.manualValue:</div>
+                <div class="col-1">{{ manual.manualValue }}</div>
+                <div class="col-6">$scope.manual.manualValue++;  $scope.$parent.manual.manualValue++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incManualValue()" onclick="return false;">Nested</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="nestedIncManualValue()" onclick="return false;">Base</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="parentIncManualValue()" onclick="return false;">Parent</button></div>
+              </div>
+              <div class="row">
+                <div class="col-2">manual.manualObj:</div>
+                <div class="col-1">{{ manual.manualObj.value }}</div>
+                <div class="col-6">$scope.manual.manualObj.value++; $scope.$parent.manual.manualObj.value++;</div>
+                <div class="col-1"><button class="btn btn-light" ng-click="incManualObj()" onclick="return false;">Nested</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="nestedIncManualObj()" onclick="return false;">Base</button></div>
+                <div class="col-1"><button class="btn btn-light" ng-click="parentIncManualObj()" onclick="return false;">Parent</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+    </section>
+    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+</body>
+</html>

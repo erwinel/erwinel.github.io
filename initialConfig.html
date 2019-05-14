@@ -1,677 +1,619 @@
-﻿<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="MainModule" ng-controller="MainController">
 <head>
-    <meta name="viewport" content="width=1024, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta charset="utf-8" />
-    <title>Initial Configuration Instructions</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap/css/bootstrap-grid.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="script/api/bootstrap-table/bootstrap-table.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="script/api/angular/angular-csp.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="style/theme.css" />
-    <script type="text/javascript" src="script/api/jquery/jquery.js"></script>
-    <!-- <script type="text/javascript" src="script/api/popper.js/popper.js"></script> -->
-    <script type="text/javascript" src="script/api/bootstrap/js/bootstrap.bundle.js"></script>
-    <script type="text/javascript" src="script/api/angular/angular.js"></script>
-    <script type="text/javascript" src="script/Utility.js"></script> 
-    <!-- <script type="text/javascript" src="script/ColorInfo.js"></script> -->
-    <script type="text/javascript" src="script/app/InitialConfig.js"></script>
+  <meta name="viewport" content="width=1024, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta charset="utf-8" />
+  <title>{{ pageNavigation.pageTitle }}</title>
+  <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
+  <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+  <script type="text/javascript" src="lib/twitter-bootstrap/js/bootstrap.bundle.js"></script>
+  <script type="text/javascript" src="lib/angular.js/angular.js"></script>
+  <script type="text/javascript" src="App/MainModule.js"></script>
+  <script type="text/javascript" src="App/CollapsibleCardControllers.js"></script>
+  <script type="text/javascript" src="App/InitialConfig.js"></script>
 </head>
 <body>
-    <header class="container-fluid p-1"><h1>Initial Configuration Instructions</h1></header>
-    <nav class="container-fluid navbar navbar-expand-sm p-1">
-        <ul class="navbar-nav">
-            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-            <li class="nav-item"><a href="ImplementationNotes.html" class="nav-link">Implementation Notes</a></li>
-            <li class="nav-item"><a href="#" class="active nav-link" onclick="return false;">Initial Config</a></li>
-            <li class="nav-item"><a href="DevResources.html" class="nav-link">Dev Resources</a></li>
-        </ul>
-    </nav>
-    <section class="container-fluid" ng-app="mainModule" ng-controller="mainController">
-        <form id="setupOverviewTasksForm" action="initialConfig.html">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col">protocol:</div>
-                    <div class="col">{{ protocol }}</div>
-                </div>
-                <div class="row">
-                    <div class="col">pathname:</div>
-                    <div class="col">{{ pathname }}</div>
-                </div>
-                <div class="row">
-                    <div class="col">qp1:</div>
-                    <div class="col">{{ qp1 }}</div>
-                </div>
-                <div class="row">
-                    <div class="col">qp2:</div>
-                    <div class="col">{{ qp2 }}</div>
-                </div>
-                <div class="row">
-                    <div class="col">hash:</div>
-                    <div class="col">{{ hash }}</div>
-                </div>
-            </div>
-            <div class="card" ng-controller="adminLoginsController">
-                <div class="card-header p-1">
-                    <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="toggleTopLevelCardSelect()" onclick="return false;">
-                            {{cardNumber}}. {{cardHeadingText}}
-                            <img ng-src="{{topLevelIconUrl}}" width="8" height="8" alt="{{topLevelIconVerb}} {{cardHeadingText}}" />
-                        </button>
-                    </h2>
-                </div>
+  <header class="container-fluid p-1"><h1>{{ pageNavigation.pageTitle }}</h1></header>
+  <nav class="container-fluid navbar navbar-expand-sm p-1">
+    <ul class="navbar-nav">
+      <li class="nav-item" ng-repeat="i in pageNavigation.top.items"><a ng-href="{{i.href}}" ng-class="i.class" ng-click="return i.onClick()">{{ i.linkTitle }}</a></li>
+    </ul>
+  </nav>
+  <div class="container-fluid" ng-controller="InitialConfigController">
+    <form id="setupOverviewTasksForm" action="initialConfig.html">
+      <div class="bg-secondary" ng-hide="definitions.isVisible">
+        <button class="btn btn-light" ng-click="definitions.showEditDialog()" onclick="return false;">Change setup definitions</button>
+      </div>
 
-                <div class="card-body" ng-show="topLevelCardVisible">
-                    <div class="detail">
-                        Create application administrative accounts in ServiceNow and assign the following roles:
-                        <ul>
-                            <li>admin</li>
-                            <li>security_admin</li>
-                        </ul>
-                        <p class="alert-info">
-                            <strong>Note:</strong>
-                            In order to be able to add the security_admin role, you will need to elevate roles to security_admin.
-                        </p>2019-04-22 15:04:43
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Accounts on internet cloud instance</h3>
-                        </div>
-                        <div class="card-body">
-                            In order to properly attribute where changes were made, administrative accounts on internet cloud instances (hosted by ServiceNow)
-                            the login account name should start with the person's last name, followed by their first initial, and end in "_da".
-                            <br />Example:
-                            <samp>Leonard Erwine &rArr; erwinel_da</samp>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="card" ng-controller="adminLoginsController">
+        <div class="card-header p-1">
+          <h2 class="card-title mb-0">
+            <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+              {{cardNumber}}. {{headingText}}
+              <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
+            </button>
+          </h2>
+        </div>
 
-            <div class="card" ng-controller="importInitiaUpdateSetController">
-                <div class="card-header p-1">
-                    <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="toggleTopLevelCardSelect()" onclick="return false;">
-                            {{cardNumber}}. {{cardHeadingText}}
-                            <img ng-src="{{topLevelIconUrl}}" width="8" height="8" alt="{{topLevelIconVerb}} {{cardHeadingText}}" />
-                        </button>
-                    </h2>
-                </div>
-                <div class="card-body" ng-show="topLevelCardVisible">
-                    <div class="detail">
-                        Load and apply the <a href="downloads/sys_remote_update_set_Initial_Setup.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
-                        <var>downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
-                        <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
-                    </div>
-                </div>
+        <div class="card-body" ng-show="isExpanded">
+          <div class="detail">
+            Create application administrative accounts in ServiceNow and assign the following roles:
+            <ul>
+              <li>admin</li>
+              <li>security_admin</li>
+            </ul>
+            <p class="alert-info">
+              <strong>Note:</strong>
+              In order to be able to add the security_admin role, you will need to elevate roles to security_admin.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Accounts on internet cloud instance</h3>
             </div>
+            <div class="card-body">
+              In order to properly attribute where changes were made, administrative accounts on internet cloud instances (hosted by ServiceNow)
+              the login account name should start with the person's last name, followed by their first initial, and end in "_da".
+              <br />Example:
+              <samp>Leonard Erwine &rArr; erwinel_da</samp>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="card" ng-controller="importUtilityAppController">
-                <div class="card-header p-1">
-                    <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="toggleTopLevelCardSelect()" onclick="return false;">
-                            {{cardNumber}}. {{cardHeadingText}}
-                            <img ng-src="{{topLevelIconUrl}}" width="8" height="8" alt="{{topLevelIconVerb}} {{cardHeadingText}}" />
-                        </button>
-                    </h2>
+      <div class="card" ng-controller="importInitiaUpdateSetController">
+        <div class="card-header p-1">
+          <h2 class="card-title mb-0">
+            <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+              {{cardNumber}}. {{headingText}}
+              <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
+            </button>
+          </h2>
+        </div>
+        <div class="card-body" ng-show="isExpanded">
+          <div class="detail">
+            Load and apply the <a href="downloads/sys_remote_update_set_Initial_Setup.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
+            <var>downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
+            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="card" ng-controller="importUtilityAppController">
+        <div class="card-header p-1">
+          <h2 class="card-title mb-0">
+            <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+              {{cardNumber}}. {{headingText}}
+              <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
+            </button>
+          </h2>
+        </div>
+        <div class="card-body" ng-show="isExpanded">
+          <div class="detail">
+            In this step you will be importing a utility application which includes many utility framework functionality to support
+            other scripts. This will also create a custom system property which can be used by automated processes to determine
+            whether the current instance is for production, UAT, Testing, Development or if it is a sandbox instance.
+          </div>
+          <ol>
+            <li>
+              Import the util application from <kbd>{{ definitions.gitRepositoryBaseUrl }}/x_44813_util.git</kbd>.
+              <!-- <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
+              to view instructions for importing applications from source countrol.</div> -->
+            </li>
+            <li>
+              Once the application is imported, select that application in order to put your session in the correct
+              scope, and then close out the <samp>Application Studio</samp> browser tab.
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="card" ng-controller="initialConfigController">
+        <div class="card-header p-1">
+          <h2 class="card-title mb-0">
+            <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+              {{cardNumber}}. {{headingText}}
+              <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
+            </button>
+          </h2>
+        </div>
+        <div class="card-body" ng-show="isExpanded">
+          <div class="detail">
+            <div class="detail">
+              In this step you will specify whether the current instance is for production, UAT, Testing, Development or if it is a
+              sandbox instance, and then you will execute a fix script to apply the corresponding color theme and other SDLC-related
+              settings, such as the logo heading text.
+            </div>
+            <ol>
+              <li>
+                Navigate to
+                <samp>System Properties</samp> &rArr;
+                <samp>Basic Configuration</samp>. If you are in the &quot;Util&quot; application scope, you will see the following message:
+                <img src="images/initialConfig/globalApplicationWarning.png" alt="Example of application selection dialog" class="figure-img img-fluid rounded" />
+                This is intentional. It is important to ensure you are in the &quot;Util&quot; application scope, otherwise the
+                next change will not be saved.
+              </li>
+              <li>Set SDLC Config Stage to the ServiceNow SDLC stage for the current server.</li>
+              <li>Change to the &quot;Global&quot; application scope.</li>
+              <li>
+                Navigate to
+                <samp>System Definition</samp> &rArr;
+                <samp>Fix Scripts</samp>.
+              </li>
+              <li>
+                Open the fix script named
+                <var>Initial Army Config</var>.
+              </li>
+              <li>
+                Click
+                <samp>Run Fix Script</samp>.
+              </li>
+              <li>
+                Click
+                <samp>Proceed</samp> if you wish to wait for the script to finish; otherwise, click
+                <samp>Proceed in Background</samp> to let it run in the background. This script can take several minutes to finish. If
+                you chose to let it run in the foreground, the logged output that occurred during script execution will be displayed
+                when it is finished. At the bottom of the output, you should see a line that indicates it has succeeded.
+                <br />
+                <!-- <button (click)="openFigure('Example of completed fix script', 'images/initialConfig/initialArmyConfigSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
+                    <img src="images/initialConfig/initialArmyConfigSuccess_sm.png" alt="Click to view example of completed fix script" class="figure-img img-fluid rounded" />
+                </button> Refresh the browser page to see the applied color scheme. -->
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" ng-controller="uploadLogoImageController">
+        <div class="card-header p-1">
+          <h2 class="card-title mb-0">
+            <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+              {{cardNumber}}. {{headingText}}
+              <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
+            </button>
+          </h2>
+        </div>
+        <div class="card-body" ng-show="isExpanded">
+          <div class="detail">
+            To automate configuration settings for graphical images, it would require significant overhead. Therefore, the logo image
+            will need to be uploaded manually.
+          </div>
+          <ol>
+            <li>Ensure you are in the &quot;Global&quot; application scope.</li>
+            <li>
+              Navigate to
+              <samp>System Properties</samp> &rArr;
+              <samp>Basic Configuration</samp>.
+            </li>
+            <li>
+              Scroll to the &quot;Banner Image&quot; property and click on the
+              <samp>+</samp> icon to upload the banner image.
+              <!-- <button (click)="openFigure('Example of banner image setting', 'images/initialConfig/bannerImageSetting_lg.png')"
+                  class="btn btn-outline-primary mb-2 mr-2">
+                  <img src="images/initialConfig/bannerImageSetting_sm.png" alt="Click to view example of banner image setting" class="figure-img img-fluid rounded" />
+              </button> -->
+            </li>
+            <li>
+              Upload the logo image corresponding to the SDLC stage you previously configured. You can download an image from one
+              of the following links:
+              <ul>
+                <li>
+                  <a href="downloads/Logo/logo_army_prod.png">
+                    <img src="downloads/Logo/logo_army_prod.png" alt="Production Banner Logo" class="figure-img img-fluid rounded" /> Production
+                  </a>
+                </li>
+                <li>
+                  <a href="downloads/Logo/logo_army_uat.png">
+                    <img src="downloads/Logo/logo_army_uat.png" alt="UAT Banner Logo" class="figure-img img-fluid rounded" /> UAT
+                  </a>
+                </li>
+                <li>
+                  <a href="downloads/Logo/logo_army_test.png">
+                    <img src="downloads/Logo/logo_army_test.png" alt="Test Banner Logo" class="figure-img img-fluid rounded" /> Test
+                  </a>
+                </li>
+                <li>
+                  <a href="downloads/Logo/logo_army_dev.png">
+                    <img src="downloads/Logo/logo_army_dev.png" alt="Dev Banner Logo" class="figure-img img-fluid rounded" /> Dev
+                  </a>
+                </li>
+                <li>
+                  <a href="downloads/Logo/logo_army_sb.png">
+                    <img src="downloads/Logo/logo_army_sb.png" alt="Sandbox Banner Logo" class="figure-img img-fluid rounded" /> Sandbox
+                  </a>
+                </li>
+                <li>
+                  <a href="downloads/Logo/logo_service-now.png">
+                    <img src="downloads/Logo/logo_service-now.png" alt="OOTB Banner Logo" class="figure-img img-fluid rounded" /> Out-of-the-box
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="card" ng-controller="bulkPluginActivationController">
+        <div class="card-header p-1">
+          <h2 class="card-title mb-0">
+            <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+              {{cardNumber}}. {{headingText}}
+              <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
+            </button>
+          </h2>
+        </div>
+        <div class="card-body" ng-show="isExpanded">
+          <div class="detail">
+            In this step you will launch a fix script which will activate plugins in the background. Plugin activation progress can
+            be monitored from the progress workers list.
+          </div>
+          <ol>
+            <li>
+              Navigate to
+              <samp>System Definition</samp> &rArr;
+              <samp>Fix Scripts</samp>.
+            </li>
+            <li>
+              Open the fix script named
+              <var>Army Bulk Plugin Activation</var>.
+            </li>
+            <li>
+              Click
+              <samp>Run Fix Script</samp>.
+            </li>
+            <li>
+              Click
+              <samp>Proceed</samp> if you wish to wait for the script to finish; otherwise, click
+              <samp>Proceed in Background</samp> to let it run in the background. This script can take a long time to finish.
+            </li>
+          </ol>
+          <div class="detail">
+            To monitor the progress of plugin activations, navigate to
+            <samp>System Diagnostics</samp> &rArr;
+            <samp>Progress Workers</samp>.
+          </div>
+        </div>
+      </div>
+
+      <div class="card" ng-controller="activeDirectoryImportController">
+        <div class="card-header p-1">
+          <h2 class="card-title mb-0">
+            <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+              {{cardNumber}}. {{headingText}}
+              <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
+            </button>
+          </h2>
+        </div>
+        <div class="card-body" ng-show="isExpanded">
+          <div class="card">
+            <div class="card-header">
+              <h3>Update / Create LDAP Server</h3>
+            </div>
+            <div class="card-body">
+              <div class="detail">
+                <ol>
+                  <li>
+                    Navigate to
+                    <samp>System LDAP</samp> &rArr; <samp>LDAP Servers</samp> and open the pre-defined LDAP server if one exists; otherwise, click &quot;New&quot; to create a new record.
+                  </li>
+                  <li>
+                    Provide the following information in the form, and save changes (insert and stay):
+                    <ul>
+                      <li><var>Name</var> - This is the display name, not the server name.</li>
+                      <li><var>Active</var> - <em>checked</em></li>
+                      <li><var>Login distinguished name</var> - The login name, which should be in the format <samp>account@domain.name</samp>.</li>
+                      <li><var>Password</var> - The authentication password.</li>
+                      <li><var>Starting search directory</var> - This is the DN of the root of the directory search.</li>
+                      <li><var>MID Server</var> - This can initially be left blank.</li>
+                    </ul>
+                  </li>
+                  <li>
+                    Under LDAP Server URLs, use <samp>Insert a new row...</samp> to add the LDAP URL for each of the LDAP servers.
+                    <var>Active</var> and <var>Operational Status</var> should both be set to true.
+                  </li>
+                  <li>
+                    In the <samp>Advanced Options</samp> section, check the following fields nd save changes:
+                    <ul>
+                      <li>Listener</li>
+                      <li>Paging</li>
+                    </ul>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Create LDAP OU Definitions</h3>
+            </div>
+            <div class="card-body">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Enterprise Users Active Directory Import</h4>
                 </div>
-                <div class="card-body" ng-show="topLevelCardVisible">
-                    <div class="detail">
-                        In this step you will be importing a utility application which includes many utility framework functionality to support
-                        other scripts. This will also create a custom system property which can be used by automated processes to determine
-                        whether the current instance is for production, UAT, Testing, Development or if it is a sandbox instance.
-                    </div>
-                    <ol>
+                <div class="card-body">
+                  <div class="detail">
+                    Navigate to
+                    <samp>System LDAP</samp> &rArr; <samp>LDAP Servers</samp> and open the LDAP server that was just created/updated in the previous section.
+                    <div class="alert-info">All users must be imported before the LDAP Group definitions can be imported.</div>
+                  </div>
+                  <ol>
+                    <li>
+                      Under <samp>LDAP OU Definitions</samp> at the bottom of the page, add an entry for Enterprise Users:
+                      <ul>
+                        <li><var>Name</var> - <samp>Enterprise User Import</samp></li>
+                        <li><var>RDN</var> - The canonical name of the LDAP folder to import from (ie. <samp>OU=Enterprise Users</samp>).</li>
                         <li>
-                            Import the util application from <kbd>{{repositoryBaseUrl}}/x_44813_util.git</kbd>.
-                            <!-- <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
-                                to view instructions for importing applications from source countrol.</div> -->
+                          <var>Query Field</var> - <samp>sAMAccountName</samp>.
+                          <div class="alert-warning">
+                            This specification was taken from existing documentation.
+                            We may need to test whether it would work if we used userPincipalName, instead.
+                          </div>
                         </li>
+                        <li><var>Active</var> - checked</li>
+                        <li><var>Server</var> - This should be the same as the parent record we started from.</li>
+                        <li><var>Table</var> - <samp>User [sys_user]</samp></li>
                         <li>
-                            Once the application is imported, select that application in order to put your session in the correct
-                            scope, and then close out the <samp>Application Studio</samp> browser tab.
+                          <var>Filter</var> - <samp>(&amp;(objectClass=person)(sn=*)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))</samp>
+                          <div class="alert-info">Utilize the <samp>Test connection</samp> link under <samp>Related Links</samp> to verify there are no errors in the filter.</div>
                         </li>
-                    </ol>
-                </div>
-            </div>
-
-            <div class="card" ng-controller="initialConfigController">
-                <div class="card-header p-1">
-                    <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="toggleTopLevelCardSelect()" onclick="return false;">
-                            {{cardNumber}}. {{cardHeadingText}}
-                            <img ng-src="{{topLevelIconUrl}}" width="8" height="8" alt="{{topLevelIconVerb}} {{cardHeadingText}}" />
-                        </button>
-                    </h2>
-                </div>
-                <div class="card-body" ng-show="topLevelCardVisible">
-                    <div class="detail">
-                        <div class="detail">
-                            In this step you will specify whether the current instance is for production, UAT, Testing, Development or if it is a
-                            sandbox instance, and then you will execute a fix script to apply the corresponding color theme and other SDLC-related
-                            settings, such as the logo heading text.
-                        </div>
-                        <ol>
-                            <li>
-                                Navigate to
-                                <samp>System Properties</samp> &rArr;
-                                <samp>Basic Configuration</samp>. If you are in the &quot;Util&quot; application scope, you will see the following message:
-                                <img src="images/initialConfig/globalApplicationWarning.png" alt="Example of application selection dialog" class="figure-img img-fluid rounded" />
-                                This is intentional. It is important to ensure you are in the &quot;Util&quot; application scope, otherwise the
-                                next change will not be saved.
-                            </li>
-                            <li>Set SDLC Config Stage to the ServiceNow SDLC stage for the current server.</li>
-                            <li>Change to the &quot;Global&quot; application scope.</li>
-                            <li>
-                                Navigate to
-                                <samp>System Definition</samp> &rArr;
-                                <samp>Fix Scripts</samp>.
-                            </li>
-                            <li>
-                                Open the fix script named
-                                <var>Initial Army Config</var>.
-                            </li>
-                            <li>
-                                Click
-                                <samp>Run Fix Script</samp>.
-                            </li>
-                            <li>
-                                Click
-                                <samp>Proceed</samp> if you wish to wait for the script to finish; otherwise, click
-                                <samp>Proceed in Background</samp> to let it run in the background. This script can take several minutes to finish. If
-                                you chose to let it run in the foreground, the logged output that occurred during script execution will be displayed
-                                when it is finished. At the bottom of the output, you should see a line that indicates it has succeeded.
-                                <br />
-                                <!-- <button (click)="openFigure('Example of completed fix script', 'images/initialConfig/initialArmyConfigSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
-                                    <img src="images/initialConfig/initialArmyConfigSuccess_sm.png" alt="Click to view example of completed fix script" class="figure-img img-fluid rounded" />
-                                </button> Refresh the browser page to see the applied color scheme. -->
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" ng-controller="uploadLogoImageController">
-                <div class="card-header p-1">
-                    <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="toggleTopLevelCardSelect()" onclick="return false;">
-                            {{cardNumber}}. {{cardHeadingText}}
-                            <img ng-src="{{topLevelIconUrl}}" width="8" height="8" alt="{{topLevelIconVerb}} {{cardHeadingText}}" />
-                        </button>
-                    </h2>
-                </div>
-                <div class="card-body" ng-show="topLevelCardVisible">
-                    <div class="detail">
-                        To automate configuration settings for graphical images, it would require significant overhead. Therefore, the logo image
-                        will need to be uploaded manually.
-                    </div>
-                    <ol>
-                        <li>Ensure you are in the &quot;Global&quot; application scope.</li>
+                      </ul>
+                    </li>
+                    <li>
+                      Under <samp>Data Sources</samp>, add a new entry:
+                      <ul>
+                        <li><var>Name</var> - <samp>Enterprise LDAP users</samp></li>
+                        <li><var>Import set table label</var> - <samp>Enterprise User Import</samp>.</li>
+                        <li><var>Import set table name</var> - This should be automatically generated as <samp>u_enterprise_user_import</samp>.</li>
+                        <li><var>Type</var> - <samp>LDAP</samp></li>
+                        <li><var>LDAP Target</var> - <samp>Enterprise User Import</samp>.</li>
+                      </ul>
+                    </li>
+                    <li>
+                      Create Transform Map
+                      <ol>
+                        <li>Under <samp>Related Links</samp>, click <samp>Test Load 20 records</samp>.</li>
                         <li>
-                            Navigate to
-                            <samp>System Properties</samp> &rArr;
-                            <samp>Basic Configuration</samp>.
+                          Select <samp>Create Transform Map</samp> and provide the following values:
+                          <ul>
+                            <li><var>Name</var> - <samp>Enterprise Enterprise User Import</samp></li>
+                            <li><var>Source table</var> - <samp>Enterprise User Import [u_enterprise_user_import]</samp>.</li>
+                            <li><var>Target Table</var> - <samp>User [sys_user]</samp></li>
+                            <li><var>Active</var> - checked</li>
+                            <li><var>Run business rules</var> - checked</li>
+                            <li><var>Enforce mandatory fields</var> - No</li>
+                            <li><var>Copy empty fields</var> - unchecked</li>
+                            <li><var>Run script</var> - unchecked</li>
+                          </ul>
                         </li>
+                      </ol>
+                    </li>
+                    <li>
+                      Map LDAP fields
+                      <ol>
+                        <li>Under <samp>Related Links</samp>, click <samp>Auto Map Matching Fields</samp>.</li>
+                        <li>Under <samp>Related Links</samp>, click <samp>Mapping assist</samp> to ensure all fields are mapped appropriately.</li>
+                      </ol>
+                    </li>
+                    <li>
+                      Coalesce Enterprise User Imports
+                      <ol>
+                        <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Transform Maps</samp> &rArr; <samp>Enterprise User Import</samp>.</li>
                         <li>
-                            Scroll to the &quot;Banner Image&quot; property and click on the
-                            <samp>+</samp> icon to upload the banner image.
-                            <!-- <button (click)="openFigure('Example of banner image setting', 'images/initialConfig/bannerImageSetting_lg.png')"
-                                class="btn btn-outline-primary mb-2 mr-2">
-                                <img src="images/initialConfig/bannerImageSetting_sm.png" alt="Click to view example of banner image setting" class="figure-img img-fluid rounded" />
-                            </button> -->
+                          Under the <samp>Field Maps</samp> tab, double-click the <samp>Coalesce</samp> value for the <samp>u_samaccountname</samp> source field and change it to <samp>true</samp>.
+                          <div class="alert-warning">
+                            This specification was taken from existing documentation.
+                            If we used userPincipalName instead of samAccountName, then we will coalesce using the <samp>u_userprincipalname</samp> field, instead.
+                          </div>
                         </li>
+                      </ol>
+                    </li>
+                    <li>Under <samp>Related Links</samp>, click <samp>Transform</samp>, and in the resulting page, click the <samp>Transform</samp> button to apply the transform map.</li>
+                    <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Data Sources</samp> and open the <samp>Enterprise LDAP users</samp> data source.</li>
+                    <li>Under <samp>Related Links</samp>, click <samp>Load all records</samp>.</li>
+                    <li>Once all users are loaded, click <samp>Run Transform</samp>, and then in the resulting page, click the <samp>Transform</samp> button.</li>
+                  </ol>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <h4>Admin Users Active Directory Import</h4>
+                </div>
+                <div class="card-body">
+                  <div class="detail">
+                    Navigate to
+                    <samp>System LDAP</samp> &rArr; <samp>LDAP Servers</samp> and open the LDAP server that was just created/updated in the previous section.
+                    <div class="alert-info">All users must be imported before the LDAP Group definitions can be imported.</div>
+                  </div>
+                  <ol>
+                    <li>
+                      Under <samp>LDAP OU Definitions</samp> at the bottom of the page, add an entry for Admin Users:
+                      <ul>
+                        <li><var>Name</var> - <samp>Admin User Import</samp></li>
+                        <li><var>RDN</var> - The canonical name of the LDAP folder to import from (ie. <samp>OU=Administration</samp>).</li>
                         <li>
-                            Upload the logo image corresponding to the SDLC stage you previously configured. You can download an image from one
-                            of the following links:
-                            <ul>
-                                <li>
-                                    <a href="downloads/Logo/logo_army_prod.png">
-                                        <img src="downloads/Logo/logo_army_prod.png" alt="Production Banner Logo" class="figure-img img-fluid rounded" /> Production
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="downloads/Logo/logo_army_uat.png">
-                                        <img src="downloads/Logo/logo_army_uat.png" alt="UAT Banner Logo" class="figure-img img-fluid rounded" /> UAT
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="downloads/Logo/logo_army_test.png">
-                                        <img src="downloads/Logo/logo_army_test.png" alt="Test Banner Logo" class="figure-img img-fluid rounded" /> Test
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="downloads/Logo/logo_army_dev.png">
-                                        <img src="downloads/Logo/logo_army_dev.png" alt="Dev Banner Logo" class="figure-img img-fluid rounded" /> Dev
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="downloads/Logo/logo_army_sb.png">
-                                        <img src="downloads/Logo/logo_army_sb.png" alt="Sandbox Banner Logo" class="figure-img img-fluid rounded" /> Sandbox
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="downloads/Logo/logo_service-now.png">
-                                        <img src="downloads/Logo/logo_service-now.png" alt="OOTB Banner Logo" class="figure-img img-fluid rounded" /> Out-of-the-box
-                                    </a>
-                                </li>
-                            </ul>
+                          <var>Query Field</var> - <samp>sAMAccountName</samp>.
+                          <div class="alert-warning">
+                            This specification was taken from existing documentation.
+                            We may need to test whether it would work if we used userPincipalName, instead.
+                          </div>
                         </li>
-                    </ol>
-                </div>
-            </div>
-
-            <div class="card" ng-controller="bulkPluginActivationController">
-                <div class="card-header p-1">
-                    <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="toggleTopLevelCardSelect()" onclick="return false;">
-                            {{cardNumber}}. {{cardHeadingText}}
-                            <img ng-src="{{topLevelIconUrl}}" width="8" height="8" alt="{{topLevelIconVerb}} {{cardHeadingText}}" />
-                        </button>
-                    </h2>
-                </div>
-                <div class="card-body" ng-show="topLevelCardVisible">
-                    <div class="detail">
-                        In this step you will launch a fix script which will activate plugins in the background. Plugin activation progress can
-                        be monitored from the progress workers list.
-                    </div>
-                    <ol>
+                        <li><var>Active</var> - checked</li>
+                        <li><var>Server</var> - This should be the same as the parent record we started from.</li>
+                        <li><var>Table</var> - <samp>User [sys_user]</samp></li>
                         <li>
-                            Navigate to
-                            <samp>System Definition</samp> &rArr;
-                            <samp>Fix Scripts</samp>.
+                          <var>Filter</var> - <samp>(&amp;(objectClass=person)(sn=*)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))</samp>
+                          <div class="alert-info">Utilize the <samp>Test connection</samp> link under <samp>Related Links</samp> to verify there are no errors in the filter.</div>
                         </li>
+                      </ul>
+                    </li>
+                    <li>
+                      Under <samp>Data Sources</samp>, add a new entry:
+                      <ul>
+                        <li><var>Name</var> - <samp>Admin LDAP users</samp></li>
+                        <li><var>Import set table label</var> - <samp>Admin User Import</samp>.</li>
+                        <li><var>Import set table name</var> - This should be automatically generated as <samp>u_admin_user_import</samp>.</li>
+                        <li><var>Type</var> - <samp>LDAP</samp></li>
+                        <li><var>LDAP Target</var> - <samp>Admin User Import</samp>.</li>
+                      </ul>
+                    </li>
+                    <li>
+                      Create Transform Map
+                      <ol>
+                        <li>Under <samp>Related Links</samp>, click <samp>Test Load 20 records</samp>.</li>
                         <li>
-                            Open the fix script named
-                            <var>Army Bulk Plugin Activation</var>.
+                          Select <samp>Create Transform Map</samp> and provide the following values:
+                          <ul>
+                            <li><var>Name</var> - <samp>Admin User Import</samp></li>
+                            <li><var>Source table</var> - <samp>Admin User Import [u_admin_user_import]</samp>.</li>
+                            <li><var>Target Table</var> - <samp>User [sys_user]</samp></li>
+                            <li><var>Active</var> - checked</li>
+                            <li><var>Run business rules</var> - checked</li>
+                            <li><var>Enforce mandatory fields</var> - No</li>
+                            <li><var>Copy empty fields</var> - unchecked</li>
+                            <li><var>Run script</var> - unchecked</li>
+                          </ul>
                         </li>
+                      </ol>
+                    </li>
+                    <li>
+                      Map LDAP fields
+                      <ol>
+                        <li>Under <samp>Related Links</samp>, click <samp>Auto Map Matching Fields</samp>.</li>
+                        <li>Under <samp>Related Links</samp>, click <samp>Mapping assist</samp> to ensure all fields are mapped appropriately.</li>
+                      </ol>
+                    </li>
+                    <li>
+                      Coalesce Admin User Imports
+                      <ol>
+                        <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Transform Maps</samp> &rArr; <samp>Admin User Import</samp>.</li>
                         <li>
-                            Click
-                            <samp>Run Fix Script</samp>.
+                          Under the <samp>Field Maps</samp> tab, double-click the <samp>Coalesce</samp> value for the <samp>u_samaccountname</samp> source field and change it to <samp>true</samp>.
+                          <div class="alert-warning">
+                            This specification was taken from existing documentation.
+                            If we used userPincipalName instead of samAccountName, then we will coalesce using the <samp>u_userprincipalname</samp> field, instead.
+                          </div>
                         </li>
-                        <li>
-                            Click
-                            <samp>Proceed</samp> if you wish to wait for the script to finish; otherwise, click
-                            <samp>Proceed in Background</samp> to let it run in the background. This script can take a long time to finish.
-                        </li>
-                    </ol>
-                    <div class="detail">
-                        To monitor the progress of plugin activations, navigate to
-                        <samp>System Diagnostics</samp> &rArr;
-                        <samp>Progress Workers</samp>.
-                    </div>
+                      </ol>
+                    </li>
+                    <li>Under <samp>Related Links</samp>, click <samp>Transform</samp>, and in the resulting page, click the <samp>Transform</samp> button to apply the transform map.</li>
+                    <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Data Sources</samp> and open the <samp>Admin LDAP users</samp> data source.</li>
+                    <li>Under <samp>Related Links</samp>, click <samp>Load all records</samp>.</li>
+                    <li>Once all users are loaded, click <samp>Run Transform</samp>, and then in the resulting page, click the <samp>Transform</samp> button.</li>
+                  </ol>
                 </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <h4>Active Directory Group Import</h4>
+                </div>
+                <div class="card-body">
+                  <div class="detail">
+                    <em>Not yet documented...</em>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="card" ng-controller="activeDirectoryImportController">
-                <div class="card-header p-1">
-                    <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="toggleTopLevelCardSelect()" onclick="return false;">
-                            {{cardNumber}}. {{cardHeadingText}}
-                            <img ng-src="{{topLevelIconUrl}}" width="8" height="8" alt="{{topLevelIconVerb}} {{cardHeadingText}}" />
-                        </button>
-                    </h2>
-                </div>
-                <div class="card-body" ng-show="topLevelCardVisible">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Update / Create LDAP Server</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="detail">
-                                <ol>
-                                    <li>
-                                        Navigate to
-                                        <samp>System LDAP</samp> &rArr; <samp>LDAP Servers</samp> and open the pre-defined LDAP server if one exists; otherwise, click &quot;New&quot; to create a new record.
-                                    </li>
-                                    <li>
-                                        Provide the following information in the form, and save changes (insert and stay):
-                                        <ul>
-                                            <li><var>Name</var> - This is the display name, not the server name.</li>
-                                            <li><var>Active</var> - <em>checked</em></li>
-                                            <li><var>Login distinguished name</var> - The login name, which should be in the format <samp>account@domain.name</samp>.</li>
-                                            <li><var>Password</var> - The authentication password.</li>
-                                            <li><var>Starting search directory</var> - This is the DN of the root of the directory search.</li>
-                                            <li><var>MID Server</var> - This can initially be left blank.</li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        Under LDAP Server URLs, use <samp>Insert a new row...</samp> to add the LDAP URL for each of the LDAP servers.
-                                        <var>Active</var> and <var>Operational Status</var> should both be set to true.
-                                    </li>
-                                    <li>
-                                        In the <samp>Advanced Options</samp> section, check the following fields nd save changes:
-                                        <ul>
-                                            <li>Listener</li>
-                                            <li>Paging</li>
-                                        </ul>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Create LDAP OU Definitions</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Enterprise Users Active Directory Import</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="detail">
-                                        Navigate to
-                                        <samp>System LDAP</samp> &rArr; <samp>LDAP Servers</samp> and open the LDAP server that was just created/updated in the previous section.
-                                        <div class="alert-info">All users must be imported before the LDAP Group definitions can be imported.</div>
-                                    </div>
-                                    <ol>
-                                        <li>
-                                            Under <samp>LDAP OU Definitions</samp> at the bottom of the page, add an entry for Enterprise Users:
-                                            <ul>
-                                                <li><var>Name</var> - <samp>Enterprise User Import</samp></li>
-                                                <li><var>RDN</var> - The canonical name of the LDAP folder to import from (ie. <samp>OU=Enterprise Users</samp>).</li>
-                                                <li>
-                                                    <var>Query Field</var> - <samp>sAMAccountName</samp>.
-                                                    <div class="alert-warning">
-                                                        This specification was taken from existing documentation.
-                                                        We may need to test whether it would work if we used userPincipalName, instead.
-                                                    </div>
-                                                </li>
-                                                <li><var>Active</var> - checked</li>
-                                                <li><var>Server</var> - This should be the same as the parent record we started from.</li>
-                                                <li><var>Table</var> - <samp>User [sys_user]</samp></li>
-                                                <li>
-                                                    <var>Filter</var> - <samp>(&amp;(objectClass=person)(sn=*)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))</samp>
-                                                    <div class="alert-info">Utilize the <samp>Test connection</samp> link under <samp>Related Links</samp> to verify there are no errors in the filter.</div>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            Under <samp>Data Sources</samp>, add a new entry:
-                                            <ul>
-                                                <li><var>Name</var> - <samp>Enterprise LDAP users</samp></li>
-                                                <li><var>Import set table label</var> - <samp>Enterprise User Import</samp>.</li>
-                                                <li><var>Import set table name</var> - This should be automatically generated as <samp>u_enterprise_user_import</samp>.</li>
-                                                <li><var>Type</var> - <samp>LDAP</samp></li>
-                                                <li><var>LDAP Target</var> - <samp>Enterprise User Import</samp>.</li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            Create Transform Map
-                                            <ol>
-                                                <li>Under <samp>Related Links</samp>, click <samp>Test Load 20 records</samp>.</li>
-                                                <li>
-                                                    Select <samp>Create Transform Map</samp> and provide the following values:
-                                                    <ul>
-                                                        <li><var>Name</var> - <samp>Enterprise Enterprise User Import</samp></li>
-                                                        <li><var>Source table</var> - <samp>Enterprise User Import [u_enterprise_user_import]</samp>.</li>
-                                                        <li><var>Target Table</var> - <samp>User [sys_user]</samp></li>
-                                                        <li><var>Active</var> - checked</li>
-                                                        <li><var>Run business rules</var> - checked</li>
-                                                        <li><var>Enforce mandatory fields</var> - No</li>
-                                                        <li><var>Copy empty fields</var> - unchecked</li>
-                                                        <li><var>Run script</var> - unchecked</li>
-                                                    </ul>
-                                                </li>
-                                            </ol>
-                                        </li>
-                                        <li>
-                                            Map LDAP fields
-                                            <ol>
-                                                <li>Under <samp>Related Links</samp>, click <samp>Auto Map Matching Fields</samp>.</li>
-                                                <li>Under <samp>Related Links</samp>, click <samp>Mapping assist</samp> to ensure all fields are mapped appropriately.</li>
-                                            </ol>
-                                        </li>
-                                        <li>
-                                            Coalesce Enterprise User Imports
-                                            <ol>
-                                                <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Transform Maps</samp> &rArr; <samp>Enterprise User Import</samp>.</li>
-                                                <li>
-                                                    Under the <samp>Field Maps</samp> tab, double-click the <samp>Coalesce</samp> value for the <samp>u_samaccountname</samp> source field and change it to <samp>true</samp>.
-                                                    <div class="alert-warning">
-                                                        This specification was taken from existing documentation.
-                                                        If we used userPincipalName instead of samAccountName, then we will coalesce using the <samp>u_userprincipalname</samp> field, instead.
-                                                    </div>
-                                                </li>
-                                            </ol>
-                                        </li>
-                                        <li>Under <samp>Related Links</samp>, click <samp>Transform</samp>, and in the resulting page, click the <samp>Transform</samp> button to apply the transform map.</li>
-                                        <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Data Sources</samp> and open the <samp>Enterprise LDAP users</samp> data source.</li>
-                                        <li>Under <samp>Related Links</samp>, click <samp>Load all records</samp>.</li>
-                                        <li>Once all users are loaded, click <samp>Run Transform</samp>, and then in the resulting page, click the <samp>Transform</samp> button.</li>
-                                    </ol>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Admin Users Active Directory Import</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="detail">
-                                        Navigate to
-                                        <samp>System LDAP</samp> &rArr; <samp>LDAP Servers</samp> and open the LDAP server that was just created/updated in the previous section.
-                                        <div class="alert-info">All users must be imported before the LDAP Group definitions can be imported.</div>
-                                    </div>
-                                    <ol>
-                                        <li>
-                                            Under <samp>LDAP OU Definitions</samp> at the bottom of the page, add an entry for Admin Users:
-                                            <ul>
-                                                <li><var>Name</var> - <samp>Admin User Import</samp></li>
-                                                <li><var>RDN</var> - The canonical name of the LDAP folder to import from (ie. <samp>OU=Administration</samp>).</li>
-                                                <li>
-                                                    <var>Query Field</var> - <samp>sAMAccountName</samp>.
-                                                    <div class="alert-warning">
-                                                        This specification was taken from existing documentation.
-                                                        We may need to test whether it would work if we used userPincipalName, instead.
-                                                    </div>
-                                                </li>
-                                                <li><var>Active</var> - checked</li>
-                                                <li><var>Server</var> - This should be the same as the parent record we started from.</li>
-                                                <li><var>Table</var> - <samp>User [sys_user]</samp></li>
-                                                <li>
-                                                    <var>Filter</var> - <samp>(&amp;(objectClass=person)(sn=*)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))</samp>
-                                                    <div class="alert-info">Utilize the <samp>Test connection</samp> link under <samp>Related Links</samp> to verify there are no errors in the filter.</div>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            Under <samp>Data Sources</samp>, add a new entry:
-                                            <ul>
-                                                <li><var>Name</var> - <samp>Admin LDAP users</samp></li>
-                                                <li><var>Import set table label</var> - <samp>Admin User Import</samp>.</li>
-                                                <li><var>Import set table name</var> - This should be automatically generated as <samp>u_admin_user_import</samp>.</li>
-                                                <li><var>Type</var> - <samp>LDAP</samp></li>
-                                                <li><var>LDAP Target</var> - <samp>Admin User Import</samp>.</li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            Create Transform Map
-                                            <ol>
-                                                <li>Under <samp>Related Links</samp>, click <samp>Test Load 20 records</samp>.</li>
-                                                <li>
-                                                    Select <samp>Create Transform Map</samp> and provide the following values:
-                                                    <ul>
-                                                        <li><var>Name</var> - <samp>Admin User Import</samp></li>
-                                                        <li><var>Source table</var> - <samp>Admin User Import [u_admin_user_import]</samp>.</li>
-                                                        <li><var>Target Table</var> - <samp>User [sys_user]</samp></li>
-                                                        <li><var>Active</var> - checked</li>
-                                                        <li><var>Run business rules</var> - checked</li>
-                                                        <li><var>Enforce mandatory fields</var> - No</li>
-                                                        <li><var>Copy empty fields</var> - unchecked</li>
-                                                        <li><var>Run script</var> - unchecked</li>
-                                                    </ul>
-                                                </li>
-                                            </ol>
-                                        </li>
-                                        <li>
-                                            Map LDAP fields
-                                            <ol>
-                                                <li>Under <samp>Related Links</samp>, click <samp>Auto Map Matching Fields</samp>.</li>
-                                                <li>Under <samp>Related Links</samp>, click <samp>Mapping assist</samp> to ensure all fields are mapped appropriately.</li>
-                                            </ol>
-                                        </li>
-                                        <li>
-                                            Coalesce Admin User Imports
-                                            <ol>
-                                                <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Transform Maps</samp> &rArr; <samp>Admin User Import</samp>.</li>
-                                                <li>
-                                                    Under the <samp>Field Maps</samp> tab, double-click the <samp>Coalesce</samp> value for the <samp>u_samaccountname</samp> source field and change it to <samp>true</samp>.
-                                                    <div class="alert-warning">
-                                                        This specification was taken from existing documentation.
-                                                        If we used userPincipalName instead of samAccountName, then we will coalesce using the <samp>u_userprincipalname</samp> field, instead.
-                                                    </div>
-                                                </li>
-                                            </ol>
-                                        </li>
-                                        <li>Under <samp>Related Links</samp>, click <samp>Transform</samp>, and in the resulting page, click the <samp>Transform</samp> button to apply the transform map.</li>
-                                        <li>Navigate to <samp>System LDAP</samp> &rArr; <samp>Data Sources</samp> and open the <samp>Admin LDAP users</samp> data source.</li>
-                                        <li>Under <samp>Related Links</samp>, click <samp>Load all records</samp>.</li>
-                                        <li>Once all users are loaded, click <samp>Run Transform</samp>, and then in the resulting page, click the <samp>Transform</samp> button.</li>
-                                    </ol>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Active Directory Group Import</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="detail">
-                                        <em>Not yet documented...</em>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="card" ng-controller="importPhysNetworksController">
+        <div class="card-header p-1">
+          <h2 class="card-title mb-0">
+            <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+              {{cardNumber}}. {{headingText}}
+              <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
+            </button>
+          </h2>
+        </div>
+        <div class="card-body" ng-show="isExpanded">
+          <div class="detail">
+            <div class="detail">In this step you will be importing an application that defines a common list of physically seprated networks (as configuration items) that can be used for &quot;network&quot; pick lists.</div>
+            <ol>
+              <li>
+                Import the util application from <kbd>{{ definitions.gitRepositoryBaseUrl }}/x_44813_phys_net_network.git</kbd>.
+                <!-- <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
+                to view instructions for importing applications from source countrol.</div> -->
+              </li>
+              <li>
+                Once the application is imported, you don't need to actually select an application.
+                You can simply close out the <samp>Application Studio</samp> browser tab.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
 
-            <div class="card" ng-controller="importPhysNetworksController">
-                <div class="card-header p-1">
-                    <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="toggleTopLevelCardSelect()" onclick="return false;">
-                            {{cardNumber}}. {{cardHeadingText}}
-                            <img ng-src="{{topLevelIconUrl}}" width="8" height="8" alt="{{topLevelIconVerb}} {{cardHeadingText}}" />
-                        </button>
-                    </h2>
-                </div>
-                <div class="card-body" ng-show="topLevelCardVisible">
-                    <div class="detail">
-                        <div class="detail">In this step you will be importing an application that defines a common list of physically seprated networks (as configuration items) that can be used for &quot;network&quot; pick lists.</div>
-                        <ol>
-                            <li>
-                                Import the util application from <kbd>{{repositoryBaseUrl}}/x_44813_phys_net_network.git</kbd>.
-                                <!-- <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
-                                    to view instructions for importing applications from source countrol.</div> -->
-                            </li>
-                            <li>
-                                Once the application is imported, you don't need to actually select an application.
-                                You can simply close out the <samp>Application Studio</samp> browser tab.
-                            </li>
-                        </ol>
-                    </div>
-                </div>
+      <div class="card" ng-controller="serviceCatalogConfigController">
+        <div class="card-header p-1">
+          <h2 class="card-title mb-0">
+            <button class="btn btn-light" ng-click="toggleExpanded()" onclick="return false;">
+              {{cardNumber}}. {{headingText}}
+              <img ng-src="{{iconUrl}}" width="8" height="8" alt="{{actionVerb}} {{headingText}}" />
+            </button>
+          </h2>
+        </div>
+        <div class="card-body" ng-show="isExpanded">
+          <div class="detail">
+            Load and apply the <a href="downloads/sys_remote_update_set_Service_Catalog.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
+            <var>downloads</var> folder of this documentation to apply the global update set, that sets up the service catalog.
+            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
+            <div class="card wa">
+              <div class="card-header">
+                <h3>Known Issues</h3>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="card" ng-controller="serviceCatalogConfigController">
-                <div class="card-header p-1">
-                    <h2 class="card-title mb-0">
-                        <button class="btn btn-light" ng-click="toggleTopLevelCardSelect()" onclick="return false;">
-                            {{cardNumber}}. {{cardHeadingText}}
-                            <img ng-src="{{topLevelIconUrl}}" width="8" height="8" alt="{{topLevelIconVerb}} {{cardHeadingText}}" />
-                        </button>
-                    </h2>
-                </div>
-                <div class="card-body" ng-show="topLevelCardVisible">
-                    <div class="detail">
-                        Load and apply the <a href="downloads/sys_remote_update_set_Service_Catalog.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
-                        <var>downloads</var> folder of this documentation to apply the global update set, that sets up the service catalog.
-                        <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
-                        <div class="card wa">
-                            <div class="card-header">
-                                <h3>Known Issues</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <div class="modal fade" tabindex="-1" role="dialog" ng-show="elevateRolesVisible">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="elevateRolesModalLabel">Elevating Roles</h5>
+              <button type="button" class="close" ng-click="closeElevateRoles" onclick="return false;">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
+            <div class="modal-body">
+              <img src="images/ElevateRoles1.PNG" width="531" height="257" alt="Screen clip of elevating roles" />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" ng-click="closeElevateRoles" onclick="return false;">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="modal fade" tabindex="-1" role="dialog" ng-show="elevateRolesVisible">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="elevateRolesModalLabel">Elevating Roles</h5>
-                            <button type="button" class="close" ng-click="closeElevateRoles" onclick="return false;">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <img src="images/ElevateRoles1.PNG" width="531" height="257" alt="Screen clip of elevating roles" />
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" ng-click="closeElevateRoles" onclick="return false;">Close</button>
-                        </div>
-                    </div>
-                </div>
+      <div class="modal fade" tabindex="-1" role="dialog" ng-show="systemTimeZoneVisible">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="getSystemTimeZoneModalLabel">System Time Zone</h5>
+              <button type="button" class="close" ng-click="closeSystemTimeZone" onclick="return false;">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-
-            <div class="modal fade" tabindex="-1" role="dialog" ng-show="systemTimeZoneVisible">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="getSystemTimeZoneModalLabel">System Time Zone</h5>
-                            <button type="button" class="close" ng-click="closeSystemTimeZone" onclick="return false;">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            To view the system time zone, navigate to <a ng-href="serviceNow.systemPropertiesUrl" target="_blank" ng-click="serviceNow.onClick()">
-                                <var>
-                                    System Properties <img src="images/subnav.svg" width="16" height="8" alt="Sub-menu selection" />
-                                    Basic Configuration
-                                </var>
-                            </a>.
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" ng-click="closeSystemTimeZone" onclick="return false;">Close</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="modal-body">
+              To view the system time zone, navigate to <a ng-href="serviceNow.systemPropertiesUrl" target="_blank" ng-click="serviceNow.onClick()">
+                <var>
+                  System Properties <img src="images/subnav.svg" width="16" height="8" alt="Sub-menu selection" />
+                  Basic Configuration
+                </var>
+              </a>
             </div>
-
-            <div class="modal fade" tabindex="-1" role="dialog" ng-show="infoDialog.visible">
-                <div class="modal-dialog modal-dialog-centered modal" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">{{infoDialog.title}}</h5>
-                            <button type="button" class="close" ng-click="infoDialog.close()" onclick="return false;">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body alert alert-info">{{infoDialog.message}}</div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" ng-click="infoDialog.close()" onclick="return false;">OK</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" ng-click="closeSystemTimeZone" onclick="return false;">Close</button>
             </div>
-
-            <div class="modal fade" tabindex="-1" role="dialog" ng-show="warningDialog.visible">
-                <div class="modal-dialog modal-dialog-centered modal" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">{{warningDialog.title}}</h5>
-                            <button type="button" class="close" ng-click="warningDialog.close()" onclick="return false;">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body alert alert-warn">{{warningDialog.message}}</div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" ng-click="warningDialog.close()" onclick="return false;">OK</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+          </div>
+        </div>
+      </div>
+    </form>
     </section>
     <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
 </body>

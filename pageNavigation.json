@@ -1,0 +1,56 @@
+{
+  "currentItemClass": [ "active", "nav-link" ],
+  "selectedItemClass": [ "active", "nav-link" ],
+  "otherItemClass": [ "nav-link" ],
+  "items": [
+    {
+      "url": "index.html",
+      "linkTitle": "Home",
+      "pageTitle": "ServiceNow Implementation and Maintenance"
+    },
+    {
+      "url": "ImplementationNotes.html",
+      "linkTitle": "Implementation Notes",
+      "pageTitle": "ServiceNow Implementation Notes",
+      "items": [
+        {
+          "url": "ServiceCatalog.html",
+          "linkTitle": "Service Catalog",
+          "pageTitle": "ServiceNow Implementation Notes - Service Catalog"
+        },
+        {
+          "url": "IncidentManagement.html",
+          "linkTitle": "Incident Management",
+          "pageTitle": "ServiceNow Implementation Notes - Incident Management"
+        }
+      ]
+    },
+    {
+      "url": "InitialConfig.html",
+      "linkTitle": "Initial Config",
+      "pageTitle": "Initial Configuration Instructions"
+    },
+    {
+      "url": "DevResources.html",
+      "linkTitle": "Dev Resources",
+      "pageTitle": "Development Resources",
+      "items": [
+        {
+          "url": "RegexTester.html",
+          "linkTitle": "Regex Tester",
+          "pageTitle": "Regular Expression Tester"
+        },
+        {
+          "url": "URIBuilder.html",
+          "linkTitle": "URI Builder",
+          "pageTitle": "URI Builder"
+        },
+        {
+          "url": "ColorBuilder.html",
+          "linkTitle": "Color Builder",
+          "pageTitle": "Color Builder"
+        }
+      ]
+    }
+  ]
+}

@@ -1,8 +1,0 @@
-{
-    "compileOnSave": false,
-    "compilerOptions": {
-        "target": "ES6",
-        "module": "commonjs",
-        "allowSyntheticDefaultImports": true
-    }
-}
