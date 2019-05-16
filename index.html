@@ -11,22 +11,35 @@
     <script type="text/javascript" src="lib/jquery/jquery.js"></script>
     <script type="text/javascript" src="lib/twitter-bootstrap/js/bootstrap.bundle.js"></script>
     <script type="text/javascript" src="lib/angular.js/angular.js"></script>
-    <script type="text/javascript" src="App/MainModule.js"></script>
+    <script type="text/javascript" src="App/app.js"></script>
 </head>
 <body>
     <main-app-page-head></main-app-page-head>
     <section class="container-fluid">
+        <collapsible-card-container>
+            <collapsible-card-l0 heading="Links">
+                <collapsible-card-l1 heading="ServiceNow">
+                    <ul>
+                        <li><a href="https://inscomscd.service-now.com" target="_blank">Cloud Development Instance</a></li>
+                        <li><a href="https://hi.service-now.com/" target="_blank">ServiceNow Customer Service System (HI)</a></li>
+                        <li><a href="https://docs.servicenow.com/category/london" target="_blank">ServiceNow Documentation (London)</a></li>
+                        <li><a href="https://community.servicenow.com/" target="_blank">ServiceNow Community Website</a></li>
+                        <li><a href="https://developer.servicenow.com/" target="_blank">ServiceNow Developers</a></li>
+                    </ul>
+                </collapsible-card-l1>
+                <collapsible-card-l1 heading="GIT">
+                    <ul>
+                        <li><a href="https://github.com/erwinel" target="_blank">GIT Repository</a></li>
+                    </ul>
+                </collapsible-card-l1>
+            </collapsible-card-l0>
+            <collapsible-card-l0 heading="Test">
+                {{ pageNavigation.pageTitle }}
+            </collapsible-card-l0>
+        </collapsible-card-container>
         <div class="card">
             <div class="card-header"><h2>Links</h2></div>
             <div class="card-body">
-                <ul>
-                    <li><a href="https://inscomscd.service-now.com" target="_blank">Cloud Development Instance</a></li>
-                    <li><a href="https://hi.service-now.com/" target="_blank">ServiceNow Customer Service System (HI)</a></li>
-                    <li><a href="https://docs.servicenow.com/category/london" target="_blank">ServiceNow Documentation (London)</a></li>
-                    <li><a href="https://community.servicenow.com/" target="_blank">ServiceNow Community Website</a></li>
-                    <li><a href="https://developer.servicenow.com/" target="_blank">ServiceNow Developers</a></li>
-                    <li><a href="https://github.com/erwinel" target="_blank">GIT Repository</a></li>
-                </ul>
             </div>
         </div>
     </section>

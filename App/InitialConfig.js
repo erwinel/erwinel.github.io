@@ -1,8 +1,8 @@
 /// <reference path="Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="Scripts/typings/jquery/jquery.d.ts" />
-/// <reference path="MainModule.ts" />
-/// <reference path="CollapsibleCardControllers.ts" />
+/// <reference path="app.ts" />
+/// <reference path="cards.ts" />
 var initialConfig;
 (function (initialConfig) {
     class topLevelCardController extends cards.CardController {

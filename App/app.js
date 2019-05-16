@@ -15,6 +15,14 @@ var app;
     let identifierRe = /^[a-z_][a-z\d]*$/i;
     let falseStringRe = /^(f(alse)?|no?|0+(\.0+)?)([^\w-]|$)/i;
     let numberStringRe = /^\d+(\.\d+)$/i;
+    app.ScopeEvent_OpenMainModalPopupDialog = 'OpenMainModalPopupDialog';
+    app.ScopeEvent_CloseMainModalPopupDialog = 'CloseMainModalPopupDialog';
+    app.ScopeEvent_ShowSetupParametersDialog = 'showSetupParameterDefinitionsControllerDialog';
+    app.ScopeEvent_HideSetupParametersDialog = 'hideSetupParameterDefinitionsControllerDialog';
+    app.ScopeEvent_SetupParameterSettingsChanged = "SetupParameterSettingsChanged";
+    app.StorageKey_SetupParameterSettings = "setupParameterSettings";
+    const DefaultURL_ServiceNow = "https://inscomscd.service-now.com";
+    const DefaultURL_GitRepositoryBase = "https://github.com/erwinel";
     // #region Utility functions
     /**
      * Determines if a value is null or undefined.
@@ -101,11 +109,69 @@ var app;
         return value;
     }
     app.asString = asString;
-    function stringBefore(source, search) {
-        let i = source.indexOf(search);
-        return (i < 0) ? source : source.substr(0, i);
+    function subStringBefore(source, search, nilIfNoMatch = false, caseSensitive = false) {
+        if (!isNilOrEmpty(source)) {
+            if (typeof (search) === "string") {
+                if (search.length > 0) {
+                    let i = (caseSensitive) ? source.indexOf(search) : source.toLowerCase().indexOf(search.toLowerCase());
+                    if (i > -1)
+                        return source.substr(0, i);
+                }
+            }
+            else if (!isNil(search)) {
+                let match = search.exec(source);
+                if (!isNilOrEmpty(match))
+                    return source.substr(0, match.index);
+            }
+        }
+        if (!nilIfNoMatch)
+            return source;
     }
-    app.stringBefore = stringBefore;
+    app.subStringBefore = subStringBefore;
+    function subStringAfter(source, search, nilIfNoMatch = false, caseSensitive = false) {
+        if (!isNilOrEmpty(source)) {
+            if (typeof (search) === "string") {
+                if (search.length > 0) {
+                    let i = (caseSensitive) ? source.indexOf(search) : source.toLowerCase().indexOf(search.toLowerCase());
+                    if (i > -1)
+                        return source.substr(i + search.length);
+                }
+            }
+            else if (!isNil(search)) {
+                let match = search.exec(source);
+                if (!isNilOrEmpty(match))
+                    return source.substr(match.index + match[0].length);
+            }
+        }
+        if (!nilIfNoMatch)
+            return source;
+    }
+    app.subStringAfter = subStringAfter;
+    function splitAt(source, spec, opt = false) {
+        if (!isNilOrEmpty(source)) {
+            if (typeof (spec) === "number") {
+                if (!isNaN(spec) && spec > -1 && spec < source.length)
+                    return [source.substr(0, spec), source.substr(spec)];
+            }
+            else if (typeof (spec) === "string") {
+                if (spec.length > 0) {
+                    let i = (opt) ? source.indexOf(spec) : source.toLowerCase().indexOf(spec.toLowerCase());
+                    if (i > -1)
+                        return [source.substr(0, i), source.substr(i)];
+                }
+            }
+            else if (!isNil(spec)) {
+                let match = spec.exec(source);
+                if (!isNilOrEmpty(match)) {
+                    if (opt)
+                        return [source.substr(0, match.index), match[0], source.substr(match.index + match[0].length)];
+                    return [source.substr(0, match.index), source.substr(match.index + match[0].length)];
+                }
+            }
+        }
+        return [source];
+    }
+    app.splitAt = splitAt;
     /**
      * Ensures that a value is a floating-point number, converting it if necessary.
      * @param value
@@ -748,349 +814,75 @@ var app;
         return resultY.done;
     }
     app.areSequencesEqual = areSequencesEqual;
-    // #endregion
-    // #region URIBuilder
-    let schemeParseRe = /^([^\\\/:@]*:)[\\\/]{0,2}/;
-    let originStartValidateRe = /^[a-z][a-z\d_\-]+:(\/\/?)?[^\\]/;
-    let portValidateRe = /^0*(6(5(5(3[0-5]?|[012]\d?|[4-9]?)|([0-4]\d?|[6-9])\d?)?|([0-4]\d?|[6-9])\d{0,2})?|([1-5]\d?|[7-9])\d{0,3})$/;
-    let userInfoParseRe = /^([^\\\/:@]+)?(:([^\\\/:@]+)?)?@/;
-    let hostAndPortParseRe = /^([^\\\/:]+)?(:(\d+)?)?/;
-    class URIBuilder {
-        constructor() {
-            this._href = '';
-            this._origin = '';
-            this._protocol = '';
-            this._username = undefined;
-            this._password = undefined;
-            this._host = '';
-            this._hostname = '';
-            this._port = undefined;
-            this._pathname = '';
-            this._pathSegments = undefined;
-            this._search = undefined;
-            this._searchParams = undefined;
-            this._hash = '';
-            this._isWellFormed = undefined;
-            this._isAbsolute = false;
+    app.uriParseRegex_beforeQuery = /^(([^\\\/@:]*)(:[\\\/]{0,2})((?=[^\\\/@:]*(?::[^\\\/@:]*)?@)([^\\\/@:]*)(:[^\\\/@:]*)?@)?([^\\\/@:]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?(.+)?$/;
+    app.uriParseRegex = /^(([^\\\/@:\?#]*)(:[\\\/]{0,2})((?=[^\\\/@:\?#]*(?::[^\\\/@:\?#]*)?@)([^\\\/@:\?#]*)(:[^\\\/@:\?#]*)?@)?([^\\\/@:\?#]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?([^\?#]+)?(\?([^#]+)?)?(#(.+)?)?$/;
+    let uriParseGroup;
+    (function (uriParseGroup) {
+        uriParseGroup[uriParseGroup["all"] = 0] = "all";
+        uriParseGroup[uriParseGroup["origin"] = 1] = "origin";
+        uriParseGroup[uriParseGroup["schemeName"] = 2] = "schemeName";
+        uriParseGroup[uriParseGroup["schemeSeparator"] = 3] = "schemeSeparator";
+        uriParseGroup[uriParseGroup["userInfo"] = 4] = "userInfo";
+        uriParseGroup[uriParseGroup["username"] = 5] = "username";
+        uriParseGroup[uriParseGroup["password"] = 6] = "password";
+        uriParseGroup[uriParseGroup["hostname"] = 7] = "hostname";
+        uriParseGroup[uriParseGroup["portnumber"] = 8] = "portnumber";
+        uriParseGroup[uriParseGroup["path"] = 9] = "path";
+        uriParseGroup[uriParseGroup["search"] = 10] = "search";
+        uriParseGroup[uriParseGroup["queryString"] = 11] = "queryString";
+        uriParseGroup[uriParseGroup["hash"] = 12] = "hash";
+        uriParseGroup[uriParseGroup["fragment"] = 13] = "fragment";
+    })(uriParseGroup = app.uriParseGroup || (app.uriParseGroup = {}));
+    function parseUriString(source) {
+        if (isNilOrEmpty(source))
+            return { source: source, path: source };
+        let match = app.uriParseRegex.exec(source);
+        let result;
+        if (isNilOrEmpty(match)) {
+            result = { source: source, path: source };
+            let i = source.indexOf('#');
+            if (i > -1) {
+                result.fragment = source.substr(i + 1);
+                result.source = source = source.substr(0, i);
+            }
+            i = source.indexOf('?');
+            if (i > -1) {
+                result.queryString = source.substr(i + 1);
+                result.source = source.substr(0, i);
+            }
         }
-        get isWellFormed() {
-            if (typeof (this._isWellFormed) === 'boolean')
-                return this._isWellFormed;
-            if (this._origin.length > 0) {
-                let m = originStartValidateRe.exec(this._origin);
-                if (isNil(m) || (typeof (this._port) === 'string' && (this._port.length == 0 || this._hostname.length == 0 || !portValidateRe.test(this._port))) ||
-                    (this._hostname.length > 0 && encodeURIComponent(this._hostname) !== this._hostname)) {
-                    this._isWellFormed = false;
-                    return false;
+        else {
+            result = { source: source, path: (isNil(match[uriParseGroup.path])) ? '' : match[uriParseGroup.path] };
+            if (!isNil(match[uriParseGroup.origin])) {
+                let name = (isNil(match[uriParseGroup.hostname])) ? '' : match[uriParseGroup.hostname];
+                result.origin = {
+                    value: match[uriParseGroup.origin],
+                    scheme: {
+                        name: match[uriParseGroup.schemeName],
+                        separator: match[uriParseGroup.schemeSeparator]
+                    },
+                    host: { value: name, name: name }
+                };
+                if (!isNil(match[uriParseGroup.userInfo])) {
+                    result.origin.userInfo = { value: match[uriParseGroup.userInfo], name: (isNil(match[uriParseGroup.username])) ? '' : match[uriParseGroup.username] };
+                    if (!isNil(match[uriParseGroup.password]))
+                        result.origin.userInfo.password = match[uriParseGroup.password].substr(1);
                 }
-                if (typeof (this._username) === 'string' || typeof (this._password) === 'string') {
-                    if (this._hostname.length == 0) {
-                        this._isWellFormed = false;
-                        return false;
-                    }
-                    let i = this._origin.indexOf('@');
-                    let userInfo = this._origin.substr(m[0].length, i - m[0].length);
-                    if (typeof (this._password) === 'string') {
-                        i = userInfo.indexOf(':');
-                        let pw = userInfo.substr(i + 1);
-                        if (pw.length > 0 && encodeURIComponent(this._password) !== userInfo.substr(i + 1)) {
-                            this._isWellFormed = false;
-                            return false;
-                        }
-                        userInfo = userInfo.substr(0, i);
-                    }
-                    if (typeof (this._username) === 'string' && userInfo.length > 0 && encodeURIComponent(this._username) !== userInfo) {
-                        this._isWellFormed = false;
-                        return false;
-                    }
-                }
-            }
-            this._isWellFormed = (this._search.length == 0 || this._search.split('&').filter((s) => {
-                if (s.length == 0)
-                    return true;
-                let i = s.indexOf('=');
-                if (i == 0)
-                    return true;
-                if (i > 0) {
-                    if (i < s.length - 1) {
-                        let v = s.substr(i + 1);
-                        if (encodeURIComponent(decodeURIComponent(v)) != v)
-                            return true;
-                    }
-                    s = s.substr(0, i);
-                }
-                return encodeURIComponent(decodeURIComponent(s)) != s;
-            }).length == 0) && (this._hash.length == 0 || this._href.substr(this._href.indexOf('#') + 1) === encodeURI(this._hash.substr(1)));
-            return this._isWellFormed;
-        }
-        get href() { return this._href; }
-        set href(value) {
-            value = asNotNil(value, '');
-            if (value === this._href)
-                return;
-            this._href = value;
-            this._isWellFormed = undefined;
-            let i = value.indexOf('#');
-            if (i < 0)
-                this._hash = '';
-            else {
-                this._hash = decodeURI(value.substr(i));
-                value = value.substr(0, i);
-            }
-            i = value.indexOf('?');
-            if (i < 0)
-                this._search = '';
-            else {
-                this._search = value.substr(i);
-                value = value.substr(0, i);
-            }
-            let m = schemeParseRe.exec(value);
-            if (isNil(m)) {
-                this._origin = this._protocol = this._host = this._host = '';
-                this._username = this._password = this._port = undefined;
-                this._pathname = value;
-                this._isAbsolute = false;
-                return;
-            }
-            this._isAbsolute = true;
-            this._protocol = m[1];
-            this._origin = m[0];
-            value = value.substr(m[0].length);
-            m = userInfoParseRe.exec(value);
-            if (!isNil(m)) {
-                this._username = (isNil(m[1])) ? '' : m[1];
-                this._password = (isNil(m[2])) ? undefined : ((isNil(m[3])) ? '' : m[3]);
-                value = value.substr(m[0].length);
-            }
-            else
-                this._username = this._password = undefined;
-            m = hostAndPortParseRe.exec(value);
-            if (isNil(m)) {
-                this._host = this._hostname = '';
-                this._port = undefined;
-                this._pathname = value;
-            }
-            else {
-                this._host = m[0];
-                this._hostname = (isNil(m[1])) ? '' : m[1];
-                this._port = (isNil(m[2])) ? undefined : ((isNil(m[3])) ? '' : m[3]);
-                this._pathname = value.substr(m[0].length);
-            }
-        }
-        get origin() { return this._origin; }
-        set origin(value) {
-            value = asNotNil(value, '');
-            if (value === this._origin)
-                return;
-            if (value.length == 0) {
-                this._isWellFormed = undefined;
-                this._origin = this._protocol = this._host = this._host = '';
-                this._username = this._password = this._port = undefined;
-                this._isAbsolute = false;
-                return;
-            }
-            if (value.indexOf('#') > -1)
-                throw new Error("Origin cannot contain a fragment");
-            if (value.indexOf('?') > -1)
-                throw new Error("Origin cannot contain a query");
-            let m = schemeParseRe.exec(value);
-            if (isNil(m))
-                throw new Error("Origin must contain a scheme if it is not empty");
-            let protocol = m[1];
-            let origin = m[0];
-            value = value.substr(m[0].length);
-            m = userInfoParseRe.exec(value);
-            let username, password;
-            if (!isNil(m)) {
-                username = (isNil(m[1])) ? '' : m[1];
-                password = (isNil(m[2])) ? undefined : ((isNil(m[3])) ? '' : m[3]);
-                value = value.substr(m[0].length);
-            }
-            else
-                username = password = undefined;
-            m = hostAndPortParseRe.exec(value);
-            if (isNil(m)) {
-                if (value.length > 0)
-                    throw new Error("Origin cannot contain path references");
-                this._host = this._hostname = '';
-                this._port = undefined;
-            }
-            else {
-                if (value.length > m[0].length)
-                    throw new Error("Origin cannot contain path references");
-                this._host = m[0];
-                this._hostname = (isNil(m[1])) ? '' : m[1];
-                this._port = (isNil(m[2])) ? undefined : ((isNil(m[3])) ? '' : m[3]);
-            }
-            this._isWellFormed = undefined;
-            this._isAbsolute = true;
-            this._protocol = protocol;
-            this._origin = origin;
-            this._username = username;
-            this._password = password;
-        }
-        get protocol() { return this._protocol; }
-        set protocol(value) {
-            value = asNotNil(value, '');
-            if (value === this._protocol)
-                return;
-            let m;
-            if (value.length > 0) {
-                if (!value.endsWith(':'))
-                    value += ':';
-                if (value === this._protocol)
-                    return;
-                if (value.length > 1) {
-                    m = schemeParseRe.exec(value);
-                    if (isNil(m) || m[1].length != value.length)
-                        throw new Error("Invalid protocol format");
+                if (!isNil(match[uriParseGroup.portnumber])) {
+                    result.origin.host.value += match[uriParseGroup.portnumber];
+                    result.origin.host.portnumber = match[uriParseGroup.portnumber].substr(1);
                 }
             }
-            this._protocol = value;
-            if (value.length === 0)
-                this._origin = '';
-            else {
-                m = schemeParseRe.exec(this._origin);
-                if (m[0].length > m[1].length)
-                    this._origin = this._protocol + m[0].substr(m[1].length);
-                else
-                    this._origin = this._protocol;
-                this._origin = this._protocol;
-                if (typeof (this._username) === 'string')
-                    this._origin += ((typeof (this._password) === 'string') ? encodeURIComponent(this._username) + ':' + encodeURIComponent(this._password) : encodeURIComponent(this._username)) + '@';
-                else if (typeof (this._password) === 'string')
-                    this._origin += ':' + encodeURIComponent(this._password) + '@';
-                this._origin += this._hostname;
-                if (typeof (this._port) === 'string')
-                    this._origin += ':' + this._port;
-            }
-            this._href = this._origin + this._pathname + this._search + this._hash;
-            this._isWellFormed = undefined;
+            result.path = (isNil(match[uriParseGroup.path])) ? '' : match[uriParseGroup.path];
+            if (!isNil(match[uriParseGroup.search]))
+                result.queryString = (isNil(match[uriParseGroup.queryString])) ? '' : match[uriParseGroup.queryString];
+            if (!isNil(match[uriParseGroup.hash]))
+                result.fragment = (isNil(match[uriParseGroup.fragment])) ? '' : match[uriParseGroup.fragment];
         }
-        rebuildHref() {
-            if (this._origin.length > 0) {
-                let m = schemeParseRe.exec(this._origin);
-                if (m[0].length > m[1].length)
-                    this._origin = this._protocol + m[0].substr(m[1].length);
-                else
-                    this._origin = this._protocol;
-                this._origin = this._protocol;
-                if (typeof (this._username) === 'string')
-                    this._origin += ((typeof (this._password) === 'string') ? encodeURIComponent(this._username) + ':' + encodeURIComponent(this._password) : encodeURIComponent(this._username)) + '@';
-                else if (typeof (this._password) === 'string')
-                    this._origin += ':' + encodeURIComponent(this._password) + '@';
-                this._origin += this._hostname;
-                if (typeof (this._port) === 'string')
-                    this._origin += ':' + this._port;
-            }
-            this._href = this._origin + this._pathname + this._search + this._hash;
-            this._isWellFormed = undefined;
-        }
-        get username() { return this._username; }
-        set username(value) {
-            if (isNil(value)) {
-                if (typeof (this._username) !== 'string')
-                    return;
-                this._username = undefined;
-            }
-            else {
-                if (this._username === value)
-                    return;
-                this._username = value;
-            }
-            this.rebuildHref();
-        }
-        get password() { return this._password; }
-        set password(value) {
-            if (isNil(value)) {
-                if (typeof (this._password) !== 'string')
-                    return;
-                this._password = undefined;
-            }
-            else {
-                if (this._password === value)
-                    return;
-                this._password = value;
-            }
-            this.rebuildHref();
-        }
-        get host() { return this._host; }
-        set host(value) {
-            value = asNotNil(value, '');
-            if (value === this._host)
-                return;
-            this._host = value;
-            let i = this._host.indexOf(':');
-            if (i < 0) {
-                this._hostname = this._host;
-                this._port = undefined;
-            }
-            else {
-                this._hostname = this._host.substr(0, i);
-                this._port = this._host.substr(i + 1);
-            }
-            this.rebuildHref();
-        }
-        get hostname() { return this._hostname; }
-        set hostname(value) {
-            value = asNotNil(value, '');
-            if (value === this._hostname)
-                return;
-            this._hostname = value;
-            this.rebuildHref();
-        }
-        get port() { return this._port; }
-        set port(value) {
-            if (isNil(value)) {
-                if (typeof (this._port) !== 'string')
-                    return;
-                this._password = undefined;
-            }
-            else {
-                if (this._port === value)
-                    return;
-                this._port = value;
-            }
-            this.rebuildHref();
-        }
-        get pathname() { return this._pathname; }
-        set pathname(value) {
-            value = asNotNil(value, '');
-            if (value === this._pathname)
-                return;
-            if (value.length > 0 && this._isAbsolute && !(value.startsWith(':') || value.startsWith('/') || value.startsWith('\\')))
-                value += '/' + value;
-            this._pathname = value;
-            this.rebuildHref();
-        }
-        get search() { return this._search; }
-        set search(value) {
-            value = asNotNil(value, '');
-            if (value === this._search)
-                return;
-            if (value.indexOf('#') > -1)
-                throw new Error("Search cannot contain a fragment");
-            if (value.length > 0 && !value.startsWith('?'))
-                value += '?' + value;
-            this._search = value;
-            this.rebuildHref();
-        }
-        get searchParams() { return this._searchParams; }
-        get hash() { return this._hash; }
-        set hash(value) {
-            value = asNotNil(value, '');
-            if (value === this._hash)
-                return;
-            if (value.length > 0 && !value.startsWith('#'))
-                value += '#' + value;
-            this._hash = value;
-            this.rebuildHref();
-        }
-        toJSON() {
-            throw new Error("Method not implemented.");
-        }
+        return result;
     }
-    function initializePageNavigationScope(parentScope, controller, location, http) {
+    app.parseUriString = parseUriString;
+    function initializePageNavigationScope(parentScope, location, http) {
         let scope = parentScope.pageNavigation = (parentScope.$new());
         scope.top = (scope.pageNavigation.$new());
         scope.top.items = [];
@@ -1173,6 +965,7 @@ var app;
         return item;
     }
     // #endregion
+    // #region Directives
     app.MainModule.directive("mainAppPageHead", () => {
         return {
             restrict: "E",
@@ -1181,19 +974,20 @@ var app;
         };
     });
     class MainController {
-        constructor($scope, $rootScope, $location, $http) {
+        constructor($scope, $location, $http, settings) {
             this.$scope = $scope;
             this.$location = $location;
             this.$http = $http;
-            let settings = setupParameterDefinitionsController.getSettings();
             $scope.serviceNowUrl = settings.serviceNowUrl;
             $scope.gitRepositoryBaseUrl = settings.gitRepositoryBaseUrl;
-            $rootScope.$on(app.BroadcastEvent_SetupParametersChanged, (event, values) => {
-                $scope.serviceNowUrl = values.serviceNowUrl;
-                $scope.gitRepositoryBaseUrl = values.gitRepositoryBaseUrl;
+            settings.onChanged($scope, (event, value) => {
+                $scope.serviceNowUrl = value.serviceNowUrl;
+                $scope.gitRepositoryBaseUrl = value.gitRepositoryBaseUrl;
             });
-            initializePageNavigationScope($scope, this, $location, $http);
-            $scope.showSetupParametersEditDialog = () => { setupParameterDefinitionsController.show($scope); };
+            initializePageNavigationScope($scope, $location, $http);
+            $scope.showSetupParametersEditDialog = () => {
+                setupParameterDefinitionsController.show($scope);
+            };
         }
         $doCheck() { }
         showSetupParametersEditDialog() { setupParameterDefinitionsController.show(this.$scope); }
@@ -1201,7 +995,7 @@ var app;
         showModalDialogMessage(message, type = 'info', title) { mainModalPopupDialogController.show(this.$scope, message, type, title); }
         hideModalDialogMessage() { mainModalPopupDialogController.hide(this.$scope); }
     }
-    app.MainModule.controller("MainController", ['$scope', '$rootScope', "$location", "$http", MainController]);
+    app.MainModule.controller("MainController", ['$scope', "$location", "$http", "setupParameterSettings", MainController]);
     class MainControllerChild {
         constructor($scope) {
             this.$scope = $scope;
@@ -1213,8 +1007,6 @@ var app;
         hideModalDialogMessage() { mainModalPopupDialogController.hide(this.$scope); }
     }
     app.MainControllerChild = MainControllerChild;
-    app.BroadcastEvent_OpenMainModalPopupDialog = 'OpenMainModalPopupDialog';
-    app.BroadcastEvent_CloseMainModalPopupDialog = 'CloseMainModalPopupDialog';
     class mainModalPopupDialogController extends MainControllerChild {
         constructor($scope, $rootScope) {
             super($scope);
@@ -1222,7 +1014,7 @@ var app;
             $scope.message = '';
             $scope.bodyClass = '';
             $scope.close = () => { $('#mainModalPopupDialog').modal('hide'); };
-            $rootScope.$on(app.BroadcastEvent_OpenMainModalPopupDialog, (event, message, type, title) => {
+            $rootScope.$on(app.ScopeEvent_OpenMainModalPopupDialog, (event, message, type, title) => {
                 if (isNilOrWhiteSpace(title)) {
                     switch (type) {
                         case 'warning':
@@ -1244,33 +1036,225 @@ var app;
                 $scope.message = (isNil(message)) ? '' : message;
                 $('#mainModalPopupDialog').modal('show');
             });
-            $rootScope.$on(app.BroadcastEvent_CloseMainModalPopupDialog, (event) => { $('#mainModalPopupDialog').modal('hide'); });
+            $rootScope.$on(app.ScopeEvent_CloseMainModalPopupDialog, (event) => { $('#mainModalPopupDialog').modal('hide'); });
         }
         static show($scope, message, type, title) {
-            $scope.$emit(app.BroadcastEvent_OpenMainModalPopupDialog, message, type, title);
+            $scope.$broadcast(app.ScopeEvent_OpenMainModalPopupDialog, message, type, title);
         }
         static hide($scope) {
-            $scope.$emit(app.BroadcastEvent_CloseMainModalPopupDialog);
+            $scope.$broadcast(app.ScopeEvent_CloseMainModalPopupDialog);
         }
     }
     app.mainModalPopupDialogController = mainModalPopupDialogController;
     app.MainModule.controller("mainModalPopupDialogController", ['$scope', '$rootScope', mainModalPopupDialogController]);
     // #endregion
+    // #region Session Storage Service
+    class SessionStorageEntryEnumerator {
+        constructor(_window, _keys) {
+            this._window = _window;
+            this._keys = _keys;
+            this._index = 0;
+        }
+        [Symbol.iterator]() { return this; }
+        next() {
+            if (this._window.sessionStorage.length !== this._keys.length)
+                this._index = this._keys.length;
+            else if (this._index < this._keys.length) {
+                try {
+                    let key = this._keys[this._index];
+                    let value = this._window.sessionStorage.getItem(key);
+                    if (!isNil(value))
+                        return { done: false, value: [key, value] };
+                    this._index = this._keys.length;
+                }
+                catch (_a) {
+                    this._index = this._keys.length;
+                }
+            }
+            return { done: true, value: undefined };
+        }
+    }
+    class SessionStorageValueEnumerator {
+        constructor(_window, _keys) {
+            this._window = _window;
+            this._keys = _keys;
+            this._index = 0;
+        }
+        [Symbol.iterator]() { return this; }
+        next() {
+            if (this._window.sessionStorage.length !== this._keys.length)
+                this._index = this._keys.length;
+            else if (this._index < this._keys.length) {
+                try {
+                    let value = this._window.sessionStorage.getItem(this._keys[this._index]);
+                    if (!isNil(value))
+                        return { done: false, value: value };
+                    this._index = this._keys.length;
+                }
+                catch (_a) {
+                    this._index = this._keys.length;
+                }
+            }
+            return { done: true, value: undefined };
+        }
+    }
+    class SessionStorageService {
+        constructor($window) {
+            this.$window = $window;
+            this[Symbol.toStringTag] = 'SessionStorageService';
+            this.check(true);
+        }
+        get size() { return this.$window.sessionStorage.length; }
+        check(forceRefresh = false) {
+            if (!forceRefresh && this.$window.sessionStorage.length == this._allKeys.length)
+                return;
+            this._allKeys = [];
+            this._parsedKeys = [];
+            this._parsedObjects = [];
+            for (let i = 0; i < this.$window.sessionStorage.length; i++)
+                this._allKeys.push(this.$window.sessionStorage.key(i));
+        }
+        clear() {
+            this.$window.sessionStorage.clear();
+            this._allKeys = [];
+            this._parsedKeys = [];
+            this._parsedObjects = [];
+        }
+        delete(key) {
+            this.check();
+            this.$window.sessionStorage.removeItem(key);
+            let i = this._parsedKeys.indexOf(key);
+            if (i < 0)
+                return false;
+            if (i == 0) {
+                this._parsedKeys.shift();
+                this._parsedObjects.shift();
+            }
+            else if (i == (this._parsedKeys.length - 1)) {
+                this._parsedKeys.pop();
+                this._parsedObjects.pop();
+            }
+            else {
+                this._parsedKeys.splice(i, 1);
+                this._parsedObjects.splice(i, 1);
+            }
+        }
+        entries() { return new SessionStorageEntryEnumerator(this.$window, this._allKeys); }
+        [Symbol.iterator]() { return this.entries(); }
+        forEach(callbackfn, thisArg) {
+            this.check();
+            if (typeof (thisArg) === "undefined")
+                this._allKeys.forEach((key, index) => {
+                    if (index < this._allKeys.length && this._allKeys[index] === key) {
+                        let value;
+                        try {
+                            value = this.$window.sessionStorage.getItem(key);
+                        }
+                        catch ( /* okay to ignore */_a) { /* okay to ignore */ }
+                        if (!isNil(value))
+                            callbackfn(value, key, this);
+                    }
+                }, this);
+            else
+                this._allKeys.forEach((key, index) => {
+                    if (index < this._allKeys.length && this._allKeys[index] === key) {
+                        let value;
+                        try {
+                            value = this.$window.sessionStorage.getItem(key);
+                        }
+                        catch ( /* okay to ignore */_a) { /* okay to ignore */ }
+                        if (!isNil(value))
+                            callbackfn.call(thisArg, value, key, this);
+                    }
+                }, this);
+        }
+        get(key) {
+            this.check();
+            try {
+                if (this._allKeys.indexOf(key) > -1)
+                    return this.$window.sessionStorage.getItem(key);
+            }
+            catch ( /* okay to ignore */_a) { /* okay to ignore */ }
+            return null;
+        }
+        getKeys() {
+            this.check();
+            return Array.from(this._allKeys);
+        }
+        getObject(key) {
+            this.check();
+            let i = this._parsedKeys.indexOf(key);
+            if (i > -1)
+                return this._parsedObjects[i];
+            try {
+                let json = this.$window.sessionStorage.getItem(key);
+                if (!app.isNilOrEmpty(json)) {
+                    let result;
+                    if (json !== "undefined")
+                        result = (ng.fromJson(json));
+                    this._parsedKeys.push(key);
+                    this._parsedObjects.push(result);
+                    return result;
+                }
+            }
+            catch (_a) { }
+        }
+        has(key) {
+            this.check();
+            return this._allKeys.indexOf(key) > -1;
+        }
+        keys() {
+            this.check();
+            return Array.from(this._allKeys).values();
+        }
+        set(key, value) {
+            try {
+                if (isNil(value))
+                    this.$window.sessionStorage.removeItem(key);
+                else
+                    this.$window.sessionStorage.setItem(key, value);
+                let i = this._parsedKeys.indexOf(key);
+                if (i == 0) {
+                    this._parsedKeys.shift();
+                    this._parsedObjects.shift();
+                }
+                else if (i == (this._parsedKeys.length - 1)) {
+                    this._parsedKeys.pop();
+                    this._parsedObjects.pop();
+                }
+                else if (i < this._parsedKeys.length) {
+                    this._parsedKeys.splice(i, 1);
+                    this._parsedObjects.splice(i, 1);
+                }
+            }
+            catch (e) {
+                return e;
+            }
+        }
+        setObject(key, value) {
+            try {
+                if (typeof (value) === "undefined")
+                    this.$window.sessionStorage.setItem(key, "undefined");
+                else
+                    this.$window.sessionStorage.setItem(key, ng.toJson(value, false));
+                let i = this._parsedKeys.indexOf(key);
+                if (i < 0) {
+                    this._parsedKeys.push(key);
+                    this._parsedObjects.push(value);
+                }
+                else
+                    this._parsedObjects[i] = value;
+            }
+            catch (e) {
+                return e;
+            }
+        }
+        values() { return new SessionStorageValueEnumerator(this.$window, this._allKeys); }
+    }
+    app.SessionStorageService = SessionStorageService;
+    app.MainModule.service("SessionStorageService", ["$window", SessionStorageService]);
+    // #endregion
     // #region SetupParameters
-    app.uriParseRegex = /^(([^\\\/@:]*)(:[\\\/]{0,2})((?=[^\\\/@:]*(?::[^\\\/@:]*)?@)([^\\\/@:]*)(:[^\\\/@:]*)?@)?([^\\\/@:]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?(.+)?$/;
-    let uriParseGroup;
-    (function (uriParseGroup) {
-        uriParseGroup[uriParseGroup["all"] = 0] = "all";
-        uriParseGroup[uriParseGroup["origin"] = 1] = "origin";
-        uriParseGroup[uriParseGroup["schemeName"] = 2] = "schemeName";
-        uriParseGroup[uriParseGroup["schemeSeparator"] = 3] = "schemeSeparator";
-        uriParseGroup[uriParseGroup["userInfo"] = 4] = "userInfo";
-        uriParseGroup[uriParseGroup["username"] = 5] = "username";
-        uriParseGroup[uriParseGroup["password"] = 6] = "password";
-        uriParseGroup[uriParseGroup["hostname"] = 7] = "hostname";
-        uriParseGroup[uriParseGroup["portnumber"] = 8] = "portnumber";
-        uriParseGroup[uriParseGroup["path"] = 9] = "path";
-    })(uriParseGroup = app.uriParseGroup || (app.uriParseGroup = {}));
     let cssValidationClass;
     (function (cssValidationClass) {
         cssValidationClass["isValid"] = "is-valid";
@@ -1281,21 +1265,18 @@ var app;
         cssFeedbackClass["isValid"] = "is-valid";
         cssFeedbackClass["isInvalid"] = "is-invalid";
     })(cssFeedbackClass = app.cssFeedbackClass || (app.cssFeedbackClass = {}));
-    app.BroadcastEvent_SetupParametersChanged = 'setupParameterDefinitionsChanged';
-    app.BroadcastEvent_ShowSetupParametersDialog = 'showSetupParameterDefinitionsControllerDialog';
-    app.BroadcastEvent_HideSetupParametersDialog = 'hideSetupParameterDefinitionsControllerDialog';
     class setupParameterDefinitionsController extends MainControllerChild {
-        constructor($scope, $rootScope) {
+        constructor($scope, _settings) {
             super($scope);
-            let settings = setupParameterDefinitionsController.getSettings();
+            this._settings = _settings;
             $scope.serviceNowUrlField = ($scope.$new());
-            $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = settings.serviceNowUrl;
+            $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = _settings.serviceNowUrl;
             $scope.serviceNowUrlField.validationMessage = '';
             $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
             $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
             $scope.serviceNowUrlField.isValid = true;
             $scope.gitRepositoryBaseUrlField = ($scope.$new());
-            $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = settings.gitRepositoryBaseUrl;
+            $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = _settings.gitRepositoryBaseUrl;
             $scope.gitRepositoryBaseUrlField.validationMessage = '';
             $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
             $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
@@ -1304,7 +1285,7 @@ var app;
             $scope.bodyClass = '';
             $scope.close = () => { $('#setupParametersDialog').modal('hide'); };
             $scope.cancel = () => {
-                $scope.serviceNowUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.original;
+                $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.original;
                 $scope.serviceNowUrlField.validationMessage = '';
                 $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
                 $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
@@ -1328,46 +1309,24 @@ var app;
                     alert("GIT Repository Base URL is not valid.");
                     return;
                 }
-                $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.text = stringBefore(stringBefore($scope.serviceNowUrlField.text, '#'), '?');
+                $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.text = subStringBefore(subStringBefore($scope.serviceNowUrlField.text, '#'), '?');
                 $scope.serviceNowUrlField.validationMessage = '';
                 $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
                 $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-                $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.text = stringBefore(stringBefore($scope.gitRepositoryBaseUrlField.text, '#'), '?');
+                $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.text = subStringBefore(subStringBefore($scope.gitRepositoryBaseUrlField.text, '#'), '?');
                 $scope.gitRepositoryBaseUrlField.validationMessage = '';
                 $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
                 $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
                 $('#setupParametersDialog').modal('hide');
-                setupParameterDefinitionsController._settings = { serviceNowUrl: $scope.serviceNowUrlField.original, gitRepositoryBaseUrl: $scope.gitRepositoryBaseUrlField.original };
-                localStorage.setItem("SetupParameterDefinitions", JSON.stringify(setupParameterDefinitionsController._settings));
-                $rootScope.$broadcast(app.BroadcastEvent_SetupParametersChanged, setupParameterDefinitionsController._settings);
+                this._settings.serviceNowUrl = $scope.serviceNowUrlField.original;
+                this._settings.gitRepositoryBaseUrl = $scope.gitRepositoryBaseUrlField.original;
             };
-            $rootScope.$on(app.BroadcastEvent_ShowSetupParametersDialog, (event) => {
+            $scope.$on(app.ScopeEvent_ShowSetupParametersDialog, (event) => {
                 $('#setupParametersDialog').modal('show');
             });
-            $rootScope.$on(app.BroadcastEvent_HideSetupParametersDialog, (event) => { $('#setupParametersDialog').modal('hide'); });
-            $scope.$broadcast(app.BroadcastEvent_SetupParametersChanged, {
-                serviceNowUrl: $scope.serviceNowUrlField.original,
-                gitRepositoryBaseUrl: $scope.gitRepositoryBaseUrlField.original
+            $scope.$on(app.ScopeEvent_HideSetupParametersDialog, (event) => {
+                $('#setupParametersDialog').modal('hide');
             });
-        }
-        static getSettings() {
-            let settings = setupParameterDefinitionsController._settings;
-            if (isNil(settings)) {
-                let s = asString(localStorage.getItem("SetupParameterDefinitions"), true);
-                if (!isNilOrWhiteSpace(s))
-                    try {
-                        settings = (JSON.parse(s));
-                    }
-                    catch (_a) { }
-                if (isNil(settings))
-                    settings = {};
-                if (isNilOrWhiteSpace(settings.serviceNowUrl))
-                    settings.serviceNowUrl = 'https://inscomscd.service-now.com';
-                if (isNilOrWhiteSpace(settings.gitRepositoryBaseUrl))
-                    settings.gitRepositoryBaseUrl = 'https://github.com/erwinel';
-                setupParameterDefinitionsController._settings = settings;
-            }
-            return settings;
         }
         $doCheck() {
             super.$doCheck();
@@ -1417,10 +1376,247 @@ var app;
                 item.messageClass = ['invalid-feedback'];
             });
         }
-        static show($scope) { $scope.$emit(app.BroadcastEvent_ShowSetupParametersDialog); }
-        static hide($scope) { $scope.$emit(app.BroadcastEvent_HideSetupParametersDialog); }
+        static show($scope) {
+            $scope.$broadcast(app.ScopeEvent_ShowSetupParametersDialog);
+        }
+        static hide($scope) {
+            $scope.$broadcast(app.ScopeEvent_HideSetupParametersDialog);
+        }
     }
     app.setupParameterDefinitionsController = setupParameterDefinitionsController;
-    app.MainModule.controller("setupParameterDefinitionsController", ['$scope', '$rootScope', setupParameterDefinitionsController]);
+    app.MainModule.controller("setupParameterDefinitionsController", ['$scope', 'setupParameterSettings', setupParameterDefinitionsController]);
+    class setupParameterSettings {
+        constructor($rootScope, _sessionStorage, $http) {
+            this.$rootScope = $rootScope;
+            this._sessionStorage = _sessionStorage;
+            this._settings = _sessionStorage.getObject("setupParameterSettings");
+            if (isNil(this._settings))
+                this._settings = { serviceNowUrl: DefaultURL_ServiceNow, gitRepositoryBaseUrl: DefaultURL_GitRepositoryBase };
+            else {
+                if (isNilOrWhiteSpace(this._settings.serviceNowUrl))
+                    this._settings.serviceNowUrl = DefaultURL_ServiceNow;
+                if (isNilOrWhiteSpace(this._settings.gitRepositoryBaseUrl))
+                    this._settings.gitRepositoryBaseUrl = DefaultURL_GitRepositoryBase;
+            }
+            $http.get("./defaults.json").then((nav) => {
+                if (isNil(nav.data))
+                    return;
+                if (isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl) {
+                    if (isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl)
+                        return;
+                    this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
+                }
+                else {
+                    this._settings.serviceNowUrl = nav.data.serviceNowUrl;
+                    if (!isNil(nav.data.serviceNowUrl) && this._settings.serviceNowUrl !== nav.data.serviceNowUrl)
+                        this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
+                }
+                this._sessionStorage.setObject(app.StorageKey_SetupParameterSettings, this._settings);
+                this.raiseUpdated();
+            });
+        }
+        get serviceNowUrl() { return this._settings.serviceNowUrl; }
+        set serviceNowUrl(value) {
+            if (value === this._settings.serviceNowUrl)
+                return;
+            if (isNilOrWhiteSpace(value))
+                throw new Error("URL cannot be empty.");
+            let parsedUrl = parseUriString(value);
+            if (isNil(parsedUrl.origin))
+                throw new Error("URL cannot be relative.");
+            if (!(isNil(parsedUrl.queryString) && isNil(parsedUrl.fragment) && parsedUrl.path.length == 0)) {
+                if (value === parsedUrl.origin.value)
+                    return;
+                this._settings.serviceNowUrl = parsedUrl.origin.value;
+            }
+            else
+                this._settings.serviceNowUrl = value;
+            this._sessionStorage.setObject(app.StorageKey_SetupParameterSettings, this._settings);
+            this.raiseUpdated();
+        }
+        get gitRepositoryBaseUrl() { return this._settings.gitRepositoryBaseUrl; }
+        set gitRepositoryBaseUrl(value) {
+            if (value === this._settings.gitRepositoryBaseUrl)
+                return;
+            if (isNilOrWhiteSpace(value))
+                throw new Error("URL cannot be empty.");
+            let parsedUrl = parseUriString(value);
+            if (isNil(parsedUrl.origin))
+                throw new Error("URL cannot be relative.");
+            if (!(isNil(parsedUrl.queryString) && isNil(parsedUrl.fragment))) {
+                value = parsedUrl.origin.value + parsedUrl.path;
+                if (value === this._settings.gitRepositoryBaseUrl)
+                    return;
+            }
+            this._settings.gitRepositoryBaseUrl = value;
+            this._sessionStorage.setObject(app.StorageKey_SetupParameterSettings, this._settings);
+            this.raiseUpdated();
+        }
+        raiseUpdated() {
+            this.$rootScope.$emit(app.ScopeEvent_SetupParameterSettingsChanged, {
+                serviceNowUrl: this._settings.serviceNowUrl,
+                gitRepositoryBaseUrl: this._settings.gitRepositoryBaseUrl
+            });
+        }
+        onChanged(scope, handler) { scope.$on(app.ScopeEvent_SetupParameterSettingsChanged, handler); }
+    }
+    app.MainModule.factory("setupParameterSettings", ["$rootScope", "SessionStorageService", "$http", setupParameterSettings]);
+    // #endregion
+    /**
+     * Options for the relative icon URL of collapsible items.
+     *
+     * @enum {string}
+     */
+    let CollapsibleIconUrl;
+    (function (CollapsibleIconUrl) {
+        CollapsibleIconUrl["collapse"] = "images/collapse.svg";
+        CollapsibleIconUrl["expand"] = "images/expand.svg";
+    })(CollapsibleIconUrl = app.CollapsibleIconUrl || (app.CollapsibleIconUrl = {}));
+    /**
+     * Options for the verb name of collapsible items.
+     *
+     * @enum {string}
+     */
+    let CollapsibleActionVerb;
+    (function (CollapsibleActionVerb) {
+        CollapsibleActionVerb["collapse"] = "Collapse";
+        CollapsibleActionVerb["expand"] = "Expand";
+    })(CollapsibleActionVerb = app.CollapsibleActionVerb || (app.CollapsibleActionVerb = {}));
+    function isRootCardContainerScope(scope) { return typeof (scope.parentCard) === 'undefined'; }
+    ;
+    class CardContainerController extends MainControllerChild {
+        constructor($scope) {
+            super($scope);
+            this.$scope = $scope;
+            $scope.parent = undefined;
+            $scope.cardNumber = undefined;
+            $scope.collapsibleCards = [];
+            $scope.currentSelectedCardIndex = -1;
+            let controller = this;
+            $scope.selectCard = (index) => { controller.selectCard($scope, index); };
+            $scope.addCard = (card, attributes) => { controller._addCard($scope, card, attributes); };
+        }
+        selectCard(scope, index) {
+            if (scope.currentSelectedCardIndex === index)
+                return;
+            for (let i = 0; i < scope.collapsibleCards.length; i++) {
+                if (i == index)
+                    this.showCard(scope.collapsibleCards[i]);
+                else {
+                    scope.collapsibleCards[i].shouldExpand = false;
+                    this.hideCard(scope.collapsibleCards[i]);
+                }
+            }
+        }
+        hideCard(card) {
+            card.isExpanded = false;
+            card.cardIconUrl = CollapsibleIconUrl.expand;
+            card.cardActionVerb = CollapsibleActionVerb.expand;
+            for (let i = 0; i < card.collapsibleCards.length; i++) {
+                if (card.collapsibleCards[i].isExpanded)
+                    this.hideCard(card.collapsibleCards[i]);
+            }
+        }
+        showCard(card) {
+            card.isExpanded = card.shouldExpand = true;
+            card.cardIconUrl = CollapsibleIconUrl.collapse;
+            card.cardActionVerb = CollapsibleActionVerb.collapse;
+            for (let i = 0; i < card.collapsibleCards.length; i++) {
+                if (card.collapsibleCards[i].shouldExpand)
+                    this.showCard(card.collapsibleCards[i]);
+            }
+        }
+        _addCard(parentScope, cardScope, attributes) {
+            let index = parentScope.collapsibleCards.length;
+            cardScope.parentCard = parentScope;
+            cardScope.cardNumber = index + 1;
+            cardScope.cardHeadingText = attributes.headingText;
+            cardScope.collapsibleCards = [];
+            cardScope.currentSelectedCardIndex = -1;
+            let controller = this;
+            cardScope.addCard = (card, attributes) => { controller._addCard(cardScope, card, attributes); };
+            cardScope.toggleCurrentCard = () => { controller.selectCard(parentScope, (cardScope.isExpanded) ? -1 : index); };
+            if (index == 0) {
+                cardScope.isExpanded = true;
+                cardScope.cardIconUrl = CollapsibleIconUrl.collapse;
+                cardScope.cardActionVerb = CollapsibleActionVerb.collapse;
+                parentScope.currentSelectedCardIndex = 0;
+            }
+            else {
+                cardScope.isExpanded = false;
+                cardScope.cardIconUrl = CollapsibleIconUrl.expand;
+                cardScope.cardActionVerb = CollapsibleActionVerb.expand;
+            }
+        }
+        addCard(scope, attributes) {
+            if (isNil(scope.collapsibleCards)) {
+                let parentScope = (scope.$parent.$new());
+                parentScope.collapsibleCards = [];
+                parentScope.currentSelectedCardIndex = -1;
+                parentScope.parentCard = undefined;
+                parentScope.cardNumber = undefined;
+                this._addCard(parentScope, scope, attributes);
+            }
+            else
+                this._addCard((isNil(scope.parentCard)) ? this.$scope : scope.parentCard, scope, attributes);
+        }
+    }
+    app.MainModule.directive("collapsibleCardContainer", () => {
+        return {
+            restrict: "E",
+            scope: true,
+            transclude: true,
+            controller: ['$scope', CardContainerController],
+            template: ''
+        };
+    });
+    app.MainModule.directive("collapsibleCardL0", () => {
+        return {
+            require: "^^collapsibleCardContainer",
+            restrict: "E",
+            scope: true,
+            transclude: true,
+            templateUrl: "Templates/collapsibleCardL0.htm",
+            link: (scope, element, attributes, controller) => {
+                controller.addCard(scope, attributes);
+            }
+        };
+    });
+    app.MainModule.directive("collapsibleCardL1", () => {
+        return {
+            require: "^^collapsibleCardContainer",
+            restrict: "E",
+            scope: true,
+            transclude: true,
+            templateUrl: "Templates/collapsibleCardL1.htm",
+            link: (scope, element, attributes, controller) => {
+                controller.addCard(scope, attributes);
+            }
+        };
+    });
+    app.MainModule.directive("collapsibleCardL2", () => {
+        return {
+            require: "^^collapsibleCardContainer",
+            restrict: "E",
+            scope: true,
+            transclude: true,
+            templateUrl: "Templates/collapsibleCardL2.htm",
+            link: (scope, element, attributes, controller) => {
+                controller.addCard(scope, attributes);
+            }
+        };
+    });
+    app.MainModule.directive("collapsibleCardL3", () => {
+        return {
+            require: "^^collapsibleCardContainer",
+            restrict: "E",
+            scope: true,
+            transclude: true,
+            templateUrl: "Templates/collapsibleCardL3.htm",
+            link: (scope, element, attributes, controller) => {
+                controller.addCard(scope, attributes);
+            }
+        };
+    });
     // #endregion
 })(app || (app = {}));

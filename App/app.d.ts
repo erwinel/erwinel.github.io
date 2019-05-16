@@ -8,6 +8,12 @@ declare namespace app {
     * @type {ng.IModule}
     */
     let MainModule: ng.IModule;
+    const ScopeEvent_OpenMainModalPopupDialog: string;
+    const ScopeEvent_CloseMainModalPopupDialog: string;
+    const ScopeEvent_ShowSetupParametersDialog: string;
+    const ScopeEvent_HideSetupParametersDialog: string;
+    const ScopeEvent_SetupParameterSettingsChanged: string;
+    const StorageKey_SetupParameterSettings = "setupParameterSettings";
     /**
      * Determines if a value is null or undefined.
      * @param {*} value Value to test.
@@ -69,7 +75,14 @@ declare namespace app {
      * @returns {string} Input value converted to a string.
      */
     function asString(value: any | null | undefined, trim?: boolean, allowNil?: boolean): any;
-    function stringBefore(source: string, search: string): string;
+    function subStringBefore(source: string, search: RegExp, nilIfNoMatch?: boolean): string;
+    function subStringBefore(source: string, search: string, nilIfNoMatch?: boolean, caseSensitive?: boolean): string;
+    function subStringAfter(source: string, search: RegExp, nilIfNoMatch?: boolean): string;
+    function subStringAfter(source: string, search: string, nilIfNoMatch?: boolean, caseSensitive?: boolean): string;
+    function splitAt(source: string, index: number): [string, string] | [string];
+    function splitAt(source: string, search: RegExp, includeMatch?: false): [string, string] | [string];
+    function splitAt(source: string, search: RegExp, includeMatch: true): [string, string, string] | [string];
+    function splitAt(source: string, search: string, caseSensitive?: boolean): [string, string] | [string];
     /**
      * Ensures that a value is a floating-point number, converting it if necessary.
      * @param value
@@ -149,6 +162,48 @@ declare namespace app {
     function unique<T>(source: Iterable<T>, callbackfn?: (x: T, y: T) => boolean, thisArg?: any): T[];
     function areSequencesEqual<T>(source: Iterable<T> | null | undefined, target: Iterable<T> | null | undefined): boolean;
     function areSequencesEqual<T>(source: Iterable<T> | null | undefined, target: Iterable<T> | null | undefined, callbackfn: (x: T, y: T, index: number) => boolean, thisArg?: any): boolean;
+    const uriParseRegex_beforeQuery: RegExp;
+    const uriParseRegex: RegExp;
+    enum uriParseGroup {
+        all = 0,
+        origin = 1,
+        schemeName = 2,
+        schemeSeparator = 3,
+        userInfo = 4,
+        username = 5,
+        password = 6,
+        hostname = 7,
+        portnumber = 8,
+        path = 9,
+        search = 10,
+        queryString = 11,
+        hash = 12,
+        fragment = 13
+    }
+    interface IParsedUriString {
+        source: string;
+        origin?: {
+            value: string;
+            scheme: {
+                name: string;
+                separator: string;
+            };
+            userInfo?: {
+                value: string;
+                name: string;
+                password?: string;
+            };
+            host: {
+                value: string;
+                name: string;
+                portnumber?: string;
+            };
+        };
+        path: string;
+        queryString?: string;
+        fragment?: string;
+    }
+    function parseUriString(source: string): IParsedUriString;
     interface IPageNavigationScope<TParent extends IMainControllerScope> extends INestedControllerScope<TParent> {
         pageTitle: string;
         top: IRootNavigationContainerScope<IPageNavigationScope<TParent>>;
@@ -200,25 +255,33 @@ declare namespace app {
         show(message: string, type?: DialogMessageType, title?: string): any;
         close(): any;
     }
-    const BroadcastEvent_OpenMainModalPopupDialog: string;
-    const BroadcastEvent_CloseMainModalPopupDialog: string;
     class mainModalPopupDialogController extends MainControllerChild<IDialogScope> {
         static show($scope: ng.IScope, message: string, type?: DialogMessageType, title?: string): void;
         static hide($scope: ng.IScope): void;
         constructor($scope: IDialogScope, $rootScope: ng.IScope);
     }
-    const uriParseRegex: RegExp;
-    enum uriParseGroup {
-        all = 0,
-        origin = 1,
-        schemeName = 2,
-        schemeSeparator = 3,
-        userInfo = 4,
-        username = 5,
-        password = 6,
-        hostname = 7,
-        portnumber = 8,
-        path = 9
+    class SessionStorageService implements Map<string, string> {
+        private $window;
+        private _allKeys;
+        private _parsedKeys;
+        private _parsedObjects;
+        [Symbol.toStringTag]: string;
+        readonly size: number;
+        constructor($window: ng.IWindowService);
+        private check;
+        clear(): void;
+        delete(key: string): boolean;
+        entries(): IterableIterator<[string, string]>;
+        [Symbol.iterator](): IterableIterator<[string, string]>;
+        forEach(callbackfn: (value: string, key: string, map: SessionStorageService) => void, thisArg?: any): void;
+        get(key: string): string | null;
+        getKeys(): string[];
+        getObject<T>(key: string): T | undefined;
+        has(key: string): boolean;
+        keys(): IterableIterator<string>;
+        set(key: string, value: string): any | undefined;
+        setObject<T>(key: string, value: T | undefined): any | undefined;
+        values(): IterableIterator<string>;
     }
     enum cssValidationClass {
         isValid = "is-valid",
@@ -227,10 +290,6 @@ declare namespace app {
     enum cssFeedbackClass {
         isValid = "is-valid",
         isInvalid = "is-invalid"
-    }
-    interface ISetupParameterDefinitions {
-        serviceNowUrl: string;
-        gitRepositoryBaseUrl: string;
     }
     interface ISetupParameterFieldState extends INestedControllerScope<ISetupParameterDefinitionScope> {
         original: string;
@@ -241,22 +300,52 @@ declare namespace app {
         validationClass: string[];
         messageClass: string[];
     }
-    interface ISetupParameterDefinitionScope extends ISetupParameterDefinitions, INestedControllerScope<IMainControllerScope> {
+    interface ISetupParameterDefinitionScope extends INestedControllerScope<IMainControllerScope> {
+        serviceNowUrl: string;
+        gitRepositoryBaseUrl: string;
         cancel(): void;
         accept(): void;
         close(): void;
         serviceNowUrlField: ISetupParameterFieldState;
         gitRepositoryBaseUrlField: ISetupParameterFieldState;
     }
-    const BroadcastEvent_SetupParametersChanged: string;
-    const BroadcastEvent_ShowSetupParametersDialog: string;
-    const BroadcastEvent_HideSetupParametersDialog: string;
     class setupParameterDefinitionsController extends MainControllerChild<ISetupParameterDefinitionScope> {
-        constructor($scope: ISetupParameterDefinitionScope, $rootScope: ng.IScope);
-        private static _settings;
-        static getSettings(): ISetupParameterDefinitions;
+        private _settings;
+        constructor($scope: ISetupParameterDefinitionScope, _settings: setupParameterSettings);
         $doCheck(): void;
         static show($scope: ng.IScope): void;
         static hide($scope: ng.IScope): void;
+    }
+    interface ISetupParameterSettings {
+        serviceNowUrl: string;
+        gitRepositoryBaseUrl: string;
+    }
+    class setupParameterSettings {
+        private $rootScope;
+        private _sessionStorage;
+        private _settings;
+        serviceNowUrl: string;
+        gitRepositoryBaseUrl: string;
+        private raiseUpdated;
+        onChanged(scope: ng.IScope, handler: (event: ng.IAngularEvent, settings: ISetupParameterSettings) => void): void;
+        constructor($rootScope: ng.IScope, _sessionStorage: SessionStorageService, $http: ng.IHttpService);
+    }
+    /**
+     * Options for the relative icon URL of collapsible items.
+     *
+     * @enum {string}
+     */
+    enum CollapsibleIconUrl {
+        collapse = "images/collapse.svg",
+        expand = "images/expand.svg"
+    }
+    /**
+     * Options for the verb name of collapsible items.
+     *
+     * @enum {string}
+     */
+    enum CollapsibleActionVerb {
+        collapse = "Collapse",
+        expand = "Expand"
     }
 }

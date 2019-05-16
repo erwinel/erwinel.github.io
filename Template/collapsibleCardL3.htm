@@ -1,0 +1,13 @@
+<div class="card">
+    <div class="card-header p-1">
+        <h5 class="card-title mb-0">
+            <button class="btn btn-light" ng-click="toggleCurrentCard()" onclick="return false;">
+                {{currentCardNumber}}. {{cardHeadingText}}
+                <img ng-src="{{cardIconUrl}}" width="8" height="8" alt="{{cardActionVerb}} {{cardHeadingText}}" />
+            </button>
+        </h5>
+    </div>
+    <div class="card-body" ng-show="currentCardIsExpanded">
+        <div class="detail" ng-transclude></div>
+    </div>
+</div>
