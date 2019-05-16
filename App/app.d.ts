@@ -13,6 +13,8 @@ declare namespace app {
     const ScopeEvent_ShowSetupParametersDialog: string;
     const ScopeEvent_HideSetupParametersDialog: string;
     const ScopeEvent_SetupParameterSettingsChanged: string;
+    const ScopeEvent_AddCollapsibleCard: string;
+    const ScopeEvent_: string;
     const StorageKey_SetupParameterSettings = "setupParameterSettings";
     /**
      * Determines if a value is null or undefined.
@@ -329,23 +331,5 @@ declare namespace app {
         private raiseUpdated;
         onChanged(scope: ng.IScope, handler: (event: ng.IAngularEvent, settings: ISetupParameterSettings) => void): void;
         constructor($rootScope: ng.IScope, _sessionStorage: SessionStorageService, $http: ng.IHttpService);
-    }
-    /**
-     * Options for the relative icon URL of collapsible items.
-     *
-     * @enum {string}
-     */
-    enum CollapsibleIconUrl {
-        collapse = "images/collapse.svg",
-        expand = "images/expand.svg"
-    }
-    /**
-     * Options for the verb name of collapsible items.
-     *
-     * @enum {string}
-     */
-    enum CollapsibleActionVerb {
-        collapse = "Collapse",
-        expand = "Expand"
     }
 }
