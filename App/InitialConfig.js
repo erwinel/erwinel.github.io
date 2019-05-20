@@ -58,6 +58,6 @@ var initialConfig;
         constructor($scope) { super($scope, 'Import Incident Management Update Set'); }
     }
     incidentManagementConfigController.cardName = 'incidentManagementConfig';
-    app.appModule.controller("incidentManagementConfigController", ['$scope', serviceCatalogConfigController]);
+    app.appModule.controller("incidentManagementConfigController", ['$scope', incidentManagementConfigController]);
     // #endregion
 })(initialConfig || (initialConfig = {}));
