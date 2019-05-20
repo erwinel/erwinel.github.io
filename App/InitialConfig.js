@@ -54,5 +54,10 @@ var initialConfig;
     }
     serviceCatalogConfigController.cardName = 'serviceCatalogConfig';
     app.appModule.controller("serviceCatalogConfigController", ['$scope', serviceCatalogConfigController]);
+    class incidentManagementConfigController extends cards.CardController {
+        constructor($scope) { super($scope, 'Import Incident Management Update Set'); }
+    }
+    incidentManagementConfigController.cardName = 'incidentManagementConfig';
+    app.appModule.controller("incidentManagementConfigController", ['$scope', serviceCatalogConfigController]);
     // #endregion
 })(initialConfig || (initialConfig = {}));
