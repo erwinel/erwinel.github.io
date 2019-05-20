@@ -1,4 +1,4 @@
-/// <reference path="app.ts" />
+/// <reference path="sys.ts" />
 class MyClass {
     constructor() {
         this.value = 0;

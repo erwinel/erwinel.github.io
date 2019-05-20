@@ -1,7 +1,13 @@
 /// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="app.d.ts" />
+/// <reference path="sys.d.ts" />
 declare namespace regexTester {
+    /**
+    * The main module for this app.
+    *
+    * @type {ng.IModule}
+    */
+    let regexTesterModule: ng.IModule;
     interface IStoredRegex {
         pattern: string;
         inputText: string[];

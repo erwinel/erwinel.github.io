@@ -1,7 +1,7 @@
 /// <reference path="Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="Scripts/typings/jquery/jquery.d.ts" />
-/// <reference path="app.ts" />
+/// <reference path="sys.ts" />
 var uriBuilder;
 (function (uriBuilder) {
     class UriBuilderScheme {
@@ -131,7 +131,7 @@ var uriBuilder;
         get protocol() { return (typeof (this._origin) === 'undefined') ? '' : this._origin.protocol; }
         set protocol(value) {
             if (typeof (this._origin) === 'undefined') {
-                if (app.isNilOrEmpty(value))
+                if (sys.isNilOrEmpty(value))
                     return;
                 this._origin = new UriBuilderOrigin(this);
             }
@@ -177,7 +177,7 @@ var uriBuilder;
         get host() { return (typeof (this._origin) !== 'undefined') ? this._origin.host : ''; }
         set host(value) {
             if (typeof (this._origin) === 'undefined') {
-                if (app.isNilOrEmpty(value))
+                if (sys.isNilOrEmpty(value))
                     return;
                 this._origin = new UriBuilderOrigin(this);
             }
@@ -221,7 +221,7 @@ var uriBuilder;
         get search() { return (typeof (this._query) !== 'undefined') ? this._query.search : ''; }
         set search(value) {
             if (typeof (this._query) === 'undefined') {
-                if (app.isNilOrEmpty(value))
+                if (sys.isNilOrEmpty(value))
                     return;
                 this._query = new UriBuilderQuery(this);
             }
@@ -233,7 +233,7 @@ var uriBuilder;
             return this._query;
         }
         set searchParams(value) {
-            if (app.isNil(value)) {
+            if (sys.isNil(value)) {
                 if (typeof (this._query) === 'undefined')
                     return;
                 this._query = undefined;
@@ -258,7 +258,7 @@ var uriBuilder;
         }
         get hash() { return (typeof (this._fragment) !== 'undefined') ? '#' + this._fragment : ''; }
         set hash(value) {
-            if (app.isNilOrEmpty(value)) {
+            if (sys.isNilOrEmpty(value)) {
                 if (typeof (this._fragment) === 'undefined')
                     return;
                 this._fragment = undefined;
@@ -389,7 +389,7 @@ var uriBuilder;
                 else {
                     this._properties = { pathName: '', pathSegments: [], queryParams: [], isAbsoluteUri: false, isDirty: false, schemeDefinition: new KnownSchemeDefinition() };
                     searchParams.forEach((value, key) => {
-                        this._properties.queryParams.push({ name: key, value: app.asDefinedOrNull(value) });
+                        this._properties.queryParams.push({ name: key, value: sys.asDefinedOrNull(value) });
                     }, this);
                     this.updateQueryString();
                 }
@@ -399,7 +399,7 @@ var uriBuilder;
         append(name, value) {
             if (typeof (name) !== 'string')
                 throw new Error("Name must be a string value.");
-            this._properties.queryParams.push({ name: name, value: app.asDefinedOrNull(value) });
+            this._properties.queryParams.push({ name: name, value: sys.asDefinedOrNull(value) });
             this.updateQueryString();
         }
         delete(name) {
@@ -472,8 +472,8 @@ var uriBuilder;
         }
         sort() {
             this._properties.queryParams = this._properties.queryParams.sort((a, b) => {
-                let n = app.compareStrings(a.name, b.name);
-                return (n == 0) ? app.compareStrings(a.value, b.value) : n;
+                let n = sys.compareStrings(a.name, b.name);
+                return (n == 0) ? sys.compareStrings(a.value, b.value) : n;
             });
         }
         updateQueryString() {
@@ -679,9 +679,9 @@ var uriBuilder;
             let pathName = this._properties.pathName;
             this._properties.pathSegments = segments.filter((s) => typeof (s) === 'string' && s.length > 0);
             this._properties.pathName = (this._properties.pathSegments.length == 0) ? '' : this._properties.pathSegments.join('/');
-            if (this._properties.isAbsoluteUri || (segments.length > 0 && app.isNilOrEmpty(segments[0])))
+            if (this._properties.isAbsoluteUri || (segments.length > 0 && sys.isNilOrEmpty(segments[0])))
                 this._properties.pathName = '/' + this._properties.pathName;
-            if (this._properties.pathSegments.length > 0 && app.isNilOrEmpty(segments[segments.length - 1]))
+            if (this._properties.pathSegments.length > 0 && sys.isNilOrEmpty(segments[segments.length - 1]))
                 this._properties.pathName += '/';
             if (pathName !== this._properties.pathName)
                 this._properties.isDirty = true;
@@ -719,7 +719,7 @@ var uriBuilder;
             this._defaultPort = NaN;
             this._allowQuery = true;
             this._allowFragment = true;
-            if (app.notNilOrEmpty(name)) {
+            if (sys.notNilOrEmpty(name)) {
                 this._name = name;
                 switch (name) {
                     case 'http':
@@ -767,7 +767,7 @@ var uriBuilder;
         }
         set protocol(value) {
             let oldSchema = this._properties.schemeDefinition;
-            if (app.notNilOrEmpty(value)) {
+            if (sys.notNilOrEmpty(value)) {
                 if (value == this._properties.schemeDefinition.name)
                     return;
                 this._properties.schemeDefinition = new KnownSchemeDefinition(value);
@@ -783,16 +783,16 @@ var uriBuilder;
             }
             this._properties.isDirty = true;
         }
-        get username() { return (app.notNil(this._properties.userName) || app.notString(this._properties.password)) ? this._properties.userName : ''; }
+        get username() { return (sys.notNil(this._properties.userName) || sys.notString(this._properties.password)) ? this._properties.userName : ''; }
         set username(value) { this._properties.userName = value; }
         get password() { return this._properties.password; }
         set password(value) { this._properties.password = value; }
         get host() {
             let h = this.hostname;
-            return (app.notNilOrEmpty(h)) ? ((app.notNilOrEmpty(this._properties.port)) ? h + ':' + this._properties.port : h) : '';
+            return (sys.notNilOrEmpty(h)) ? ((sys.notNilOrEmpty(this._properties.port)) ? h + ':' + this._properties.port : h) : '';
         }
         set host(value) {
-            if (app.notNilOrEmpty(value)) {
+            if (sys.notNilOrEmpty(value)) {
                 let index = value.lastIndexOf(':');
                 if (index < 0) {
                     this.hostname = value;
@@ -807,18 +807,18 @@ var uriBuilder;
                 this.hostname = this.port = undefined;
         }
         get hostname() {
-            return (app.notNil(this._properties.hostName) || (this._properties.schemeDefinition.name.length == 0 && app.notString(this._properties.userName) &&
-                app.notString(this._properties.password) && app.notNilOrEmpty(this._properties.port)) ? this._properties.hostName :
+            return (sys.notNil(this._properties.hostName) || (this._properties.schemeDefinition.name.length == 0 && sys.notString(this._properties.userName) &&
+                sys.notString(this._properties.password) && sys.notNilOrEmpty(this._properties.port)) ? this._properties.hostName :
                 "tempuri.org");
         }
         set hostname(value) {
-            if (app.notNil(value)) {
+            if (sys.notNil(value)) {
                 if (this._properties.hostName === value)
                     return;
                 this._properties.hostName = value;
             }
             else {
-                if (app.notString(this._properties.hostName))
+                if (sys.notString(this._properties.hostName))
                     return;
                 this._properties.hostName = undefined;
             }
@@ -826,13 +826,13 @@ var uriBuilder;
         }
         get port() { return this._properties.port; }
         set port(value) {
-            if (app.notNil(value)) {
+            if (sys.notNil(value)) {
                 if (this._properties.port === value)
                     return;
                 this._properties.port = value;
             }
             else {
-                if (app.notString(this._properties.port))
+                if (sys.notString(this._properties.port))
                     return;
                 this._properties.port = undefined;
             }
@@ -858,9 +858,9 @@ var uriBuilder;
         set search(value) { this._searchParams.reset(value); }
         get searchParams() { return this._searchParams; }
         set searchParams(value) { this._searchParams.reset(value); }
-        get hash() { return (app.notNilOrEmpty(this._properties.fragment)) ? '#' + this._properties.fragment : ''; }
+        get hash() { return (sys.notNilOrEmpty(this._properties.fragment)) ? '#' + this._properties.fragment : ''; }
         set hash(value) {
-            if (app.notNilOrEmpty(value)) {
+            if (sys.notNilOrEmpty(value)) {
                 if (value.startsWith('#'))
                     value = value.substr(1);
                 if (value === this._properties.fragment)

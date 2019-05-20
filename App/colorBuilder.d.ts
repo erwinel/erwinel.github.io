@@ -1,3 +1,4 @@
+/// <reference path="sys.d.ts" />
 export interface IHasNamedProperties {
     [index: string]: any;
 }

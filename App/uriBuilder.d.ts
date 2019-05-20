@@ -1,7 +1,7 @@
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
-/// <reference path="app.d.ts" />
+/// <reference path="sys.d.ts" />
 declare namespace uriBuilder {
     class UriBuilder implements URL {
         static readonly UrlPattern: RegExp;

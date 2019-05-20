@@ -1,6 +1,7 @@
 /// <reference path="Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="Scripts/typings/jquery/jquery.d.ts" />
+/// <reference path="sys.ts" />
 /// <reference path="app.ts" />
 /// <reference path="cards.ts" />
 var inicidentManagment;
@@ -11,5 +12,5 @@ var inicidentManagment;
             this.$scope = $scope;
         }
     }
-    app.MainModule.controller("InicidentManagmentController", ['$scope', InicidentManagmentController]);
+    app.appModule.controller("InicidentManagmentController", ['$scope', InicidentManagmentController]);
 })(inicidentManagment || (inicidentManagment = {}));

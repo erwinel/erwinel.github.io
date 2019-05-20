@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="sys.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 class ColorInfo {
     constructor(obj, g, b, a) {

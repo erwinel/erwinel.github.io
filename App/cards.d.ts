@@ -1,6 +1,7 @@
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
+/// <reference path="sys.d.ts" />
 /// <reference path="app.d.ts" />
 declare namespace cards {
     /**
@@ -9,17 +10,17 @@ declare namespace cards {
      * @interface ICardParentScope
      * @extends {ng.IScope}
      */
-    interface ICardContainerScope<TParent extends app.IMainControllerScope> extends app.INestedControllerScope<TParent> {
-        cardNames: string[];
-        selectedCardName?: string;
-        selectedCardIndex?: number;
+    interface ICardContainerScope extends ng.IScope {
+        selectedCardIndex: number;
         collapseSelectedCard(): boolean;
-        collapseCard(name: string): boolean;
-        expandCard(name: string): boolean;
-        toggleCard(name: string): boolean;
-        indexOfCard(name: string): number;
-        $parent: TParent;
+        collapseCard(index: ICardScope | number): boolean;
+        expandCard(index: ICardScope | number): boolean;
+        toggleCard(index: ICardScope | number): boolean;
+        indexOfCard(scopeId: number): number;
+        scopeIdOfCard(index: number): number;
+        addCard(card: ICardScope): number;
     }
+    function isCardContainerScope(scope: ng.IScope): scope is ICardContainerScope;
     /**
      * Manages a collection of nested collapsible cards.
      *
@@ -27,21 +28,25 @@ declare namespace cards {
      * @class CardParentController
      * @extends {cardController}
      */
-    class CardParentController<TParentScope extends app.IMainControllerScope, TScope extends ICardContainerScope<TParentScope>> extends app.MainControllerChild<TScope> {
-        private _selectedCardName?;
+    class CardParentController implements ng.IController {
+        protected $scope: ICardContainerScope;
+        private _scopeIds;
+        private _childCards;
         private _selectedCardIndex;
+        selectedCardScopeId: number | undefined;
+        selectedCardIndex: number | undefined;
         /**
          * Creates an instance of topLevelCardController.
          * @param {ICardContainerScope} $scope The {@link ng.IScope} object for the new card, which implements {@link ICardParentScope}.
          */
-        constructor($scope: TScope);
+        constructor($scope: ICardContainerScope);
+        addCard(card: ICardScope): number;
         collapseSelectedCard(): boolean;
-        collapseCard(name: string): boolean;
-        indexOfCard(name: string): number;
-        expandCard(name: string): boolean;
-        toggleCard(name: string): boolean;
-        onCardNameChanged(previousName: string | undefined): void;
-        onCardIndexChanged(previousIndex: number): void;
+        collapseCard(index: ICardScope | number): boolean;
+        expandCard(index: ICardScope | number): boolean;
+        toggleCard(index: ICardScope | number): boolean;
+        indexOfCard(scopeId: number): number;
+        scopeIdOfCard(index: number): number | undefined;
         $doCheck(): void;
     }
     /**
@@ -68,17 +73,17 @@ declare namespace cards {
      * @interface ICardScope
      * @extends {ng.IScope}
      */
-    interface ICardScope<TParent extends ICardContainerScope<app.IMainControllerScope>> extends ICardContainerScope<app.IMainControllerScope> {
+    interface ICardScope extends ICardContainerScope {
         currentCardName: string;
         currentCardNumber: number;
         cardHeadingText: string;
         cardIconUrl: CollapsibleIconUrl;
         cardActionVerb: CollapsibleActionVerb;
         currentCardIsExpanded: boolean;
-        $parent: TParent;
         expandCurrentCard(): boolean;
         collapseCurrentCard(): boolean;
         toggleCurrentCard(): boolean;
+        currentCardParent: ICardContainerScope;
     }
     /**
      * The base class for collapsible cards.
@@ -87,18 +92,18 @@ declare namespace cards {
      * @class cardController
      * @implements {ng.IController}
      */
-    abstract class CardController<TParentScope extends ICardContainerScope<app.IMainControllerScope>, TScope extends ICardScope<TParentScope>> extends CardParentController<TParentScope, TScope> {
-        protected $scope: TScope;
-        private _name;
-        readonly currentCardName: string;
+    abstract class CardController extends CardParentController {
+        protected $scope: ICardScope;
+        private _parentScope;
+        private _currentCardIsExpanded;
+        readonly currentCardId: number;
         /**
          * Creates an instance of cardController to represent a new collapsible card.
          * @param {TScope extends ICardScope} $scope The {@link ng.IScope} object for the new card, which implements {@link ICardScope}.
-         * @param {string} name The name which uniquely identifies the new card.
          * @param {string} headingText The heading text for the new card.
          * @memberof cardController
          */
-        constructor($scope: TScope, _name: string, headingText: string);
+        constructor($scope: ICardScope, headingText: string);
         $doCheck(): void;
         /**
          * Makes the body of the current card visible.

@@ -1,10 +1,15 @@
 /// <reference path="Scripts/typings/jquery/jquery.d.ts"/>
 /// <reference path="Scripts/typings/angularjs/angular.d.ts"/>
-/// <reference path="app.ts"/>
+/// <reference path="sys.ts" />
 var regexTester;
 (function (regexTester) {
-    // #region LocalStorageService
-    class LocalRegexStorageService {
+    /**
+    * The main module for this app.
+    *
+    * @type {ng.IModule}
+    */
+    regexTester.regexTesterModule = angular.module("regexTester", []);
+    class localRegexStorageService {
         keys() {
             let result = [];
             for (let i = 0; i < localStorage.length; i++)
@@ -15,7 +20,7 @@ var regexTester;
         load(key, scope) {
             try {
                 let json = localStorage.getItem(key);
-                if (!app.isNilOrWhiteSpace(json)) {
+                if (!sys.isNilOrWhiteSpace(json)) {
                     let data = (JSON.parse(json));
                     scope.inputPattern = data.pattern;
                     let i = data.inputText.length;
@@ -53,8 +58,8 @@ var regexTester;
         remove(key) { localStorage.removeItem(key); }
         clear() { localStorage.clear(); }
     }
-    app.MainModule.factory("LocalRegexStorageService", LocalRegexStorageService);
-    class RegexTesterController {
+    app.appModule.factory("localRegexStorageService", localRegexStorageService);
+    class regexTesterController {
         constructor($scope, storageSvc) {
             this.$scope = $scope;
             this.storageSvc = storageSvc;
@@ -119,7 +124,7 @@ var regexTester;
         }
         saveSession() {
             this.$scope.sessionLoadMessage = this.$scope.sessionSaveMessage = '';
-            if (app.isNilOrWhiteSpace(this.$scope.currentSavedName))
+            if (sys.isNilOrWhiteSpace(this.$scope.currentSavedName))
                 alert("Saved session must have a name.");
             else {
                 this.storageSvc.save((this.$scope.currentSavedName = this.$scope.currentSavedName.trim()), this.$scope);
@@ -191,7 +196,7 @@ var regexTester;
                 try {
                     let result = this._regex.exec(item.inputText);
                     item.evaluated = true;
-                    if (app.isNil(result)) {
+                    if (sys.isNil(result)) {
                         item.success = false;
                         item.matchIndex = -1;
                         item.matchGroups = [];
@@ -204,7 +209,7 @@ var regexTester;
                         item.cssClass = ['alert', 'alert-success'];
                         item.matchIndex = result.index;
                         item.matchGroups = result.map((value, index) => {
-                            if (app.isNil(value))
+                            if (sys.isNil(value))
                                 return { index: index, success: false, statusMessage: 'Not matched', value: '', cssClass: ['alert', 'alert-secondary'] };
                             return { index: index, success: true, statusMessage: 'Matched ' + value.length + ' characters', value: value, cssClass: ['alert', 'alert-success'] };
                         });
@@ -222,7 +227,7 @@ var regexTester;
             if (this.$scope.ignoreWhitespace != this._ignoreWhitespace) {
                 if (this._ignoreWhitespace) {
                     this._ignoreWhitespace = false;
-                    this.$scope.inputPattern = this.$scope.inputPattern.replace(RegexTesterController.whitespacRe, "");
+                    this.$scope.inputPattern = this.$scope.inputPattern.replace(regexTesterController.whitespacRe, "");
                 }
                 else
                     this._ignoreWhitespace = true;
@@ -254,10 +259,10 @@ var regexTester;
                         this.$scope.flags += 's';
                     let pattern = this._inputPattern;
                     if (this.$scope.ignoreWhitespace)
-                        pattern = pattern.replace(RegexTesterController.whitespacRe, "");
+                        pattern = pattern.replace(regexTesterController.whitespacRe, "");
                     this.$scope.fullPattern = "/" + pattern + "/" + this.$scope.flags;
                     let regex = (this.$scope.flags.length == 0) ? new RegExp(pattern) : new RegExp(pattern, this.$scope.flags);
-                    if (app.isNil(regex))
+                    if (sys.isNil(regex))
                         throw "Failed to create regular expression.";
                     this._regex = regex;
                     if (pattern.length == 0) {
@@ -294,6 +299,6 @@ var regexTester;
             }
         }
     }
-    RegexTesterController.whitespacRe = /\s+/g;
-    app.MainModule.controller("RegexTesterController", ["$scope", "LocalRegexStorageService", RegexTesterController]);
+    regexTesterController.whitespacRe = /\s+/g;
+    regexTester.regexTesterModule.controller("regexTesterController", ["$scope", "localRegexStorageService", regexTesterController]);
 })(regexTester || (regexTester = {}));
