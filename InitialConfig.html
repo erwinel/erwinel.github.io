@@ -554,7 +554,7 @@
                         Load and apply the <a href="downloads/sys_remote_update_set_Service_Catalog.xml" target="_blank">sys_remote_update_set_Service_Catalog.xml</a> File in the
                         <var>downloads</var> folder of this documentation to apply the global update set that sets up the service catalog.
                         <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
-                        <div class="card wa">
+                        <div class="card">
                             <div class="card-header">
                                 <h3>Known Issues</h3>
                             </div>
@@ -577,9 +577,52 @@
                         Load and apply the <a href="downloads/sys_remote_update_set_Incident_Management.xml" target="_blank">sys_remote_update_set_Incident_Management.xml</a> File in the
                         <var>downloads</var> folder of this documentation to apply the global update set that configures incident-related settings.
                         <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
-                        <div class="card wa">
+                        <div class="card">
                             <div class="card-header">
-                                <h3>Known Issues</h3>
+                                <h3>Known Issues and Warnings</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="detail">
+                                    The following preview problems may occur, in which case, follow the recommended action:
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Remote Update</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col">Recommended Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>sc_cat_item_category_32c4afe6db81ff00b53f341f7c9619ba</td>
+                                                <td>Found a local update that is newer than this one</td>
+                                                <td class="table-warning">Skip remote update</td>
+                                            </tr>
+                                            <tr>
+                                                <td>sys_ui_section_661f5ea7db8db340683b300f7c961975</td>
+                                                <td>Cannot commit Update Set 'Incident Management Setup 2019-04-29' because: Update scope id '97515a49134b5200ed373d62f244b04a' is different than update set scope id 'global'. Resolve the problem before committing.</td>
+                                                <td class="table-warning">Skip remote update</td>
+                                            </tr>
+                                            <tr>
+                                                <td>sys_embedded_tour_element_543e62a3dbcdb340683b300f7c9619bf</td>
+                                                <td>Could not find a record in sys_ui_form_section for column form_section referenced in this update</td>
+                                                <td class="table-success">Accept remote update</td>
+                                            </tr>
+                                            <tr>
+                                                <td>sys_embedded_tour_element_937eae63dbcdb340683b300f7c96197f</td>
+                                                <td>Could not find a record in sys_ui_form_section for column form_section referenced in this update</td>
+                                                <td class="table-success">Accept remote update</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <h5 class="text-warning">Data Loss Warning</h5>
+                                    When committing the update set, you will get a warning that states that all items in sys_dictionary_u_vip_priority_lookup_matcher_rules_u_caller will be deleted.
+                                    It is okay to proceed, because this update set will be re-defining these lookup rules. However, the lookup rules will probably need to be cleaned up afterward:
+                                    <ol>
+                                        <li>Navigate to <samp>System Policy</samp> &rArr; <samp>Rules</samp> &rArr; <samp>Caller VIP Lookup Rules</samp>.</li>
+                                        <li>Delete any items which have an empty <samp>Caller</samp>.</li>
+                                    </ol>
+                                </div>
                             </div>
                         </div>
                     </div>
