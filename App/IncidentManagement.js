@@ -6,11 +6,11 @@
 /// <reference path="cards.ts" />
 var inicidentManagment;
 (function (inicidentManagment) {
-    class InicidentManagmentController extends cards.CardParentController {
+    class IncidentManagmentController extends cards.CardParentController {
         constructor($scope) {
             super($scope);
             this.$scope = $scope;
         }
     }
-    app.appModule.controller("InicidentManagmentController", ['$scope', InicidentManagmentController]);
+    app.appModule.controller("incidentManagmentController", ['$scope', IncidentManagmentController]);
 })(inicidentManagment || (inicidentManagment = {}));
