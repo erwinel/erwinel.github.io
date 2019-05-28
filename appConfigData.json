@@ -1,0 +1,8 @@
+{
+  "defaultServiceNowUrl": "https://inscomscd.service-now.com/",
+  "defaultGitRepositoryBase": "https://github.com/erwinel/",
+  "currentItemClass": [ "active", "nav-link" ],
+  "selectedItemClass": [ "active", "nav-link" ],
+  "otherItemClass": [ "nav-link" ],
+  "pages": []
+}
