@@ -1,0 +1,177 @@
+Statistics for: Demo Server @ servicenow-uat.inscomscd.com:80 at: Wed May 29 16:06:14 EDT 2019 (Refresh)
+Connected to cluster node: app04.snl.inscomscd.com:app4
+Build name: London
+Build date: 02-14-2019_1004
+Build tag: glide-london-06-27-2018__patch6-02-06-2019
+Instance name: servicenow
+Instance ID: a49bb8192511330070c6ae7ca462c6f8
+Node ID: 9967ff7dfbe038682234159b823232f0
+IP address: 127.0.0.1
+MID buildstamp: london-06-27-2018__patch6-02-06-2019_02-14-2019_1004
+Load-balancer status: Online
+Database latency: 8
+Offering: enterprise
+Open Source software
+Servlet Memory
+Max memory: 1982.0
+Allocated: 531.0
+In use: 340.0
+Free percentage: 36.0
+Servlet Statistics
+Started: Wed May 08 08:17:06 EDT 2019
+Cache built: Wed May 08 08:17:06 EDT 2019, flushes: 0
+Transactions: 56181
+Errors handled: 60
+Processor transactions: 14605
+Cancelled transactions: 0
+Logged in sessions: 1 (125 active) 
+Maximum session concurrency: 836
+Session timeout: 30 minutes
+CometD sessions: 1
+Java security manager policy: Enabled
+Semaphore Sets
+ 
+Default
+Available semaphores: 4
+Queue depth: 0
+Queue age: 0:00:00.000
+Max queue depth: 8
+Queue depth limit: 150
+Maximum transaction concurrency: 4
+Maximum concurrency achieved: 4
+ 
+Debug
+Available semaphores: 4
+Queue depth: 0
+Queue age: 0:00:00.000
+Max queue depth: 0
+Queue depth limit: 50
+Maximum transaction concurrency: 4
+Maximum concurrency achieved: 0
+ 
+AMB_RECEIVE
+Available semaphores: 4
+Queue depth: 0
+Queue age: 0:00:00.000
+Max queue depth: 1
+Queue depth limit: 50
+Maximum transaction concurrency: 4
+Maximum concurrency achieved: 1
+ 
+AMB_SEND
+Available semaphores: 4
+Queue depth: 0
+Queue age: 0:00:00.000
+Max queue depth: 4
+Queue depth limit: 50
+Maximum transaction concurrency: 4
+Maximum concurrency achieved: 1
+ 
+API_INT
+Available semaphores: 4
+Queue depth: 0
+Queue age: 0:00:00.000
+Max queue depth: 1
+Queue depth limit: 50
+Maximum transaction concurrency: 4
+Maximum concurrency achieved: 1
+ 
+Presence
+Available semaphores: 8
+Queue depth: 0
+Queue age: 0:00:00.000
+Max queue depth: 1
+Queue depth limit: 50
+Maximum transaction concurrency: 8
+Maximum concurrency achieved: 1
+OS Configuration
+Linux version 3.10.0-957.el7.x86_64 (mockbuild@x86-040.build.eng.bos.redhat.com) (gcc version 4.8.5 21050623 (Red Hat 4.8.5-36) (GCC) ) #1 SMP Thu Oct 4 20:48:51 UTC 2018
+Load average: 0.11 0.06 0.05 1/463 18072 
+Processor model: Intel(R) Xeon(R) CPU E5-2680 v4 @ 2.40GHz
+Processors: 8
+Processor bogomips: 4788.46
+Server Response Time
+1 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+5 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+15 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+60 minute: 0:00:00.137 (4 transactions, 0.06 per minute, 90% faster than 0:00:00.250)
+1 day: 0:00:00.122 (11 transactions, 0.0 per minute, 90% faster than 0:00:00.250)
+AMB Server Response Time
+1 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+5 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+15 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+60 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+1 day: 0:00:00.008 (8 transactions, 0.0 per minute, 90% faster than 0:00:00.012)
+Client Network Time
+1 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+5 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+15 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+60 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+1 day: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+Client Browser Time
+1 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+5 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+15 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+60 minute: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+1 day: 0:00:00.000 (0 transactions, 0.0 per minute, 90% faster than 0:00:00.000)
+Database Connection Pool(s)
+Primary Prefix: glide
+
+Prefix: glide
+DB Name: servicenow_1
+Status: Online
+Busy: 0
+Available: 12
+Total: 12
+Max: 12
+Valve Open Count: 0
+Age: 3:48:51.309
+
+Prefix: glide.fastlock
+DB Name: servicenow_1
+Status: Online
+Busy: 0
+Available: 1
+Total: 1
+Max: 4
+Valve Open Count: 0
+Lag: UNKNOWN
+Age: 3:48:51.320
+
+Background Scheduler
+Number of workers: 2
+Queue length: 0
+Mean queue age: 0:00:00.000
+System ID: app04.snl.inscomscd.com:app4
+Total jobs: 876302
+Total burst workers: 0
+Scheduler run state: true
+
+Scheduler Workers
+glide.scheduler.worker.0
+Current job: idle
+Total jobs: 438105
+Mean duration: 0:00:00.077
+
+glide.scheduler.worker.1
+Current job: idle
+Total jobs: 109391
+Mean duration: 0:00:00.023
+
+Background Progress Worker
+Maximum Worker Pool Size: 16
+Number of Workers: 0
+Details
+Virtual Agent Worker Stats:
+ObjectService contexts[0] keys[0]
+
+
+Virtual Agent Queue Stats:
+Length: 0 
+Offers: 0 
+Rejections: 0 
+DB Lazy Writer
+Queue size: 0
+Current delay (ms): 0
+Logged in Sessions
+Count: 1
