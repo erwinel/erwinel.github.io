@@ -393,6 +393,34 @@ var app;
     app.sessionStorageService = sessionStorageService;
     app.appModule.service("sessionStorageService", ["$window", sessionStorageService]);
     // #endregion
+    // #region Copy To Clipboard Service
+    class copyToClipboardService {
+        constructor($window) {
+            this.$window = $window;
+        }
+        copy(element, successMsg) {
+            try {
+                element.text();
+                let range = this.$window.document.createRange();
+                range.selectNode(element[0]);
+                let selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                this.$window.document.execCommand('copy');
+                selection.removeAllRanges();
+                if ((typeof successMsg === "string") && (successMsg = successMsg.trim()).length > 0)
+                    alert(successMsg);
+                else
+                    alert('Text copied to clipboard');
+            }
+            catch (ex) {
+                alert('Failed to copy to clipboard: ' + ex);
+            }
+        }
+    }
+    app.copyToClipboardService = copyToClipboardService;
+    app.appModule.service("copyToClipboardService", ["$window", copyToClipboardService]);
+    // #endregion
     // #region Target SyStem Configuration Information
     let cssValidationClass;
     (function (cssValidationClass) {

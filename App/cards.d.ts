@@ -74,7 +74,6 @@ declare namespace cards {
      * @extends {ng.IScope}
      */
     interface ICardScope extends ICardContainerScope {
-        currentCardName: string;
         currentCardNumber: number;
         cardHeadingText: string;
         cardIconUrl: CollapsibleIconUrl;
@@ -93,7 +92,8 @@ declare namespace cards {
      * @implements {ng.IController}
      */
     abstract class CardController extends CardParentController {
-        protected $scope: ICardScope;
+        protected readonly $scope: ICardScope;
+        readonly headingText: string;
         private _parentScope;
         private _currentCardIsExpanded;
         readonly currentCardId: number;

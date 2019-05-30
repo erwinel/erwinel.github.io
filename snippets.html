@@ -13,32 +13,40 @@
     <script type="text/javascript" src="lib/angular.js/angular.js"></script>
     <script type="text/javascript" src="App/sys.js"></script>
     <script type="text/javascript" src="App/app.js"></script>
+    <script type="text/javascript" src="App/cards.js"></script>
+    <script type="text/javascript" src="App/Snippets.js"></script>
 </head>
 <body>
     <main-app-page-head></main-app-page-head>
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <section class="container-fluid col-8 col-lg-9">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title mb-0">UI Actions</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title mb-0">Force to Update Set</h3>
-                            </div>
-                            <div class="card-body" ng-show="selectedCardId == 'forceToUpdateSet'">
-                                <h4>With Validation</h4>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-auto font-weight-bold">Condition:</div>
-                                        <div class="col"><code class="text-monospace">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-auto font-weight-bold">Script:</div>
-                                        <div class="col">
-                                            <pre class="pre-scrollable"><code class="text-monospace">// Commit any changes to the record
+            <section class="container-fluid col-8 col-lg-9" ng-controller="snippetsController">
+                <form action="Snippets.html">
+                    <div class="card">
+                        <div class="card-header p-1">
+                            <h2 class="card-title mb-0">UI Actions</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="card" ng-controller="forceToUpdateSetWithValidationController">
+                                <div class="card-header p-1">
+                                    <h3 class="card-title mb-0">
+                                        <button class="btn btn-light" ng-click="toggleCurrentCard()" onclick="return false;">
+                                            {{currentCardNumber}}. {{cardHeadingText}}
+                                            <img ng-src="{{cardIconUrl}}" width="8" height="8" alt="{{cardActionVerb}} {{cardHeadingText}}" />
+                                        </button>
+                                    </h3>
+                                </div>
+                                <div class="card-body" ng-show="currentCardIsExpanded">
+                                    <h4>With Validation</h4>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-auto font-weight-bold">Condition:</div>
+                                            <div class="col"><code class="text-monospace">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-auto font-weight-bold"><button class="btn btn-light btn-outline-dark p-1" ng-click="copyToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button> Script:</div>
+                                            <div class="col">
+                                                <pre class="pre-scrollable"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record
 current.update();
 
 // Check to make sure the table isn&#39;t synchronized already
@@ -61,19 +69,31 @@ if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl ==
     gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
     action.setRedirectURL(current);
 }</code></pre>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <h4>No Validation</h4>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-auto font-weight-bold">Condition:</div>
-                                        <div class="col"><code class="text-monospace">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-auto font-weight-bold">Script:</div>
-                                        <div class="col">
-                                            <pre class="pre-scrollable"><code class="text-monospace">// Commit any changes to the record
+                            </div>
+                            <div class="card" ng-controller="forceToUpdateSetNoValidationController">
+                                <div class="card-header p-1">
+                                    <h3 class="card-title mb-0">
+                                        <button class="btn btn-light" ng-click="toggleCurrentCard()" onclick="return false;">
+                                            {{currentCardNumber}}. {{cardHeadingText}}
+                                            <img ng-src="{{cardIconUrl}}" width="8" height="8" alt="{{cardActionVerb}} {{cardHeadingText}}" />
+                                        </button>
+                                    </h3>
+                                </div>
+                                <div class="card-body" ng-show="currentCardIsExpanded">
+                                    <h4>With Validation</h4>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-auto font-weight-bold">Condition:</div>
+                                            <div class="col"><code class="text-monospace">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-auto font-weight-bold"><button class="btn btn-light btn-outline-dark p-1" ng-click="copyToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button> Script:</div>
+                                            <div class="col">
+                                                <pre class="pre-scrollable"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record
 current.update();
 // Push the update into the current update set
 var um = new GlideUpdateManager2();
@@ -87,20 +107,24 @@ gr.get(setID);
 // Display info message and reload the form
 gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
 action.setRedirectURL(current);</code></pre>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </section>
             <aside class="container-fluid col-4 col-lg-3">
                 <div class="card">
                     <div class="card-header"><h4>Resource Pages</h4></div>
                     <div class="card-body">
                         <ul class="nav flex-column">
-                            <li class="nav-item" ng-repeat="i in pageNavigation.side.items"><a ng-href="{{i.href}}" ng-class="i.class" ng-click="return i.onClick()">{{ i.linkTitle }}</a></li>
+                            <li class="nav-item"><a href="#" class="nav-link active" onclick="return false;">Code Snippets</a></li>
+                            <li class="nav-item"><a href="RegexTester.html" class="nav-link">Regex Tester</a></li>
+                            <li class="nav-item"><a href="URIBuilder.html" class="nav-link">URI Builder</a></li>
+                            <li class="nav-item"><a href="ColorBuilder.html" class="nav-link">Color Builder</a></li>
                         </ul>
                     </div>
                 </div>

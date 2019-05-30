@@ -36,6 +36,11 @@
       "pageTitle": "Development Resources",
       "items": [
         {
+          "url": "Snippets.html",
+          "linkTitle": "Code Snippets",
+          "pageTitle": "Code Snippets"
+        },
+        {
           "url": "RegexTester.html",
           "linkTitle": "Regex Tester",
           "pageTitle": "Regular Expression Tester"
