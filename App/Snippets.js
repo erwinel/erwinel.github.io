@@ -30,4 +30,8 @@ var snippets;
         constructor($scope, copyToClipboard) { super($scope, copyToClipboard, 'Force To Update Set (no validation)', 'forceToUpdateSetNoValidation', 'Code copied to clipboard'); }
     }
     app.appModule.controller("forceToUpdateSetNoValidationController", ['$scope', 'copyToClipboardService', ForceToUpdateSetNoValidationController]);
+    class MoveToUpdateSetController extends ClipardCardController {
+        constructor($scope, copyToClipboard) { super($scope, copyToClipboard, 'Move To Current Update Set', 'moveToUpdateSet', 'Code copied to clipboard'); }
+    }
+    app.appModule.controller("moveToUpdateSetController", ['$scope', 'copyToClipboardService', MoveToUpdateSetController]);
 })(snippets || (snippets = {}));

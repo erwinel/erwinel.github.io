@@ -45,15 +45,15 @@
                                         <div class="row">
                                             <div class="col-auto font-weight-bold"><button class="btn btn-light btn-outline-dark p-1" ng-click="copyToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button> Script:</div>
                                             <div class="col">
-                                                <pre class="pre-scrollable"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record
+                                                <pre class="pre-scrollable"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record and reload the form
 current.update();
+action.setRedirectURL(current);
 
 // Check to make sure the table isn&#39;t synchronized already
 var tbl = current.getTableName();
 if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl == &#39;sys_choice&#39; || current.getED().getBooleanAttribute(&#39;update_synch&#39;) ||
     current.getED().getBooleanAttribute(&#39;update_synch_custom&#39;)) {
     gs.addErrorMessage(&#39;Updates are already being recorded for this table.&#39;);
-    action.setRedirectURL(current);  
 } else {
     // Push the update into the current update set
     var um = new GlideUpdateManager2();
@@ -64,9 +64,8 @@ if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl ==
     var gr = new GlideRecord(&#39;sys_update_set&#39;);
     gr.get(setID);
 
-    // Display info message and reload the form
+    // Display info message
     gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
-    action.setRedirectURL(current);
 }</code></pre>
                                             </div>
                                         </div>
@@ -91,8 +90,9 @@ if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl ==
                                         <div class="row">
                                             <div class="col-auto font-weight-bold"><button class="btn btn-light btn-outline-dark p-1" ng-click="copyToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button> Script:</div>
                                             <div class="col">
-                                                <pre class="pre-scrollable"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record
+                                                <pre class="pre-scrollable"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record and reload the form
 current.update();
+action.setRedirectURL(current);
 // Push the update into the current update set
 var um = new GlideUpdateManager2();
 um.saveRecord(current);
@@ -103,8 +103,60 @@ var gr = new GlideRecord(&#39;sys_update_set&#39;);
 gr.get(setID);
 
 // Display info message and reload the form
-gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
-action.setRedirectURL(current);</code></pre>
+gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);</code></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card" ng-controller="moveToUpdateSetController">
+                                <div class="card-header p-1">
+                                    <h3 class="card-title mb-0">
+                                        <button class="btn btn-light" ng-click="toggleCurrentCard()" onclick="return false;">
+                                            {{currentCardNumber}}. {{cardHeadingText}}
+                                            <img ng-src="{{cardIconUrl}}" width="8" height="8" alt="{{cardActionVerb}} {{cardHeadingText}}" />
+                                        </button>
+                                    </h3>
+                                </div>
+                                <div class="card-body" ng-show="currentCardIsExpanded">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-auto font-weight-bold">Condition:</div>
+                                            <div class="col"><code class="text-monospace">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-auto font-weight-bold"><button class="btn btn-light btn-outline-dark p-1" ng-click="copyToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button> Script:</div>
+                                            <div class="col">
+                                                <pre class="pre-scrollable"><code class="text-monospace" id="{{contentElementId}}">//Get link to the &#39;current&#39; object&#39;s parent update set, and set it as the redirect URL.
+var updateSetLink = gs.getProperty(&#39;glide.servlet.uri&#39;) + &#39;sys_update_set.do?sys_id=&#39; + current.getValue(&#39;update_set&#39;);
+action.setRedirectURL(updateSetLink);
+//Get link to the current &#39;customer update&#39; record.
+var updateLink = gs.getProperty(&#39;glide.servlet.uri&#39;) + &#39;sys_update_xml.do?sys_id=&#39; + current.getValue(&#39;sys_id&#39;);
+//Get the &#39;type&#39; of the record being updated.
+var type = current.getValue(&#39;type&#39;);
+//Get a record containing the parent update set.
+var currentUpdateSetID = gs.getPreference(&#39;sys_update_set&#39;);
+var updateSetGR = new GlideRecord(&#39;sys_update_set&#39;);
+updateSetGR.get(currentUpdateSetID);
+//If the customer update record is already in the currently selected update set, alert the user and provide a link to the record that failed to update.
+if (current.getValue(&#39;update_set&#39;) == gs.getPreference(&#39;sys_update_set&#39;)) {
+    gs.addErrorMessage(&#39;The selected &lt;a href=&quot;&#39; + updateLink + &#39;&quot;&gt;&#39; + type + &#39;&lt;/a&gt; is already in your currently selected update set: &#39; + updateSetGR.getValue(&#39;name&#39;) + &#39;.&#39;);
+}
+//If the customer update record is not already in the currently selected update set, move it to the selected update set and alert the user. 
+else {
+    try {
+        current.setValue(&#39;update_set&#39;, currentUpdateSetID);
+        current.update();
+        gs.addInfoMessage(&#39;The selected &lt;a href=&quot;&#39; + updateLink + &#39;&quot;&gt;&#39; + type + &#39;&lt;/a&gt; has been moved to your currently selected update set: &#39; + updateSetGR.getValue(&#39;name&#39;) + &#39;.&#39;);
+    }
+    catch(e) {
+        gs.log(&#39;ERROR while moving customer updates: &#39; + e);
+        gs.addErrorMessage(&#39;There was an error. Please review the system logs for more details.&#39;);
+    }
+}</code></pre>
+                                                <blockquote class="alert-info">
+                                                    <div class="font-weight-bold">Source: </div>Woodruff, T. (2016, 01 25). Quickly Move Changes Between Update Sets. Retrieved from SN Pro Tips: <a href="https://snprotips.com/blog/2016/1/26/quickly-move-changes-between-update-sets" target="_blank">https://snprotips.com/blog/2016/1/26/quickly-move-changes-between-update-sets</a>
+                                                </blockquote>
                                             </div>
                                         </div>
                                     </div>
