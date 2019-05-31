@@ -118,6 +118,7 @@ var app;
             this.$scope = $scope;
             this.$location = $location;
             this.$http = $http;
+            this.settings = settings;
             $scope.serviceNowUrl = settings.serviceNowUrl;
             $scope.gitRepositoryBaseUrl = settings.gitRepositoryBaseUrl;
             settings.onChanged($scope, (event, value) => {
@@ -628,7 +629,370 @@ var app;
         }
         onChanged(scope, handler) { scope.$on(app.ScopeEvent_SetupParameterSettingsChanged, handler); }
     }
+    app.targetSysConfigSettings = targetSysConfigSettings;
     app.appModule.factory("targetSysConfigSettings", ["$rootScope", "sessionStorageService", "$http", targetSysConfigSettings]);
     // #endregion
+    // #endregion
+    // #region urlBuilderService
+    const uriParseRegex = /^(([^\\\/@:]*)(:[\\\/]{0,2})((?=[^\\\/@:]*(?::[^\\\/@:]*)?@)([^\\\/@:]*)(:[^\\\/@:]*)?@)?([^\\\/@:]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?(.+)?$/;
+    const originParseRegex = /^(([^\\\/@\s?#:]+)(:\/{0,2})((?=[^\\\/@?#:]*(?::[^\\\/@?#:]*)?@)([^\\\/@?#:]*)(:[^\\\/@?#:]*)?@)?(?:([^\\\/@?#\s:]+)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?)?)([\/:])?$/;
+    const schemeNameRegex = /^([^\\\/@\s:]+):?$/;
+    const schemeSeparatorRegex = /^:(\/\/?)?$/;
+    const hostRegex = /^([^\\\/?#@\s"]+)(:\d+)?$/;
+    const fileSystemPathRegex = /^([a-z]:([\\\/]([^\\\/?#:]|$)|$)|[\\\/]{2}[^\\\/?#:]+)/i;
+    let uriParseGroup;
+    (function (uriParseGroup) {
+        uriParseGroup[uriParseGroup["all"] = 0] = "all";
+        uriParseGroup[uriParseGroup["origin"] = 1] = "origin";
+        uriParseGroup[uriParseGroup["schemeName"] = 2] = "schemeName";
+        uriParseGroup[uriParseGroup["schemeSeparator"] = 3] = "schemeSeparator";
+        uriParseGroup[uriParseGroup["userInfo"] = 4] = "userInfo";
+        uriParseGroup[uriParseGroup["username"] = 5] = "username";
+        uriParseGroup[uriParseGroup["password"] = 6] = "password";
+        uriParseGroup[uriParseGroup["hostname"] = 7] = "hostname";
+        uriParseGroup[uriParseGroup["portnumber"] = 8] = "portnumber";
+        uriParseGroup[uriParseGroup["path"] = 9] = "path";
+    })(uriParseGroup || (uriParseGroup = {}));
+    class SchemaProperties {
+        constructor(name, properties) {
+            this.name = name;
+            if (typeof (properties) === 'undefined' || properties === null) {
+                this.supportsPath = true;
+                this.supportsQuery = true;
+                this.supportsFragment = true;
+                this.supportsCredentials = true;
+                this.requiresHost = false;
+                this.supportsPort = true;
+                this.requiresUsername = false;
+                this.defaultPort = NaN;
+                this.schemeSeparator = "://";
+            }
+            else {
+                this.supportsPath = (typeof (properties.supportsPath) !== 'boolean' || properties.supportsPath === true);
+                this.supportsQuery = (typeof (properties.supportsQuery) !== 'boolean' || properties.supportsQuery === true);
+                this.supportsFragment = (typeof (properties.supportsFragment) !== 'boolean' || properties.supportsFragment === true);
+                this.supportsCredentials = (typeof (properties.supportsCredentials) !== 'boolean' || properties.supportsCredentials === true);
+                this.requiresHost = (typeof (properties.requiresHost) !== 'boolean' || properties.requiresHost === true);
+                this.supportsPort = (typeof (properties.supportsPort) !== 'boolean' || properties.supportsPort === true);
+                this.requiresUsername = (typeof (properties.requiresUsername) === 'boolean' && properties.requiresUsername === true);
+                this.defaultPort = properties.defaultPort;
+                this.schemeSeparator = (typeof (properties.schemeSeparator) == 'string') ? properties.schemeSeparator : "://";
+            }
+        }
+        static getSchemaProperties(name) {
+            if (name.endsWith(':'))
+                name = name.substr(0, name.length - 1);
+            switch (name) {
+                case 'ftp':
+                    return SchemaProperties.uriScheme_ftp;
+                case 'ftps':
+                    return SchemaProperties.uriScheme_ftps;
+                case 'sftp':
+                    return SchemaProperties.uriScheme_sftp;
+                case 'http':
+                    return SchemaProperties.uriScheme_http;
+                case 'https':
+                    return SchemaProperties.uriScheme_https;
+                case 'gopher':
+                    return SchemaProperties.uriScheme_gopher;
+                case 'mailto':
+                    return SchemaProperties.uriScheme_mailto;
+                case 'news':
+                    return SchemaProperties.uriScheme_news;
+                case 'nntp':
+                    return SchemaProperties.uriScheme_nntp;
+                case 'telnet':
+                    return SchemaProperties.uriScheme_telnet;
+                case 'wais':
+                    return SchemaProperties.uriScheme_wais;
+                case 'file':
+                    return SchemaProperties.uriScheme_file;
+                case 'net.pipe':
+                    return SchemaProperties.uriScheme_netPipe;
+                case 'net.tcp':
+                    return SchemaProperties.uriScheme_netTcp;
+                case 'ldap':
+                    return SchemaProperties.uriScheme_ldap;
+                case 'ssh':
+                    return SchemaProperties.uriScheme_ssh;
+                case 'git':
+                    return SchemaProperties.uriScheme_git;
+                case 'urn':
+                    return SchemaProperties.uriScheme_urn;
+            }
+            return new SchemaProperties(name);
+        }
+        ;
+    }
+    /**
+     * File Transfer protocol
+     **/
+    SchemaProperties.uriScheme_ftp = new SchemaProperties("ftp", { supportsQuery: false, supportsFragment: false, defaultPort: 21 });
+    /**
+     * File Transfer protocol (secure)
+     **/
+    SchemaProperties.uriScheme_ftps = new SchemaProperties("ftps", { supportsQuery: false, supportsFragment: false, defaultPort: 990 });
+    /**
+     * Secure File Transfer Protocol
+     **/
+    SchemaProperties.uriScheme_sftp = new SchemaProperties("sftp", { supportsQuery: false, supportsFragment: false, defaultPort: 22 });
+    /**
+     * Hypertext Transfer Protocol
+     **/
+    SchemaProperties.uriScheme_http = new SchemaProperties("http", { defaultPort: 80 });
+    /**
+     * Hypertext Transfer Protocol (secure)
+     **/
+    SchemaProperties.uriScheme_https = new SchemaProperties("https", { defaultPort: 443 });
+    /**
+     * The Gopher protocol
+     **/
+    SchemaProperties.uriScheme_gopher = new SchemaProperties("gopher", { defaultPort: 70 });
+    /**
+     * Electronic mail address
+     **/
+    SchemaProperties.uriScheme_mailto = new SchemaProperties("mailto", { schemeSeparator: ":" });
+    /**
+     * USENET news
+     **/
+    SchemaProperties.uriScheme_news = new SchemaProperties("news", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" });
+    /**
+     * USENET news using NNTP access
+     **/
+    SchemaProperties.uriScheme_nntp = new SchemaProperties("nntp", { defaultPort: 119 });
+    /**
+     * Reference to interactive sessions
+     **/
+    SchemaProperties.uriScheme_telnet = new SchemaProperties("telnet", { supportsPath: false, supportsQuery: false, supportsFragment: false, supportsCredentials: false, defaultPort: 23 });
+    /**
+     * Wide Area Information Servers
+     **/
+    SchemaProperties.uriScheme_wais = new SchemaProperties("wais", { defaultPort: 443 });
+    /**
+     * Host-specific file names
+     **/
+    SchemaProperties.uriScheme_file = new SchemaProperties("file", { supportsQuery: false, supportsFragment: false, supportsCredentials: false, requiresHost: false, supportsPort: false });
+    /**
+     * Net Pipe
+     **/
+    SchemaProperties.uriScheme_netPipe = new SchemaProperties("net.pipe", { supportsPort: false });
+    /**
+     * Net-TCP
+     **/
+    SchemaProperties.uriScheme_netTcp = new SchemaProperties("net.tcp", { defaultPort: 808 });
+    /**
+     * Lightweight Directory Access Protocol
+     **/
+    SchemaProperties.uriScheme_ldap = new SchemaProperties("ldap", { defaultPort: 389 });
+    /**
+     * Lightweight Directory Access Protocol
+     **/
+    SchemaProperties.uriScheme_ssh = new SchemaProperties("ssh", { defaultPort: 22 });
+    /**
+     * GIT Respository
+     **/
+    SchemaProperties.uriScheme_git = new SchemaProperties("git", { supportsQuery: false, supportsFragment: false, defaultPort: 9418 });
+    /**
+     * Uniform Resource notation
+     **/
+    SchemaProperties.uriScheme_urn = new SchemaProperties("urn", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" });
+    app.SchemaProperties = SchemaProperties;
+    class QueryParameters {
+        append(name, value) {
+            throw new Error("Method not implemented.");
+        }
+        delete(name) {
+            throw new Error("Method not implemented.");
+        }
+        get(name) {
+            throw new Error("Method not implemented.");
+        }
+        getAll(name) {
+            throw new Error("Method not implemented.");
+        }
+        has(name) {
+            throw new Error("Method not implemented.");
+        }
+        set(name, value) {
+            throw new Error("Method not implemented.");
+        }
+        sort() {
+            throw new Error("Method not implemented.");
+        }
+        forEach(callbackfn, thisArg) {
+            throw new Error("Method not implemented.");
+        }
+        [Symbol.iterator]() {
+            throw new Error("Method not implemented.");
+        }
+        entries() {
+            throw new Error("Method not implemented.");
+        }
+        keys() {
+            throw new Error("Method not implemented.");
+        }
+        values() {
+            throw new Error("Method not implemented.");
+        }
+    }
+    app.QueryParameters = QueryParameters;
+    class Uri {
+        constructor(baseUri, relativeUri) {
+            this._href = "";
+            this._origin = "";
+            this._schemeName = "";
+            this._schemeSeparator = "";
+            this._username = undefined;
+            this._password = undefined;
+            this._hostname = "";
+            this._port = undefined;
+            this._portnumber = NaN;
+            this._pathname = "";
+            this._search = undefined;
+            this._searchParams = new QueryParameters();
+            this._hash = undefined;
+            if ((typeof baseUri === "undefined") || baseUri === null) {
+                if ((typeof relativeUri === "undefined") || relativeUri === null)
+                    baseUri = "";
+            }
+            if (typeof (baseUri) === "string" && fileSystemPathRegex.test(baseUri))
+                try {
+                    let parseUrl = new URL(baseUri);
+                    if ((typeof parseUrl === "object") && parseUrl !== null)
+                        baseUri = parseUrl;
+                }
+                catch (_a) { }
+            let relative = ((typeof relativeUri !== "undefined") && relativeUri !== null) ? ((relativeUri instanceof Uri) ? relativeUri : new Uri(relativeUri)) : undefined;
+        }
+        get href() { return this._href; }
+        ;
+        set href(value) { this._href = value; }
+        get origin() { return this._origin; }
+        ;
+        set origin(value) {
+            if ((typeof (value) == "string") && value.trim().length > 0) {
+                let m = originParseRegex.exec(value);
+                if ((typeof m !== "object") || m === null)
+                    throw new Error("Invalid origin");
+                this._origin = m[uriParseGroup.origin];
+                this._schemeName = m[uriParseGroup.schemeName];
+                this._schemeSeparator = m[uriParseGroup.schemeSeparator];
+                this._username = (typeof m[uriParseGroup.username] === "string" || typeof m[uriParseGroup.userInfo] !== "string") ? m[uriParseGroup.username] : "";
+                this._password = m[uriParseGroup.password];
+                this._hostname = m[uriParseGroup.hostname];
+                this._port = m[uriParseGroup.portnumber];
+                let s;
+                this._portnumber = NaN;
+                if ((typeof this._port === "string") && (s = this._port.trim()).length > 0) {
+                    try {
+                        this._portnumber = parseInt(s);
+                    }
+                    catch (_a) { }
+                    if (typeof this._portnumber !== "number")
+                        this._portnumber = NaN;
+                }
+                if (typeof m[uriParseGroup.path] == "string" && !this._pathname.startsWith("/"))
+                    this._pathname = (this._pathname.length == 0) ? "/" : "/" + this._pathname;
+            }
+            else {
+                if (this._origin.length == 0)
+                    return;
+                this._origin = "";
+            }
+        }
+        get protocol() { return (typeof (this._schemeName) === "string") ? this._schemeName + this._schemeSeparator.substr(0, 1) : ""; }
+        ;
+        set protocol(value) {
+            if ((typeof (value) == "string") && value.trim().length > 0) {
+                let index = value.indexOf(":");
+                if (index >= 0 && index < value.length - 1)
+                    throw new Error("Invalid protocol string");
+                this.schemeName = value;
+            }
+            else
+                this.schemeName = "";
+        }
+        get schemeName() { return this._schemeName; }
+        set schemeName(value) {
+            if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
+                let m = schemeNameRegex.exec(value);
+                if ((typeof m !== "object") || m === null)
+                    throw new Error("Invalid scheme name");
+                this._schemeName = m[1];
+                if (this._schemeSeparator.length == 0)
+                    this._schemeSeparator = SchemaProperties.getSchemaProperties(this._schemeName).schemeSeparator;
+            }
+            else {
+                this._schemeName = this._schemeSeparator = "";
+            }
+        }
+        get schemeSeparator() { return this._schemeSeparator; }
+        set schemeSeparator(value) {
+            if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
+                if (!schemeSeparatorRegex.test(value))
+                    throw new Error("Invalid scheme separator");
+                if (this._schemeName.length == 0)
+                    this._schemeName = (value == ":") ? SchemaProperties.uriScheme_urn.name : SchemaProperties.uriScheme_http.name;
+                this._schemeSeparator = value;
+            }
+            else
+                this._schemeName = this._schemeSeparator = "";
+            this._schemeSeparator = value;
+        }
+        get username() { return this._username; }
+        ;
+        set username(value) { this._username = value; }
+        get password() { return this._password; }
+        ;
+        set password(value) { this._password = value; }
+        get host() { return (typeof this._port == "string") ? this._hostname + ":" + this._port : this._hostname; }
+        set host(value) {
+            if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
+                let m = hostRegex.exec(value);
+                if ((typeof m !== "object") || m === null)
+                    throw new Error("Invalid host");
+                let p = NaN;
+                if (typeof m[2] === "string") {
+                    try {
+                        p = parseInt(m[2]);
+                    }
+                    catch (_a) { }
+                    if (p === 0 || p === -1)
+                        p = NaN;
+                    else if (typeof p !== "number" || isNaN(p) || p < 0 || p > 65535)
+                        throw new Error("Invalid port");
+                }
+                this._portnumber = p;
+                this._hostname = m[1];
+            }
+            else
+                this._schemeName = this._schemeSeparator = "";
+            this._schemeSeparator = value;
+        }
+        get hostname() { return this._hostname; }
+        ;
+        set hostname(value) { this._hostname = value; }
+        get port() { return this._port; }
+        ;
+        set port(value) { this._port = value; }
+        get pathname() { return this._pathname; }
+        ;
+        set pathname(value) { this._pathname = value; }
+        get search() { return this._search; }
+        ;
+        set search(value) { this._search = value; }
+        get searchParams() { return this._searchParams; }
+        set searchParams(value) { this._searchParams = value; }
+        get hash() { return this._hash; }
+        set hash(value) { this._hash = value; }
+        toJSON() {
+            throw new Error("Method not implemented.");
+        }
+    }
+    app.Uri = Uri;
+    class UriBuilderService {
+    }
+    app.UriBuilderService = UriBuilderService;
+    app.appModule.factory("uriBuilderService", ["$rootScope", UriBuilderService]);
     // #endregion
 })(app || (app = {}));

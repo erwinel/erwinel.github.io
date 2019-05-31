@@ -139,4 +139,149 @@ declare namespace app {
         onChanged(scope: ng.IScope, handler: (event: ng.IAngularEvent, settings: ISysConfigSettings) => void): void;
         constructor($rootScope: ng.IScope, _sessionStorage: sessionStorageService, $http: ng.IHttpService);
     }
+    interface ISchemaProperties {
+        supportsPath?: boolean;
+        supportsQuery?: boolean;
+        supportsFragment?: boolean;
+        supportsCredentials?: boolean;
+        requiresHost?: boolean;
+        supportsPort?: boolean;
+        requiresUsername?: boolean;
+        schemeSeparator?: string;
+        defaultPort?: number;
+    }
+    class SchemaProperties implements ISchemaProperties {
+        readonly name: string;
+        readonly supportsPath: boolean;
+        readonly supportsQuery: boolean;
+        readonly supportsFragment: boolean;
+        readonly supportsCredentials: boolean;
+        readonly requiresHost: boolean;
+        readonly supportsPort: boolean;
+        readonly requiresUsername: boolean;
+        readonly defaultPort: number;
+        readonly schemeSeparator: string;
+        constructor(name: string, properties?: ISchemaProperties);
+        static getSchemaProperties(name: string): SchemaProperties;
+        /**
+         * File Transfer protocol
+         **/
+        static readonly uriScheme_ftp: SchemaProperties;
+        /**
+         * File Transfer protocol (secure)
+         **/
+        static readonly uriScheme_ftps: SchemaProperties;
+        /**
+         * Secure File Transfer Protocol
+         **/
+        static readonly uriScheme_sftp: SchemaProperties;
+        /**
+         * Hypertext Transfer Protocol
+         **/
+        static uriScheme_http: SchemaProperties;
+        /**
+         * Hypertext Transfer Protocol (secure)
+         **/
+        static uriScheme_https: SchemaProperties;
+        /**
+         * The Gopher protocol
+         **/
+        static uriScheme_gopher: SchemaProperties;
+        /**
+         * Electronic mail address
+         **/
+        static uriScheme_mailto: SchemaProperties;
+        /**
+         * USENET news
+         **/
+        static uriScheme_news: SchemaProperties;
+        /**
+         * USENET news using NNTP access
+         **/
+        static uriScheme_nntp: SchemaProperties;
+        /**
+         * Reference to interactive sessions
+         **/
+        static uriScheme_telnet: SchemaProperties;
+        /**
+         * Wide Area Information Servers
+         **/
+        static uriScheme_wais: SchemaProperties;
+        /**
+         * Host-specific file names
+         **/
+        static uriScheme_file: SchemaProperties;
+        /**
+         * Net Pipe
+         **/
+        static uriScheme_netPipe: SchemaProperties;
+        /**
+         * Net-TCP
+         **/
+        static uriScheme_netTcp: SchemaProperties;
+        /**
+         * Lightweight Directory Access Protocol
+         **/
+        static uriScheme_ldap: SchemaProperties;
+        /**
+         * Lightweight Directory Access Protocol
+         **/
+        static uriScheme_ssh: SchemaProperties;
+        /**
+         * GIT Respository
+         **/
+        static uriScheme_git: SchemaProperties;
+        /**
+         * Uniform Resource notation
+         **/
+        static uriScheme_urn: SchemaProperties;
+    }
+    class QueryParameters implements URLSearchParams {
+        append(name: string, value: string): void;
+        delete(name: string): void;
+        get(name: string): string;
+        getAll(name: string): string[];
+        has(name: string): boolean;
+        set(name: string, value: string): void;
+        sort(): void;
+        forEach(callbackfn: (value: string, key: string, parent: URLSearchParams) => void, thisArg?: any): void;
+        [Symbol.iterator](): IterableIterator<[string, string]>;
+        entries(): IterableIterator<[string, string]>;
+        keys(): IterableIterator<string>;
+        values(): IterableIterator<string>;
+    }
+    class Uri implements URL {
+        private _href;
+        private _origin;
+        private _schemeName;
+        private _schemeSeparator;
+        private _username?;
+        private _password?;
+        private _hostname;
+        private _port?;
+        private _portnumber;
+        private _pathname;
+        private _search?;
+        private _searchParams;
+        private _hash?;
+        href: string;
+        origin: string;
+        protocol: string;
+        schemeName: string;
+        schemeSeparator: string;
+        username: string;
+        password: string;
+        host: string;
+        hostname: string;
+        port: string;
+        pathname: string;
+        search: string;
+        searchParams: URLSearchParams;
+        hash: string;
+        toJSON(): string;
+        constructor(baseUri: URL | Uri, relativeUri: string | URL | Uri);
+        constructor(uri: URL | Uri | string);
+    }
+    class UriBuilderService {
+    }
 }
