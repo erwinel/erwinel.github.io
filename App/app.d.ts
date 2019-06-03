@@ -152,6 +152,7 @@ declare namespace app {
     }
     class SchemaProperties implements ISchemaProperties {
         readonly name: string;
+        readonly description: string;
         readonly supportsPath: boolean;
         readonly supportsQuery: boolean;
         readonly supportsFragment: boolean;
@@ -161,7 +162,7 @@ declare namespace app {
         readonly requiresUsername: boolean;
         readonly defaultPort: number;
         readonly schemeSeparator: string;
-        constructor(name: string, properties?: ISchemaProperties);
+        constructor(name: string, properties?: ISchemaProperties, description?: string);
         static getSchemaProperties(name: string): SchemaProperties;
         /**
          * File Transfer protocol
@@ -184,7 +185,7 @@ declare namespace app {
          **/
         static uriScheme_https: SchemaProperties;
         /**
-         * The Gopher protocol
+         * Gopher protocol
          **/
         static uriScheme_gopher: SchemaProperties;
         /**
@@ -224,7 +225,7 @@ declare namespace app {
          **/
         static uriScheme_ldap: SchemaProperties;
         /**
-         * Lightweight Directory Access Protocol
+         * Secure Shell
          **/
         static uriScheme_ssh: SchemaProperties;
         /**
@@ -237,6 +238,7 @@ declare namespace app {
         static uriScheme_urn: SchemaProperties;
     }
     class QueryParameters implements URLSearchParams {
+        constructor(params?: string | URLSearchParams);
         append(name: string, value: string): void;
         delete(name: string): void;
         get(name: string): string;

@@ -3,12 +3,7 @@
 /// <reference path="sys.ts" />
 var regexTester;
 (function (regexTester) {
-    /**
-    * The main module for this app.
-    *
-    * @type {ng.IModule}
-    */
-    regexTester.regexTesterModule = angular.module("regexTester", []);
+    // #region LocalStorageService
     class localRegexStorageService {
         keys() {
             let result = [];
@@ -300,5 +295,5 @@ var regexTester;
         }
     }
     regexTesterController.whitespacRe = /\s+/g;
-    regexTester.regexTesterModule.controller("regexTesterController", ["$scope", "localRegexStorageService", regexTesterController]);
+    app.appModule.controller("regexTesterController", ["$scope", "localRegexStorageService", regexTesterController]);
 })(regexTester || (regexTester = {}));

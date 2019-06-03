@@ -654,8 +654,9 @@ var app;
         uriParseGroup[uriParseGroup["path"] = 9] = "path";
     })(uriParseGroup || (uriParseGroup = {}));
     class SchemaProperties {
-        constructor(name, properties) {
+        constructor(name, properties, description) {
             this.name = name;
+            description = ((typeof description !== "string") || (description = description.trim()).length == 0) ? "\"" + name + "\" scheme" : description;
             if (typeof (properties) === 'undefined' || properties === null) {
                 this.supportsPath = true;
                 this.supportsQuery = true;
@@ -722,117 +723,132 @@ var app;
             }
             return new SchemaProperties(name);
         }
-        ;
     }
     /**
      * File Transfer protocol
      **/
-    SchemaProperties.uriScheme_ftp = new SchemaProperties("ftp", { supportsQuery: false, supportsFragment: false, defaultPort: 21 });
+    SchemaProperties.uriScheme_ftp = new SchemaProperties("ftp", { supportsQuery: false, supportsFragment: false, defaultPort: 21 }, "File Transfer protocol");
     /**
      * File Transfer protocol (secure)
      **/
-    SchemaProperties.uriScheme_ftps = new SchemaProperties("ftps", { supportsQuery: false, supportsFragment: false, defaultPort: 990 });
+    SchemaProperties.uriScheme_ftps = new SchemaProperties("ftps", { supportsQuery: false, supportsFragment: false, defaultPort: 990 }, "File Transfer protocol (secure)");
     /**
      * Secure File Transfer Protocol
      **/
-    SchemaProperties.uriScheme_sftp = new SchemaProperties("sftp", { supportsQuery: false, supportsFragment: false, defaultPort: 22 });
+    SchemaProperties.uriScheme_sftp = new SchemaProperties("sftp", { supportsQuery: false, supportsFragment: false, defaultPort: 22 }, "Secure File Transfer Protocol");
     /**
      * Hypertext Transfer Protocol
      **/
-    SchemaProperties.uriScheme_http = new SchemaProperties("http", { defaultPort: 80 });
+    SchemaProperties.uriScheme_http = new SchemaProperties("http", { defaultPort: 80 }, "Hypertext Transfer Protocol");
     /**
      * Hypertext Transfer Protocol (secure)
      **/
-    SchemaProperties.uriScheme_https = new SchemaProperties("https", { defaultPort: 443 });
+    SchemaProperties.uriScheme_https = new SchemaProperties("https", { defaultPort: 443 }, "Hypertext Transfer Protocol (secure)");
     /**
-     * The Gopher protocol
+     * Gopher protocol
      **/
-    SchemaProperties.uriScheme_gopher = new SchemaProperties("gopher", { defaultPort: 70 });
+    SchemaProperties.uriScheme_gopher = new SchemaProperties("gopher", { defaultPort: 70 }, "Gopher protocol");
     /**
      * Electronic mail address
      **/
-    SchemaProperties.uriScheme_mailto = new SchemaProperties("mailto", { schemeSeparator: ":" });
+    SchemaProperties.uriScheme_mailto = new SchemaProperties("mailto", { schemeSeparator: ":" }, "Electronic mail address");
     /**
      * USENET news
      **/
-    SchemaProperties.uriScheme_news = new SchemaProperties("news", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" });
+    SchemaProperties.uriScheme_news = new SchemaProperties("news", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" }, "USENET news");
     /**
      * USENET news using NNTP access
      **/
-    SchemaProperties.uriScheme_nntp = new SchemaProperties("nntp", { defaultPort: 119 });
+    SchemaProperties.uriScheme_nntp = new SchemaProperties("nntp", { defaultPort: 119 }, "USENET news using NNTP access");
     /**
      * Reference to interactive sessions
      **/
-    SchemaProperties.uriScheme_telnet = new SchemaProperties("telnet", { supportsPath: false, supportsQuery: false, supportsFragment: false, supportsCredentials: false, defaultPort: 23 });
+    SchemaProperties.uriScheme_telnet = new SchemaProperties("telnet", { supportsPath: false, supportsQuery: false, supportsFragment: false, supportsCredentials: false, defaultPort: 23 }, "Reference to interactive sessions");
     /**
      * Wide Area Information Servers
      **/
-    SchemaProperties.uriScheme_wais = new SchemaProperties("wais", { defaultPort: 443 });
+    SchemaProperties.uriScheme_wais = new SchemaProperties("wais", { defaultPort: 443 }, "Wide Area Information Servers");
     /**
      * Host-specific file names
      **/
-    SchemaProperties.uriScheme_file = new SchemaProperties("file", { supportsQuery: false, supportsFragment: false, supportsCredentials: false, requiresHost: false, supportsPort: false });
+    SchemaProperties.uriScheme_file = new SchemaProperties("file", { supportsQuery: false, supportsFragment: false, supportsCredentials: false, requiresHost: false, supportsPort: false }, "Host-specific file names");
     /**
      * Net Pipe
      **/
-    SchemaProperties.uriScheme_netPipe = new SchemaProperties("net.pipe", { supportsPort: false });
+    SchemaProperties.uriScheme_netPipe = new SchemaProperties("net.pipe", { supportsPort: false }, "Net Pipe");
     /**
      * Net-TCP
      **/
-    SchemaProperties.uriScheme_netTcp = new SchemaProperties("net.tcp", { defaultPort: 808 });
+    SchemaProperties.uriScheme_netTcp = new SchemaProperties("net.tcp", { defaultPort: 808 }, "Net-TCP");
     /**
      * Lightweight Directory Access Protocol
      **/
-    SchemaProperties.uriScheme_ldap = new SchemaProperties("ldap", { defaultPort: 389 });
+    SchemaProperties.uriScheme_ldap = new SchemaProperties("ldap", { defaultPort: 389 }, "Lightweight Directory Access Protocol");
     /**
-     * Lightweight Directory Access Protocol
+     * Secure Shell
      **/
-    SchemaProperties.uriScheme_ssh = new SchemaProperties("ssh", { defaultPort: 22 });
+    SchemaProperties.uriScheme_ssh = new SchemaProperties("ssh", { defaultPort: 22 }, "Secure Shell");
     /**
      * GIT Respository
      **/
-    SchemaProperties.uriScheme_git = new SchemaProperties("git", { supportsQuery: false, supportsFragment: false, defaultPort: 9418 });
+    SchemaProperties.uriScheme_git = new SchemaProperties("git", { supportsQuery: false, supportsFragment: false, defaultPort: 9418 }, "GIT Respository");
     /**
      * Uniform Resource notation
      **/
-    SchemaProperties.uriScheme_urn = new SchemaProperties("urn", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" });
+    SchemaProperties.uriScheme_urn = new SchemaProperties("urn", { supportsCredentials: false, requiresHost: false, supportsPort: false, schemeSeparator: ":" }, "Uniform Resource notation");
     app.SchemaProperties = SchemaProperties;
     class QueryParameters {
+        constructor(params) {
+            throw new Error("Not Implemented");
+            // TODO: Implement QueryParameters constructor.
+        }
         append(name, value) {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.append().
         }
         delete(name) {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.delete().
         }
         get(name) {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.get().
         }
         getAll(name) {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.getAll().
         }
         has(name) {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.has().
         }
         set(name, value) {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.set().
         }
         sort() {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.sort().
         }
         forEach(callbackfn, thisArg) {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.forEach().
         }
         [Symbol.iterator]() {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.iterator().
         }
         entries() {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.entries().
         }
         keys() {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.keys().
         }
         values() {
             throw new Error("Method not implemented.");
+            // TODO: Implement QueryParameters.values().
         }
     }
     app.QueryParameters = QueryParameters;
@@ -851,19 +867,37 @@ var app;
             this._search = undefined;
             this._searchParams = new QueryParameters();
             this._hash = undefined;
-            if ((typeof baseUri === "undefined") || baseUri === null) {
-                if ((typeof relativeUri === "undefined") || relativeUri === null)
+            if ((typeof baseUri === "undefined") || ((typeof baseUri !== "string") && ((typeof baseUri !== "object") || baseUri === null))) {
+                if ((typeof relativeUri === "undefined") || ((typeof relativeUri !== "string") && ((typeof relativeUri !== "object") || relativeUri === null)))
                     baseUri = "";
+                else
+                    baseUri = relativeUri;
+                relativeUri = undefined;
             }
-            if (typeof (baseUri) === "string" && fileSystemPathRegex.test(baseUri))
-                try {
-                    let parseUrl = new URL(baseUri);
-                    if ((typeof parseUrl === "object") && parseUrl !== null)
-                        baseUri = parseUrl;
-                }
-                catch (_a) { }
-            let relative = ((typeof relativeUri !== "undefined") && relativeUri !== null) ? ((relativeUri instanceof Uri) ? relativeUri : new Uri(relativeUri)) : undefined;
+            if (typeof baseUri === "string") {
+                // TODO: Implement QueryParameters constructor(string, *).
+            }
+            else if (baseUri instanceof Uri) {
+                this._href = baseUri._href;
+                this._origin = baseUri._origin;
+                this._schemeName = baseUri._href;
+                this._schemeSeparator = baseUri._schemeSeparator;
+                this._username = baseUri._username;
+                this._password = baseUri._password;
+                this._hostname = baseUri._hostname;
+                this._port = baseUri._port;
+                this._portnumber = baseUri._portnumber;
+                this._pathname = baseUri._pathname;
+                this._search = baseUri._search;
+                this._searchParams = new QueryParameters(baseUri._searchParams);
+                this._hash = baseUri._hash;
+            }
+            else {
+                // TODO: Implement QueryParameters constructor(Uri, *).
+            }
+            // TODO: Implement QueryParameters constructor(*, relative).
         }
+        // TODO: Implement QueryParameters.href.
         get href() { return this._href; }
         ;
         set href(value) { this._href = value; }
@@ -900,6 +934,7 @@ var app;
                 this._origin = "";
             }
         }
+        // TODO: Implement QueryParameters.protocol.
         get protocol() { return (typeof (this._schemeName) === "string") ? this._schemeName + this._schemeSeparator.substr(0, 1) : ""; }
         ;
         set protocol(value) {
@@ -912,6 +947,7 @@ var app;
             else
                 this.schemeName = "";
         }
+        // TODO: Implement QueryParameters.schemeName.
         get schemeName() { return this._schemeName; }
         set schemeName(value) {
             if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
@@ -926,6 +962,7 @@ var app;
                 this._schemeName = this._schemeSeparator = "";
             }
         }
+        // TODO: Implement QueryParameters.schemeSeparator.
         get schemeSeparator() { return this._schemeSeparator; }
         set schemeSeparator(value) {
             if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
@@ -939,12 +976,15 @@ var app;
                 this._schemeName = this._schemeSeparator = "";
             this._schemeSeparator = value;
         }
+        // TODO: Implement QueryParameters.username.
         get username() { return this._username; }
         ;
         set username(value) { this._username = value; }
+        // TODO: Implement QueryParameters.password.
         get password() { return this._password; }
         ;
         set password(value) { this._password = value; }
+        // TODO: Implement QueryParameters.host.
         get host() { return (typeof this._port == "string") ? this._hostname + ":" + this._port : this._hostname; }
         set host(value) {
             if ((value = (typeof value !== "string") ? "" : value.trim()).length > 0) {
@@ -969,22 +1009,29 @@ var app;
                 this._schemeName = this._schemeSeparator = "";
             this._schemeSeparator = value;
         }
+        // TODO: Implement QueryParameters.hostname.
         get hostname() { return this._hostname; }
         ;
         set hostname(value) { this._hostname = value; }
+        // TODO: Implement QueryParameters.port.
         get port() { return this._port; }
         ;
         set port(value) { this._port = value; }
+        // TODO: Implement QueryParameters.pathname.
         get pathname() { return this._pathname; }
         ;
         set pathname(value) { this._pathname = value; }
+        // TODO: Implement QueryParameters.search.
         get search() { return this._search; }
         ;
         set search(value) { this._search = value; }
+        // TODO: Implement QueryParameters.searchParams.
         get searchParams() { return this._searchParams; }
         set searchParams(value) { this._searchParams = value; }
+        // TODO: Implement QueryParameters.hash.
         get hash() { return this._hash; }
         set hash(value) { this._hash = value; }
+        // TODO: Implement QueryParameters.toJSON().
         toJSON() {
             throw new Error("Method not implemented.");
         }

@@ -51,9 +51,9 @@
           "pageTitle": "URI Builder"
         },
         {
-          "url": "ColorBuilder.html",
-          "linkTitle": "Color Builder",
-          "pageTitle": "Color Builder"
+          "url": "ColorEditor.html",
+          "linkTitle": "Color Editor",
+          "pageTitle": "Color Editor"
         }
       ]
     }

@@ -15,23 +15,36 @@ var snippets;
             this.copyToClipboardSuccessMsg = copyToClipboardSuccessMsg;
             let controller = this;
             $scope.contentElementId = contentElementId;
-            $scope.copyToClipboard = () => { return controller.copyToClipboard(); };
+            $scope.copyContentToClipboard = () => { return controller.copyContentToClipboard(); };
         }
-        copyToClipboard() {
+        copyContentToClipboard() {
             this.copyToClipboardService.copy($("#" + this.contentElementId), this.copyToClipboardSuccessMsg);
             return false;
         }
     }
-    class ForceToUpdateSetWithValidationController extends ClipardCardController {
-        constructor($scope, copyToClipboard) { super($scope, copyToClipboard, 'Force To Update Set', 'forceToUpdateSetWithValidation', 'Code copied to clipboard'); }
+    class ClipboardWithConditionCardController extends ClipardCardController {
+        constructor($scope, copyToClipboardService, headingText, contentElementId, conditionElementId, copyToClipboardSuccessMsg) {
+            super($scope, copyToClipboardService, headingText, contentElementId, copyToClipboardSuccessMsg);
+            this.conditionElementId = conditionElementId;
+            $scope.conditionElementId = conditionElementId;
+            let controller = this;
+            $scope.copyConditionToClipboard = () => { return controller.copyConditionToClipboard(); };
+        }
+        copyConditionToClipboard() {
+            this.copyToClipboardService.copy($("#" + this.conditionElementId));
+            return false;
+        }
+    }
+    class ForceToUpdateSetWithValidationController extends ClipboardWithConditionCardController {
+        constructor($scope, copyToClipboard) { super($scope, copyToClipboard, 'Force To Update Set', 'forceToUpdateSet1Content', 'forceToUpdateSet1Condition', 'Code copied to clipboard'); }
     }
     app.appModule.controller("forceToUpdateSetWithValidationController", ['$scope', 'copyToClipboardService', ForceToUpdateSetWithValidationController]);
-    class ForceToUpdateSetNoValidationController extends ClipardCardController {
-        constructor($scope, copyToClipboard) { super($scope, copyToClipboard, 'Force To Update Set (no validation)', 'forceToUpdateSetNoValidation', 'Code copied to clipboard'); }
+    class ForceToUpdateSetNoValidationController extends ClipboardWithConditionCardController {
+        constructor($scope, copyToClipboard) { super($scope, copyToClipboard, 'Force To Update Set (no validation)', 'forceToUpdateSet2Content', 'forceToUpdateSet2Condition', 'Code copied to clipboard'); }
     }
     app.appModule.controller("forceToUpdateSetNoValidationController", ['$scope', 'copyToClipboardService', ForceToUpdateSetNoValidationController]);
-    class MoveToUpdateSetController extends ClipardCardController {
-        constructor($scope, copyToClipboard) { super($scope, copyToClipboard, 'Move To Current Update Set', 'moveToUpdateSet', 'Code copied to clipboard'); }
+    class MoveToUpdateSetController extends ClipboardWithConditionCardController {
+        constructor($scope, copyToClipboard) { super($scope, copyToClipboard, 'Move To Current Update Set', 'moveToUpdateSetContent', 'moveToUpdateSetCondition', 'Code copied to clipboard'); }
     }
     app.appModule.controller("moveToUpdateSetController", ['$scope', 'copyToClipboardService', MoveToUpdateSetController]);
 })(snippets || (snippets = {}));
