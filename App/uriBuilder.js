@@ -2,876 +2,608 @@
 /// <reference path="Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="sys.ts" />
+/// <reference path="app.ts" />
 var uriBuilder;
 (function (uriBuilder) {
-    class UriBuilderScheme {
-        constructor(origin) { this._origin = origin; }
-        get name() { throw new Error("Property not implemented."); }
-        set name(value) { throw new Error("Property not implemented."); }
-        get protocol() { throw new Error("Property not implemented."); }
-        set protocol(value) { throw new Error("Property not implemented."); }
-        get separator() { throw new Error("Property not implemented."); }
-    }
-    class UriBuilderUser {
-        constructor(origin) { this._origin = origin; }
-        get name() { throw new Error("Property not implemented."); }
-        set name(value) { throw new Error("Property not implemented."); }
-        get password() { throw new Error("Property not implemented."); }
-        set password(value) { throw new Error("Property not implemented."); }
-    }
-    class UriBuilderHost {
-        constructor(origin) { this._origin = origin; }
-        get hostname() { throw new Error("Property not implemented."); }
-        set hostname(value) { throw new Error("Property not implemented."); }
-        get port() { throw new Error("Property not implemented."); }
-        set port(value) { throw new Error("Property not implemented."); }
-        get portNumber() { throw new Error("Property not implemented."); }
-        set portNumber(value) { throw new Error("Property not implemented."); }
-    }
-    class UriBuilderOrigin {
-        constructor(href) {
-            this._user = undefined;
-            this._host = undefined;
-            this._href = href;
-            this._scheme = new UriBuilderScheme(this);
-        }
-        get protocol() { throw new Error("Property not implemented."); }
-        set protocol(value) { throw new Error("Property not implemented."); }
-        get scheme() { throw new Error("Property not implemented."); }
-        set scheme(value) { throw new Error("Property not implemented."); }
-        get separator() { throw new Error("Property not implemented."); }
-        get username() { throw new Error("Property not implemented."); }
-        set username(value) { throw new Error("Property not implemented."); }
-        get password() { throw new Error("Property not implemented."); }
-        set password(value) { throw new Error("Property not implemented."); }
-        get host() { throw new Error("Property not implemented."); }
-        set host(value) { throw new Error("Property not implemented."); }
-        get hostname() { throw new Error("Property not implemented."); }
-        set hostname(value) { throw new Error("Property not implemented."); }
-        get port() { throw new Error("Property not implemented."); }
-        set port(value) { throw new Error("Property not implemented."); }
-        get portNumber() { throw new Error("Property not implemented."); }
-        set portNumber(value) { throw new Error("Property not implemented."); }
-        raiseSchemeChanged() {
-            this._href.raiseOrginChanged();
-        }
-        raiseUserChanged() {
-            this._href.raiseOrginChanged();
-        }
-        raiseHostChanged() {
-            this._href.raiseOrginChanged();
-        }
-    }
-    class UriBuilderPath {
-        constructor(href) { this._href = href; }
-        get pathname() { throw new Error("Property not implemented."); }
-        set pathname(value) { throw new Error("Property not implemented."); }
-        [Symbol.iterator]() {
-            throw new Error("Method not implemented.");
-        }
-    }
-    UriBuilderPath.PathSeperatorPattern = /[\/\\]+/;
-    class UriBuilderQuery {
-        reset(value) {
-            throw new Error("Method not implemented.");
-        }
-        get search() { throw new Error("Property not implemented."); }
-        set search(value) { throw new Error("Property not implemented."); }
-        constructor(href) { this._href = href; }
-        append(name, value) {
-            throw new Error("Method not implemented.");
-        }
-        delete(name) {
-            throw new Error("Method not implemented.");
-        }
-        get(name) {
-            throw new Error("Method not implemented.");
-        }
-        getAll(name) {
-            throw new Error("Method not implemented.");
-        }
-        has(name) {
-            throw new Error("Method not implemented.");
-        }
-        set(name, value) {
-            throw new Error("Method not implemented.");
-        }
-        sort() {
-            throw new Error("Method not implemented.");
-        }
-        forEach(callbackfn, thisArg) {
-            throw new Error("Method not implemented.");
-        }
-        [Symbol.iterator]() {
-            throw new Error("Method not implemented.");
-        }
-        entries() {
-            throw new Error("Method not implemented.");
-        }
-        keys() {
-            throw new Error("Method not implemented.");
-        }
-        values() {
-            throw new Error("Method not implemented.");
-        }
-    }
-    class UriBuilderHref {
-        constructor() {
-            this._href = '';
-            this._origin = undefined;
-            this._query = undefined;
-            this._fragment = undefined;
-            this._path = new UriBuilderPath(this);
-        }
-        get href() { return this._href; }
-        set href(value) {
-            if (typeof (value) !== 'string')
-                value = '';
-        }
-        get protocol() { return (typeof (this._origin) === 'undefined') ? '' : this._origin.protocol; }
-        set protocol(value) {
-            if (typeof (this._origin) === 'undefined') {
-                if (sys.isNilOrEmpty(value))
+    const CSS_CLASS_VALID = "is-valid";
+    const CSS_CLASS_INVALID = "is-invalid";
+    const CSS_CLASS_TEXT_WARNING = "text-warning";
+    let ValidationStatus;
+    (function (ValidationStatus) {
+        ValidationStatus[ValidationStatus["Success"] = 0] = "Success";
+        ValidationStatus[ValidationStatus["Warning"] = 1] = "Warning";
+        ValidationStatus[ValidationStatus["Error"] = 2] = "Error";
+    })(ValidationStatus || (ValidationStatus = {}));
+    class optionField {
+        constructor($Scope, _onChangeCallback) {
+            this.$Scope = $Scope;
+            this._onChangeCallback = _onChangeCallback;
+            this._enableRelated = true;
+            this._isChecked = false;
+            $Scope.isChecked = this._isChecked;
+            $Scope.enableRelated = this._enableRelated && this._isChecked;
+            let current = this;
+            $Scope.onChange = () => {
+                if (current._isChecked === ($Scope.isChecked == true) || !current._enableRelated)
                     return;
-                this._origin = new UriBuilderOrigin(this);
-            }
-            this._origin.protocol = value;
+                current._isChecked = ($Scope.isChecked == true);
+                $Scope.enableRelated = current._enableRelated && current._isChecked;
+                if (typeof current._onChangeCallback === "function")
+                    current._onChangeCallback(!current._isChecked, current._isChecked);
+            };
         }
-        get scheme() {
-            if (typeof (this._origin) !== 'undefined')
-                return this._origin.scheme;
-        }
-        set scheme(value) {
-            if (typeof (this._origin) === 'undefined') {
-                if (typeof (value) !== 'string')
-                    return;
-                this._origin = new UriBuilderOrigin(this);
-            }
-            this._origin.scheme = value;
-        }
-        get separator() { return (typeof (this._origin) !== 'undefined') ? this._origin.separator : ''; }
-        get username() {
-            if (typeof (this._origin) !== 'undefined')
-                return this._origin.username;
-        }
-        set username(value) {
-            if (typeof (this._origin) === 'undefined') {
-                if (typeof (value) !== 'string')
-                    return;
-                this._origin = new UriBuilderOrigin(this);
-            }
-            this._origin.username = value;
-        }
-        get password() {
-            if (typeof (this._origin) !== 'undefined')
-                return this._origin.password;
-        }
-        set password(value) {
-            if (typeof (this._origin) === 'undefined') {
-                if (typeof (value) !== 'string')
-                    return;
-                this._origin = new UriBuilderOrigin(this);
-            }
-            this._origin.password = value;
-        }
-        get host() { return (typeof (this._origin) !== 'undefined') ? this._origin.host : ''; }
-        set host(value) {
-            if (typeof (this._origin) === 'undefined') {
-                if (sys.isNilOrEmpty(value))
-                    return;
-                this._origin = new UriBuilderOrigin(this);
-            }
-            this._origin.host = value;
-        }
-        get hostname() {
-            if (typeof (this._origin) !== 'undefined')
-                return this._origin.hostname;
-        }
-        set hostname(value) {
-            if (typeof (this._origin) === 'undefined') {
-                if (typeof (value) !== 'string')
-                    return;
-                this._origin = new UriBuilderOrigin(this);
-            }
-            this._origin.hostname = value;
-        }
-        get port() {
-            if (typeof (this._origin) !== 'undefined')
-                return this._origin.port;
-        }
-        set port(value) {
-            if (typeof (this._origin) === 'undefined') {
-                if (typeof (value) !== 'string')
-                    return;
-                this._origin = new UriBuilderOrigin(this);
-            }
-            this._origin.port = value;
-        }
-        get portNumber() { return (typeof (this._origin) !== 'undefined') ? this._origin.portNumber : NaN; }
-        set portNumber(value) {
-            if (typeof (this._origin) === 'undefined') {
-                if (typeof (value) !== 'number' || isNaN(value))
-                    return;
-                this._origin = new UriBuilderOrigin(this);
-            }
-            this._origin.portNumber = value;
-        }
-        get pathname() { return this._path.pathname; }
-        set pathname(value) { this._path.pathname = value; }
-        get search() { return (typeof (this._query) !== 'undefined') ? this._query.search : ''; }
-        set search(value) {
-            if (typeof (this._query) === 'undefined') {
-                if (sys.isNilOrEmpty(value))
-                    return;
-                this._query = new UriBuilderQuery(this);
-            }
-            this._query.search = value;
-        }
-        get searchParams() {
-            if (typeof (this._query) === 'undefined')
-                this._query = new UriBuilderQuery(this);
-            return this._query;
-        }
-        set searchParams(value) {
-            if (sys.isNil(value)) {
-                if (typeof (this._query) === 'undefined')
-                    return;
-                this._query = undefined;
-                this.raiseHrefChanged();
-            }
-            else
-                this._query.reset(value);
-        }
-        get fragment() { return this._fragment; }
-        set fragment(value) {
-            if (typeof (value) === 'string') {
-                if (this._fragment === value)
-                    return;
-                this._fragment = value;
-            }
-            else {
-                if (typeof (this._fragment) !== 'string')
-                    return;
-                this._fragment = undefined;
-            }
-            this.raiseHrefChanged();
-        }
-        get hash() { return (typeof (this._fragment) !== 'undefined') ? '#' + this._fragment : ''; }
-        set hash(value) {
-            if (sys.isNilOrEmpty(value)) {
-                if (typeof (this._fragment) === 'undefined')
-                    return;
-                this._fragment = undefined;
-            }
-            else {
-                if (value.startsWith('#'))
-                    value = value.substr(1);
-                if (this._fragment === value)
-                    return;
-                this._fragment = value;
-            }
-            this.raiseHrefChanged();
-        }
-        raiseOrginChanged() {
-            this.raiseHrefChanged();
-        }
-        raisePathChanged() {
-            this.raiseHrefChanged();
-        }
-        raiseQueryChanged() {
-            this.raiseHrefChanged();
-        }
-        raiseHrefChanged() {
-            throw new Error("Method not implemented.");
-        }
-    }
-    class UriBuilder {
-        constructor(uri) {
-            this._href = new UriBuilderHref();
-        }
-        get href() { throw new Error("Property not implemented."); }
-        set href(value) { throw new Error("Property not implemented."); }
-        get origin() { throw new Error("Property not implemented."); }
-        set origin(value) { throw new Error("Property not implemented."); }
-        get protocol() { throw new Error("Property not implemented."); }
-        set protocol(value) { throw new Error("Property not implemented."); }
-        get username() { throw new Error("Property not implemented."); }
-        set username(value) { throw new Error("Property not implemented."); }
-        get password() { throw new Error("Property not implemented."); }
-        set password(value) { throw new Error("Property not implemented."); }
-        get host() { throw new Error("Property not implemented."); }
-        set host(value) { throw new Error("Property not implemented."); }
-        get hostname() { throw new Error("Property not implemented."); }
-        set hostname(value) { throw new Error("Property not implemented."); }
-        get pathname() { throw new Error("Property not implemented."); }
-        set pathname(value) { throw new Error("Property not implemented."); }
-        get port() { throw new Error("Property not implemented."); }
-        set port(value) { throw new Error("Property not implemented."); }
-        get search() { throw new Error("Property not implemented."); }
-        set search(value) { throw new Error("Property not implemented."); }
-        get searchParams() { throw new Error("Property not implemented."); }
-        set searchParams(value) { throw new Error("Property not implemented."); }
-        get hash() { throw new Error("Property not implemented."); }
-        set hash(value) { throw new Error("Property not implemented."); }
-        toJSON() {
-            throw new Error("Method not implemented.");
-        }
-    }
-    UriBuilder.UrlPattern = /^(?:([^#?:\/\\@]*)(:(?:[\\\/][\\\/]?)?)(?:([^#?:\/\\@]*):([^#?:\/\\@]*)@)?(?:([^#?:\/\\@]*):(\d+))?)?([^#?]*)?(?:\?([^#]*))?(?:#(.*))?$/;
-    uriBuilder.UriBuilder = UriBuilder;
-    class UrlQueryParamIterator {
-        constructor(queryParams) {
-            this._index = 0;
-            this._queryParams = queryParams;
-        }
-        next() {
-            if (this._index < this._queryParams.length) {
-                let item = this._queryParams[this._index++];
-                return { value: [item.name, item.value], done: false };
-            }
-            return { value: [undefined, undefined], done: true };
-        }
-        [Symbol.iterator]() { return this; }
-    }
-    class UrlQueryNameIterator {
-        constructor(queryParams) {
-            this._index = 0;
-            this._queryParams = queryParams;
-        }
-        next(y) {
-            return (this._index < this._queryParams.length) ? { value: this._queryParams[this._index++].name, done: false } :
-                { value: undefined, done: true };
-        }
-        [Symbol.iterator]() { return this; }
-    }
-    class UrlQueryValueIterator {
-        constructor(queryParams) {
-            this._index = 0;
-            this._queryParams = queryParams;
-        }
-        next() {
-            return (this._index < this._queryParams.length) ? { value: this._queryParams[this._index++].value, done: false } :
-                { value: undefined, done: true };
-        }
-        [Symbol.iterator]() { return this; }
-    }
-    class UrlQuery {
-        constructor(searchParams, properties) {
-            if (typeof (searchParams) === 'undefined') {
-                if (typeof (properties) === 'undefined')
-                    this._properties = { pathName: '', pathSegments: [], queryParams: [], isAbsoluteUri: false, isDirty: false, schemeDefinition: new KnownSchemeDefinition() };
-                else {
-                    this._properties = properties;
-                    this._properties.queryParams = [];
-                    this.updateQueryString();
-                }
-            }
-            else {
-                this._properties = (typeof (properties) === 'undefined') ? { pathName: '', pathSegments: [], queryParams: [], isAbsoluteUri: false, isDirty: false, schemeDefinition: new KnownSchemeDefinition() } : properties;
-                if (typeof (searchParams) === 'string') {
-                    if (searchParams.startsWith('?'))
-                        searchParams = searchParams.substr(1);
-                    if (searchParams.length == 0) {
-                        if (this._properties.queryString !== '')
-                            this._properties.isDirty = true;
-                        this._properties.queryString = '';
-                    }
-                    else {
-                        this._properties.queryParams = searchParams.split('&').map((value) => {
-                            let index = value.indexOf('=');
-                            if (index < 0)
-                                return { name: decodeURIComponent(value), value: null };
-                            return { name: decodeURIComponent(value.substr(0, index)), value: decodeURIComponent(value.substr(index + 1)) };
-                        });
-                        this.updateQueryString();
-                    }
-                }
-                else {
-                    this._properties = { pathName: '', pathSegments: [], queryParams: [], isAbsoluteUri: false, isDirty: false, schemeDefinition: new KnownSchemeDefinition() };
-                    searchParams.forEach((value, key) => {
-                        this._properties.queryParams.push({ name: key, value: sys.asDefinedOrNull(value) });
-                    }, this);
-                    this.updateQueryString();
-                }
-            }
-        }
-        get length() { return this._properties.queryParams.length; }
-        append(name, value) {
-            if (typeof (name) !== 'string')
-                throw new Error("Name must be a string value.");
-            this._properties.queryParams.push({ name: name, value: sys.asDefinedOrNull(value) });
-            this.updateQueryString();
-        }
-        delete(name) {
-            if (typeof (name) !== 'string')
+        get isChecked() { return this._isChecked; }
+        set isChecked(value) {
+            if (this._isChecked === value)
                 return;
-            let length = this._properties.queryParams.length;
-            this._properties.queryParams = this._properties.queryParams.filter((value) => value.name === name);
-            if (length != this._properties.queryParams.length)
-                this.updateQueryString();
+            this._isChecked = this.$Scope.isChecked = value;
+            this.$Scope.enableRelated = this._enableRelated && this._isChecked;
+            if (typeof this._onChangeCallback === "function")
+                this._onChangeCallback(!this._isChecked, this._isChecked);
         }
-        forEach(callbackfn, thisArg) {
-            if (typeof (thisArg) === undefined)
-                this._properties.queryParams.forEach((item) => callbackfn(item.value, item.name, this));
+        get enableRelated() { return this._enableRelated; }
+        set enableRelated(value) {
+            if (this._enableRelated === value)
+                return;
+            this._enableRelated = value;
+            if (value) {
+                let isChecked = (this.$Scope.isChecked == true);
+                this.$Scope.enableRelated = isChecked;
+                if (this._isChecked != isChecked) {
+                    this._isChecked = isChecked;
+                    if (typeof this._onChangeCallback === "function")
+                        this._onChangeCallback(!this._isChecked, this._isChecked);
+                }
+            }
             else
-                this._properties.queryParams.forEach((item) => callbackfn.call(item.value, item.name, thisArg));
+                this.$Scope.enableRelated = false;
         }
-        get(name) {
-            if (typeof (name) === 'string') {
-                for (let i = 0; i < this._properties.queryParams.length; i++) {
-                    let item = this._properties.queryParams[i];
-                    if (item.name === name)
-                        return item.value;
-                }
+        setWithoutChangeNotify(value) {
+            this._isChecked = this.$Scope.isChecked = value;
+            this.$Scope.enableRelated = this._enableRelated && this._isChecked;
+        }
+    }
+    class FieldWithValidation {
+        constructor(name, $Scope, _onChangeCallback) {
+            this.name = name;
+            this.$Scope = $Scope;
+            this._onChangeCallback = _onChangeCallback;
+            $Scope.inputText = "";
+            $Scope.fieldName = name;
+            $Scope.validationStatus = ValidationStatus.Success;
+            $Scope.cssClass = [CSS_CLASS_VALID];
+            $Scope.validationMessage = "";
+            let current = this;
+            $Scope.onChange = () => {
+                let newValue = this.coerceOutput(this.$Scope.inputText);
+                if (newValue === this._originalText)
+                    return;
+                this._originalText = newValue;
+                this.validate();
+                if (typeof this._onChangeCallback === "function")
+                    this._onChangeCallback();
+            };
+        }
+        get inputText() { return this.$Scope.inputText; }
+        set inputText(text) {
+            this.$Scope.inputText = (typeof text === "string") ? text : "";
+            let newValue = this.coerceOutput(this.$Scope.inputText);
+            if (newValue === this._originalText)
+                return;
+            this._originalText = newValue;
+            this.validate();
+            if (typeof this._onChangeCallback === "function")
+                this._onChangeCallback();
+        }
+        get outputText() { return this._outputText; }
+        get validationMessage() { return this.$Scope.validationMessage; }
+        get validationStatus() {
+            let result = this.$Scope.validationStatus;
+            if ((typeof result !== "number") || isNaN(result))
+                this.$Scope.validationStatus = result = (((typeof this.$Scope.validationMessage !== "string") || this.$Scope.validationMessage.length == 0) ? ValidationStatus.Success : ValidationStatus.Error);
+            return result;
+        }
+        setWithoutChangeNotify(text) {
+            this.$Scope.inputText = (typeof text === "string") ? text : "";
+            let newValue = this.coerceOutput(this.$Scope.inputText);
+            if (newValue === this._originalText)
+                return;
+            this._originalText = newValue;
+            this.validate();
+        }
+        validate() {
+            let newValue = this.coerceOutput(this.$Scope.inputText);
+            if (newValue === this._outputText)
+                return this.validationStatus;
+            this._outputText = newValue;
+            let message = this.getValidationMessage(newValue);
+            if (typeof message === "string")
+                this.setValidation(message);
+            else if (typeof message === "number")
+                this.setValidation("", message);
+            else if ((typeof message === "object") && message !== null && Array.isArray(message))
+                this.setValidation(message[0], message[1]);
+            else
+                this.setValidation("");
+            this.$Scope.cssClass = (this.$Scope.validationStatus == ValidationStatus.Warning) ? [CSS_CLASS_INVALID, CSS_CLASS_TEXT_WARNING] : [(this.$Scope.validationStatus == ValidationStatus.Success) ? CSS_CLASS_VALID : CSS_CLASS_INVALID];
+            return this.validationStatus;
+        }
+        setValidText(text) {
+            this.$Scope.inputText = this._originalText = this._outputText = this.coerceOutput(text);
+            this.$Scope.cssClass = [CSS_CLASS_VALID];
+            this.$Scope.validationMessage = "";
+            this.$Scope.isValid = true;
+            if (typeof this._onChangeCallback === "function")
+                this._onChangeCallback();
+        }
+        coerceOutput(inputText) { return (typeof inputText === "string") ? inputText : ""; }
+        setValidation(message, status) {
+            if ((typeof message === "string") && (message = message.trim()).length > 0) {
+                this.$Scope.validationMessage = message;
+                this.$Scope.validationStatus = (isNaN(status)) ? ValidationStatus.Success : ((status === ValidationStatus.Success || status === ValidationStatus.Warning) ? status : ValidationStatus.Error);
             }
-        }
-        getAll(name) {
-            return this._properties.queryParams.filter((item) => item.name === name).map((item) => item.value);
-        }
-        has(name) {
-            if (typeof (name) === 'string') {
-                for (let i = 0; i < this._properties.queryParams.length; i++) {
-                    if (this._properties.queryParams[i].name === name)
-                        return true;
+            else if (typeof status === "number" && !isNaN(status)) {
+                switch (status) {
+                    case ValidationStatus.Success:
+                        this.$Scope.validationMessage = "";
+                        this.$Scope.validationStatus = ValidationStatus.Success;
+                        break;
+                    case ValidationStatus.Warning:
+                        this.$Scope.validationMessage = "Invalid value";
+                        this.$Scope.validationStatus = ValidationStatus.Warning;
+                        break;
+                    default:
+                        this.$Scope.validationMessage = "Invalid value";
+                        this.$Scope.validationStatus = ValidationStatus.Error;
+                        break;
                 }
-            }
-            return false;
-        }
-        reset(searchParams) {
-            if (typeof (searchParams) === 'string') {
-                this._properties.queryParams = searchParams.split('&').map((value) => {
-                    let index = value.indexOf('=');
-                    if (index < 0)
-                        return { name: decodeURIComponent(value), value: null };
-                    return { name: decodeURIComponent(value.substr(0, index)), value: decodeURIComponent(value.substr(index + 1)) };
-                });
-                this.updateQueryString();
             }
             else {
-                let arr = [];
-                searchParams.forEach(function (value, key) {
-                    this.push({ name: key, value: (typeof (value) === 'string') ? value : null });
-                }, arr);
-                this._properties.queryParams = arr;
-                this.updateQueryString();
+                this.$Scope.validationMessage = "";
+                this.$Scope.validationStatus = ValidationStatus.Success;
             }
         }
-        set(name, value) {
-            if (typeof (name) !== 'string')
-                throw new Error("Name must be a string value.");
-            for (let i = 0; i < this._properties.queryParams.length; i++) {
-                let item = this._properties.queryParams[i];
-                if (item.name === name) {
-                    item.value = value;
-                    this.updateQueryString();
-                    return;
-                }
-            }
-            this._properties.queryParams.push({ name: name, value: (typeof (value) === 'string') ? value : null });
-            this.updateQueryString();
+    }
+    class HrefField extends FieldWithValidation {
+        constructor(name, $Scope, onChangeCallback) { super(name, $Scope, onChangeCallback); }
+        getValidationMessage(inputText) { return ""; }
+        setValidTextAndStatus(text, message) {
+            this.setValidText(text);
         }
-        sort() {
-            this._properties.queryParams = this._properties.queryParams.sort((a, b) => {
-                let n = sys.compareStrings(a.name, b.name);
-                return (n == 0) ? sys.compareStrings(a.value, b.value) : n;
+    }
+    class SchemeField extends FieldWithValidation {
+        constructor(name, $Scope, onChangeCallback) { super(name, $Scope, onChangeCallback); }
+        getValidationMessage(inputText) { return ""; }
+    }
+    class UserNameField extends FieldWithValidation {
+        constructor(name, $Scope, onChangeCallback) { super(name, $Scope, onChangeCallback); }
+        getValidationMessage(inputText) { return ""; }
+    }
+    class PasswordField extends FieldWithValidation {
+        constructor(name, $Scope, onChangeCallback) { super(name, $Scope, onChangeCallback); }
+        getValidationMessage(inputText) { return ""; }
+    }
+    class HostField extends FieldWithValidation {
+        constructor(name, $Scope, onChangeCallback) { super(name, $Scope, onChangeCallback); }
+        getValidationMessage(inputText) { return ""; }
+    }
+    class PortField extends FieldWithValidation {
+        constructor(name, $Scope, onChangeCallback) { super(name, $Scope, onChangeCallback); }
+        getValidationMessage(inputText) { return ""; }
+    }
+    class PathStringField extends FieldWithValidation {
+        constructor(name, $Scope, onChangeCallback) { super(name, $Scope, onChangeCallback); }
+        getValidationMessage(inputText) { return ""; }
+    }
+    class QueryStringField extends FieldWithValidation {
+        constructor(name, $Scope, onChangeCallback) { super(name, $Scope, onChangeCallback); }
+        getValidationMessage(inputText) { return ""; }
+    }
+    class FragmentField extends FieldWithValidation {
+        constructor(name, $Scope, onChangeCallback) { super(name, $Scope, onChangeCallback); }
+        getValidationMessage(inputText) { return ""; }
+    }
+    class UriBuilderController {
+        constructor($Scope) {
+            this.$Scope = $Scope;
+            $Scope.href = ($Scope.$new());
+            $Scope.hasOrigin = ($Scope.$new());
+            $Scope.hasUsername = ($Scope.$new());
+            $Scope.hasPassword = ($Scope.$new());
+            $Scope.hasHost = ($Scope.$new());
+            $Scope.hasPort = ($Scope.$new());
+            $Scope.hasQuery = ($Scope.$new());
+            $Scope.hasFragment = ($Scope.$new());
+            $Scope.schemeOptions = [
+                UriSchemeInfo.uriScheme_https,
+                UriSchemeInfo.uriScheme_http,
+                UriSchemeInfo.uriScheme_ssh,
+                UriSchemeInfo.uriScheme_file,
+                UriSchemeInfo.uriScheme_ldap,
+                UriSchemeInfo.uriScheme_netPipe,
+                UriSchemeInfo.uriScheme_netTcp,
+                UriSchemeInfo.uriScheme_wais,
+                UriSchemeInfo.uriScheme_mailto,
+                UriSchemeInfo.uriScheme_ftp,
+                UriSchemeInfo.uriScheme_ftps,
+                UriSchemeInfo.uriScheme_sftp,
+                UriSchemeInfo.uriScheme_git,
+                UriSchemeInfo.uriScheme_news,
+                UriSchemeInfo.uriScheme_nntp,
+                UriSchemeInfo.uriScheme_tel,
+                UriSchemeInfo.uriScheme_telnet,
+                UriSchemeInfo.uriScheme_gopher,
+                UriSchemeInfo.uriScheme_urn,
+                { name: "", displayText: "(other)" }
+            ];
+            $Scope.separatorOptions = ["://", ":", ":/"];
+            $Scope.selectedScheme = this._selectedScheme = ($Scope.currentScheme = this._currrentScheme = UriSchemeInfo.uriScheme_https).name;
+            $Scope.selectedSeparator = $Scope.currentScheme.name;
+            let controller = this;
+            this._href = new HrefField("Full URI", $Scope.href, () => controller.onHrefChanged());
+            this._hasOrigin = new optionField($Scope.hasOrigin, () => { controller.onHasOriginChange(); });
+            this._hasUsername = new optionField($Scope.hasUsername, () => {
+                controller._hasPassword.enableRelated = controller._hasUsername.isChecked;
+                controller.rebuildHref();
             });
+            this._hasPassword = new optionField($Scope.hasPassword, () => { controller.rebuildHref(); });
+            this._hasHost = new optionField($Scope.hasHost, () => {
+                controller._hasPort.enableRelated = controller._hasHost.isChecked;
+                controller.rebuildHref();
+            });
+            this._hasPort = new optionField($Scope.hasPort, () => { controller.rebuildHref(); });
+            this._hasQuery = new optionField($Scope.hasQuery, () => { controller.rebuildHref(); });
+            this._hasFragment = new optionField($Scope.hasFragment, () => { controller.rebuildHref(); });
+            this._scheme = new SchemeField("Scheme", $Scope.scheme, () => { controller.onSchemeChange(); });
+            this._username = new UserNameField("User Name", $Scope.username, () => { controller.rebuildHref(); });
+            this._password = new PasswordField("Password", $Scope.password, () => { controller.rebuildHref(); });
+            this._host = new HostField("Host Name", $Scope.host, () => { controller.rebuildHref(); });
+            this._port = new PortField("Port", $Scope.port, () => { controller.rebuildHref(); });
+            this._pathString = new PathStringField("Path", $Scope.pathString, () => { controller.rebuildHref(); });
+            this._queryString = new QueryStringField("Query", $Scope.queryString, () => { controller.rebuildHref(); });
+            this._fragment = new FragmentField("Fragment", $Scope.fragment, () => { controller.rebuildHref(); });
         }
-        updateQueryString() {
-            let queryString = this._properties.queryString;
-            if (this._properties.queryParams.length > 0) {
-                if (this._properties.queryParams.length == 1 && this._properties.queryParams[0].name.length == 0 && this._properties.queryParams[0].value === null) {
-                    this._properties.queryParams = [];
-                    this._properties.queryString = '';
+        onSchemeChange() {
+            let selectedScheme = (typeof this.$Scope.selectedScheme === "string") ? this.$Scope.selectedScheme : "";
+            if (selectedScheme !== this._selectedScheme) {
+                if (selectedScheme.length == 0) {
+                    this._selectedScheme = "";
+                    this.$Scope.selectedSeparator = this._selectedSeparator = this.$Scope.currentScheme.schemeSeparator;
+                    this._scheme.setValidText(this._currrentScheme.name);
+                    return;
                 }
+                this._selectedScheme = this.$Scope.selectedScheme;
+                this.$Scope.currentScheme = this._currrentScheme = UriSchemeInfo.getSchemaProperties(this._selectedScheme);
+            }
+            else if (this._selectedScheme.length == 0) {
+                if (this._scheme.validationStatus === ValidationStatus.Error)
+                    return;
+                if ((this.$Scope.selectedSeparator === "://" || this.$Scope.selectedSeparator === ":/" || this.$Scope.selectedSeparator === ":"))
+                    this._selectedSeparator = this.$Scope.selectedSeparator;
                 else
-                    this._properties.queryString = this._properties.queryParams.map((value) => (typeof (value.value) === 'string') ? encodeURIComponent(value.name) + '=' + encodeURIComponent(value.value) : encodeURIComponent(value.name)).join("&");
+                    this.$Scope.selectedSeparator = this._selectedSeparator;
+                let scheme = UriSchemeInfo.getSchemaProperties(this._scheme.outputText);
+                this.$Scope.currentScheme = this._currrentScheme = (scheme.schemeSeparator === this._selectedSeparator) ? scheme : new UriSchemeInfo(scheme.name, {
+                    defaultPort: scheme.defaultPort, requiresHost: scheme.requiresHost, requiresUsername: scheme.requiresUsername, schemeSeparator: this._selectedSeparator, supportsCredentials: scheme.supportsCredentials, supportsFragment: scheme.supportsFragment,
+                    supportsHost: scheme.supportsHost, supportsPath: scheme.supportsPath, supportsPort: scheme.supportsPort, supportsQuery: scheme.supportsQuery
+                }, scheme.description);
+            }
+            this.rebuildHref();
+        }
+        onHasOriginChange() {
+            if (this._hasOrigin.isChecked) {
+                this._hasUsername.enableRelated = true;
+                if (this._hasUsername.isChecked)
+                    this._hasPassword.enableRelated = true;
+                this._hasHost.enableRelated = true;
+                if (this._hasHost.isChecked)
+                    this._hasPort.enableRelated = true;
             }
             else
-                this._properties.queryString = undefined;
-            if (queryString !== this._properties.queryString)
-                this._properties.isDirty = true;
+                this._hasUsername.enableRelated = this._hasPassword.enableRelated = this._hasHost.enableRelated = this._hasPort.enableRelated = false;
+            this.rebuildHref();
         }
-        toString() { return this._properties.queryString; }
-        toJSON() {
-            if (typeof (this._properties.queryString) !== 'string')
-                return [];
-            if (this._properties.queryString.length == 0)
-                return [{ name: '' }];
-            return this._properties.queryParams.map((item) => (typeof (item.value) === 'string') ?
-                { name: item.name, value: item.value } : { name: item.name });
+        rebuildHref() {
+            let validationFields = [this._pathString];
+            if (this._hasOrigin.isChecked) {
+                if (this._selectedScheme.length == 0)
+                    validationFields.push(this._scheme);
+                if (this._hasUsername.isChecked) {
+                    validationFields.push(this._username);
+                    if (this._hasPassword.isChecked)
+                        validationFields.push(this._password);
+                }
+                if (this._hasHost.isChecked) {
+                    validationFields.push(this._host);
+                    if (this._hasPort.isChecked)
+                        validationFields.push(this._port);
+                }
+            }
+            if (this._hasQuery)
+                validationFields.push(this._queryString);
+            if (this._hasFragment)
+                validationFields.push(this._fragment);
+            if (validationFields.filter((f) => f.validationStatus == ValidationStatus.Error).length > 0)
+                return;
+            let href = "";
+            if (this._hasOrigin.isChecked) {
+                href = this._currrentScheme.name + this._currrentScheme.schemeSeparator;
+                if (this._hasUsername.isChecked) {
+                    href += encodeURIComponent(this._username.outputText);
+                    if (this._hasPassword.isChecked)
+                        href += ":" + encodeURIComponent(this._password.outputText);
+                    href += "@";
+                }
+                if (this._hasHost.isChecked) {
+                    href += this._host.outputText;
+                    if (this._hasPort.isChecked)
+                        href += ":" + this._port.outputText;
+                }
+                if (this._pathString.outputText.length > 0 && !this._pathString.outputText.startsWith("/"))
+                    href += "/";
+                if (this._pathString.outputText.length > 0)
+                    href += this._pathString.outputText;
+            }
+            else
+                href = this._pathString.outputText;
+            if (this._hasQuery.isChecked)
+                href += "?" + this._queryString.outputText;
+            this._href.setValidText((this._hasFragment) ? href + "#" + this._fragment.outputText : href);
         }
-        keys() { return new UrlQueryNameIterator(this._properties.queryParams); }
-        values() { return new UrlQueryValueIterator(this._properties.queryParams); }
-        entries() { return new UrlQueryParamIterator(this._properties.queryParams); }
-        [Symbol.iterator]() { return new UrlQueryParamIterator(this._properties.queryParams); }
-    }
-    uriBuilder.UrlQuery = UrlQuery;
-    class PathNameCollection {
-        constructor(pathName, properties) {
-            if (typeof (pathName) === 'undefined') {
-                if (typeof (properties) === 'undefined')
-                    this._properties = { pathName: '', pathSegments: [], queryParams: [], isAbsoluteUri: false, isDirty: false, schemeDefinition: new KnownSchemeDefinition() };
+        onHrefChanged() {
+            let href = this._href.outputText;
+            let index = href.indexOf("#");
+            if (index < 0) {
+                this._hasFragment.setWithoutChangeNotify(false);
+                this._fragment.setWithoutChangeNotify("");
+            }
+            else {
+                this._hasFragment.setWithoutChangeNotify(true);
+                this._fragment.setWithoutChangeNotify(href.substr(index + 1));
+                href = href.substr(0, index);
+            }
+            index = href.indexOf("?");
+            if (index < 0) {
+                this._hasQuery.setWithoutChangeNotify(false);
+                this._queryString.setWithoutChangeNotify("");
+            }
+            else {
+                this._hasQuery.setWithoutChangeNotify(true);
+                this._queryString.setWithoutChangeNotify(href.substr(index + 1));
+                href = href.substr(0, index);
+            }
+            let scheme = getUriSchemeInfo(href);
+            if (typeof scheme === "object") {
+                this._hasOrigin.setWithoutChangeNotify(true);
+                // TODO: Parse after scheme
+                this.$Scope.currentScheme = this._currrentScheme = scheme;
+                let selectedOption = this.$Scope.schemeOptions.find((value) => value.name === scheme.name && value.schemeSeparator === scheme.schemeSeparator);
+                if ((typeof selectedOption === "object") && selectedOption !== null)
+                    this.$Scope.selectedScheme = this._selectedScheme = scheme.name;
                 else {
-                    this._properties = properties;
-                    this.updatePathName([]);
+                    this.$Scope.selectedScheme = this._selectedScheme = "";
+                    this.$Scope.selectedSeparator = scheme.schemeSeparator;
                 }
+                href = href.substr(scheme.name.length + scheme.schemeSeparator.length);
+                // TODO: Parse for username/password
+                // TODO: Parse for host/port
             }
             else {
-                this._properties = (typeof (properties) === 'undefined') ? { pathName: '', pathSegments: [], queryParams: [], isAbsoluteUri: false, isDirty: false, schemeDefinition: new KnownSchemeDefinition() } : properties;
-                if (typeof (pathName) === 'string')
-                    this.updatePathName(pathName.split(PathNameCollection.PathSeperatorPattern).map((n) => decodeURIComponent(n)));
-                else {
-                    let nArr = [];
-                    let iterator = pathName[Symbol.iterator]();
-                    let result = iterator.next();
-                    while (!result.done) {
-                        nArr.push(result.value);
-                        result = iterator.next();
-                    }
-                    this.updatePathName(nArr);
+                this._hasOrigin.setWithoutChangeNotify(false);
+                this._hasUsername.setWithoutChangeNotify(false);
+                this._hasPassword.setWithoutChangeNotify(false);
+                this._hasHost.setWithoutChangeNotify(false);
+                this._hasPort.setWithoutChangeNotify(false);
+                this._username.setWithoutChangeNotify("");
+                this._password.setWithoutChangeNotify("");
+                this._host.setWithoutChangeNotify("");
+                this._port.setWithoutChangeNotify("");
+            }
+            let validationFields = [this._pathString];
+            if (this._hasOrigin.isChecked) {
+                if (this._selectedScheme.length == 0)
+                    validationFields.push(this._scheme);
+                if (this._hasUsername.isChecked) {
+                    validationFields.push(this._username);
+                    if (this._hasPassword.isChecked)
+                        validationFields.push(this._password);
+                }
+                if (this._hasHost.isChecked) {
+                    validationFields.push(this._host);
+                    if (this._hasPort.isChecked)
+                        validationFields.push(this._port);
                 }
             }
-        }
-        get length() {
-            return (this._properties.pathName.length == 0) ? 1 : ((this._properties.pathName.endsWith('/')) ? this._properties.pathSegments.length + 1 :
-                this._properties.pathSegments.length);
-        }
-        get hasTrailingSeparator() { return this._properties.pathName.endsWith('/'); }
-        set hasTrailingSeparator(value) {
-            if (value) {
-                if (this._properties.pathName.endsWith('/'))
-                    return;
-                this._properties.pathName += '/';
-            }
-            else {
-                if (!this._properties.pathName.endsWith('/') || (this._properties.pathName.length == 1 && this._properties.isAbsoluteUri))
-                    return;
-                this._properties.pathName = this._properties.pathName.substr(this._properties.pathName.length - 1);
-            }
-            this._properties.isDirty = true;
-        }
-        get isRooted() { return this._properties.pathName.startsWith('/'); }
-        set isRooted(value) {
-            if (value) {
-                if (this._properties.pathName.startsWith('/'))
-                    return;
-                this._properties.pathName = '/' + this._properties.pathName;
-            }
-            else {
-                if (!this._properties.pathName.startsWith('/') || (this._properties.pathName.length == 1 && this._properties.isAbsoluteUri))
-                    return;
-                this._properties.pathName = this._properties.pathName.substr(1);
-            }
-            this._properties.isDirty = true;
-        }
-        get leaf() {
-            let items = this.toArray();
-            return items[items.length - 1];
-        }
-        set leaf(value) {
-            let items = this.toJSON();
-            items[items.length - 1] = value;
-            this.updatePathName(items);
-        }
-        get parentPath() {
-            let items = this.toJSON();
-            items.pop();
-            if (items.length == 1)
-                return (items[0].length == 0) ? '/' : items[0];
-            if (items.length > 1)
-                return items.join('/');
-        }
-        set parentPath(value) {
-            let items = this.toJSON();
-            if (items.length == 1) {
-                if (items[0].length == 1)
-                    this.updatePathName(value.split(PathNameCollection.PathSeperatorPattern).map((n) => decodeURIComponent(n)));
-                else
-                    this.updatePathName(value.split(PathNameCollection.PathSeperatorPattern).map((n) => decodeURIComponent(n)).concat([items[0]]));
-            }
+            if (this._hasQuery)
+                validationFields.push(this._queryString);
+            if (this._hasFragment)
+                validationFields.push(this._fragment);
+            validationFields = validationFields.filter((f) => f.validationStatus != ValidationStatus.Success);
+            if (validationFields.length == 0)
+                this._href.setValidation("", ValidationStatus.Success);
             else
-                this.updatePathName(value.split(PathNameCollection.PathSeperatorPattern).map((n) => decodeURIComponent(n)).concat([items.pop()]));
+                this._href.setValidation((validationFields.length == 1) ? validationFields[0].name + ": " + validationFields[0].validationMessage : validationFields.map((f) => f.name + ": " + f.validationMessage).join("; "), (validationFields.filter((f) => f.validationStatus == ValidationStatus.Error).length == 0) ? ValidationStatus.Warning : ValidationStatus.Error);
         }
-        forEach(callbackfn, thisArg) {
-            if (typeof (thisArg) === 'undefined')
-                this.toArray().forEach(callbackfn);
-            else
-                this.toArray().forEach(callbackfn, thisArg);
+        $onInit() {
         }
-        get(index) { return this.toArray()[index]; }
-        indexOf(searchElement, fromIndex) { return this.toArray().indexOf(searchElement, fromIndex); }
-        lastIndexOf(searchElement, fromIndex) { return this.toArray().lastIndexOf(searchElement, fromIndex); }
-        map(callbackfn, thisArg) {
-            if (typeof (thisArg) === 'undefined')
-                return this.toArray().map(callbackfn);
-            return this.toArray().map(callbackfn, thisArg);
-        }
-        pop() {
-            let items = this.toJSON();
-            let result = items.pop();
-            if (result.length > 0 || items.length > 1) {
-                this.updatePathName(items);
-                return result;
-            }
-        }
-        push(...items) {
-            let arr = this.toJSON();
-            items.forEach((s) => arr.push((typeof (s) === 'string') ? s : ''));
-            this.updatePathName(arr);
-            return this.length;
-        }
-        reset(value) {
-            if (typeof (value) === 'string')
-                this.updatePathName(value.split(PathNameCollection.PathSeperatorPattern).map((n) => decodeURIComponent(n)));
-            else if (typeof (value) === 'object') {
-                let iterator = value[Symbol.iterator]();
-                let result = iterator.next();
-                let items = [];
-                while (!result.done) {
-                    items.push(result.value);
-                    result = iterator.next();
-                }
-                this.updatePathName(items);
-            }
-            else
-                this.updatePathName(['']);
-        }
-        set(index, name) {
-            if (index < 0 || index > this.length)
-                throw new Error("Index out of range");
-            let arr = this.toJSON();
-            if (arr.length > 1 && arr[0].length == 0)
-                index++;
-            if (index < arr.length)
-                arr[index] = (typeof (name) !== 'string') ? '' : name;
-            else
-                arr.push((typeof (name) !== 'string') ? '' : name);
-            this.updatePathName(arr);
-        }
-        shift() {
-            let items = this.toJSON();
-            let result = items.shift();
-            if (result.length > 0) {
-                this.updatePathName(items);
-                return result;
-            }
-            else if (items.length > 1) {
-                result = items.shift();
-                if (result.length > 0) {
-                    items.unshift('');
-                    this.updatePathName(items);
-                    return result;
-                }
-                else if (!this._properties.isAbsoluteUri) {
-                    this.updatePathName(items);
-                    return result;
-                }
-            }
-        }
-        unshift(...items) {
-            let arr = this.toJSON();
-            items.reverse().forEach((n) => arr.unshift((typeof (n) !== 'string') ? '' : n));
-            this.updatePathName(items);
-            return this.length;
-        }
-        toString() { return this._properties.pathName; }
-        updatePathName(segments) {
-            let pathName = this._properties.pathName;
-            this._properties.pathSegments = segments.filter((s) => typeof (s) === 'string' && s.length > 0);
-            this._properties.pathName = (this._properties.pathSegments.length == 0) ? '' : this._properties.pathSegments.join('/');
-            if (this._properties.isAbsoluteUri || (segments.length > 0 && sys.isNilOrEmpty(segments[0])))
-                this._properties.pathName = '/' + this._properties.pathName;
-            if (this._properties.pathSegments.length > 0 && sys.isNilOrEmpty(segments[segments.length - 1]))
-                this._properties.pathName += '/';
-            if (pathName !== this._properties.pathName)
-                this._properties.isDirty = true;
-        }
-        toArray() {
-            return (this._properties.pathSegments.length == 0) ? [''] : ((this._properties.pathName.endsWith('/')) ? this._properties.pathSegments.concat(['']) :
-                this._properties.pathSegments);
-        }
-        toJSON() {
-            if (this._properties.pathName.length == 0)
-                return [''];
-            let arr;
-            if (this._properties.pathName.startsWith('/')) {
-                if (this._properties.pathName.length == 1)
-                    return ['', ''];
-                arr = [''];
-            }
-            else
-                arr = [];
-            return (this._properties.pathName.endsWith('/')) ? arr.concat(this._properties.pathSegments).concat(['']) : arr.concat(this._properties.pathSegments);
-        }
-        [Symbol.iterator]() { return this.toArray()[Symbol.iterator](); }
     }
-    PathNameCollection.PathSeperatorPattern = /[\/\\]+/;
-    uriBuilder.PathNameCollection = PathNameCollection;
-    class KnownSchemeDefinition {
-        constructor(name) {
-            this._separator = '://';
-            this._allowUsername = true;
-            this._requireUsername = false;
-            this._allowPassword = true;
-            this._allowHost = true;
-            this._requireHost = false;
-            this._allowPort = true;
-            this._defaultPort = NaN;
-            this._allowQuery = true;
-            this._allowFragment = true;
-            if (sys.notNilOrEmpty(name)) {
-                this._name = name;
-                switch (name) {
-                    case 'http':
-                        this._defaultPort = 80;
-                        this._requireHost = true;
-                        break;
-                    case 'https':
-                        this._defaultPort = 443;
-                        this._requireHost = true;
-                    case 'file':
-                        this._allowFragment = this._allowQuery = this._allowPort = this._allowUsername = this._allowPassword = false;
-                        break;
-                }
-            }
-            else {
-                this._name = '';
-                this._separator = '';
-                this._allowHost = this._allowPort = this._allowUsername = this._allowPassword = false;
+    app.appModule.controller("uriBuilderController", ["$Scope", UriBuilderController]);
+    const uriSchemeParseRe = /^([a-zA-Z_][-.\dA-_a-z~\ud800-\udbff]*)(:[\\/]{0,2})/;
+    function getUriSchemeInfo(uri) {
+        if ((typeof uri === "string") && uri.length > 0) {
+            let m = uriSchemeParseRe.exec(uri);
+            if ((typeof m === "object") && m !== null) {
+                let scheme = UriSchemeInfo.getSchemaProperties(m[1]);
+                let s = m[2].replace("\\", "/");
+                if (scheme.schemeSeparator === s)
+                    return scheme;
+                return new UriSchemeInfo(scheme.name, {
+                    supportsPath: scheme.supportsPath, supportsQuery: scheme.supportsQuery, supportsFragment: scheme.supportsFragment, supportsCredentials: scheme.supportsCredentials,
+                    requiresHost: scheme.requiresHost, supportsHost: scheme.supportsHost, supportsPort: scheme.supportsPort, requiresUsername: scheme.requiresUsername, schemeSeparator: s, defaultPort: scheme.defaultPort
+                }, scheme.description);
             }
         }
-        get name() { return this._name; }
-        get separator() { return this._separator; }
-        get allowUsername() { return this._allowUsername; }
-        get requireUsername() { return this._requireUsername; }
-        get allowPassword() { return this._allowPassword; }
-        get allowHost() { return this._allowHost; }
-        get requireHost() { return this._requireHost; }
-        get allowPort() { return this._allowPort; }
-        get defaultPort() { return this._defaultPort; }
-        get allowQuery() { return this._allowQuery; }
-        get allowFragment() { return this._allowFragment; }
     }
-    class UriBuilderOld {
-        constructor(uri) {
-            this._properties = { pathName: '', pathSegments: [], queryParams: [], isAbsoluteUri: false, isDirty: false, schemeDefinition: new KnownSchemeDefinition() };
-            let p;
-            let q;
-            this._segments = new PathNameCollection(p, this._properties);
-            this._searchParams = new UrlQuery(p, this._properties);
-        }
-        get isAbsoluteUri() { return this._properties.isAbsoluteUri; }
-        get isRooted() { return this._segments.isRooted; }
-        get protocol() {
-            return (this._properties.schemeDefinition.name.length == 0) ? '' : this._properties.schemeDefinition.name + this._properties.schemeDefinition.separator.substr(0, 1);
-        }
-        set protocol(value) {
-            let oldSchema = this._properties.schemeDefinition;
-            if (sys.notNilOrEmpty(value)) {
-                if (value == this._properties.schemeDefinition.name)
-                    return;
-                this._properties.schemeDefinition = new KnownSchemeDefinition(value);
-                this._properties.isAbsoluteUri = true;
-                if (!this._properties.pathName.startsWith('/'))
-                    this._properties.pathName = '/' + this._properties.pathName;
+    uriBuilder.getUriSchemeInfo = getUriSchemeInfo;
+    class UriSchemeInfo {
+        constructor(name, properties, description) {
+            this.name = name;
+            this.description = (typeof description === "string") ? description.trim() : "";
+            if (typeof (properties) === 'undefined' || properties === null) {
+                this.supportsPath = true;
+                this.supportsQuery = true;
+                this.supportsFragment = true;
+                this.supportsCredentials = true;
+                this.supportsHost = true;
+                this.requiresHost = false;
+                this.supportsPort = true;
+                this.requiresUsername = false;
+                this.defaultPort = NaN;
+                this.schemeSeparator = "://";
             }
             else {
-                if (this._properties.schemeDefinition.name.length == 0)
-                    return;
-                this._properties.isAbsoluteUri = false;
-                this._properties.schemeDefinition = new KnownSchemeDefinition();
-            }
-            this._properties.isDirty = true;
-        }
-        get username() { return (sys.notNil(this._properties.userName) || sys.notString(this._properties.password)) ? this._properties.userName : ''; }
-        set username(value) { this._properties.userName = value; }
-        get password() { return this._properties.password; }
-        set password(value) { this._properties.password = value; }
-        get host() {
-            let h = this.hostname;
-            return (sys.notNilOrEmpty(h)) ? ((sys.notNilOrEmpty(this._properties.port)) ? h + ':' + this._properties.port : h) : '';
-        }
-        set host(value) {
-            if (sys.notNilOrEmpty(value)) {
-                let index = value.lastIndexOf(':');
-                if (index < 0) {
-                    this.hostname = value;
-                    this.port = undefined;
+                this.schemeSeparator = (typeof (properties.schemeSeparator) == 'string') ? properties.schemeSeparator : "://";
+                if (this.schemeSeparator == ":") {
+                    this.supportsHost = ((typeof properties.supportsHost === 'boolean') && properties.supportsHost === true);
+                    this.requiresHost = (this.supportsHost && (typeof properties.requiresHost === 'boolean') && properties.requiresHost === true);
                 }
                 else {
-                    this.hostname = value.substr(0, index);
-                    this.port = value.substr(index + 1);
+                    this.supportsHost = ((typeof properties.supportsHost !== 'boolean') || properties.supportsHost === true);
+                    this.requiresHost = (this.supportsHost && (typeof properties.requiresHost !== 'boolean') || properties.requiresHost === true);
                 }
-            }
-            else
-                this.hostname = this.port = undefined;
-        }
-        get hostname() {
-            return (sys.notNil(this._properties.hostName) || (this._properties.schemeDefinition.name.length == 0 && sys.notString(this._properties.userName) &&
-                sys.notString(this._properties.password) && sys.notNilOrEmpty(this._properties.port)) ? this._properties.hostName :
-                "tempuri.org");
-        }
-        set hostname(value) {
-            if (sys.notNil(value)) {
-                if (this._properties.hostName === value)
-                    return;
-                this._properties.hostName = value;
-            }
-            else {
-                if (sys.notString(this._properties.hostName))
-                    return;
-                this._properties.hostName = undefined;
-            }
-            this._properties.isDirty = true;
-        }
-        get port() { return this._properties.port; }
-        set port(value) {
-            if (sys.notNil(value)) {
-                if (this._properties.port === value)
-                    return;
-                this._properties.port = value;
-            }
-            else {
-                if (sys.notString(this._properties.port))
-                    return;
-                this._properties.port = undefined;
-            }
-            this._properties.isDirty = true;
-        }
-        get href() {
-            throw new Error("Method not implemented.");
-        }
-        set href(value) {
-            throw new Error("Method not implemented.");
-        }
-        get origin() {
-            throw new Error("Method not implemented.");
-        }
-        set origin(value) {
-            throw new Error("Method not implemented.");
-        }
-        get pathname() { return this._segments.toString(); }
-        set pathname(value) { this._segments.reset(value); }
-        get pathSegments() { return this._segments; }
-        set pathSegments(value) { this._segments.reset(value); }
-        get search() { return this._searchParams.toString(); }
-        set search(value) { this._searchParams.reset(value); }
-        get searchParams() { return this._searchParams; }
-        set searchParams(value) { this._searchParams.reset(value); }
-        get hash() { return (sys.notNilOrEmpty(this._properties.fragment)) ? '#' + this._properties.fragment : ''; }
-        set hash(value) {
-            if (sys.notNilOrEmpty(value)) {
-                if (value.startsWith('#'))
-                    value = value.substr(1);
-                if (value === this._properties.fragment)
-                    return;
-                this._properties.fragment = value;
-                this._properties.isDirty = true;
+                this.supportsPath = ((typeof properties.supportsPath !== 'boolean') || properties.supportsPath === true);
+                this.supportsQuery = ((typeof properties.supportsQuery !== 'boolean') || properties.supportsQuery === true);
+                this.supportsFragment = ((typeof properties.supportsFragment !== 'boolean') || properties.supportsFragment === true);
+                this.supportsCredentials = (this.supportsHost && (typeof properties.supportsCredentials !== 'boolean') || properties.supportsCredentials === true);
+                this.supportsPort = (this.supportsHost && (typeof properties.supportsPort !== 'boolean') || properties.supportsPort === true);
+                this.requiresUsername = (this.supportsHost && (typeof properties.requiresUsername === 'boolean') && properties.requiresUsername === true);
+                this.defaultPort = (this.supportsPort && typeof properties.defaultPort === "number") ? properties.defaultPort : NaN;
             }
         }
-        toJSON() {
-            throw new Error("Method not implemented.");
+        get displayText() {
+            return (this.description.length == 0) ? "\"" + this.name + "\" Schema" : this.description + " (" + this.name + ")";
+        }
+        static getSchemaProperties(name) {
+            if (name.endsWith(':'))
+                name = name.substr(0, name.length - 1);
+            switch (name) {
+                case 'ftp':
+                    return UriSchemeInfo.uriScheme_ftp;
+                case 'ftps':
+                    return UriSchemeInfo.uriScheme_ftps;
+                case 'sftp':
+                    return UriSchemeInfo.uriScheme_sftp;
+                case 'http':
+                    return UriSchemeInfo.uriScheme_http;
+                case 'https':
+                    return UriSchemeInfo.uriScheme_https;
+                case 'gopher':
+                    return UriSchemeInfo.uriScheme_gopher;
+                case 'mailto':
+                    return UriSchemeInfo.uriScheme_mailto;
+                case 'news':
+                    return UriSchemeInfo.uriScheme_news;
+                case 'nntp':
+                    return UriSchemeInfo.uriScheme_nntp;
+                case 'telnet':
+                    return UriSchemeInfo.uriScheme_telnet;
+                case 'wais':
+                    return UriSchemeInfo.uriScheme_wais;
+                case 'file':
+                    return UriSchemeInfo.uriScheme_file;
+                case 'net.pipe':
+                    return UriSchemeInfo.uriScheme_netPipe;
+                case 'net.tcp':
+                    return UriSchemeInfo.uriScheme_netTcp;
+                case 'ldap':
+                    return UriSchemeInfo.uriScheme_ldap;
+                case 'ssh':
+                    return UriSchemeInfo.uriScheme_ssh;
+                case 'git':
+                    return UriSchemeInfo.uriScheme_git;
+                case 'tel':
+                    return UriSchemeInfo.uriScheme_tel;
+                case 'urn':
+                    return UriSchemeInfo.uriScheme_urn;
+            }
+            return new UriSchemeInfo(name);
         }
     }
-    uriBuilder.UriBuilderOld = UriBuilderOld;
+    /**
+     * File Transfer protocol
+     **/
+    UriSchemeInfo.uriScheme_ftp = new UriSchemeInfo("ftp", { supportsQuery: false, supportsFragment: false, defaultPort: 21 }, "File Transfer protocol");
+    /**
+     * File Transfer protocol (secure)
+     **/
+    UriSchemeInfo.uriScheme_ftps = new UriSchemeInfo("ftps", { supportsQuery: false, supportsFragment: false, defaultPort: 990 }, "File Transfer protocol (secure)");
+    /**
+     * Secure File Transfer Protocol
+     **/
+    UriSchemeInfo.uriScheme_sftp = new UriSchemeInfo("sftp", { supportsQuery: false, supportsFragment: false, defaultPort: 22 }, "Secure File Transfer Protocol");
+    /**
+     * Hypertext Transfer Protocol
+     **/
+    UriSchemeInfo.uriScheme_http = new UriSchemeInfo("http", { defaultPort: 80 }, "Hypertext Transfer Protocol");
+    /**
+     * Hypertext Transfer Protocol (secure)
+     **/
+    UriSchemeInfo.uriScheme_https = new UriSchemeInfo("https", { defaultPort: 443 }, "Hypertext Transfer Protocol (secure)");
+    /**
+     * Gopher protocol
+     **/
+    UriSchemeInfo.uriScheme_gopher = new UriSchemeInfo("gopher", { defaultPort: 70 }, "Gopher protocol");
+    /**
+     * Electronic mail address
+     **/
+    UriSchemeInfo.uriScheme_mailto = new UriSchemeInfo("mailto", { schemeSeparator: ":", requiresUsername: true, supportsCredentials: false }, "Electronic mail address");
+    /**
+     * USENET news
+     **/
+    UriSchemeInfo.uriScheme_news = new UriSchemeInfo("news", { supportsHost: false, schemeSeparator: ":" }, "USENET news");
+    /**
+     * USENET news using NNTP access
+     **/
+    UriSchemeInfo.uriScheme_nntp = new UriSchemeInfo("nntp", { defaultPort: 119 }, "USENET news using NNTP access");
+    /**
+     * Reference to interactive sessions
+     **/
+    UriSchemeInfo.uriScheme_telnet = new UriSchemeInfo("telnet", { supportsPath: false, supportsQuery: false, supportsFragment: false, supportsCredentials: false, defaultPort: 23 }, "Reference to interactive sessions");
+    /**
+     * Wide Area Information Servers
+     **/
+    UriSchemeInfo.uriScheme_wais = new UriSchemeInfo("wais", { defaultPort: 443 }, "Wide Area Information Servers");
+    /**
+     * Host-specific file names
+     **/
+    UriSchemeInfo.uriScheme_file = new UriSchemeInfo("file", { supportsQuery: false, supportsFragment: false, supportsCredentials: false, requiresHost: false, supportsPort: false }, "Host-specific file names");
+    /**
+     * Net Pipe
+     **/
+    UriSchemeInfo.uriScheme_netPipe = new UriSchemeInfo("net.pipe", { supportsPort: false }, "Net Pipe");
+    /**
+     * Net-TCP
+     **/
+    UriSchemeInfo.uriScheme_netTcp = new UriSchemeInfo("net.tcp", { defaultPort: 808 }, "Net-TCP");
+    /**
+     * Lightweight Directory Access Protocol
+     **/
+    UriSchemeInfo.uriScheme_ldap = new UriSchemeInfo("ldap", { defaultPort: 389 }, "Lightweight Directory Access Protocol");
+    /**
+     * Lightweight Directory Access Protocol
+     **/
+    UriSchemeInfo.uriScheme_ssh = new UriSchemeInfo("ssh", { defaultPort: 22 }, "Lightweight Directory Access Protocol");
+    /**
+     * GIT Respository
+     **/
+    UriSchemeInfo.uriScheme_git = new UriSchemeInfo("git", { supportsQuery: false, supportsFragment: false, defaultPort: 9418 }, "GIT Respository");
+    /**
+     * Telephone Number
+     **/
+    UriSchemeInfo.uriScheme_tel = new UriSchemeInfo("tel", { supportsHost: false, schemeSeparator: ":", supportsPath: false, supportsFragment: false, supportsQuery: false }, "Telephone Number");
+    /**
+     * Uniform Resource notation
+     **/
+    UriSchemeInfo.uriScheme_urn = new UriSchemeInfo("urn", { supportsHost: false, schemeSeparator: ":" }, "Uniform Resource notation");
+    uriBuilder.UriSchemeInfo = UriSchemeInfo;
 })(uriBuilder || (uriBuilder = {}));

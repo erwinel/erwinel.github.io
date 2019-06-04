@@ -2,139 +2,119 @@
 /// <reference path="../../Scripts/typings/bootstrap/index.d.ts" />
 /// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="sys.d.ts" />
+/// <reference path="app.d.ts" />
 declare namespace uriBuilder {
-    class UriBuilder implements URL {
-        static readonly UrlPattern: RegExp;
-        private _href;
-        constructor(uri?: string);
-        href: string;
-        origin: string;
-        protocol: string;
-        username: string;
-        password: string;
-        host: string;
-        hostname: string;
-        pathname: string;
-        port: string;
-        search: string;
-        searchParams: URLSearchParams;
-        hash: string;
-        toJSON(): string;
+    type UriSchemeSeparator = "://" | ":/" | ":";
+    function getUriSchemeInfo(uri: string): UriSchemeInfo | undefined;
+    interface IUriSchemeOption extends IUriSchemeProperties {
+        name: string;
+        displayText: string;
+        description?: string;
+        schemeSeparator: UriSchemeSeparator;
     }
-    interface IUrlProperties {
-        isAbsoluteUri: boolean;
-        schemeDefinition: KnownSchemeDefinition;
-        userName?: string;
-        password?: string;
-        hostName?: string;
-        port?: string;
-        pathName: string;
-        pathSegments: string[];
-        queryString?: string;
-        queryParams: {
-            name: string;
-            value: string | null;
-        }[];
-        fragment?: string;
-        isDirty: boolean;
+    interface IUriSchemeProperties {
+        supportsPath?: boolean;
+        supportsQuery?: boolean;
+        supportsFragment?: boolean;
+        supportsCredentials?: boolean;
+        requiresHost?: boolean;
+        supportsHost?: boolean;
+        supportsPort?: boolean;
+        requiresUsername?: boolean;
+        schemeSeparator?: UriSchemeSeparator;
+        defaultPort?: number;
     }
-    class UrlQuery implements URLSearchParams {
-        private _properties;
-        readonly length: number;
-        constructor(searchParams: URLSearchParams);
-        constructor(queryString?: string, properties?: IUrlProperties);
-        append(name: string, value: string | null): void;
-        delete(name: string): void;
-        forEach(callbackfn: (value: string | null, key: string, parent: URLSearchParams) => void, thisArg?: any): void;
-        get(name: string): string | null | undefined;
-        getAll(name: string): (string | null)[];
-        has(name: string): boolean;
-        reset(searchParams: string | URLSearchParams): void;
-        set(name: string, value: string | null): void;
-        sort(): void;
-        private updateQueryString;
-        toString(): string;
-        toJSON(): {
-            name: string;
-            value?: string;
-        }[];
-        keys(): IterableIterator<string>;
-        values(): IterableIterator<string | null>;
-        entries(): IterableIterator<[string, string | null]>;
-        [Symbol.iterator](): IterableIterator<[string, string | null]>;
-    }
-    class PathNameCollection implements Iterable<string> {
-        static readonly PathSeperatorPattern: RegExp;
-        private _properties;
-        readonly length: number;
-        hasTrailingSeparator: boolean;
-        isRooted: boolean;
-        leaf: string;
-        parentPath: string | undefined;
-        constructor(pathNames: Iterable<string>);
-        constructor(pathName?: string, properties?: IUrlProperties);
-        forEach(callbackfn: (value: string, index: number, array: string[]) => void, thisArg?: any): void;
-        get(index: number): string;
-        indexOf(searchElement: string, fromIndex?: number): number;
-        lastIndexOf(searchElement: string, fromIndex?: number): number;
-        map<U>(callbackfn: (value: string, index: number, array: string[]) => U, thisArg?: any): U[];
-        pop(): string;
-        push(...items: string[]): number;
-        reset(value: string | Iterable<string>): any;
-        set(index: number, name: string): void;
-        shift(): string;
-        unshift(...items: string[]): number;
-        toString(): string;
-        updatePathName(segments: string[]): void;
-        private toArray;
-        toJSON(): string[];
-        [Symbol.iterator](): Iterator<string>;
-    }
-    class KnownSchemeDefinition {
-        private _name;
-        private _separator;
-        private _allowUsername;
-        private _requireUsername;
-        private _allowPassword;
-        private _allowHost;
-        private _requireHost;
-        private _allowPort;
-        private _defaultPort;
-        private _allowQuery;
-        private _allowFragment;
+    class UriSchemeInfo implements IUriSchemeOption {
         readonly name: string;
-        readonly separator: string;
-        readonly allowUsername: boolean;
-        readonly requireUsername: boolean;
-        readonly allowPassword: boolean;
-        readonly allowHost: boolean;
-        readonly requireHost: boolean;
-        readonly allowPort: boolean;
+        readonly description: string;
+        readonly supportsPath: boolean;
+        readonly supportsQuery: boolean;
+        readonly supportsFragment: boolean;
+        readonly supportsCredentials: boolean;
+        readonly supportsHost: boolean;
+        readonly requiresHost: boolean;
+        readonly supportsPort: boolean;
+        readonly requiresUsername: boolean;
         readonly defaultPort: number;
-        readonly allowQuery: boolean;
-        readonly allowFragment: boolean;
-        constructor(name?: string);
-    }
-    class UriBuilderOld implements URL {
-        private _properties;
-        private _segments;
-        private _searchParams?;
-        readonly isAbsoluteUri: boolean;
-        readonly isRooted: boolean;
-        protocol: string;
-        username: string | undefined;
-        password: string | undefined;
-        host: string;
-        hostname: string;
-        port: string;
-        href: string;
-        origin: string;
-        pathname: string;
-        pathSegments: PathNameCollection;
-        search: string;
-        searchParams: URLSearchParams;
-        hash: string;
-        toJSON(): string;
-        constructor(uri?: string | URL);
+        readonly schemeSeparator: UriSchemeSeparator;
+        readonly displayText: string;
+        constructor(name: string, properties?: IUriSchemeProperties, description?: string);
+        static getSchemaProperties(name: string): UriSchemeInfo;
+        /**
+         * File Transfer protocol
+         **/
+        static readonly uriScheme_ftp: UriSchemeInfo;
+        /**
+         * File Transfer protocol (secure)
+         **/
+        static readonly uriScheme_ftps: UriSchemeInfo;
+        /**
+         * Secure File Transfer Protocol
+         **/
+        static readonly uriScheme_sftp: UriSchemeInfo;
+        /**
+         * Hypertext Transfer Protocol
+         **/
+        static uriScheme_http: UriSchemeInfo;
+        /**
+         * Hypertext Transfer Protocol (secure)
+         **/
+        static uriScheme_https: UriSchemeInfo;
+        /**
+         * Gopher protocol
+         **/
+        static uriScheme_gopher: UriSchemeInfo;
+        /**
+         * Electronic mail address
+         **/
+        static uriScheme_mailto: UriSchemeInfo;
+        /**
+         * USENET news
+         **/
+        static uriScheme_news: UriSchemeInfo;
+        /**
+         * USENET news using NNTP access
+         **/
+        static uriScheme_nntp: UriSchemeInfo;
+        /**
+         * Reference to interactive sessions
+         **/
+        static uriScheme_telnet: UriSchemeInfo;
+        /**
+         * Wide Area Information Servers
+         **/
+        static uriScheme_wais: UriSchemeInfo;
+        /**
+         * Host-specific file names
+         **/
+        static uriScheme_file: UriSchemeInfo;
+        /**
+         * Net Pipe
+         **/
+        static uriScheme_netPipe: UriSchemeInfo;
+        /**
+         * Net-TCP
+         **/
+        static uriScheme_netTcp: UriSchemeInfo;
+        /**
+         * Lightweight Directory Access Protocol
+         **/
+        static uriScheme_ldap: UriSchemeInfo;
+        /**
+         * Lightweight Directory Access Protocol
+         **/
+        static uriScheme_ssh: UriSchemeInfo;
+        /**
+         * GIT Respository
+         **/
+        static uriScheme_git: UriSchemeInfo;
+        /**
+         * Telephone Number
+         **/
+        static uriScheme_tel: UriSchemeInfo;
+        /**
+         * Uniform Resource notation
+         **/
+        static uriScheme_urn: UriSchemeInfo;
     }
 }

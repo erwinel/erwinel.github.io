@@ -1,5 +1,9 @@
 "use strict";
+/// <reference path="Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="Scripts/typings/bootstrap/index.d.ts" />
+/// <reference path="Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="sys.ts" />
+/// <reference path="app.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 class ColorInfo {
     constructor(obj, g, b, a) {

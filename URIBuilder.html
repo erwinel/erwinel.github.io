@@ -19,7 +19,86 @@
     <main-app-page-head></main-app-page-head>
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <section class="container-fluid col-8 col-lg-9" ng-controller="UriBuilderController"></section>
+            <section class="container-fluid col-8 col-lg-9" ng-controller="uriBuilderController">
+                <form action="UriBuilder.html" method="get">
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <label for="hrefTextBox" class="col-form-label-lg">{{href.fieldName}}</label>
+                            <input type="text" id="hrefTextBox" class="form-control" ng-model="href.inputText" ng-change="href.onChange()" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend"><input class="form-check" type="checkbox" id="originCheckBox" ng-model="hasOrigin.isChecked" ng-change="hasOrigin.onChange()" /></div>
+                                <label class="col-form-label-lg pl-1" for="originCheckBox">Origin</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" ng-show="hasOrigin.enableRelated">
+                        <div class="form-group col-8">
+                            <label for="schemeNameDropdown">{{href.fieldName}}</label>
+                            <select id="schemeNameDropdown" class="form-control" ng-model="selectedScheme" ng-change="scheme.onChange()">
+                                <option ng-repeat="item in schemeOptions" value="{{item.name}}">{{item.displayText}})</option>
+                            </select>
+                            <input type="text" id="schemeNameTextBox" class="form-control" readonly="readonly" ng-show="selectedScheme.length == 0" ng-model="scheme.inputText" ng-change="scheme.onChange()" />
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="selectedSeparatorControl">Separator</label>
+                            <select id="selectedSeparatorControl" class="form-control" ng-model="selectedSeparator" ng-options="value in separatorOptions" ng-show="selectedScheme.length == 0" ng-change="scheme.onChange()"></select>
+                            <input type="text" id="selectedSeparatorControl" class="form-control" readonly="readonly" ng-model="selectedSeparator" ng-hide="selectedScheme.length == 0" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend"><input class="form-check" type="checkbox" id="userInfoCheckBox" ng-model="hasUsername.isChecked" ng-change="hasUsername.onChange()" /></div>
+                                <label class="col-form-label-lg pl-1" for="userInfoCheckBox">User Info</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" ng-show="hasUsername.enableRelated">
+                        <div class="form-group col-6">
+                            <label for="usernameTextBox">{{href.fieldName}}</label>
+                            <input type="text" id="usernameTextBox" class="form-control" ng-model="username.inputText" ng-change="username.onChange()" />
+                        </div>
+                        <div class="form-group col-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend"><input class="form-check" type="checkbox" id="hasPasswordCheckBox" ng-model="hasPassword.isChecked" ng-change="hasPassword.onChange()" /></div>
+                                <label class="pl-1" for="hasPasswordCheckBox">{{href.fieldName}}</label>
+                            </div>
+                            <input type="text" id="passwordTextBox" class="form-control" ng-show="hasPassword.enableRelated" ng-model="password.inputText" ng-change="password.onChange()" />
+                        </div>
+                    </div>
+                    <div class="form-row" ng-show="hasOrigin.enableRelated">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend"><input class="form-check" type="checkbox" id="hasHostCheckBox" ng-model="hasHost.isChecked" ng-change="hasHost.onChange()" /></div>
+                                <label class="col-form-label-lg pl-1" for="hasHostCheckBox">Host</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" ng-show="hasHost.enableRelated">
+                        <div class="form-group col-8">
+                            <label for="hostTextBox">{{href.fieldName}}</label>
+                            <input type="text" id="hostTextBox" name="hostTextBox" class="form-control" ng-model="host.inputText" ng-change="host.onChange()" />
+                        </div>
+                        <div class="form-group col-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend"><input class="form-check" type="checkbox" id="hasPortCheckBox" ng-model="hasPort.isChecked" ng-change="hasPort.onChange()" /></div>
+                                <label class="pl-1" for="hasPortCheckBox">{{href.fieldName}}</label>
+                            </div>
+                            <input type="text" id="portTextBox" class="form-control" ng-show="hasPort.enableRelated" ng-model="port.inputText" ng-change="port.onChange()" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <label for="pathTextBox" class="col-form-label-lg">{{href.fieldName}}</label>
+                            <input type="text" id="pathTextBox" class="form-control" ng-model="pathString.inputText" ng-change="pathString.onChange()" />
+                        </div>
+                    </div>
+                </form>
+            </section>
             <aside class="container-fluid col-4 col-lg-3">
                 <div class="card">
                     <div class="card-header"><h4>Resource Pages</h4></div>
