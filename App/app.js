@@ -1042,4 +1042,46 @@ var app;
     app.UriBuilderService = UriBuilderService;
     app.appModule.factory("uriBuilderService", ["$rootScope", UriBuilderService]);
     // #endregion
+    // #region notificationMessageService
+    let NotificationMessageType;
+    (function (NotificationMessageType) {
+        NotificationMessageType[NotificationMessageType["error"] = 0] = "error";
+        NotificationMessageType[NotificationMessageType["warning"] = 1] = "warning";
+        NotificationMessageType[NotificationMessageType["info"] = 2] = "info";
+    })(NotificationMessageType = app.NotificationMessageType || (app.NotificationMessageType = {}));
+    class NotificationMessageService {
+        constructor($log) {
+            this.$log = $log;
+            this._messages = [];
+        }
+        addNotificationMessage(message, title, type) {
+            if (typeof title === "number") {
+                type = title;
+                title = undefined;
+            }
+            if (typeof type !== "number" || (type !== NotificationMessageType.error && type !== NotificationMessageType.warning && type !== NotificationMessageType.info))
+                type = NotificationMessageType.info;
+            this._messages.push({
+                type: type,
+                title: (typeof title !== "string" || (title = title.trim()).length == 0) ? (type === NotificationMessageType.error) ? "Error" : ((type === NotificationMessageType.warning) ? "Warning" : "Notice") : title,
+                message: message
+            });
+        }
+        getMessages(type, clear) {
+            let result = this._messages;
+            if (typeof type === "boolean")
+                clear = type;
+            else if (typeof type === "number" && (type === NotificationMessageType.error || type === NotificationMessageType.warning || type === NotificationMessageType.info)) {
+                if (clear === true)
+                    this._messages = result.filter((item) => item.type !== type);
+                return result.filter((item) => item.type === type);
+            }
+            if (clear === true)
+                this._messages = [];
+            return result;
+        }
+    }
+    app.NotificationMessageService = NotificationMessageService;
+    app.appModule.factory("notificationMessageService", ["$log", NotificationMessageService]);
+    // #endregion
 })(app || (app = {}));

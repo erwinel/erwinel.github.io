@@ -52,6 +52,8 @@ var sys;
         return ((typeof (opt) === "boolean") ? opt : trim === true) ? value.trim() : value;
     }
     sys.asNotNil = asNotNil;
+    function stringFormat(format, ...args) { return format.replace(/\{(\d+)\}/g, (subString, g) => args[parseInt(g)]); }
+    sys.stringFormat = stringFormat;
     function asString(value, trim = false, spec = false) {
         if (isNil(value))
             return (typeof (trim) === 'string') ? trim : ((typeof (spec) === 'string') ? spec : ((spec) ? value : ""));

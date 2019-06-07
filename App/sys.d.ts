@@ -38,6 +38,7 @@ declare namespace sys {
     function asNotNil<T>(value: T | null | undefined, defaultValue: T): T;
     function asNotNil(value: string | null | undefined, trim?: boolean): string;
     function asNotNil(value: string | null | undefined, defaultValue: string, trim: boolean): string;
+    function stringFormat(format: string, ...args: any[]): string;
     /**
      * Ensures that a value is a string, converting it if necessary.
      * @param {*} value Value to assert.

@@ -286,4 +286,27 @@ declare namespace app {
     }
     class UriBuilderService {
     }
+    enum NotificationMessageType {
+        error = 0,
+        warning = 1,
+        info = 2
+    }
+    interface INotificationMessage {
+        type: NotificationMessageType;
+        title?: string;
+        message: string;
+    }
+    class NotificationMessageService {
+        readonly $log: ng.ILogService;
+        private _messages;
+        constructor($log: ng.ILogService);
+        addNotificationMessage(message: string, title: string, type: NotificationMessageType): void;
+        addNotificationMessage(message: string, type: NotificationMessageType): void;
+        addNotificationMessage(message: string, title: string): void;
+        addNotificationMessage(message: string): void;
+        getMessages(type: NotificationMessageType, clear: boolean): INotificationMessage[];
+        getMessages(type: NotificationMessageType): INotificationMessage[];
+        getMessages(clear: boolean): INotificationMessage[];
+        getMessages(): INotificationMessage[];
+    }
 }

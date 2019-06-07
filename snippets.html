@@ -13,41 +13,43 @@
     <script type="text/javascript" src="lib/angular.js/angular.js"></script>
     <script type="text/javascript" src="App/sys.js"></script>
     <script type="text/javascript" src="App/app.js"></script>
-    <script type="text/javascript" src="App/cards.js"></script>
+    <script type="text/javascript" src="App/accordionGroup.js"></script>
     <script type="text/javascript" src="App/Snippets.js"></script>
 </head>
 <body>
     <main-app-page-head></main-app-page-head>
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <section class="container-fluid col-8 col-lg-9" ng-controller="snippetsController">
+            <section class="container-fluid col-8 col-lg-9">
                 <form action="Snippets.html">
                     <div class="card">
                         <div class="card-header p-1">
                             <h2 class="card-title mb-0">UI Actions</h2>
                         </div>
                         <div class="card-body">
-                            <div class="card" ng-controller="forceToUpdateSetWithValidationController">
-                                <div class="card-header p-1">
-                                    <h3 class="card-title mb-0">
-                                        <button class="btn btn-light" ng-click="toggleCurrentCard()" onclick="return false;">
-                                            {{currentCardNumber}}. {{cardHeadingText}}
-                                            <img ng-src="{{cardIconUrl}}" width="8" height="8" alt="{{cardActionVerb}} {{cardHeadingText}}" />
-                                        </button>
-                                    </h3>
-                                </div>
-                                <div class="card-body" ng-show="currentCardIsExpanded">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-auto font-weight-bold"><button class="btn btn-light btn-outline-dark p-1" ng-click="copyConditionToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
-                                                Condition:</div>
-                                            <div class="col"><code class="text-monospace" id="{{conditionElementId}}">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-auto font-weight-bold"><button class="btn btn-light btn-outline-dark p-1" ng-click="copyContentToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
-                                                Script:</div>
-                                            <div class="col">
-                                                <pre class="pre-scrollable border border-dark p-1"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record and reload the form
+                            <accordion-group>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="forceToUpdateSet"><h2 class="card-title mb-0">Force To Update Set</h2></div>
+                                    <div class="card-body" accordion-group-content-item="forceToUpdateSet">
+                                        <accordion-group>
+                                            <div class="card">
+                                                <div class="card-header p-1" accordion-group-toggle-on-click="withValidation"><h3 class="card-title mb-0">With Validation</h3></div>
+                                                <div class="card-body" accordion-group-content-item="withValidation">
+                                                    <div class="container" ng-controller="forceToUpdateSetWithValidationController">
+                                                        <div class="row">
+                                                            <div class="col-auto font-weight-bold">
+                                                                <button class="btn btn-light btn-outline-dark p-1" ng-click="copyConditionToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
+                                                                Condition:
+                                                            </div>
+                                                            <div class="col"><code class="text-monospace" id="{{conditionElementId}}">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-auto font-weight-bold">
+                                                                <button class="btn btn-light btn-outline-dark p-1" ng-click="copyContentToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
+                                                                Script:
+                                                            </div>
+                                                            <div class="col">
+                                                                <pre class="pre-scrollable border border-dark p-1"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record and reload the form
 current.update();
 action.setRedirectURL(current);
 
@@ -69,32 +71,29 @@ if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl ==
     // Display info message
     gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
 }</code></pre>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card" ng-controller="forceToUpdateSetNoValidationController">
-                                <div class="card-header p-1">
-                                    <h3 class="card-title mb-0">
-                                        <button class="btn btn-light" ng-click="toggleCurrentCard()" onclick="return false;">
-                                            {{currentCardNumber}}. {{cardHeadingText}}
-                                            <img ng-src="{{cardIconUrl}}" width="8" height="8" alt="{{cardActionVerb}} {{cardHeadingText}}" />
-                                        </button>
-                                    </h3>
-                                </div>
-                                <div class="card-body" ng-show="currentCardIsExpanded">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-auto font-weight-bold"><button class="btn btn-light btn-outline-dark p-1" ng-click="copyConditionToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
-                                                Condition:</div>
-                                            <div class="col"><code class="text-monospace" id="{{conditionElementId}}">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-auto font-weight-bold"><button class="btn btn-light btn-outline-dark p-1" ng-click="copyContentToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
-                                                Script:</div>
-                                            <div class="col">
-                                                <pre class="pre-scrollable border border-dark p-1"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record and reload the form
+                                            <div class="card">
+                                                <div class="card-header p-1" accordion-group-toggle-on-click="noValidation"><h3 class="card-title mb-0">No Validation</h3></div>
+                                                <div class="card-body" accordion-group-content-item="noValidation">
+                                                    <div class="container" ng-controller="forceToUpdateSetNoValidationController">
+                                                        <div class="row">
+                                                            <div class="col-auto font-weight-bold">
+                                                                <button class="btn btn-light btn-outline-dark p-1" ng-click="copyConditionToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
+                                                                Condition:
+                                                            </div>
+                                                            <div class="col"><code class="text-monospace" id="{{conditionElementId}}">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-auto font-weight-bold">
+                                                                <button class="btn btn-light btn-outline-dark p-1" ng-click="copyContentToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
+                                                                Script:
+                                                            </div>
+                                                            <div class="col">
+                                                                <pre class="pre-scrollable border border-dark p-1"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record and reload the form
 current.update();
 action.setRedirectURL(current);
 // Push the update into the current update set
@@ -108,32 +107,32 @@ gr.get(setID);
 
 // Display info message and reload the form
 gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);</code></pre>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </accordion-group>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card" ng-controller="moveToUpdateSetController">
-                                <div class="card-header p-1">
-                                    <h3 class="card-title mb-0">
-                                        <button class="btn btn-light" ng-click="toggleCurrentCard()" onclick="return false;">
-                                            {{currentCardNumber}}. {{cardHeadingText}}
-                                            <img ng-src="{{cardIconUrl}}" width="8" height="8" alt="{{cardActionVerb}} {{cardHeadingText}}" />
-                                        </button>
-                                    </h3>
-                                </div>
-                                <div class="card-body" ng-show="currentCardIsExpanded">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-auto font-weight-bold"><button class="btn btn-light btn-outline-dark p-1" ng-click="copyConditionToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
-                                                Condition:</div>
-                                            <div class="col"><code class="text-monospace" id="{{conditionElementId}}">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-auto font-weight-bold"><button class="btn btn-light btn-outline-dark p-1" ng-click="copyContentToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
-                                                Script:</div>
-                                            <div class="col">
-                                                <pre class="pre-scrollable border border-dark p-1"><code class="text-monospace" id="{{contentElementId}}">//Get link to the &#39;current&#39; object&#39;s parent update set, and set it as the redirect URL.
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="moveToUpdateSet"><h2 class="card-title mb-0">Move To Current Update Set</h2></div>
+                                    <div class="card-body" accordion-group-content-item="moveToUpdateSet">
+                                        <div class="container" ng-controller="moveToUpdateSetController">
+                                            <div class="row">
+                                                <div class="col-auto font-weight-bold">
+                                                    <button class="btn btn-light btn-outline-dark p-1" ng-click="copyConditionToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
+                                                    Condition:
+                                                </div>
+                                                <div class="col"><code class="text-monospace" id="{{conditionElementId}}">hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-auto font-weight-bold">
+                                                    <button class="btn btn-light btn-outline-dark p-1" ng-click="copyContentToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>
+                                                    Script:
+                                                </div>
+                                                <div class="col">
+                                                    <pre class="pre-scrollable border border-dark p-1"><code class="text-monospace" id="{{contentElementId}}">//Get link to the &#39;current&#39; object&#39;s parent update set, and set it as the redirect URL.
 var updateSetLink = gs.getProperty(&#39;glide.servlet.uri&#39;) + &#39;sys_update_set.do?sys_id=&#39; + current.getValue(&#39;update_set&#39;);
 action.setRedirectURL(updateSetLink);
 //Get link to the current &#39;customer update&#39; record.
@@ -148,7 +147,7 @@ updateSetGR.get(currentUpdateSetID);
 if (current.getValue(&#39;update_set&#39;) == gs.getPreference(&#39;sys_update_set&#39;)) {
     gs.addErrorMessage(&#39;The selected &lt;a href=&quot;&#39; + updateLink + &#39;&quot;&gt;&#39; + type + &#39;&lt;/a&gt; is already in your currently selected update set: &#39; + updateSetGR.getValue(&#39;name&#39;) + &#39;.&#39;);
 }
-//If the customer update record is not already in the currently selected update set, move it to the selected update set and alert the user. 
+//If the customer update record is not already in the currently selected update set, move it to the selected update set and alert the user.
 else {
     try {
         current.setValue(&#39;update_set&#39;, currentUpdateSetID);
@@ -160,14 +159,15 @@ else {
         gs.addErrorMessage(&#39;There was an error. Please review the system logs for more details.&#39;);
     }
 }</code></pre>
-                                                <blockquote class="alert-info">
-                                                    <div class="font-weight-bold">Source: </div>Woodruff, T. (2016, 01 25). Quickly Move Changes Between Update Sets. Retrieved from SN Pro Tips: <a href="https://snprotips.com/blog/2016/1/26/quickly-move-changes-between-update-sets" target="_blank">https://snprotips.com/blog/2016/1/26/quickly-move-changes-between-update-sets</a>
-                                                </blockquote>
+                                                    <blockquote class="alert-info">
+                                                        <div class="font-weight-bold">Source: </div>Woodruff, T. (2016, 01 25). Quickly Move Changes Between Update Sets. Retrieved from SN Pro Tips: <a href="https://snprotips.com/blog/2016/1/26/quickly-move-changes-between-update-sets" target="_blank">https://snprotips.com/blog/2016/1/26/quickly-move-changes-between-update-sets</a>
+                                                    </blockquote>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </accordion-group>
                         </div>
                     </div>
                 </form>
