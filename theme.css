@@ -1,10 +1,11 @@
+/* General look and feel */
 body { font-family: var(--font-family-sans-serif); }
 
 header { background-color: lightsteelblue; }
 
 header h1, header h2, header h3, header h4, header h5, header h6 {
-  color: midnightblue;
-  vertical-align: middle;
+    color: midnightblue;
+    vertical-align: middle;
 }
 
 header h1 { font-size: 24px; }
@@ -20,82 +21,134 @@ nav {
 }
 
 nav ul li a, aside ul.nav li.nav-item a {
-  border: 2px outset midnightblue;
-  color: yellow;
+    border: 2px outset midnightblue;
+    color: yellow;
 }
 
 nav ul li a {
-  background-color: midnightblue;
-  margin: 0px 4px 0px 0px;
+    background-color: midnightblue;
+    margin: 0px 4px 0px 0px;
 }
 
 nav ul li a:hover, aside ul.nav li.nav-item a:hover {
-  color: var(--light);
+    color: var(--light);
 }
 
 nav ul li a.active, aside ul.nav li.nav-item a.active {
-  background-color: var(--light);
-  color: midnightblue;
-  font-weight: bold;
-  border: 2px inset lightsteelblue;
+    background-color: var(--light);
+    color: midnightblue;
+    font-weight: bold;
+    border: 2px inset lightsteelblue;
 }
 
 aside div.card div.card-header {
-  background-color: var(--dark);
-  color: var(--white);
+    background-color: var(--dark);
+    color: var(--white);
 }
 
 aside div.card div.card-body {
-  background-color: lightsteelblue;
+    background-color: lightsteelblue;
 }
 
 aside ul.nav {
-  background-color: midnightblue;
+    background-color: midnightblue;
 }
 
 section {
-  color: var(--dark);
-  border: 1px solid var(--dark);
+    color: var(--dark);
+    border: 1px solid var(--dark);
 }
 
 footer {
-  background-color: var(--secondary);
-  border: 1px solid var(--secondary);
+    background-color: var(--secondary);
+    border: 1px solid var(--secondary);
 }
 
-table.fieldsGrid {
-  border-collapse: collapse;
-}
+/* Table which has a field label to the left and a value to the right */
 
 table.fieldsGrid thead th {
-  vertical-align: bottom;
-  padding: 0px 2px 0px 0px;
+    vertical-align: bottom;
+    text-align: center;
+    padding: 0px 4px 0px 0px;
 }
 
-table.fieldsGrid thead th, table.fieldsGrid tbody td { text-align: left; }
+table.fieldsGrid tbody td { text-align: left; }
 
 table.fieldsGrid tbody th, table.fieldsGrid tbody td {
-  vertical-align: top;
-  padding: 2px 2px 0px 0px;
+    vertical-align: top;
+    padding: 4px 4px 0px 0px;
 }
 
-table.fieldsGrid tbody th { text-align: right; }
+table.fieldsGrid tbody th { text-align: right; white-space: nowrap; }
 
 table.fieldsGrid, table.fieldsGrid thead th, table.fieldsGrid tbody th, table.fieldsGrid tbody td {
-  margin: 0px;
-  border: none;
+    margin: 0px;
+    border: none;
 }
 
+table.fieldsGrid tbody td + th { padding-left: 4px; }
+
+/* Indicates an automatically calculated value */
 td.autoValue { color: var(--orange); }
+
+output {
+    border: 1px solid var(--dark);
+    padding: 1px;
+    border-radius: 4px;
+}
+
+output {
+    border: 1px solid var(--dark);
+    padding: 1px;
+    border-radius: 4px;
+}
+
+samp {
+    border: 1px solid var(--gray);
+    padding: 1px;
+    border-radius: 8px;
+}
+
+code {
+    background-color: var(--dark);
+    color: white;
+    padding: 2px;
+    font-family: var(--font-family-monospace);
+    border-radius: 4px;
+}
+
+code.multi-line, output.multi-line, samp.multi-line {
+    display: block;
+    padding: 4px;
+    white-space: pre;
+    line-height: 100%;
+}
+
+var.targetName, samp.navPath var {
+    color: darkblue;
+    font-weight: bold;
+    font-style: normal;
+}
+
+samp.navPath {
+    border: 1px solid darkblue;
+    padding: 2px;
+    border-radius: 4px;
+}
+
+.cursor-copy { cursor: copy; }
+.cursor-pointer { cursor: pointer; }
 
 .codeLabel { color: saddlebrown; }
 .codeNumber { color: darkblue; }
-.codeGroup1 { background-color: lightblue; }
-.codeGroup2 { background-color: lightgreen; }
-.codeGroup3 { background-color: bisque; }
-.codeGroup4 { background-color: lightpink; }
-.codeGroup5 { background-color: lightsalmon; }
-.codeGroup6 { background-color: yellow; }
+
+/* For using colors to quickly demonstrate cross-referenced information */
+.referenceGroup1 { background-color: lightblue; }
+.referenceGroup2 { background-color: lightgreen; }
+.referenceGroup3 { background-color: bisque; }
+.referenceGroup4 { background-color: lightpink; }
+.referenceGroup5 { background-color: lightsalmon; }
+.referenceGroup6 { background-color: yellow; }
 
 .fill-blue { fill: var(--blue); }
 .fill-indigo { fill: var(--indigo); }

@@ -19,7 +19,7 @@ var accordionGroup;
                     return result;
             }
         }
-        add(name, showHideCallback, state) {
+        add(name, showHideCallback, autoExpand, state) {
             if (typeof name !== "string")
                 name = "";
             let id = this._state.length;
@@ -27,13 +27,32 @@ var accordionGroup;
                 while (typeof (this.get(id)) !== "undefined")
                     id--;
             }
-            this._state.push({ id: id, callback: showHideCallback, name: name, state: state });
             if (this._state.length == 1) {
-                this._current = name;
-                showHideCallback(true);
+                this._state.push({ id: id, callback: showHideCallback, name: name, state: state });
+                if (typeof autoExpand === "boolean" && !autoExpand)
+                    showHideCallback(false, state);
+                else {
+                    this._current = name;
+                    showHideCallback(true, state);
+                }
             }
-            else
+            else if (typeof autoExpand === "boolean" && autoExpand) {
+                this._current = undefined;
+                if (typeof this._current === "string") {
+                    let toHide = this.find(this._current);
+                    toHide.forEach((item) => item.callback(false, item.state));
+                }
+                let toShow = this.find(name);
+                this._current = name;
+                if (toShow.length > 0)
+                    toShow.forEach((item) => item.callback(true, item.state));
+                this._state.push({ id: id, callback: showHideCallback, name: name, state: state });
+                showHideCallback(true, state);
+            }
+            else {
+                this._state.push({ id: id, callback: showHideCallback, name: name, state: state });
                 showHideCallback(this._current === name);
+            }
             return id;
         }
         remove(id) {
@@ -60,9 +79,9 @@ var accordionGroup;
             let toShow = this.find(name);
             if (toShow.length == 0)
                 return;
-            toHide.forEach((item) => item.callback(false));
+            toHide.forEach((item) => item.callback(false, item.state));
             this._current = name;
-            toShow.forEach((item) => item.callback(true));
+            toShow.forEach((item) => item.callback(true, item.state));
         }
         hide(name) {
             if (typeof name !== "string")
@@ -70,7 +89,7 @@ var accordionGroup;
             if (name !== this._current || this._state.length == 0)
                 return;
             this._current = undefined;
-            this.find(name).forEach((toHide) => toHide.callback(false));
+            this.find(name).forEach((toHide) => toHide.callback(false, toHide.state));
         }
         toggle(name) {
             if (typeof name !== "string")
@@ -80,6 +99,7 @@ var accordionGroup;
             else
                 this.show(name);
         }
+        $onInit() { }
     }
     app.appModule.directive("accordionGroup", () => ({
         restrict: "E",
@@ -87,6 +107,15 @@ var accordionGroup;
     }));
     function AccordionGroupToggleOnClickLink(scope, element, instanceAttributes, controller) {
         element.on("click", () => controller.toggle(instanceAttributes.accordionGroupToggleOnClick));
+        if (typeof instanceAttributes.class === "string") {
+            let c = instanceAttributes.class.trim();
+            if (c.length > 0) {
+                let n = c.split(sys.whitespaceRe);
+                if (n.indexOf("cursor-pointer") >= 0)
+                    return;
+            }
+        }
+        instanceAttributes.$addClass("cursor-pointer");
     }
     app.appModule.directive("accordionGroupToggleOnClick", () => ({
         require: "^^accordionGroup",
@@ -96,12 +125,22 @@ var accordionGroup;
         link: AccordionGroupToggleOnClickLink
     }));
     function AccordionGroupContentItemLink(scope, element, instanceAttributes, controller) {
+        let autoExpand;
+        if (typeof instanceAttributes.autoExpand === "string") {
+            let s = instanceAttributes.autoExpand.trim();
+            if (s.length > 0) {
+                if (sys.isTrueRe.test(s))
+                    autoExpand = true;
+                else if (sys.isFalseRe.test(s))
+                    autoExpand = false;
+            }
+        }
         let id = controller.add(instanceAttributes.accordionGroupContentItem, (show) => {
             if (show)
                 element.show();
             else
                 element.hide();
-        });
+        }, autoExpand);
         element.on("$destory", () => controller.remove(id));
     }
     app.appModule.directive("accordionGroupContentItem", () => ({
@@ -123,6 +162,10 @@ var accordionGroup;
             expandedClass = expandedClass.concat(s.split(/\s+/));
         if ((typeof instanceAttributes.collapsedClass === "string") && (s = instanceAttributes.collapsedClass.trim()).length > 0)
             collapsedClass = collapsedClass.concat(s.split(/\s+/));
+        if (expandedClass.indexOf("cursor-pointer") < 0)
+            expandedClass.unshift("cursor-pointer");
+        if (collapsedClass.indexOf("cursor-pointer") < 0)
+            collapsedClass.unshift("cursor-pointer");
         scope.isShown = false;
         let id = controller.add(instanceAttributes.accordionGroupContentItem, (show) => {
             scope.isShown = show;

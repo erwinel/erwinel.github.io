@@ -54,6 +54,11 @@
           "url": "ColorEditor.html",
           "linkTitle": "Color Editor",
           "pageTitle": "Color Editor"
+        },
+        {
+          "url": "SiteDesignNotes.html",
+          "linkTitle": "Documentation Website Design Notes",
+          "pageTitle": "Documentation Website Design Notes"
         }
       ]
     }

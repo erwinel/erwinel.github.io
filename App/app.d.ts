@@ -86,7 +86,7 @@ declare namespace app {
         setObject<T>(key: string, value: T | undefined): any | undefined;
         values(): IterableIterator<string>;
     }
-    class copyToClipboardService {
+    class CopyToClipboardService {
         private $window;
         constructor($window: ng.IWindowService);
         copy(element: JQuery, successMsg?: string): void;

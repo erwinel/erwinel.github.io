@@ -49,7 +49,7 @@
                                                                 Script:
                                                             </div>
                                                             <div class="col">
-                                                                <pre class="pre-scrollable border border-dark p-1"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record and reload the form
+                                                                <code class="pre-scrollable multi-line" id="{{contentElementId}}">// Commit any changes to the record and reload the form
 current.update();
 action.setRedirectURL(current);
 
@@ -70,7 +70,7 @@ if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl ==
 
     // Display info message
     gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);
-}</code></pre>
+}</code>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -93,7 +93,7 @@ if (tbl.startsWith(&#39;wf_&#39;) || tbl.startsWith(&#39;sys_ui_&#39;) || tbl ==
                                                                 Script:
                                                             </div>
                                                             <div class="col">
-                                                                <pre class="pre-scrollable border border-dark p-1"><code class="text-monospace" id="{{contentElementId}}">// Commit any changes to the record and reload the form
+                                                                <code class="pre-scrollable multi-line" id="{{contentElementId}}">// Commit any changes to the record and reload the form
 current.update();
 action.setRedirectURL(current);
 // Push the update into the current update set
@@ -106,7 +106,7 @@ var gr = new GlideRecord(&#39;sys_update_set&#39;);
 gr.get(setID);
 
 // Display info message and reload the form
-gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);</code></pre>
+gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys_id=&#39; + setID + &#39;&quot;&gt;&#39; + us.name + &#39;&lt;/a&gt; update set.&#39;);</code>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -132,7 +132,7 @@ gs.addInfoMessage(&#39;Record included in &lt;a href=&quot;sys_update_set.do?sys
                                                     Script:
                                                 </div>
                                                 <div class="col">
-                                                    <pre class="pre-scrollable border border-dark p-1"><code class="text-monospace" id="{{contentElementId}}">//Get link to the &#39;current&#39; object&#39;s parent update set, and set it as the redirect URL.
+                                                    <code class="pre-scrollable multi-line" id="{{contentElementId}}">//Get link to the &#39;current&#39; object&#39;s parent update set, and set it as the redirect URL.
 var updateSetLink = gs.getProperty(&#39;glide.servlet.uri&#39;) + &#39;sys_update_set.do?sys_id=&#39; + current.getValue(&#39;update_set&#39;);
 action.setRedirectURL(updateSetLink);
 //Get link to the current &#39;customer update&#39; record.
@@ -158,7 +158,7 @@ else {
         gs.log(&#39;ERROR while moving customer updates: &#39; + e);
         gs.addErrorMessage(&#39;There was an error. Please review the system logs for more details.&#39;);
     }
-}</code></pre>
+}</code>
                                                     <blockquote class="alert-info">
                                                         <div class="font-weight-bold">Source: </div>Woodruff, T. (2016, 01 25). Quickly Move Changes Between Update Sets. Retrieved from SN Pro Tips: <a href="https://snprotips.com/blog/2016/1/26/quickly-move-changes-between-update-sets" target="_blank">https://snprotips.com/blog/2016/1/26/quickly-move-changes-between-update-sets</a>
                                                     </blockquote>

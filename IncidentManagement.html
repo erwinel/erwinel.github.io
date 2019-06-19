@@ -87,16 +87,16 @@
                                         <div class="font-weight-bold">Using assumed values</div>
                                         <span ng-show="users_impacted.isAutoValue">
                                             <span ng-show="productivity_impact.isAutoValue">
-                                                When neither <code class="codeLabel codeGroup1">{{ users_impacted.label }}</code> nor <code class="codeLabel codeGroup2">{{ productivity_impact.label }}</code>
+                                                When neither <code class="codeLabel referenceGroup1">{{ users_impacted.label }}</code> nor <code class="codeLabel referenceGroup2">{{ productivity_impact.label }}</code>
                                                 are selected for <span ng-hide="is_mission_related.value == 'Yes'">non-</span>mission-related incidents for
                                                 <span ng-hide="caller_vip.value">non-</span>VIP users, a value of {{ productivity_impact.value }} is assumed.
                                             </span>
                                             <span ng-hide="productivity_impact.isAutoValue">
-                                                <code class="codeLabel codeGroup1">{{ users_impacted.label }}</code> is not specified: Assuming same value as the <code class="codeLabel codeGroup2">{{ productivity_impact.label }}</code> selection.
+                                                <code class="codeLabel referenceGroup1">{{ users_impacted.label }}</code> is not specified: Assuming same value as the <code class="codeLabel referenceGroup2">{{ productivity_impact.label }}</code> selection.
                                             </span>
                                         </span>
                                         <span ng-hide="users_impacted.isAutoValue">
-                                            <code class="codeLabel codeGroup2">{{ productivity_impact.label }}</code> is not specified: Assuming same value as the <code class="codeLabel codeGroup1">{{ users_impacted.label }}</code> selection.
+                                            <code class="codeLabel referenceGroup2">{{ productivity_impact.label }}</code> is not specified: Assuming same value as the <code class="codeLabel referenceGroup1">{{ users_impacted.label }}</code> selection.
                                         </span>
                                     </div>
                                 </div>
@@ -105,9 +105,9 @@
                                     <div class="col-10 pl-0">
                                         <pre><code>Impact = Math.round(
     (
-        (<span class="codeLabel codeGroup1">[{{ users_impacted.label }}]</span> + <span class="codeLabel codeGroup2">[{{ productivity_impact.label }}]</span>)
+        (<span class="codeLabel referenceGroup1">[{{ users_impacted.label }}]</span> + <span class="codeLabel referenceGroup2">[{{ productivity_impact.label }}]</span>)
         &times;
-        (<span class="codeLabel codeGroup3">[{{ is_mission_related.label }} Delta]</span> + <span class="codeLabel codeGroup4">[{{ caller_vip.label }} Delta]</span>)
+        (<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }} Delta]</span> + <span class="codeLabel referenceGroup4">[{{ caller_vip.label }} Delta]</span>)
     ) / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>)
 );</code></pre>
                                     </div>
@@ -116,20 +116,20 @@
                                     <div class="col-2"></div>
                                     <div class="col-10 pl-0">
                                         <pre>&rArr;     <code>(
-                                        <span class="codeGroup5" style="padding: 2px">(<span class="codeNumber codeGroup1">{{ users_impacted.value }}</span> + <span class="codeNumber codeGroup2">{{ productivity_impact.value }}</span>)</span> &times; <span class="codeGroup6" style="padding: 2px">(<span class="codeNumber codeGroup3">{{ is_mission_related.operand }}</span> + <span class="codeNumber codeGroup4">{{ caller_vip.operand }}</span>)</span>
+                                        <span class="referenceGroup5" style="padding: 2px">(<span class="codeNumber referenceGroup1">{{ users_impacted.value }}</span> + <span class="codeNumber referenceGroup2">{{ productivity_impact.value }}</span>)</span> &times; <span class="referenceGroup6" style="padding: 2px">(<span class="codeNumber referenceGroup3">{{ is_mission_related.operand }}</span> + <span class="codeNumber referenceGroup4">{{ caller_vip.operand }}</span>)</span>
       ) / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>)</code></pre>
                                     </div>
                                 </div>
                                 <div class="row flex-nowrap">
                                     <div class="col-2"></div>
                                     <div class="col-10 pl-0">
-                                        <pre>&rArr;    <code><span class="codeGroup3" style="padding: 2px">(<span class="codeNumber codeGroup5">{{ users_impacted.value + productivity_impact.value }}</span> &times; <span class="codeNumber codeGroup6">{{ is_mission_related.operand + caller_vip.operand }}</span>)</span> / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>)</code></pre>
+                                        <pre>&rArr;    <code><span class="referenceGroup3" style="padding: 2px">(<span class="codeNumber referenceGroup5">{{ users_impacted.value + productivity_impact.value }}</span> &times; <span class="codeNumber referenceGroup6">{{ is_mission_related.operand + caller_vip.operand }}</span>)</span> / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>)</code></pre>
                                     </div>
                                 </div>
                                 <div class="row flex-nowrap">
                                     <div class="col-2"></div>
                                     <div class="col-10 pl-0">
-                                        <pre>&rArr;    <code><strong>{{ impact.value }}</strong> = <span class="codeNumber codeGroup3">{{ (users_impacted.value + productivity_impact.value) * (is_mission_related.operand + caller_vip.operand) }}</span> / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>);</code></pre>
+                                        <pre>&rArr;    <code><strong>{{ impact.value }}</strong> = <span class="codeNumber referenceGroup3">{{ (users_impacted.value + productivity_impact.value) * (is_mission_related.operand + caller_vip.operand) }}</span> / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>);</code></pre>
                                         <pre class="alert-success"><code><strong>Result: {{ impact.rounded }}</strong> = Math.round(<strong>{{ impact.value }}</strong>);</code></pre>
                                     </div>
                                 </div>
@@ -138,10 +138,10 @@
                                     <div class="col-10 pl-0">
                                         <pre><code>current.urgency = Math.round(
     (
-                                        <span class="codeLabel codeGroup2">[{{ productivity_impact.label }}]</span> + (
-            (<span class="codeLabel codeGroup4">[{{ caller_vip.label }}]</span> == true) ?
-                ((<span class="codeLabel codeGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">1</span> : <span class="codeNumber">2</span>) :
-                ((<span class="codeLabel codeGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">3</span> : <span class="codeNumber">4</span>)
+                                        <span class="codeLabel referenceGroup2">[{{ productivity_impact.label }}]</span> + (
+            (<span class="codeLabel referenceGroup4">[{{ caller_vip.label }}]</span> == true) ?
+                ((<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">1</span> : <span class="codeNumber">2</span>) :
+                ((<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">3</span> : <span class="codeNumber">4</span>)
         )
     ) * <span class="codeNumber">0.35</span>
 );</code></pre>
@@ -150,25 +150,25 @@
                                 <div class="row flex-nowrap">
                                     <div class="col-2"></div>
                                     <div class="col-10 pl-0">
-                                        <pre>&rArr;  <code>( <span class="codeLabel codeGroup2">{{ productivity_impact.value }}</span> + <strong>(</strong>
-        (<span class="codeNumber codeGroup4">[{{ caller_vip.label }}: {{ caller_vip.value }}]</span> == true) ?
-            ((<span class="codeLabel codeGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">1</span> : <span class="codeNumber">2</span>) :
-            ((<span class="codeLabel codeGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">3</span> : <span class="codeNumber">4</span>)
+                                        <pre>&rArr;  <code>( <span class="codeLabel referenceGroup2">{{ productivity_impact.value }}</span> + <strong>(</strong>
+        (<span class="codeNumber referenceGroup4">[{{ caller_vip.label }}: {{ caller_vip.value }}]</span> == true) ?
+            ((<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">1</span> : <span class="codeNumber">2</span>) :
+            ((<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">3</span> : <span class="codeNumber">4</span>)
                                         <strong>)</strong> ) * <span class="codeNumber">0.35</span></code></pre>
                                     </div>
                                 </div>
                                 <div class="row flex-nowrap">
                                     <div class="col-2"></div>
                                     <div class="col-10 pl-0">
-                                        <pre>&rArr;  <code>( <span class="codeNumber codeGroup2">{{ productivity_impact.value }}</span> + <strong>(</strong>
-        (<span class="codeLabel codeGroup3">[{{ is_mission_related.label }}: {{ is_mission_related.value == "Yes" }}]</span> == true) ? <span class="codeNumber">{{ (caller_vip.value) ? 1 : 3 }}</span> : <span class="codeNumber">{{ (caller_vip.value) ? 2 : 4 }}</span>
+                                        <pre>&rArr;  <code>( <span class="codeNumber referenceGroup2">{{ productivity_impact.value }}</span> + <strong>(</strong>
+        (<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }}: {{ is_mission_related.value == "Yes" }}]</span> == true) ? <span class="codeNumber">{{ (caller_vip.value) ? 1 : 3 }}</span> : <span class="codeNumber">{{ (caller_vip.value) ? 2 : 4 }}</span>
                                         <strong>)</strong> ) * <span class="codeNumber">0.35</span></code></pre>
                                     </div>
                                 </div>
                                 <div class="row flex-nowrap">
                                     <div class="col-2"></div>
                                     <div class="col-10 pl-0">
-                                        <pre>&rArr;  <code><strong>{{ urgency.value }}</strong> = (<span class="codeNumber codeGroup2">{{ productivity_impact.value }}</span> + <span class="codeNumber">{{ (caller_vip.value) ? ((is_mission_related.value == "Yes") ? 1 : 2) : ((is_mission_related.value == "Yes") ? 3 : 4) }}</span>) * <span class="codeNumber">0.35</span></code></pre>
+                                        <pre>&rArr;  <code><strong>{{ urgency.value }}</strong> = (<span class="codeNumber referenceGroup2">{{ productivity_impact.value }}</span> + <span class="codeNumber">{{ (caller_vip.value) ? ((is_mission_related.value == "Yes") ? 1 : 2) : ((is_mission_related.value == "Yes") ? 3 : 4) }}</span>) * <span class="codeNumber">0.35</span></code></pre>
                                         <pre class="alert-success"><code><strong>Result: {{ urgency.rounded }}</strong> = Math.round(<strong>{{ urgency.value }}</strong>);</code></pre>
                                     </div>
                                 </div>

@@ -372,7 +372,6 @@ var regexTester;
         $onInit() { }
     }
     app.appModule.directive("regexGroupContent", RegexGroupContentController.createDirective);
-    ;
     class TestStringItem {
         constructor(_owner) {
             this._owner = _owner;
@@ -418,7 +417,7 @@ var regexTester;
                 }
             }).then((results) => {
                 item.onEvaluated(value, regex, results);
-                this._owner.hasEvaluations = true;
+                item._owner.hasEvaluations = true;
             }, (reason) => { item.onError(reason); });
         }
         get canDelete() { return this._canDelete; }
@@ -490,7 +489,7 @@ var regexTester;
             if (sys.isNil(reason))
                 this._statusMessage = "Match evaluation error";
             else
-                this._statusMessage = "Match evaluation error: " + ((typeof reason === "string") ? reason : (((typeof reason === "object") ? ng.toJson(reason) : sys.asString(reason))));
+                this._statusMessage = "Match evaluation error: " + ((typeof reason === "string") ? reason : (((typeof reason === "object") ? angular.toJson(reason) : sys.asString(reason))));
             this._matchIndex = -1;
         }
         evaluate(regex) {
@@ -552,6 +551,9 @@ var regexTester;
             this._validationClass = [];
             this._areEvaluationsVisible = false;
             this._hasEvaluations = false;
+            this._sessionLoadMessage = "";
+            this._sessionSaveMessage = "";
+            this._inputRowCount = 3;
             TestStringItem.add(this);
         }
         get regex() { return this._regex; }
@@ -574,8 +576,8 @@ var regexTester;
             this._hasEvaluations = value;
         }
         get inputRowCount() { return this._inputRowCount; }
-        get canIncreaseInputRows() { return this._inputRowCount < 25 && !this._ignoreWhitespace; }
-        get canDecreaseInputRows() { return this._inputRowCount > 3 && !this._ignoreWhitespace; }
+        get canIncreaseInputRows() { return this._inputRowCount < 25 && this._ignoreWhitespace; }
+        get canDecreaseInputRows() { return this._inputRowCount > 3 && this._ignoreWhitespace; }
         get inputItems() { return this._inputItems; }
         get fullPattern() { return this._fullPattern; }
         get flags() { return this._flags; }
@@ -748,7 +750,7 @@ var regexTester;
                     controller._validationClass = [];
                 this._hasEvaluations = true;
             }, (reason) => {
-                controller._patternParseError = "Pattern parse error: " + ((typeof reason === "string") ? reason : (((typeof reason === "object") ? ng.toJson(reason) : sys.asString(reason))));
+                controller._patternParseError = "Pattern parse error: " + ((typeof reason === "string") ? reason : (((typeof reason === "object") ? angular.toJson(reason) : sys.asString(reason))));
                 controller._validationClass = ['alert', 'alert-danger'];
             });
         }

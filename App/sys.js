@@ -1,11 +1,15 @@
 var sys;
 (function (sys) {
-    let urlParseRe = /^(([^@:/?#]*):(?:\/\/((?:([^@:/?#]*)(?::([^@:/?#]*))?@)?([^:/?#]*)(?::(\d+(?=[:/?#]|$)))?))?)?(([:/]+(?=(?:[^?#:/]+[:/]*)?(?:\?|\#|$))|[:/]*[^:/?#]+(?=[:/]+[^?#])(?:[:/]+[^:/?#]+(?=[:/]+[^?#]))*)?[:/]*((\.*(?:\.[^.:/?#]*(?=\.)|[^.:/?#]+)*)(?:\.([^.:/?#]*))?)[:/]*)(?:\?([^#]*))?(?:\#(.*))?$/;
-    let trimRightRe = /^((\s*\S+)(\s+\S+)*)\s*$/;
-    let trimLeftRe = /^\s*(\S.*)$/;
-    let identifierRe = /^[a-z_][a-z\d]*$/i;
-    let falseStringRe = /^(f(alse)?|no?|0+(\.0+)?)([^\w-]|$)/i;
-    let numberStringRe = /^\d+(\.\d+)$/i;
+    sys.whitespaceRe = /[\s\r\n]+/g;
+    sys.isTrueRe = /^(t(rue)?|y(es)?|1)$/g;
+    sys.isFalseRe = /^(f(alse)?|no?|o)$/g;
+    sys.trueFalseRe = /^((t(?:rue)?|y(?:es)?|1)|(f(?:alse)?|no?|0))$/g;
+    const urlParseRe = /^(([^@:/?#]*):(?:\/\/((?:([^@:/?#]*)(?::([^@:/?#]*))?@)?([^:/?#]*)(?::(\d+(?=[:/?#]|$)))?))?)?(([:/]+(?=(?:[^?#:/]+[:/]*)?(?:\?|\#|$))|[:/]*[^:/?#]+(?=[:/]+[^?#])(?:[:/]+[^:/?#]+(?=[:/]+[^?#]))*)?[:/]*((\.*(?:\.[^.:/?#]*(?=\.)|[^.:/?#]+)*)(?:\.([^.:/?#]*))?)[:/]*)(?:\?([^#]*))?(?:\#(.*))?$/;
+    const trimRightRe = /^((\s*\S+)(\s+\S+)*)\s*$/;
+    const trimLeftRe = /^\s*(\S.*)$/;
+    const identifierRe = /^[a-z_][a-z\d]*$/i;
+    const falseStringRe = /^(f(alse)?|no?|0+(\.0+)?)([^\w-]|$)/i;
+    const numberStringRe = /^\d+(\.\d+)$/i;
     /**
      * Determines if a value is null or undefined.
      * @param {*} value Value to test.

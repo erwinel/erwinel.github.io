@@ -376,7 +376,7 @@ var app;
                 if (typeof (value) === "undefined")
                     this.$window.sessionStorage.setItem(key, "undefined");
                 else
-                    this.$window.sessionStorage.setItem(key, ng.toJson(value, false));
+                    this.$window.sessionStorage.setItem(key, angular.toJson(value, false));
                 let i = this._parsedKeys.indexOf(key);
                 if (i < 0) {
                     this._parsedKeys.push(key);
@@ -395,7 +395,7 @@ var app;
     app.appModule.service("sessionStorageService", ["$window", sessionStorageService]);
     // #endregion
     // #region Copy To Clipboard Service
-    class copyToClipboardService {
+    class CopyToClipboardService {
         constructor($window) {
             this.$window = $window;
         }
@@ -419,8 +419,51 @@ var app;
             }
         }
     }
-    app.copyToClipboardService = copyToClipboardService;
-    app.appModule.service("copyToClipboardService", ["$window", copyToClipboardService]);
+    app.CopyToClipboardService = CopyToClipboardService;
+    app.appModule.service("copyToClipboardService", ["$window", CopyToClipboardService]);
+    const btnCssClassRe = /(^|\s)btn(\s|$)/g;
+    const btnStyleCssClassRe = /(^|\s)btn-\S/g;
+    const paddingCssClassRe = /(^|\s)p(l|t|r|b)?-\S/g;
+    class ClipboardCopyController {
+        constructor($scope, copyToClipboardService) {
+            this.$scope = $scope;
+            this.copyToClipboardService = copyToClipboardService;
+        }
+        get cssClass() { return this._cssClass; }
+        get targetId() { return this._targetId; }
+        copyToClipboard() { this.copyToClipboardService.copy($("#" + this._targetId), this._successMessage); }
+        static createDirective() {
+            return {
+                restrict: "E",
+                controllerAs: "clipboardCopyController",
+                controller: ["$scope", "copyToClipboardService", ClipboardCopyController],
+                replace: true,
+                template: '<button ng-click="clipboardCopyController.copyToClipboard()" onclick="return false;"><svg class="fill-light stroke-dark" width="16" height="16"><use xlink:href="images/icons.svg#clipboard"></use></svg></button>',
+                link: (scope, element, attr, controller) => {
+                    scope.clipboardCopyController.initialize(attr.target, attr.successMessage, attr.class);
+                }
+            };
+        }
+        initialize(targetId, successMessage, cssClass) {
+            this._targetId = targetId;
+            this._successMessage = successMessage;
+            if (typeof cssClass === "string" && (cssClass = cssClass.trim()).length > 0) {
+                this._cssClass = sys.unique(cssClass.split(sys.whitespaceRe));
+                if (this._cssClass.indexOf('btn') < 0)
+                    this._cssClass.unshift('btn');
+                if (!btnStyleCssClassRe.test(cssClass)) {
+                    this._cssClass.push("btn-light");
+                    this._cssClass.push("btn-outline-dark");
+                }
+                if (!paddingCssClassRe.test(cssClass))
+                    this._cssClass.push("p-1");
+            }
+            else
+                this._cssClass = ['btn', 'btn-light', 'btn-outline-dark', 'p-1'];
+        }
+        $onInit() { }
+    }
+    app.appModule.directive("copyToClipboardButton", ClipboardCopyController.createDirective);
     // #endregion
     // #region Target SyStem Configuration Information
     let cssValidationClass;

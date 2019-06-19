@@ -1,4 +1,8 @@
 declare namespace sys {
+    const whitespaceRe: RegExp;
+    const isTrueRe: RegExp;
+    const isFalseRe: RegExp;
+    const trueFalseRe: RegExp;
     /**
      * Determines if a value is null or undefined.
      * @param {*} value Value to test.

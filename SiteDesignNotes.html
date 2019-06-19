@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="app" ng-controller="mainPageController">
+<head>
+    <meta name="viewport" content="width=1024, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta charset="utf-8" />
+    <title>{{ pageNavigation.pageTitle }}</title>
+    <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
+    <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="lib/twitter-bootstrap/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="lib/angular.js/angular.js"></script>
+    <script type="text/javascript" src="App/sys.js"></script>
+    <script type="text/javascript" src="App/app.js"></script>
+    <script type="text/javascript" src="App/accordionGroup.js"></script>
+</head>
+<body>
+    <main-app-page-head></main-app-page-head>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <section class="container-fluid col-8 col-lg-9">
+                <accordion-group>
+                    <div class="card">
+                        <div class="card-header p-1" accordion-group-toggle-on-click="tables"><h2 class="card-title mb-0">Tables</h2></div>
+                        <div class="card-body" accordion-group-content-item="tables" auto-expand="false">
+                            <accordion-group>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="fieldsGrid"><h2 class="card-title mb-0">fieldsGrid</h2></div>
+                                    <div class="card-body" accordion-group-content-item="fieldsGrid" auto-expand="false">
+                                        <div class="card-text">Purpose: Display name/value pairs where the name is displayed to the left of the value.</div>
+                                        <accordion-group>
+                                            <div class="card">
+                                                <div class="card-header p-1" accordion-group-toggle-on-click="fieldsGridExCode">
+                                                    <h3 class="card-title mb-0">Example Code</h3>
+                                                </div>
+                                                <div class="card-body pre-scrollable" accordion-group-content-item="fieldsGridExCode">
+                                                    <copy-to-clipboard-button target="fieldsGridExCode" success-message="Code copied"></copy-to-clipboard-button>
+                                                    <code class="pre-scrollable multi-line" id="fieldsGridExCode">&lt;table class=&quot;table table-striped fieldsGrid&quot;&gt;
+    &lt;thead class=&quot;thead-dark&quot;&gt;
+        &lt;tr&gt;
+            &lt;th scope=&quot;colgroup&quot; colspan=&quot;2&quot;&gt;Col 1&lt;/th&gt;
+            &lt;th scope=&quot;colgroup&quot; colspan=&quot;2&quot;&gt;Col 2&lt;/th&gt;
+            &lt;th scope=&quot;colgroup&quot; colspan=&quot;2&quot;&gt;Col 3&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Field 1:&lt;/th&gt;
+            &lt;td&gt;Value 1&lt;/td&gt;
+            &lt;th&gt;Field A:&lt;/th&gt;
+            &lt;td&gt;Value A&lt;/td&gt;
+            &lt;th&gt;Field B:&lt;/th&gt;
+            &lt;td&gt;Value B&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope=&quot;row&quot;&gt;Field 2:&lt;/th&gt;
+            &lt;td&gt;Value 2&lt;/td&gt;
+            &lt;th&gt;Field C:&lt;/th&gt;
+            &lt;td colspan=&quot;3&quot;&gt;Value C&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Field 3:&lt;/th&gt;
+            &lt;td&gt;Value 3&lt;/td&gt;
+            &lt;th&gt;Field D:&lt;/th&gt;
+            &lt;td&gt;Value D&lt;/td&gt;
+            &lt;th&gt;Field E:&lt;/th&gt;
+            &lt;td&gt;Value E&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header p-1" accordion-group-toggle-on-click="fieldsGridExDisp"><h3 class="card-title mb-0">Example Display</h3></div>
+                                                <div class="card-body" accordion-group-content-item="fieldsGridExDisp">
+                                                    <table class="table table-striped fieldsGrid">
+                                                        <thead class="thead-dark">
+                                                            <tr>
+                                                                <th scope="colgroup" colspan="2">Col 1</th>
+                                                                <th scope="colgroup" colspan="2">Col 2</th>
+                                                                <th scope="colgroup" colspan="2">Col 3</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Field 1:</th>
+                                                                <td>Value 1</td>
+                                                                <th>Field A:</th>
+                                                                <td>Value A</td>
+                                                                <th>Field B:</th>
+                                                                <td>Value B</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Field 2:</th>
+                                                                <td>Value 2</td>
+                                                                <th>Field C:</th>
+                                                                <td colspan="3">Value C</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Field 3:</th>
+                                                                <td>Value 3</td>
+                                                                <th>Field D:</th>
+                                                                <td>Value D</td>
+                                                                <th>Field E:</th>
+                                                                <td>Value E</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </accordion-group>
+                                    </div>
+                                </div>
+                            </accordion-group>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header p-1" accordion-group-toggle-on-click="inlineStyles"><h2 class="card-title mb-0">Inline Styles</h2></div>
+                        <div class="card-body" accordion-group-content-item="inlineStyles" auto-expand="true">
+                            <accordion-group>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="targetNameInlineStyle"><h3>Target Name</h3></div>
+                                    <div class="card-body" accordion-group-content-item="targetNameInlineStyle">
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Example</h4></div>
+                                            <div class="card-body"><var class="targetName">Example Name</var></div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Code</h4><copy-to-clipboard-button target="targetNameInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></div>
+                                            <div class="card-body"><code class="multi-line" id="targetNameInlineStyle">&lt;var class=&quot;targetName&quot;&gt;Example Name&lt;/var&gt;</code></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="userInputInlineStyle"><h3>User Input Text</h3></div>
+                                    <div class="card-body" accordion-group-content-item="userInputInlineStyle">
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Example</h4></div>
+                                            <div class="card-body"><kbd>Example User Input</kbd></div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Code</h4><copy-to-clipboard-button target="userInputInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></div>
+                                            <div class="card-body"><code class="multi-line" id="userInputInlineStyle">&lt;kbd&gt;Example User Input&lt;/kbd&gt;</code></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="navPathInlineStyle"><h3>Navigation Path</h3></div>
+                                    <div class="card-body" accordion-group-content-item="navPathInlineStyle">
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Example</h4></div>
+                                            <div class="card-body"><samp class="navPath"><var>Start Node</var> &rArr; <var>Intermediate Node</var> &rArr; <var>Terminal Node</var></samp></div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Code</h4><copy-to-clipboard-button target="navPathInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></div>
+                                            <div class="card-body"><code class="multi-line" id="navPathInlineStyle">&lt;samp class=&quot;navPath&quot;&gt;&lt;var&gt;Start Node&lt;/var&gt; &amp;rArr; &lt;var&gt;Intermediate Node&lt;/var&gt; &amp;rArr; &lt;var&gt;Terminal Node&lt;/var&gt;&lt;/samp&gt;</code></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="outputInlineStyle"><h3>Output Text</h3></div>
+                                    <div class="card-body" accordion-group-content-item="outputInlineStyle">
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Example</h4></div>
+                                            <div class="card-body">Following is the <output>Example Output</output></div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Code</h4><copy-to-clipboard-button target="outputInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></div>
+                                            <div class="card-body"><code class="multi-line" id="outputInlineStyle">&lt;output&gt;Example Output&lt;/output&gt;</code></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="sampleInlineStyle"><h3>Sample Text</h3></div>
+                                    <div class="card-body" accordion-group-content-item="sampleInlineStyle">
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Example</h4></div>
+                                            <div class="card-body">Following is the <samp>Sample Text</samp></div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sampleInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
+                                            <div class="card-body"><code class="multi-line" id="sampleInlineStyle">&lt;samp&gt;Sample Text&lt;/samp&gt;</code></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="sourceCodeInlineStyle"><h3>Source Code</h3></div>
+                                    <div class="card-body" accordion-group-content-item="sourceCodeInlineStyle">
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Example</h4></div>
+                                            <div class="card-body"><code>hasRole(&#39;admin&#39;) &amp;&amp; !current.IsNewRecord()</code></div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sourceCodeInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
+                                            <div class="card-body"><code class="multi-line" id="sourceCodeInlineStyle">&lt;code&gt;hasRole(&amp;#39;admin&amp;#39;) &amp;amp;&amp;amp; !current.IsNewRecord()&lt;/code&gt;</code></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </accordion-group>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header p-1" accordion-group-toggle-on-click="multiLineStyles"><h2 class="card-title mb-0">Multi-line Styles</h2></div>
+                        <div class="card-body" accordion-group-content-item="multiLineStyles">
+                            <div class="card">
+                                <div class="card-header p-1" accordion-group-toggle-on-click="outputMultiLineStyle"><h3>Output Text</h3></div>
+                                <div class="card-body" accordion-group-content-item="outputMultiLineStyle">
+                                    <div class="card">
+                                        <div class="card-header p-1"><h4>Example</h4></div>
+                                        <div class="card-body"><output class="pre-scrollable multi-line">Example
+Output</output></div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="outputMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
+                                        <div class="card-body"><code class="multi-line" id="outputMultiLineStyle">&lt;output&gt;Example
+Output&lt;/output&gt;</code></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header p-1" accordion-group-toggle-on-click="sampleMultiLineStyle"><h3>Sample Text</h3></div>
+                                <div class="card-body" accordion-group-content-item="sampleMultiLineStyle">
+                                    <div class="card">
+                                        <div class="card-header p-1"><h4>Example</h4></div>
+                                        <div class="card-body"><samp class="pre-scrollable multi-line">Sample
+Text</samp></div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sampleMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
+                                        <div class="card-body"><code class="multi-line" id="sampleMultiLineStyle">&lt;samp&gt;Sample
+Text&lt;/samp&gt;</code></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header p-1" accordion-group-toggle-on-click="sourceCodeMultiLineStyle"><h3>Source Code</h3></div>
+                                <div class="card-body" accordion-group-content-item="sourceCodeMultiLineStyle">
+                                    <div class="card">
+                                        <div class="card-header p-1"><h4>Example</h4></div>
+                                        <div class="card-body"><code class="pre-scrollable multi-line">current.update();
+action.setRedirectURL(current);</code></div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sourceCodeMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
+                                        <div class="card-body"><code class="multi-line" id="sourceCodeMultiLineStyle">&lt;code class=&quot;pre-scrollable multi-line&quot;&gt;current.update();
+action.setRedirectURL(current);&lt;/code&gt;</code></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </accordion-group>
+            </section>
+            <aside class="container-fluid col-4 col-lg-3">
+                <div class="card">
+                    <div class="card-header"><h4>Resource Pages</h4></div>
+                    <div class="card-body">
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a href="Snippets.html" class="nav-link">Code Snippets</a></li>
+                            <li class="nav-item"><a href="RegexTester.html" class="nav-link">Regex Tester</a></li>
+                            <li class="nav-item"><a href="URIBuilder.html" class="nav-link">URI Builder</a></li>
+                            <li class="nav-item"><a href="ColorBuilder.html" class="nav-link">Color Builder</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+</body>
+</html>
