@@ -186,7 +186,107 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="adImport"><h2 class="card-title mb-0">7. Configure Active Directory Import</h2></div>
+                    <div class="card-header p-1" accordion-group-toggle-on-click="physicalNetworksApplication"><h2 class="card-title mb-0">7. Import Physical Networks Application</h2></div>
+                    <div class="card-body" accordion-group-content-item="physicalNetworksApplication">
+                        <div class="detail">
+                            <div class="detail">In this step you will be importing an application that defines a common list of physically seprated networks (as configuration items) that can be used for
+                                &quot;network&quot; pick lists.</div>
+                            <ol>
+                                <li>
+                                    Import the util application from <kbd>{{ gitRepositoryBaseUrl }}/x_44813_phys_net_network.git</kbd>.
+                                </li>
+                                <li>
+                                    Once the application is imported, select that application in order to put your session in the correct
+                                    scope, and then close out the <var class="targetName">Application Studio</var> browser tab.
+                                </li>
+                                <li>
+                                    In the original ServiceNow browser tab, you will need to refresh the screen to see the new menu item that was added when this application was imported.
+                                </li>
+                                <li>Navigate to <samp class="navPath"><var>System Policy</var> &rArr; <var>Rules</var> &rArr; <var>Caller VIP Lookup Rules</var></samp>.</li>
+                                <li>Add the names of the physical networks. If there are any existing items you do not want, you may delete them.</li>
+                                <li>Change to the <var class="targetName">Global</var> application scope when finished.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header p-1" accordion-group-toggle-on-click="serviceCatalog"><h2 class="card-title mb-0">8. Import Service Catalog Update Set</h2></div>
+                    <div class="card-body" accordion-group-content-item="serviceCatalog">
+                        <div class="detail">
+                            Load and apply the <a href="downloads/sys_remote_update_set_Service_Catalog.xml" target="_blank">sys_remote_update_set_Service_Catalog.xml</a> File in the
+                            <var class="targetName">downloads</var> folder of this documentation to apply the global update set that sets up the service catalog.
+                            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Known Issues</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header p-1" accordion-group-toggle-on-click="incidentManagement"><h2 class="card-title mb-0">9. Import Incident Management Update Set</h2></div>
+                    <div class="card-body" accordion-group-content-item="incidentManagement">
+                        <div class="detail">
+                            Load and apply the <a href="downloads/sys_remote_update_set_Incident_Management.xml" target="_blank">sys_remote_update_set_Incident_Management.xml</a> File in the
+                            <var class="targetName">downloads</var> folder of this documentation to apply the global update set that configures incident-related settings.
+                            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Known Issues and Warnings</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="detail">
+                                        The following preview problems may occur, in which case, follow the recommended action:
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Remote Update</th>
+                                                    <th scope="col">Description</th>
+                                                    <th scope="col">Recommended Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>sc_cat_item_category_32c4afe6db81ff00b53f341f7c9619ba</td>
+                                                    <td>Found a local update that is newer than this one</td>
+                                                    <td class="table-warning">Skip remote update</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>sys_ui_section_661f5ea7db8db340683b300f7c961975</td>
+                                                    <td>Cannot commit Update Set 'Incident Management Setup 2019-04-29' because: Update scope id '97515a49134b5200ed373d62f244b04a' is different than update set scope id 'global'. Resolve the problem before committing.</td>
+                                                    <td class="table-warning">Skip remote update</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>sys_embedded_tour_element_543e62a3dbcdb340683b300f7c9619bf</td>
+                                                    <td>Could not find a record in sys_ui_form_section for column form_section referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>sys_embedded_tour_element_937eae63dbcdb340683b300f7c96197f</td>
+                                                    <td>Could not find a record in sys_ui_form_section for column form_section referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <h5 class="text-warning">Data Loss Warning</h5>
+                                        When committing the update set, you will get a warning that states that all items in sys_dictionary_u_vip_priority_lookup_matcher_rules_u_caller will be deleted.
+                                        It is okay to proceed, because this update set will be re-defining these lookup rules. However, the lookup rules will probably need to be cleaned up afterward:
+                                        <ol>
+                                            <li>Navigate to <samp class="navPath"><var>System Policy</var> &rArr; <var>Rules</var> &rArr; <var>Caller VIP Lookup Rules</var></samp>.</li>
+                                            <li>Delete any items which have an empty <var class="targetName">Caller</var>.</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header p-1" accordion-group-toggle-on-click="adImport"><h2 class="card-title mb-0">10. Configure Active Directory Import</h2></div>
                     <div class="card-body" accordion-group-content-item="adImport">
                         <div class="card">
                             <div class="card-header">
@@ -258,8 +358,10 @@
                                                     <li><var class="targetName">Table</var> - <kbd>User [sys_user]</kbd></li>
                                                     <li>
                                                         <var class="targetName">Filter</var> - <code>(&amp;(objectClass=person)(sn=*)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))</code>
-                                                        <div class="alert-info">Utilize the <var class="targetName">Test connection</var> link under <var class="targetName">Related Links</var>
-                                                        to verify there are no errors in the filter.</div>
+                                                        <div class="alert-info">
+                                                            Utilize the <var class="targetName">Test connection</var> link under <var class="targetName">Related Links</var>
+                                                            to verify there are no errors in the filter.
+                                                        </div>
                                                     </li>
                                                 </ul>
                                             </li>
@@ -416,101 +518,6 @@
                                         <div class="detail">
                                             <em>Not yet documented...</em>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="physicalNetworksApplication"><h2 class="card-title mb-0">8. Import Physical Networks Application</h2></div>
-                    <div class="card-body" accordion-group-content-item="physicalNetworksApplication">
-                        <div class="detail">
-                            <div class="detail">In this step you will be importing an application that defines a common list of physically seprated networks (as configuration items) that can be used for &quot;network&quot; pick lists.</div>
-                            <ol>
-                                <li>
-                                    Import the util application from <kbd>{{ gitRepositoryBaseUrl }}/x_44813_phys_net_network.git</kbd>.
-                                    <!-- <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
-                        to view instructions for importing applications from source countrol.</div> -->
-                                </li>
-                                <li>
-                                    Once the application is imported, you don't need to actually select an application.
-                                    You can simply close out the <var class="targetName">Application Studio</var> browser tab.
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="serviceCatalog"><h2 class="card-title mb-0">9. Import Service Catalog Update Set</h2></div>
-                    <div class="card-body" accordion-group-content-item="serviceCatalog">
-                        <div class="detail">
-                            Load and apply the <a href="downloads/sys_remote_update_set_Service_Catalog.xml" target="_blank">sys_remote_update_set_Service_Catalog.xml</a> File in the
-                            <var class="targetName">downloads</var> folder of this documentation to apply the global update set that sets up the service catalog.
-                            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3>Known Issues</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="incidentManagement"><h2 class="card-title mb-0">10. Import Incident Management Update Set</h2></div>
-                    <div class="card-body" accordion-group-content-item="incidentManagement">
-                        <div class="detail">
-                            Load and apply the <a href="downloads/sys_remote_update_set_Incident_Management.xml" target="_blank">sys_remote_update_set_Incident_Management.xml</a> File in the
-                            <var class="targetName">downloads</var> folder of this documentation to apply the global update set that configures incident-related settings.
-                            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3>Known Issues and Warnings</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="detail">
-                                        The following preview problems may occur, in which case, follow the recommended action:
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Remote Update</th>
-                                                    <th scope="col">Description</th>
-                                                    <th scope="col">Recommended Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>sc_cat_item_category_32c4afe6db81ff00b53f341f7c9619ba</td>
-                                                    <td>Found a local update that is newer than this one</td>
-                                                    <td class="table-warning">Skip remote update</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>sys_ui_section_661f5ea7db8db340683b300f7c961975</td>
-                                                    <td>Cannot commit Update Set 'Incident Management Setup 2019-04-29' because: Update scope id '97515a49134b5200ed373d62f244b04a' is different than update set scope id 'global'. Resolve the problem before committing.</td>
-                                                    <td class="table-warning">Skip remote update</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>sys_embedded_tour_element_543e62a3dbcdb340683b300f7c9619bf</td>
-                                                    <td>Could not find a record in sys_ui_form_section for column form_section referenced in this update</td>
-                                                    <td class="table-success">Accept remote update</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>sys_embedded_tour_element_937eae63dbcdb340683b300f7c96197f</td>
-                                                    <td>Could not find a record in sys_ui_form_section for column form_section referenced in this update</td>
-                                                    <td class="table-success">Accept remote update</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <h5 class="text-warning">Data Loss Warning</h5>
-                                        When committing the update set, you will get a warning that states that all items in sys_dictionary_u_vip_priority_lookup_matcher_rules_u_caller will be deleted.
-                                        It is okay to proceed, because this update set will be re-defining these lookup rules. However, the lookup rules will probably need to be cleaned up afterward:
-                                        <ol>
-                                            <li>Navigate to <samp class="navPath"><var>System Policy</var> &rArr; <var>Rules</var> &rArr; <var>Caller VIP Lookup Rules</var></samp>.</li>
-                                            <li>Delete any items which have an empty <var class="targetName">Caller</var>.</li>
-                                        </ol>
                                     </div>
                                 </div>
                             </div>

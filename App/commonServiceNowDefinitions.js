@@ -150,10 +150,10 @@ var sn_emulation_helpers;
         }
         static NewSysId() {
             let value = "";
-            let rand = new RandomSource();
-            let arr = new Int8Array(32);
-            rand.getRandomValues(arr).forEach((v) => value += (v >> 4).toString(16));
-            return value;
+            let rv = [];
+            for (let i = 0; i < 32; i++)
+                rv.push(Math.round(Math.random() * 255.0).toString(16));
+            return rv.join("");
         }
         static areSame(x, y) {
             return (typeof x === "object") && (typeof y === "object") && ((x === null) ? y === null : (y != null && (y instanceof Emulated_SysId) && x._instance === y._instance));

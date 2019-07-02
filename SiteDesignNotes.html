@@ -203,51 +203,113 @@
                     <div class="card">
                         <div class="card-header p-1" accordion-group-toggle-on-click="multiLineStyles"><h2 class="card-title mb-0">Multi-line Styles</h2></div>
                         <div class="card-body" accordion-group-content-item="multiLineStyles">
-                            <div class="card">
-                                <div class="card-header p-1" accordion-group-toggle-on-click="outputMultiLineStyle"><h3>Output Text</h3></div>
-                                <div class="card-body" accordion-group-content-item="outputMultiLineStyle">
-                                    <div class="card">
-                                        <div class="card-header p-1"><h4>Example</h4></div>
-                                        <div class="card-body"><output class="pre-scrollable multi-line">Example
-Output</output></div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="outputMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
-                                        <div class="card-body"><code class="multi-line" id="outputMultiLineStyle">&lt;output&gt;Example
-Output&lt;/output&gt;</code></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header p-1" accordion-group-toggle-on-click="sampleMultiLineStyle"><h3>Sample Text</h3></div>
-                                <div class="card-body" accordion-group-content-item="sampleMultiLineStyle">
-                                    <div class="card">
-                                        <div class="card-header p-1"><h4>Example</h4></div>
-                                        <div class="card-body"><samp class="pre-scrollable multi-line">Sample
-Text</samp></div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sampleMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
-                                        <div class="card-body"><code class="multi-line" id="sampleMultiLineStyle">&lt;samp&gt;Sample
-Text&lt;/samp&gt;</code></div>
+                            <accordion-group>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="outputMultiLineStyle"><h3>Output Text</h3></div>
+                                    <div class="card-body" accordion-group-content-item="outputMultiLineStyle">
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Example</h4></div>
+                                            <div class="card-body">
+                                                <output class="pre-scrollable multi-line">Example
+Output</output>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="outputMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
+                                            <div class="card-body">
+                                                <code class="multi-line" id="outputMultiLineStyle">&lt;output&gt;Example
+Output&lt;/output&gt;</code>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header p-1" accordion-group-toggle-on-click="sourceCodeMultiLineStyle"><h3>Source Code</h3></div>
-                                <div class="card-body" accordion-group-content-item="sourceCodeMultiLineStyle">
-                                    <div class="card">
-                                        <div class="card-header p-1"><h4>Example</h4></div>
-                                        <div class="card-body"><code class="pre-scrollable multi-line">current.update();
-action.setRedirectURL(current);</code></div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sourceCodeMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
-                                        <div class="card-body"><code class="multi-line" id="sourceCodeMultiLineStyle">&lt;code class=&quot;pre-scrollable multi-line&quot;&gt;current.update();
-action.setRedirectURL(current);&lt;/code&gt;</code></div>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="sampleMultiLineStyle"><h3>Sample Text</h3></div>
+                                    <div class="card-body" accordion-group-content-item="sampleMultiLineStyle">
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Example</h4></div>
+                                            <div class="card-body">
+                                                <samp class="pre-scrollable multi-line">Sample
+Text</samp>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sampleMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
+                                            <div class="card-body">
+                                                <code class="multi-line" id="sampleMultiLineStyle">&lt;samp&gt;Sample
+Text&lt;/samp&gt;</code>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="sourceCodeMultiLineStyle"><h3>Source Code</h3></div>
+                                    <div class="card-body" accordion-group-content-item="sourceCodeMultiLineStyle">
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Example</h4></div>
+                                            <div class="card-body">
+                                                <code class="pre-scrollable multi-line">current.update();
+action.setRedirectURL(current);</code>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sourceCodeMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
+                                            <div class="card-body">
+                                                <code class="multi-line" id="sourceCodeMultiLineStyle">&lt;code class=&quot;pre-scrollable multi-line&quot;&gt;current.update();
+action.setRedirectURL(current);&lt;/code&gt;</code>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </accordion-group>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header p-1" accordion-group-toggle-on-click="collapsibleCards"><h2 class="card-title mb-0">Collapsible Cards</h2></div>
+                        <div class="card-body" accordion-group-content-item="collapsibleCards">
+                            <accordion-group>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="collapsibleCardsExCode">
+                                        <h3 class="card-title mb-0">Example Code</h3>
+                                    </div>
+                                    <div class="card-body pre-scrollable" accordion-group-content-item="collapsibleCardsExCode">
+                                        <copy-to-clipboard-button target="collapsibleCardsExCode" success-message="Code copied"></copy-to-clipboard-button>
+                                        <code class="pre-scrollable multi-line" id="collapsibleCardsExCode">&lt;accordion-group&gt;
+    &lt;div class=&quot;card&quot;&gt;
+        &lt;div class=&quot;card-header p-1&quot; accordion-group-toggle-on-click=&quot;arbitraryCardName1&quot;&gt;&lt;h2 class=&quot;card-title mb-0&quot;&gt;Card 1 Title&lt;/h2&gt;&lt;/div&gt;
+        &lt;div class=&quot;card-body&quot; accordion-group-content-item=&quot;arbitraryCardName1&quot;&gt;
+            Card 1 Content
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card&quot;&gt;
+        &lt;div class=&quot;card-header p-1&quot; accordion-group-toggle-on-click=&quot;arbitraryCardName2&quot;&gt;&lt;h2 class=&quot;card-title mb-0&quot;&gt;Card 2 Title&lt;/h2&gt;&lt;/div&gt;
+        &lt;div class=&quot;card-body&quot; accordion-group-content-item=&quot;arbitraryCardName2&quot;&gt;
+            Card 2 Content
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/accordion-group&gt;</code>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="collapsibleCardsExDisp"><h3 class="card-title mb-0">Example Display</h3></div>
+                                    <div class="card-body" accordion-group-content-item="collapsibleCardsExDisp">
+                                        <accordion-group>
+                                            <div class="card">
+                                                <div class="card-header p-1" accordion-group-toggle-on-click="arbitraryCardName1"><h2 class="card-title mb-0">Card 1 Title</h2></div>
+                                                <div class="card-body" accordion-group-content-item="arbitraryCardName1">
+                                                    Card 1 Content
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header p-1" accordion-group-toggle-on-click="arbitraryCardName2"><h2 class="card-title mb-0">Card 2 Title</h2></div>
+                                                <div class="card-body" accordion-group-content-item="arbitraryCardName2">
+                                                    Card 2 Content
+                                                </div>
+                                            </div>
+                                        </accordion-group>
+                                    </div>
+                                </div>
+                            </accordion-group>
                         </div>
                     </div>
                 </accordion-group>

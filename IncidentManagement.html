@@ -13,183 +13,201 @@
     <script type="text/javascript" src="lib/angular.js/angular.js"></script>
     <script type="text/javascript" src="App/sys.js"></script>
     <script type="text/javascript" src="App/app.js"></script>
+    <script type="text/javascript" src="App/accordionGroup.js"></script>
+    <script type="text/javascript" src="App/commonServiceNowDefinitions.js"></script>
     <script type="text/javascript" src="App/IncidentManagement.js"></script>
 </head>
 <body>
     <main-app-page-head></main-app-page-head>
-    <form id="setupOverviewTasksForm" action="initialConfig.html">
+    <form id="setupOverviewTasksForm" action="initialConfig.html" ng-controller="incidentManagmentController as incidentManagment">
         <div class="container-fluid">
             <div class="row flex-nowrap">
-                <section class="container-fluid col-8 col-lg-9" ng-controller="incidentManagmentController">
-                    <div class="card" ng-controller="priorityExampleController">
-                        <div class="card-header">
-                            <h2 class="card-title">Priority Assessment</h2>
-                        </div>
-                        <div class="card-body">
-                            <div>
-                                Incidents submitted using the &quot;Submit a New Incident&quot; service catalog item prompt the user to provide information, which is used to calculate the
-                                initial Impact and Urgency values for the incident. In turn, the Impact and Urgency values, together with the user's VIP status determine the actual incident property.
-                            </div>
-                            <div>
-                                The following form uses a copy of the actual JavaScript code from ServiceNow to demonstrate the results of urgency, impact and priority value calculations.
-                            </div>
-                            <div class="container-fluid">
-                                <div class="row flex-nowrap form-group">
-                                    <label for="users_impacted" class="col-2 text-right pr-1 font-weight-bold pl-0">{{ users_impacted.label }}:</label>
-                                    <select class="form-control col-10 pl-1" id="users_impacted" name="users_impacted" ng-model="users_impacted.selected" ng-change="onOptionChange()">
-                                        <option ng-repeat="u in users_impacted.options" ng-value="u.value">{{ u.text }}</option>
-                                    </select>
-                                </div>
-                                <div class="row flex-nowrap form-group">
-                                    <label for="productivity_impact" class="col-2 text-right font-weight-bold pr-1 pl-0">{{ productivity_impact.label }}:</label>
-                                    <select class="form-control col-10 pl-1" id="productivity_impact" name="productivity_impact" ng-model="productivity_impact.selected" ng-change="onOptionChange()">
-                                        <option ng-repeat="u in productivity_impact.options" ng-value="u.value">{{ u.text }}</option>
-                                    </select>
-                                </div>
-                                <div class="row flex-nowrap">
-                                    <label class="col-2 text-right font-weight-bold pr-1 pl-0">{{ is_mission_related.label }}:</label>
-                                    <div class="col-2 form-group pl-1">
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" id="is_mission_related_yes" name="is_mission_related" ng-model="is_mission_related.value" value="Yes" ng-change="onOptionChange()" />
-                                            <label class="form-check-label" for="is_mission_related_yes">Yes</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="fform-check-input" id="is_mission_related_no" name="is_mission_related" ng-model="is_mission_related.value" value="No" ng-change="onOptionChange()" />
-                                            <label class="form-check-label" for="is_mission_related_no">No</label>
-                                        </div>
-                                    </div>
-                                    <label class="col-2 text-right font-weight-bold pr-1 pl-0">{{ caller_vip.label }}:</label>
-                                    <div class="col-6 form-group pl-1">
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" id="caller_vip_yes" name="caller_vip" ng-model="caller_vip.value" ng-value="true" ng-change="onOptionChange()" />
-                                            <label class="form-check-label" for="caller_vip_yes">Yes</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" id="caller_vip_no" name="caller_vip" ng-model="caller_vip.value" ng-value="false" ng-change="onOptionChange()" />
-                                            <label class="form-check-label" for="caller_vip_no">No</label>
+                <section class="container-fluid col-8 col-lg-9">
+                    <accordion-group>
+                        <div class="card">
+                            <div class="card-header p-1" accordion-group-toggle-on-click="incidentPrioritization"><h2 class="card-title mb-0">Incident Prioritization</h2></div>
+                            <div class="card-body container-fluid" accordion-group-content-item="incidentPrioritization">
+                                The following table represents the rules that determine the priority of incidents. The rules define what field values to match in the incident.
+                                The field values are compared in each rule in the specified order, and uses the priority of the first matching rule.
+                                <div class="container-fluid">
+                                    <div class="row flex-nowrap">
+                                        <div ng-repeat="pc in priorityMatcherColumns" class="col-2 font-weight-bold p-0">
+                                            <button ng-class="pc.buttonClass" ng-click="pc.toggle()" onclick="return false;" data-toggle="tooltip" data-placement="top" title="{{pc.tooltip}}">
+                                                {{pc.label}}
+                                                <img ng-src="{{pc.arrowUrl}}" ng-show="pc.showArrow" width="12" height="12" alt="{{pc.alt}}" />
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row flex-nowrap">
-                                    <div class="col-2 text-right font-weight-bold pr-0 pl-0">Impact:</div>
-                                    <div class="col-2 pl-1 pr-2">{{ get3TierDescription(impact.rounded) }}</div>
-                                    <div class="col-2 text-right font-weight-bold pr-0 pl-1">Urgency:</div>
-                                    <div class="col-2 pl-1 pr-2">{{ get3TierDescription(urgency.rounded) }}</div>
-                                    <div class="col-2 text-right font-weight-bold pr-0 pl-1">Priority:</div>
-                                    <div class="col-2 pl-1 pr-2">{{ get3TierDescription(priority) }}</div>
-                                </div>
-                                <div class="row flex-nowrap">
-                                    <div class="col-12"><h3>Calculations</h3></div>
-                                </div>
-                                <div class="row flex-nowrap" ng-show="users_impacted.isAutoValue || productivity_impact.isAutoValue">
-                                    <div class="col-2"></div>
-                                    <div class="col-10 alert-info">
-                                        <div class="font-weight-bold">Using assumed values</div>
-                                        <span ng-show="users_impacted.isAutoValue">
-                                            <span ng-show="productivity_impact.isAutoValue">
-                                                When neither <code class="codeLabel referenceGroup1">{{ users_impacted.label }}</code> nor <code class="codeLabel referenceGroup2">{{ productivity_impact.label }}</code>
-                                                are selected for <span ng-hide="is_mission_related.value == 'Yes'">non-</span>mission-related incidents for
-                                                <span ng-hide="caller_vip.value">non-</span>VIP users, a value of {{ productivity_impact.value }} is assumed.
-                                            </span>
-                                            <span ng-hide="productivity_impact.isAutoValue">
-                                                <code class="codeLabel referenceGroup1">{{ users_impacted.label }}</code> is not specified: Assuming same value as the <code class="codeLabel referenceGroup2">{{ productivity_impact.label }}</code> selection.
-                                            </span>
-                                        </span>
-                                        <span ng-hide="users_impacted.isAutoValue">
-                                            <code class="codeLabel referenceGroup2">{{ productivity_impact.label }}</code> is not specified: Assuming same value as the <code class="codeLabel referenceGroup1">{{ users_impacted.label }}</code> selection.
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row flex-nowrap bg-light">
-                                    <div class="col-2 text-right"><h4>Impact</h4></div>
-                                    <div class="col-10 pl-0">
-                                        <pre><code>Impact = Math.round(
-    (
-        (<span class="codeLabel referenceGroup1">[{{ users_impacted.label }}]</span> + <span class="codeLabel referenceGroup2">[{{ productivity_impact.label }}]</span>)
-        &times;
-        (<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }} Delta]</span> + <span class="codeLabel referenceGroup4">[{{ caller_vip.label }} Delta]</span>)
-    ) / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>)
-);</code></pre>
-                                    </div>
-                                </div>
-                                <div class="row flex-nowrap">
-                                    <div class="col-2"></div>
-                                    <div class="col-10 pl-0">
-                                        <pre>&rArr;     <code>(
-                                        <span class="referenceGroup5" style="padding: 2px">(<span class="codeNumber referenceGroup1">{{ users_impacted.value }}</span> + <span class="codeNumber referenceGroup2">{{ productivity_impact.value }}</span>)</span> &times; <span class="referenceGroup6" style="padding: 2px">(<span class="codeNumber referenceGroup3">{{ is_mission_related.operand }}</span> + <span class="codeNumber referenceGroup4">{{ caller_vip.operand }}</span>)</span>
-      ) / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>)</code></pre>
-                                    </div>
-                                </div>
-                                <div class="row flex-nowrap">
-                                    <div class="col-2"></div>
-                                    <div class="col-10 pl-0">
-                                        <pre>&rArr;    <code><span class="referenceGroup3" style="padding: 2px">(<span class="codeNumber referenceGroup5">{{ users_impacted.value + productivity_impact.value }}</span> &times; <span class="codeNumber referenceGroup6">{{ is_mission_related.operand + caller_vip.operand }}</span>)</span> / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>)</code></pre>
-                                    </div>
-                                </div>
-                                <div class="row flex-nowrap">
-                                    <div class="col-2"></div>
-                                    <div class="col-10 pl-0">
-                                        <pre>&rArr;    <code><strong>{{ impact.value }}</strong> = <span class="codeNumber referenceGroup3">{{ (users_impacted.value + productivity_impact.value) * (is_mission_related.operand + caller_vip.operand) }}</span> / (<span class="codeNumber">11.0</span> / <span class="codeNumber">3.0</span>);</code></pre>
-                                        <pre class="alert-success"><code><strong>Result: {{ impact.rounded }}</strong> = Math.round(<strong>{{ impact.value }}</strong>);</code></pre>
-                                    </div>
-                                </div>
-                                <div class="row flex-nowrap bg-light">
-                                    <div class="col-2 text-right"><h4>Urgency</h4></div>
-                                    <div class="col-10 pl-0">
-                                        <pre><code>current.urgency = Math.round(
-    (
-                                        <span class="codeLabel referenceGroup2">[{{ productivity_impact.label }}]</span> + (
-            (<span class="codeLabel referenceGroup4">[{{ caller_vip.label }}]</span> == true) ?
-                ((<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">1</span> : <span class="codeNumber">2</span>) :
-                ((<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">3</span> : <span class="codeNumber">4</span>)
-        )
-    ) * <span class="codeNumber">0.35</span>
-);</code></pre>
-                                    </div>
-                                </div>
-                                <div class="row flex-nowrap">
-                                    <div class="col-2"></div>
-                                    <div class="col-10 pl-0">
-                                        <pre>&rArr;  <code>( <span class="codeLabel referenceGroup2">{{ productivity_impact.value }}</span> + <strong>(</strong>
-        (<span class="codeNumber referenceGroup4">[{{ caller_vip.label }}: {{ caller_vip.value }}]</span> == true) ?
-            ((<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">1</span> : <span class="codeNumber">2</span>) :
-            ((<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }}]</span> == true) ? <span class="codeNumber">3</span> : <span class="codeNumber">4</span>)
-                                        <strong>)</strong> ) * <span class="codeNumber">0.35</span></code></pre>
-                                    </div>
-                                </div>
-                                <div class="row flex-nowrap">
-                                    <div class="col-2"></div>
-                                    <div class="col-10 pl-0">
-                                        <pre>&rArr;  <code>( <span class="codeNumber referenceGroup2">{{ productivity_impact.value }}</span> + <strong>(</strong>
-        (<span class="codeLabel referenceGroup3">[{{ is_mission_related.label }}: {{ is_mission_related.value == "Yes" }}]</span> == true) ? <span class="codeNumber">{{ (caller_vip.value) ? 1 : 3 }}</span> : <span class="codeNumber">{{ (caller_vip.value) ? 2 : 4 }}</span>
-                                        <strong>)</strong> ) * <span class="codeNumber">0.35</span></code></pre>
-                                    </div>
-                                </div>
-                                <div class="row flex-nowrap">
-                                    <div class="col-2"></div>
-                                    <div class="col-10 pl-0">
-                                        <pre>&rArr;  <code><strong>{{ urgency.value }}</strong> = (<span class="codeNumber referenceGroup2">{{ productivity_impact.value }}</span> + <span class="codeNumber">{{ (caller_vip.value) ? ((is_mission_related.value == "Yes") ? 1 : 2) : ((is_mission_related.value == "Yes") ? 3 : 4) }}</span>) * <span class="codeNumber">0.35</span></code></pre>
-                                        <pre class="alert-success"><code><strong>Result: {{ urgency.rounded }}</strong> = Math.round(<strong>{{ urgency.value }}</strong>);</code></pre>
+                                <div class="container-fluid fixed-scrollable-container">
+                                    <div ng-repeat="m in priorityMatcherRules" ng-class="m.rowClass">
+                                        <div class="col-2 font-weight-bold">{{m.order}}</div>
+                                        <div class="col-2">{{m.impact}} - {{m.impactName}}</div>
+                                        <div class="col-2">{{m.urgency}} - {{m.urgencyName}}</div>
+                                        <div class="col-2">{{m.is_mission_relatedText}}</div>
+                                        <div class="col-2">{{m.vip_priorityText}}</div>
+                                        <div class="col-2">{{m.incident_priority}} - {{m.incident_priorityName}}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <table>
-                            <caption>Other Incident Management Behaviors</caption>
-                            <thead>
-                                <tr>
-                                    <th scope="col">Property</th>
-                                    <th scope="col">Value</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">Auto-Close</th>
-                                    <td>7 days after incident is <strong>resolved</strong>.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        <div class="card">
+                            <div class="card-header p-1" accordion-group-toggle-on-click="incidentProducer"><h2 class="card-title mb-0">Incident Producer</h2></div>
+                            <div class="card-body" accordion-group-content-item="incidentProducer">
+                                The incident record producer for incidents prompts the user to select several options which serve as a guide for establishing the urgency and impact, which in turn determines the overall priority.
+                                Following is a working example of the relevant logic which uses the exact same JavaScript code that is used in the actual ServiceNow instance:
+                                <div class="card" ng-controller="producerEmulatorController as producerEmulator">
+                                    <div class="card-header"><h3>Example Simulation</h3></div>
+                                    <div class="card-body">
+                                        <div class="card">
+                                            <div class="card-header"><h4>Input</h4></div>
+                                            <div class="card-body container-fluid">
+                                                <div class="form-row flex-nowrap">
+                                                    <div class="form-group col-6">
+                                                        <label>What affect does this have on productivity?</label>
+                                                        <div class="form-check" ng-repeat="pi in producerEmulator.productivity_impact.options">
+                                                            <input class="form-check-input" type="radio" name="usersImpacted" id="{{pi.id}}" ng-model="producerEmulator.productivity_impact.selectedValue" ng-value="pi.value" />
+                                                            <label class="form-check-label" for="{{pi.id}}">{{pi.text}}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-6">
+                                                        <label>How widespread is this incident?</label>
+                                                        <div class="form-check" ng-repeat="ui in producerEmulator.users_impacted.options">
+                                                            <input class="form-check-input" type="radio" name="productivityImpact" id="{{ui.id}}" ng-model="producerEmulator.users_impacted.selectedValue" ng-value="ui.value" />
+                                                            <label class="form-check-label" for="{{ui.id}}">{{ui.text}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row flex-nowrap">
+                                                    <div class="form-group col-6">
+                                                        <label for="inputState">Is this mission related?</label>
+                                                        <select name="repeatSelect" id="repeatSelect" class="form-control" ng-model="producerEmulator.is_mission_related.selectedValue">
+                                                            <option ng-repeat="option in producerEmulator.is_mission_related.options" value="{{option.value}}">{{option.text}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="productivityImpact" id="isCallerVip" ng-model="producerEmulator.is_caller_vip" />
+                                                            <label class="form-check-label" for="isCallerVip">Emulate scenario as VIP caller</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header"><h4>Calculations</h4></div>
+                                            <div class="card-body container-fluid">
+                                                <div class="alert-warning" ng-show="producerEmulator.noUserImpactSelection">
+                                                    Level of enterprise user impact not indicated. Using same value as productivity impact (<span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span>)
+                                                </div>
+                                                <div class="alert-warning" ng-show="producerEmulator.noProductivityImpactSelection">
+                                                    Productivity impact not indicated. Using same value as the level of enterprise user impact (<span class="codeNumber">{{producerEmulator._effective_user_impact}}</span>)
+                                                </div>
+                                                <div class="alert-warning" ng-show="producerEmulator.noImpactSelection">
+                                                    Neither Productivity impact nor number of affected users were indicated. Applying automatic values based off of mission-related and vip status:
+                                                    <code class="multi-line">if <span class="codeLabel">caller.vip</span> then <span class="codeNumber">2</span>
+else if <span class="codeLabel">is_mission_related</span> then <span class="codeNumber">3</span>
+otherwise <span class="codeNumber">4</span> <span class="text-success">&rArr;</span>
+<var class="codeLabel">productivity_impact</var> = <var class="codeLabel">users_impacted</var> = <span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span>;</code>
+                                                </div>
+                                                <h5>Formula for calculating impact</h5>
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-4">Base formula for impact value:</div>
+                                                        <div class="col-8"><code>(<var class="codeLabel">productivity_impact</var> + <var class="codeLabel">users_impacted</var>) / (<span class="codeNumber"><sup>11</sup>/<sub>3</sub></span>)</code></div>
+                                                    </div>
+                                                    <div class="row" ng-show="producerEmulator.baseFormulas">
+                                                        <div class="col-4 text-right"><span class="text-success">&rArr;</span></div>
+                                                        <div class="col-8"><code>(<span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span> + <span class="codeNumber">{{producerEmulator._effective_user_impact}}</span>) / (<span class="codeNumber"><sup>11</sup>/<sub>3</sub></span>) = <span class="codeNumber font-weight-bold">{{producerEmulator.impact}}</span></code></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4">Adjusted for VIP status or mission-related:</div>
+                                                        <div class="col-8"><code>(<var class="codeLabel">productivity_impact</var> + <var class="codeLabel">users_impacted</var>) * <span class="codeNumber">1.125</span> / (<span class="codeNumber"><sup>11</sup>/<sub>3</sub></span>) = <span class="codeNumber font-weight-bold">{{producerEmulator.impact}}</span></code></div>
+                                                    </div>
+                                                    <div class="row" ng-show="producerEmulator.vipOrMission">
+                                                        <div class="col-4 text-right"><span class="text-success">&rArr;</span></div>
+                                                        <div class="col-8"><code>(<span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span> + <span class="codeNumber">{{producerEmulator._effective_user_impact}}</span>) * <span class="codeNumber">1.125</span> / (<span class="codeNumber"><sup>11</sup>/<sub>3</sub></span>) = <span class="codeNumber font-weight-bold">{{producerEmulator.impact}}</span></code></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4">Adjusted for VIP status AND mission-related:</div>
+                                                        <div class="col-8"><code>(<var class="codeLabel">productivity_impact</var> + <var class="codeLabel">users_impacted</var>) * <span class="codeNumber">1.375</span> / (<span class="codeNumber"><sup>11</sup>/<sub>3</sub></span>)</code></div>
+                                                    </div>
+                                                    <div class="row" ng-show="producerEmulator.vipAndMission">
+                                                        <div class="col-4 text-right"><span class="text-success">&rArr;</span></div>
+                                                        <div class="col-8"><code>(<span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span> + <span class="codeNumber">{{producerEmulator._effective_user_impact}}</span>) * <span class="codeNumber">1.375</span> / (<span class="codeNumber"><sup>11</sup>/<sub>3</sub></span>) = <span class="codeNumber font-weight-bold">{{producerEmulator.impact}}</span></code></div>
+                                                    </div>
+                                                </div>
+                                                <h5>Formula for calculating urgency</h5>
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-4">Base formula:</div>
+                                                        <div class="col-8"><code>(<var class="codeLabel">productivity_impact</var> + <span class="codeNumber">4</span>) * <span class="codeNumber">0.35</span></code></div>
+                                                    </div>
+                                                    <div class="row" ng-show="producerEmulator.baseFormulas">
+                                                        <div class="col-4 text-right"><span class="text-success">&rArr;</span></div>
+                                                        <div class="col-8"><code>(<span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span> + <span class="codeNumber">4</span>) * <span class="codeNumber">0.35</span> = <span class="codeNumber font-weight-bold">{{producerEmulator.urgency}}</span></code></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4">Adjusted for mission-related:</div>
+                                                        <div class="col-8"><code>(<var class="codeLabel">productivity_impact</var> + <span class="codeNumber">3</span>) * <span class="codeNumber">0.35</span></code></div>
+                                                    </div>
+                                                    <div class="row" ng-show="producerEmulator.missionAndNotVip">
+                                                        <div class="col-4 text-right"><span class="text-success">&rArr;</span></div>
+                                                        <div class="col-8"><code>(<span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span> + <span class="codeNumber">3</span>) * <span class="codeNumber">0.35</span> = <span class="codeNumber font-weight-bold">{{producerEmulator.urgency}}</span></code></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4">Adjusted for VIP status:</div>
+                                                        <div class="col-8"><code>(<var class="codeLabel">productivity_impact</var> + <span class="codeNumber">2</span>) * <span class="codeNumber">0.35</span></code></div>
+                                                    </div>
+                                                    <div class="row" ng-show="producerEmulator.is_caller_vip">
+                                                        <div class="col-4 text-right"><span class="text-success">&rArr;</span></div>
+                                                        <div class="col-8"><code>(<span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span> + <span class="codeNumber">2</span>) * <span class="codeNumber">0.35</span> = <span class="codeNumber font-weight-bold">{{producerEmulator.urgency}}</span></code></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4">Adjusted for VIP status AND mission-related:</div>
+                                                        <div class="col-8"><code>(<var class="codeLabel">productivity_impact</var> + <span class="codeNumber">1</span>) * <span class="codeNumber">0.35</span></code></div>
+                                                    </div>
+                                                    <div class="row" ng-show="producerEmulator.vipAndMission">
+                                                        <div class="col-4 text-right"><span class="text-success">&rArr;</span></div>
+                                                        <div class="col-8"><code>(<span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span> + <span class="codeNumber">1</span>) * <span class="codeNumber">0.35</span> = <span class="codeNumber font-weight-bold">{{producerEmulator.urgency}}</span></code></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header"><h4>Result</h4></div>
+                                            <div class="card-body">
+                                                <table class="table table-striped fieldsGrid">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>Impact:</th>
+                                                            <td><output>{{producerEmulator.impact}}</output></td>
+                                                            <th>Urgency:</th>
+                                                            <td><output>{{producerEmulator.urgency}}</output></td>
+                                                            <th>Priority:</th>
+                                                            <td><output>{{producerEmulator.priority}}</output></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="6" class="font-weight-bold">Note inserted into incident:</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="6"><output class="pre-scrollable multi-line">{{producerEmulator.comment}}</output></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header p-1" accordion-group-toggle-on-click="arbitraryCardName2"><h2 class="card-title mb-0">Card 2 Title</h2></div>
+                            <div class="card-body" accordion-group-content-item="arbitraryCardName2">
+                                Card 2 Content
+                            </div>
+                        </div>
+                    </accordion-group>
                 </section>
                 <aside class="container-fluid col-4 col-lg-3">
                     <div class="card">

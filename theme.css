@@ -91,6 +91,13 @@ table.fieldsGrid tbody td + th { padding-left: 4px; }
 /* Indicates an automatically calculated value */
 td.autoValue { color: var(--orange); }
 
+.fixed-scrollable-container {
+    height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+}
+
 output {
     border: 1px solid var(--dark);
     padding: 1px;
@@ -139,8 +146,8 @@ samp.navPath {
 .cursor-copy { cursor: copy; }
 .cursor-pointer { cursor: pointer; }
 
-.codeLabel { color: saddlebrown; }
-.codeNumber { color: darkblue; }
+.codeLabel { color: sandybrown; }
+.codeNumber { color: cyan; }
 
 /* For using colors to quickly demonstrate cross-referenced information */
 .referenceGroup1 { background-color: lightblue; }
@@ -149,6 +156,8 @@ samp.navPath {
 .referenceGroup4 { background-color: lightpink; }
 .referenceGroup5 { background-color: lightsalmon; }
 .referenceGroup6 { background-color: yellow; }
+
+.bg-gray { background-color:lightgray; }
 
 .fill-blue { fill: var(--blue); }
 .fill-indigo { fill: var(--indigo); }
