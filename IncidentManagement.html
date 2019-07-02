@@ -31,22 +31,22 @@
                                 The field values are compared in each rule in the specified order, and uses the priority of the first matching rule.
                                 <div class="container-fluid">
                                     <div class="row flex-nowrap">
-                                        <div ng-repeat="pc in priorityMatcherColumns" class="col-2 font-weight-bold p-0">
-                                            <button ng-class="pc.buttonClass" ng-click="pc.toggle()" onclick="return false;" data-toggle="tooltip" data-placement="top" title="{{pc.tooltip}}">
-                                                {{pc.label}}
-                                                <img ng-src="{{pc.arrowUrl}}" ng-show="pc.showArrow" width="12" height="12" alt="{{pc.alt}}" />
+                                        <div ng-repeat="pc in incidentManagment.priorityMatcherColumns" class="col-2 font-weight-bold p-0">
+                                            <button ng-class="pc.buttonClass" ng-click="pc.toggleSort()" onclick="return false;" data-toggle="tooltip" data-placement="top" title="{{pc.buttonTooltip}}">
+                                                {{pc.headingText}}
+                                                <img ng-src="{{pc.buttonImageUrl}}" ng-show="pc.isCurrent" width="12" height="12" alt="{{pc.imageAltText}}" />
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="container-fluid fixed-scrollable-container">
-                                    <div ng-repeat="m in priorityMatcherRules" ng-class="m.rowClass">
+                                    <div ng-repeat="m in incidentManagment.priorityMatcherRules" ng-class="m.rowClass">
                                         <div class="col-2 font-weight-bold">{{m.order}}</div>
-                                        <div class="col-2">{{m.impact}} - {{m.impactName}}</div>
-                                        <div class="col-2">{{m.urgency}} - {{m.urgencyName}}</div>
-                                        <div class="col-2">{{m.is_mission_relatedText}}</div>
-                                        <div class="col-2">{{m.vip_priorityText}}</div>
-                                        <div class="col-2">{{m.incident_priority}} - {{m.incident_priorityName}}</div>
+                                        <div class="col-2">{{m.impact_value}} - {{m.impact_display_text}}</div>
+                                        <div class="col-2">{{m.urgency_value}} - {{m.urgency_display_text}}</div>
+                                        <div class="col-2">{{m.is_mission_related_display_text}}</div>
+                                        <div class="col-2">{{m.vip_priority_display_text}}</div>
+                                        <div class="col-2">{{m.incident_priority_value}} - {{m.incident_priority_display_text}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -67,14 +67,14 @@
                                                         <label>What affect does this have on productivity?</label>
                                                         <div class="form-check" ng-repeat="pi in producerEmulator.productivity_impact.options">
                                                             <input class="form-check-input" type="radio" name="usersImpacted" id="{{pi.id}}" ng-model="producerEmulator.productivity_impact.selectedValue" ng-value="pi.value" />
-                                                            <label class="form-check-label" for="{{pi.id}}">{{pi.text}}</label>
+                                                            <label class="form-check-label" for="{{pi.id}}">{{pi.label}}</label>
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-6">
                                                         <label>How widespread is this incident?</label>
                                                         <div class="form-check" ng-repeat="ui in producerEmulator.users_impacted.options">
                                                             <input class="form-check-input" type="radio" name="productivityImpact" id="{{ui.id}}" ng-model="producerEmulator.users_impacted.selectedValue" ng-value="ui.value" />
-                                                            <label class="form-check-label" for="{{ui.id}}">{{ui.text}}</label>
+                                                            <label class="form-check-label" for="{{ui.id}}">{{ui.label}}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -82,7 +82,7 @@
                                                     <div class="form-group col-6">
                                                         <label for="inputState">Is this mission related?</label>
                                                         <select name="repeatSelect" id="repeatSelect" class="form-control" ng-model="producerEmulator.is_mission_related.selectedValue">
-                                                            <option ng-repeat="option in producerEmulator.is_mission_related.options" value="{{option.value}}">{{option.text}}</option>
+                                                            <option ng-repeat="option in producerEmulator.is_mission_related.options" ng-value="option.value">{{option.label}}</option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-6">
@@ -95,8 +95,8 @@
                                             </div>
                                         </div>
                                         <div class="card">
-                                            <div class="card-header"><h4>Calculations</h4></div>
-                                            <div class="card-body container-fluid">
+                                            <div class="card-header" ng-click="producerEmulator.toggleShowCalculations()"><h4>Calculations</h4></div>
+                                            <div class="card-body container-fluid" ng-show="producerEmulator.showCalculations">
                                                 <div class="alert-warning" ng-show="producerEmulator.noUserImpactSelection">
                                                     Level of enterprise user impact not indicated. Using same value as productivity impact (<span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span>)
                                                 </div>
@@ -116,7 +116,7 @@ otherwise <span class="codeNumber">4</span> <span class="text-success">&rArr;</s
                                                         <div class="col-4">Base formula for impact value:</div>
                                                         <div class="col-8"><code>(<var class="codeLabel">productivity_impact</var> + <var class="codeLabel">users_impacted</var>) / (<span class="codeNumber"><sup>11</sup>/<sub>3</sub></span>)</code></div>
                                                     </div>
-                                                    <div class="row" ng-show="producerEmulator.baseFormulas">
+                                                    <div class="row" ng-hide="producerEmulator.vipAndMission">
                                                         <div class="col-4 text-right"><span class="text-success">&rArr;</span></div>
                                                         <div class="col-8"><code>(<span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span> + <span class="codeNumber">{{producerEmulator._effective_user_impact}}</span>) / (<span class="codeNumber"><sup>11</sup>/<sub>3</sub></span>) = <span class="codeNumber font-weight-bold">{{producerEmulator.impact}}</span></code></div>
                                                     </div>
@@ -143,7 +143,7 @@ otherwise <span class="codeNumber">4</span> <span class="text-success">&rArr;</s
                                                         <div class="col-4">Base formula:</div>
                                                         <div class="col-8"><code>(<var class="codeLabel">productivity_impact</var> + <span class="codeNumber">4</span>) * <span class="codeNumber">0.35</span></code></div>
                                                     </div>
-                                                    <div class="row" ng-show="producerEmulator.baseFormulas">
+                                                    <div class="row" ng-hide="producerEmulator.vipAndMission">
                                                         <div class="col-4 text-right"><span class="text-success">&rArr;</span></div>
                                                         <div class="col-8"><code>(<span class="codeNumber">{{producerEmulator.effective_productivity_impact}}</span> + <span class="codeNumber">4</span>) * <span class="codeNumber">0.35</span> = <span class="codeNumber font-weight-bold">{{producerEmulator.urgency}}</span></code></div>
                                                     </div>
