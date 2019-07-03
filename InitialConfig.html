@@ -200,9 +200,9 @@
                                     scope, and then close out the <var class="targetName">Application Studio</var> browser tab.
                                 </li>
                                 <li>
-                                    In the original ServiceNow browser tab, you will need to refresh the screen to see the new menu item that was added when this application was imported.
+                                    In the original ServiceNow browser tab, you will need to refresh the browser screen to see the new menu item that was added when this application was imported.
                                 </li>
-                                <li>Navigate to <samp class="navPath"><var>System Policy</var> &rArr; <var>Rules</var> &rArr; <var>Caller VIP Lookup Rules</var></samp>.</li>
+                                <li>Navigate to <samp class="navPath"><var>Physical Networks</var> &rArr; <var>Physical Networks</var></samp>.</li>
                                 <li>Add the names of the physical networks. If there are any existing items you do not want, you may delete them.</li>
                                 <li>Change to the <var class="targetName">Global</var> application scope when finished.</li>
                             </ol>
@@ -219,7 +219,102 @@
                             <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h3>Known Issues</h3>
+                                    <h3>Known Issues and Warnings</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="detail">
+                                        The following preview problems may occur, in which case, follow the recommended action:
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Remote Update</th>
+                                                    <th scope="col">Description</th>
+                                                    <th scope="col">Recommended Action</th>
+                                                    <th scope="col">Missing Item</th>
+                                                    <th scope="col">Missing Item Table</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>sp_carousel_slide_b4b21c71db8d3f00b53f341f7c9619f1</td>
+                                                    <td>Could not find a record in sp_instance_carousel for column carousel referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>sys_grid_canvas_pane_71107ce2db707700b53f341f7c9619a6</td>
+                                                    <td>Could not find a record in sys_portal for column portal_widget referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                    <td>d300b0e2db707700b53f341f7c96191b</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>sys_template_4b0c59fb0a0a0b990034955050427d5f</td>
+                                                    <td>Could not find a record in sys_user for column user referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>sys_template_4b175dd20a0a0b99004f35e506563fc6</td>
+                                                    <td>Could not find a record in sys_user for column user referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>sys_grid_canvas_pane_5b00b0e2db707700b53f341f7c96191c</td>
+                                                    <td>Could not find a record in sys_portal for column portal_widget referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>sys_grid_canvas_a6bfa0e2db707700b53f341f7c961958</td>
+                                                    <td>Could not find a record in sys_portal_page for column legacy_page referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>pa_tabs_22bfa0e2db707700b53f341f7c96195a</td>
+                                                    <td>Could not find a record in sys_portal_page for column page referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>sys_grid_canvas_pane_dd20f426db707700b53f341f7c961974</td>
+                                                    <td>Could not find a record in sys_portal for column portal_widget referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>sc_category_2c0b59874f7b4200086eeed18110c71f</td>
+                                                    <td>Could not find a record in sc_homepage_renderer for column homepage_renderer referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>sc_category_b0fdfb01932002009ca87a75e57ffbe9</td>
+                                                    <td>Could not find a record in sc_homepage_renderer for column homepage_renderer referenced in this update</td>
+                                                    <td class="table-success">Accept remote update</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <h5 class="text-warning">Data Loss Warning</h5>
+                                        When committing the update set, you will get a warning that states that all items in sys_dictionary_u_vip_priority_lookup_matcher_rules_u_caller will be deleted.
+                                        It is okay to proceed, because this update set will be re-defining these lookup rules. However, the lookup rules will probably need to be cleaned up afterward:
+                                        <ol>
+                                            <li>Navigate to <samp class="navPath"><var>System Policy</var> &rArr; <var>Rules</var> &rArr; <var>Caller VIP Lookup Rules</var></samp>.</li>
+                                            <li>Delete any items which have an empty <var class="targetName">Caller</var>.</li>
+                                        </ol>
+                                    </div>
                                 </div>
                             </div>
                         </div>

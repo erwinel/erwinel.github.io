@@ -5,6 +5,7 @@
 /// <reference path="app.d.ts" />
 declare namespace uriBuilder {
     type UriSchemeSeparator = "://" | ":/" | ":";
+    type UriPathSegmentSeparator = "/" | "\\" | ":";
     function getUriSchemeInfo(uri: string): UriSchemeInfo | undefined;
     interface IUriSchemeOption extends IUriSchemeProperties {
         name: string;

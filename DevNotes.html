@@ -13,23 +13,41 @@
     <script type="text/javascript" src="lib/angular.js/angular.js"></script>
     <script type="text/javascript" src="App/sys.js"></script>
     <script type="text/javascript" src="App/app.js"></script>
-    <script type="text/javascript" src="App/colorBuilder.js"></script>
+    <script type="text/javascript" src="App/accordionGroup.js"></script>
 </head>
 <body>
     <main-app-page-head></main-app-page-head>
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <section class="container-fluid col-8 col-lg-9"></section>
+            <section class="container-fluid col-8 col-lg-9">
+                <form action="Snippets.html">
+                    <div class="card">
+                        <div class="card-header p-1">
+                            <h2 class="card-title mb-0">UI Actions</h2>
+                        </div>
+                        <div class="card-body">
+                            <accordion-group>
+                                <div class="card">
+                                    <div class="card-header p-1" accordion-group-toggle-on-click="updatePreviewProblems"><h2 class="card-title mb-0">Update Preview Problems</h2></div>
+                                    <div class="card-body" accordion-group-content-item="updatePreviewProblems">
+                                        https://dev75813.service-now.com/sys_update_preview_problem_list.do
+                                    </div>
+                                </div>
+                            </accordion-group>
+                        </div>
+                    </div>
+                </form>
+            </section>
             <aside class="container-fluid col-4 col-lg-3">
                 <div class="card">
                     <div class="card-header"><h4>Resource Pages</h4></div>
                     <div class="card-body">
                         <ul class="nav flex-column">
-                            <li class="nav-item"><a href="DevNotes.html" class="nav-link">Development Notes</a></li>
+                            <li class="nav-item"><a href="#" class="nav-link" onclick="return false;">Development Notes</a></li>
                             <li class="nav-item"><a href="Snippets.html" class="nav-link">Code Snippets</a></li>
                             <li class="nav-item"><a href="RegexTester.html" class="nav-link">Regex Tester</a></li>
                             <li class="nav-item"><a href="URIBuilder.html" class="nav-link">URI Builder</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link active" onclick="return false;">Color Builder</a></li>
+                            <li class="nav-item"><a href="ColorEditor.html" class="nav-link">Color Editor</a></li>
                         </ul>
                         <small><a href="SiteDesignNotes.html" class="nav-link">Documentation Website Design Notes</a></small>
                     </div>

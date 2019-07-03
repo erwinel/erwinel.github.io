@@ -19,82 +19,72 @@
     <main-app-page-head></main-app-page-head>
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <section class="container-fluid col-8 col-lg-9" ng-controller="uriBuilderController">
+            <section class="container-fluid col-8 col-lg-9" ng-controller="uriBuilderController as uriBuilder">
                 <form action="UriBuilder.html" method="get">
-                    <div class="form-row">
-                        <div class="form-group col-12">
-                            <label for="hrefTextBox" class="col-form-label-lg">{{href.fieldName}}</label>
-                            <input type="text" id="hrefTextBox" class="form-control" ng-model="href.inputText" ng-change="href.onChange()" />
+                    <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs">
+                                <li class="nav-item"><button ng-class="uriBuilder.parseUriButtonClass" ng-click="uriBuilder.isBuildUriMode = false" onclick="return false;" ng-disabled="uriBuilder.isParseUriMode">Parse</button></li>
+                                <li class="nav-item"><button ng-class="uriBuilder.buildUriButtonClass" ng-click="uriBuilder.isBuildUriMode = true" onclick="return false;" ng-disabled="uriBuilder.isBuildUriMode">Build</button></li>
+                            </ul>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-12">
-                            <div class="input-group">
-                                <div class="input-group-prepend"><input class="form-check" type="checkbox" id="originCheckBox" ng-model="hasOrigin.isChecked" ng-change="hasOrigin.onChange()" /></div>
-                                <label class="col-form-label-lg pl-1" for="originCheckBox">Origin</label>
+                        <div class="card-body" ng-show="uriBuilder.isParseUriMode">
+                            <div class="form-row">
+                                <div class="form-group col-12">
+                                    <label for="inputUriTextBox" class="col-form-label-lg">URI String</label>
+                                    <input type="text" id="inputUriTextBox" class="form-control form-control-lg" ng-model="uriBuilder.href" />
+                                </div>
                             </div>
+                            <table class="table table-striped fieldsGrid">
+                                <tbody>
+                                    <tr ng-show="uriBuilder.isAbsolute">
+                                        <th>Type:</th>
+                                        <td>Absolute</td>
+                                        <th><label for="parseSchemeNameRoTextBox" class="col-form-label">Scheme:</label></th>
+                                        <td>
+                                            <input type="text" id="parseSchemeNameRoTextBox" class="form-control form-control" ng-model="uriBuilder.schemeName" readonly />
+                                            <span class="text-info" ng-show="">{{uriBuilder.schemeDescription}}</span>
+                                            <div class="alert-danger" ng-show="uriBuilder.hasSchemeError">{{uriBuilder.schemeErrorMessage}}</div>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="uriBuilder.isRelative">
+                                        <th>Type:</th>
+                                        <td colspan="3">{{uriBuilder.uriType}}</td>
+                                    </tr>
+                                    <tr ng-show="uriBuilder.hasUserInfo">
+                                        <th>User Name:</th>
+                                        <td ng-hide="uriBuilder.hasPassword" colspan="3"><input type="text" id="parseUserNameRoTextBox" class="form-control form-control" ng-model="uriBuilder.userName" readonly /></td>
+                                        <td ng-show="uriBuilder.hasPassword"><input type="text" id="parseUserNameRoTextBox" class="form-control form-control" ng-model="uriBuilder.userName" readonly /></td>
+                                        <th ng-show="uriBuilder.hasPassword"><label for="parsePasswordRoTextBox" class="col-form-label">Password:</label></th>
+                                        <td ng-show="uriBuilder.hasPassword"><input type="text" id="parsePasswordRoTextBox" class="form-control form-control" ng-model="uriBuilder.password" readonly /></td>
+                                    </tr>
+                                    <tr ng-show="uriBuilder.hasAuthority">
+                                        <th>Host Name:</th>
+                                        <td><input type="text" id="parseHostNameRoTextBox" class="form-control form-control" ng-model="uriBuilder.hostName" readonly /></td>
+                                        <th ng-show="uriBuilder.hasPort"><label for="parsePortNumberRoTextBox" class="col-form-label">Port:</label></th>
+                                        <th ng-hide="uriBuilder.hasPort"><label for="parsePortNumberRoTextBox" class="col-form-label">Default Port:</label></th>
+                                        <td>
+                                            <input type="text" id="parsePortNumberRoTextBox" class="form-control form-control" ng-model="uriBuilder.portDisplayText" readonly />
+                                            <div class="alert-danger" ng-show="uriBuilder.hasPortError">{{uriBuilder.portErrorMessage}}</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Path:</th>
+                                        <td colspan="3">{{uriBuilder.pathString}}</td>
+                                    </tr>
+                                    <tr ng-show="uriBuilder.hasQuery">
+                                        <th>Query String:</th>
+                                        <td colspan="3">{{uriBuilder.queryString}}</td>
+                                    </tr>
+                                    <tr ng-show="uriBuilder.hasFragment">
+                                        <th>Fragment:</th>
+                                        <td colspan="3">{{uriBuilder.fragment}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
-                    <div class="form-row" ng-show="hasOrigin.enableRelated">
-                        <div class="form-group col-8">
-                            <label for="schemeNameDropdown">{{href.fieldName}}</label>
-                            <select id="schemeNameDropdown" class="form-control" ng-model="selectedScheme" ng-change="scheme.onChange()">
-                                <option ng-repeat="item in schemeOptions" value="{{item.name}}">{{item.displayText}})</option>
-                            </select>
-                            <input type="text" id="schemeNameTextBox" class="form-control" readonly="readonly" ng-show="selectedScheme.length == 0" ng-model="scheme.inputText" ng-change="scheme.onChange()" />
-                        </div>
-                        <div class="form-group col-4">
-                            <label for="selectedSeparatorControl">Separator</label>
-                            <select id="selectedSeparatorControl" class="form-control" ng-model="selectedSeparator" ng-options="value in separatorOptions" ng-show="selectedScheme.length == 0" ng-change="scheme.onChange()"></select>
-                            <input type="text" id="selectedSeparatorControl" class="form-control" readonly="readonly" ng-model="selectedSeparator" ng-hide="selectedScheme.length == 0" />
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-12">
-                            <div class="input-group">
-                                <div class="input-group-prepend"><input class="form-check" type="checkbox" id="userInfoCheckBox" ng-model="hasUsername.isChecked" ng-change="hasUsername.onChange()" /></div>
-                                <label class="col-form-label-lg pl-1" for="userInfoCheckBox">User Info</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row" ng-show="hasUsername.enableRelated">
-                        <div class="form-group col-6">
-                            <label for="usernameTextBox">{{href.fieldName}}</label>
-                            <input type="text" id="usernameTextBox" class="form-control" ng-model="username.inputText" ng-change="username.onChange()" />
-                        </div>
-                        <div class="form-group col-6">
-                            <div class="input-group">
-                                <div class="input-group-prepend"><input class="form-check" type="checkbox" id="hasPasswordCheckBox" ng-model="hasPassword.isChecked" ng-change="hasPassword.onChange()" /></div>
-                                <label class="pl-1" for="hasPasswordCheckBox">{{href.fieldName}}</label>
-                            </div>
-                            <input type="text" id="passwordTextBox" class="form-control" ng-show="hasPassword.enableRelated" ng-model="password.inputText" ng-change="password.onChange()" />
-                        </div>
-                    </div>
-                    <div class="form-row" ng-show="hasOrigin.enableRelated">
-                        <div class="col-12">
-                            <div class="input-group">
-                                <div class="input-group-prepend"><input class="form-check" type="checkbox" id="hasHostCheckBox" ng-model="hasHost.isChecked" ng-change="hasHost.onChange()" /></div>
-                                <label class="col-form-label-lg pl-1" for="hasHostCheckBox">Host</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row" ng-show="hasHost.enableRelated">
-                        <div class="form-group col-8">
-                            <label for="hostTextBox">{{href.fieldName}}</label>
-                            <input type="text" id="hostTextBox" name="hostTextBox" class="form-control" ng-model="host.inputText" ng-change="host.onChange()" />
-                        </div>
-                        <div class="form-group col-4">
-                            <div class="input-group">
-                                <div class="input-group-prepend"><input class="form-check" type="checkbox" id="hasPortCheckBox" ng-model="hasPort.isChecked" ng-change="hasPort.onChange()" /></div>
-                                <label class="pl-1" for="hasPortCheckBox">{{href.fieldName}}</label>
-                            </div>
-                            <input type="text" id="portTextBox" class="form-control" ng-show="hasPort.enableRelated" ng-model="port.inputText" ng-change="port.onChange()" />
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-12">
-                            <label for="pathTextBox" class="col-form-label-lg">{{href.fieldName}}</label>
-                            <input type="text" id="pathTextBox" class="form-control" ng-model="pathString.inputText" ng-change="pathString.onChange()" />
+                        <div class="card-body" ng-show="uriBuilder.isBuildUriMode">
+
                         </div>
                     </div>
                 </form>
@@ -104,6 +94,7 @@
                     <div class="card-header"><h4>Resource Pages</h4></div>
                     <div class="card-body">
                         <ul class="nav flex-column">
+                            <li class="nav-item"><a href="DevNotes.html" class="nav-link">Development Notes</a></li>
                             <li class="nav-item"><a href="Snippets.html" class="nav-link">Code Snippets</a></li>
                             <li class="nav-item"><a href="RegexTester.html" class="nav-link">Regex Tester</a></li>
                             <li class="nav-item"><a href="#" class="nav-link active" onclick="return false;">URI Builder</a></li>
