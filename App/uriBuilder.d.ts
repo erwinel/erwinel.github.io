@@ -4,6 +4,8 @@
 /// <reference path="sys.d.ts" />
 /// <reference path="app.d.ts" />
 declare namespace uriBuilder {
+}
+declare namespace uriBuilder_old {
     type UriSchemeSeparator = "://" | ":/" | ":";
     type UriPathSegmentSeparator = "/" | "\\" | ":";
     function getUriSchemeInfo(uri: string): UriSchemeInfo | undefined;

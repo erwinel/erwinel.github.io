@@ -4,7 +4,87 @@
 /// <reference path="sys.ts" />
 /// <reference path="app.ts" />
 var uriBuilder;
-(function (uriBuilder) {
+(function (uriBuilder_1) {
+    // #region evaluation-item directive
+    class EvaluationItemController {
+        constructor($scope, $element, $attrs, $q, $log) {
+            this.$scope = $scope;
+            this.$element = $element;
+            this.$attrs = $attrs;
+            this.$q = $q;
+            this.$log = $log;
+            $scope.evaluationItem = this;
+            let uriBuilder = $scope.uriBuilder;
+            if (sys.isNil(uriBuilder) || !(uriBuilder instanceof UriBuilderController)) {
+                let rootId = $scope.$root.$id;
+                for (let parentScope = $scope.$parent; !sys.isNil(parentScope); parentScope = (parentScope.$id === rootId) ? undefined : parentScope.$parent) {
+                    if (!sys.isNil(parentScope.uriBuilder) && parentScope.uriBuilder instanceof UriBuilderController) {
+                        uriBuilder = parentScope.uriBuilder;
+                        break;
+                    }
+                }
+                if (sys.isNil(uriBuilder) || !(uriBuilder instanceof UriBuilderController))
+                    throw new Error("Unable to detect parent uriBuilder controller scope");
+            }
+            this._uriBuilder = uriBuilder;
+            uriBuilder.$scope.$watch("expression", (newValue, oldValue, uriBuilderScope) => {
+            });
+        }
+        $doCheck() {
+        }
+        static createDirective() {
+            return {
+                controller: ["$scope", "$element", "$attrs", "$q", "$log", EvaluationItemController],
+                controllerAs: "evaluationItem",
+                scope: {
+                    id: '=',
+                    success: '='
+                },
+                template: '',
+                transclude: true
+            };
+        }
+    }
+    app.appModule.directive("evaluationItem", EvaluationItemController.createDirective);
+    class RegexPatternController {
+        constructor($scope, $q, $log) {
+            this.$scope = $scope;
+            this.$q = $q;
+            this.$log = $log;
+            $scope.currentController = this;
+            let uriBuilder = $scope.uriBuilder;
+            if (sys.isNil(uriBuilder) || !(uriBuilder instanceof UriBuilderController)) {
+                let rootId = $scope.$root.$id;
+                for (let parentScope = $scope.$parent; !sys.isNil(parentScope); parentScope = (parentScope.$id === rootId) ? undefined : parentScope.$parent) {
+                    if (!sys.isNil(parentScope.uriBuilder) && parentScope.uriBuilder instanceof UriBuilderController) {
+                        uriBuilder = parentScope.uriBuilder;
+                        break;
+                    }
+                }
+                if (sys.isNil(uriBuilder) || !(uriBuilder instanceof UriBuilderController))
+                    throw new Error("Unable to detect parent uriBuilder controller scope");
+            }
+            this._uriBuilder = uriBuilder;
+        }
+        $doCheck() {
+        }
+    }
+    app.appModule.controller("regexPattern", ["$scope", "$q", "$log", RegexPatternController]);
+    class UriBuilderController {
+        constructor($scope, $log) {
+            this.$scope = $scope;
+            this.$log = $log;
+            $scope.uriBuilder = this;
+            $scope.inputItems = [{ id: 0 }];
+        }
+        $doCheck() {
+        }
+    }
+    app.appModule.controller("uriBuilder", ["$scope", "$log", UriBuilderController]);
+    // #endregion
+})(uriBuilder || (uriBuilder = {}));
+var uriBuilder_old;
+(function (uriBuilder_old) {
     const CSS_CLASS_VALID = "is-valid";
     const CSS_CLASS_INVALID = "is-invalid";
     const CSS_CLASS_TEXT_WARNING = "text-warning";
@@ -95,7 +175,7 @@ var uriBuilder;
             }
         }
     }
-    uriBuilder.getUriSchemeInfo = getUriSchemeInfo;
+    uriBuilder_old.getUriSchemeInfo = getUriSchemeInfo;
     class UriSchemeInfo {
         constructor(name, properties, description) {
             this.name = name;
@@ -256,7 +336,7 @@ var uriBuilder;
      * Uniform Resource notation
      **/
     UriSchemeInfo.uriScheme_urn = new UriSchemeInfo("urn", { supportsHost: false, schemeSeparator: ":" }, "Uniform Resource notation");
-    uriBuilder.UriSchemeInfo = UriSchemeInfo;
+    uriBuilder_old.UriSchemeInfo = UriSchemeInfo;
     class UriBuilderQueryItem {
         constructor(_id, _key, value, _onChangeCallback, _onDeleteCallback) {
             this._id = _id;
@@ -939,5 +1019,5 @@ var uriBuilder;
         { name: "", displayText: "(other)" }
     ];
     UriBuilderController._schemeSeparatorOptions = ["://", ":/", ":"];
-    app.appModule.controller("uriBuilderController", ["$Scope", UriBuilderController]);
-})(uriBuilder || (uriBuilder = {}));
+    app.appModule.controller("uriBuilderController_old", ["$Scope", UriBuilderController]);
+})(uriBuilder_old || (uriBuilder_old = {}));
