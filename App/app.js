@@ -464,6 +464,52 @@ var app;
         $onInit() { }
     }
     app.appModule.directive("copyToClipboardButton", ClipboardCopyController.createDirective);
+    app.appModule.directive("externalLink", () => {
+        return {
+            restrict: "E",
+            transclude: true,
+            scope: {
+                relativeUriExpression: "=?",
+                anchorClassExpression: "=?"
+            },
+            template: '<a ng-href="{{href}}" ng-class="anchorClass" target="_blank"><ng-transclude></ng-transclude></a>',
+            link: (scope, element, attr, controller) => {
+                let href = (typeof attr.ngHref === "string") ? attr.ngHref : ((typeof attr.href === "string") ? attr.href : "");
+                let relativeUri = (typeof scope.relativeUriExpression === "string") ? scope.relativeUriExpression : ((typeof attr.relativeUri === "string") ? attr.relativeUri : "");
+                if (relativeUri.length > 0) {
+                    if (href.length == 0)
+                        scope.href = (relativeUri.length > 0) ? relativeUri : "#";
+                    else {
+                        let url;
+                        try {
+                            url = new URL(relativeUri, href);
+                        }
+                        catch ( /* okay to ignore */_a) { /* okay to ignore */ }
+                        if (typeof url === "object" && url !== null)
+                            scope.href = url.href;
+                        else
+                            scope.href = href + relativeUri;
+                    }
+                }
+                else
+                    scope.href = (href.length == 0) ? "#" : href;
+                let n;
+                let c;
+                if (typeof attr.anchorClass === "string" && (c = attr.anchorClass.trim()).length > 0) {
+                    n = c.split(/\s+/g);
+                    if (typeof scope.anchorClassExpression === "string" && (c = scope.anchorClassExpression.trim()).length > 0)
+                        n = n.concat(c.split(/\s+/g));
+                }
+                else if (typeof scope.anchorClassExpression === "string" && (c = scope.anchorClassExpression.trim()).length > 0)
+                    n = c.split(/\s+/g);
+                else {
+                    scope.anchorClass = [];
+                    return;
+                }
+                scope.anchorClass = sys.unique(n, (x, y) => x === y);
+            }
+        };
+    });
     // #endregion
     // #region Target SyStem Configuration Information
     let cssValidationClass;

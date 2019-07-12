@@ -93,7 +93,9 @@
                             <ol>
                                 <li>
                                     Navigate to
-                                    <samp class="navPath"><var>System Properties</var> &rArr; <var>Basic Configuration</var></samp>. If you are in the &quot;Util&quot; application scope, you will see the following message:
+                                    <samp class="navPath"><var>System Properties</var> &rArr;
+                                        <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2F$system_properties_ui.do%3Fsysparm_title%3DSystem%2520Configuration%26sysparm_category%3DSystem%2520Configuration"><var>Basic Configuration</var></external-link></samp>.
+                                        If you are in the &quot;Util&quot; application scope, you will see the following message:
                                     <img src="images/initialConfig/globalApplicationWarning.png" alt="Example of application selection dialog" class="figure-img img-fluid rounded" />
                                     This is intentional. It is important to ensure you are in the &quot;Util&quot; application scope, otherwise the
                                     next change will not be saved.
@@ -101,10 +103,10 @@
                                 <li>Set <var class="targetName">SDLC Config Stage</var> to the ServiceNow SDLC stage for the current server.</li>
                                 <li>Change to the <var class="targetName">Global</var> application scope.</li>
                                 <li>
-                                    Navigate to <samp class="navPath"><var>System Definition</var> &rArr; <var>Fix Scripts</var></samp>.
+                                    Navigate to <samp class="navPath"><var>System Definition</var> &rArr; <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fsys_script_fix_list.do"><var>Fix Scripts</var></external-link></samp>.
                                 </li>
                                 <li>
-                                    Open the fix script named <var class="targetName">Initial Army Config</var>.
+                                    Open the fix script named <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fsys_script_fix.do%3Fsys_id%3D64638a60dbe31300e298771ebf96193a"><var class="targetName">Initial Army Config</var></external-link>.
                                 </li>
                                 <li>
                                     Click
@@ -136,7 +138,8 @@
                         <ol>
                             <li>Ensure you are in the <var class="targetName">Global</var> application scope.</li>
                             <li>
-                                Navigate to <samp class="navPath"><var>System Properties</var> &rArr; <var>Basic Configuration</var></samp>.
+                                Navigate to <samp class="navPath"><var>System Properties</var> &rArr;
+                                <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2F$system_properties_ui.do%3Fsysparm_title%3DSystem%2520Configuration%26sysparm_category%3DSystem%2520Configuration"><var>Basic Configuration</var></external-link></samp>.
                             </li>
                             <li>
                                 Scroll to the <var class="targetName">Banner Image</var> property and click on the
@@ -162,11 +165,11 @@
                         </div>
                         <ol>
                             <li>
-                                Navigate to <samp class="navPath"><var>System Definition</var> &rArr; <var>Fix Scripts</var></samp>.
+                                Navigate to <samp class="navPath"><var>System Definition</var> &rArr; <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fsys_script_fix_list.do"><var>Fix Scripts</var></external-link></samp>.
                             </li>
                             <li>
                                 Open the fix script named
-                                <var class="targetName">Army Bulk Plugin Activation</var>.
+                                <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fsys_script_fix.do%3Fsys_id%3Dc4cf8a68dbe31300e298771ebf9619a3"><var class="targetName">Army Bulk Plugin Activation</var></external-link><var class="targetName"></var>.
                             </li>
                             <li>
                                 Click
@@ -180,7 +183,7 @@
                         </ol>
                         <div class="detail">
                             To monitor the progress of plugin activations, navigate to
-                            <samp class="navPath"><var>System Diagnostics</var> &rArr; <var>Progress Workers</var></samp>.
+                            <samp class="navPath"><var>System Diagnostics</var> &rArr; <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fsys_progress_worker_list.do"><var>Progress Workers</var></external-link></samp>.
                         </div>
                     </div>
                 </div>
@@ -189,8 +192,10 @@
                     <div class="card-header p-1" accordion-group-toggle-on-click="physicalNetworksApplication"><h2 class="card-title mb-0">7. Import Physical Networks Application</h2></div>
                     <div class="card-body" accordion-group-content-item="physicalNetworksApplication">
                         <div class="detail">
-                            <div class="detail">In this step you will be importing an application that defines a common list of physically seprated networks (as configuration items) that can be used for
-                                &quot;network&quot; pick lists.</div>
+                            <div class="detail">
+                                In this step you will be importing an application that defines a common list of physically seprated networks (as configuration items) that can be used for
+                                &quot;network&quot; pick lists.
+                            </div>
                             <ol>
                                 <li>
                                     Import the util application from <kbd>{{ gitRepositoryBaseUrl }}/x_44813_phys_net_network.git</kbd>.
@@ -202,7 +207,7 @@
                                 <li>
                                     In the original ServiceNow browser tab, you will need to refresh the browser screen to see the new menu item that was added when this application was imported.
                                 </li>
-                                <li>Navigate to <samp class="navPath"><var>Physical Networks</var> &rArr; <var>Physical Networks</var></samp>.</li>
+                                <li>Navigate to <samp class="navPath"><var>Physical Networks</var> &rArr; <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fx_44813_phys_net_network_list.do"><var>Physical Networks</var></external-link></samp>.</li>
                                 <li>Add the names of the physical networks. If there are any existing items you do not want, you may delete them.</li>
                                 <li>Change to the <var class="targetName">Global</var> application scope when finished.</li>
                             </ol>
@@ -315,7 +320,7 @@
                                     <ol>
                                         <li>
                                             Navigate to
-                                            <samp class="navPath"><var>System LDAP</var> &rArr; <var>LDAP Servers</var></samp> and open the pre-defined LDAP server if one exists; otherwise, click &quot;New&quot; to create a new record.
+                                            <samp class="navPath"><var>System LDAP</var> &rArr; <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fldap_server_config_list.do"><var>LDAP Servers</var></external-link></samp> and open the pre-defined LDAP server if one exists; otherwise, click &quot;New&quot; to create a new record.
                                         </li>
                                         <li>
                                             Provide the following information in the form, and save changes (insert and stay):
@@ -355,7 +360,7 @@
                                     <div class="card-body">
                                         <div class="detail">
                                             Navigate to
-                                            <samp class="navPath"><var>System LDAP</var> &rArr; <var>LDAP Servers</var></samp> and open the LDAP server that was just created/updated in the previous section.
+                                            <samp class="navPath"><var>System LDAP</var> &rArr; <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fldap_server_config_list.do"><var>LDAP Servers</var></external-link></samp> and open the LDAP server that was just created/updated in the previous section.
                                             <div class="alert-info">All users must be imported before the LDAP Group definitions can be imported.</div>
                                         </div>
                                         <ol>
@@ -422,7 +427,7 @@
                                             <li>
                                                 Coalesce Enterprise User Imports
                                                 <ol>
-                                                    <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <var>Transform Maps</var> &rArr; <var>Enterprise User Import</var></samp>.</li>
+                                                    <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fsys_transform_map_list.do"><var>Transform Maps</var></external-link> &rArr; <var>Enterprise User Import</var></samp>.</li>
                                                     <li>
                                                         Under the <var class="targetName">Field Maps</var> tab, double-click the <var class="targetName">Coalesce</var> value for the
                                                         <var class="targetName">u_samaccountname</var> source field and change it to <kbd>true</kbd>.
@@ -447,7 +452,7 @@
                                     <div class="card-body">
                                         <div class="detail">
                                             Navigate to
-                                            <samp class="navPath"><var>System LDAP</var> &rArr; <var>LDAP Servers</var></samp> and open the LDAP server that was just created/updated in the previous section.
+                                            <samp class="navPath"><var>System LDAP</var> &rArr; <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fldap_server_config_list.do"><var>LDAP Servers</var></external-link></samp> and open the LDAP server that was just created/updated in the previous section.
                                             <div class="alert-info">All users must be imported before the LDAP Group definitions can be imported.</div>
                                         </div>
                                         <ol>
@@ -511,7 +516,7 @@
                                             <li>
                                                 Coalesce Admin User Imports
                                                 <ol>
-                                                    <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <var>Transform Maps</var> &rArr; <var>Admin User Import</var></samp>.</li>
+                                                    <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fsys_transform_map_list.do"><var>Transform Maps</var></external-link> &rArr; <var>Admin User Import</var></samp>.</li>
                                                     <li>
                                                         Under the <var class="targetName">Field Maps</var> tab, double-click the <var class="targetName">Coalesce</var> value for the <var class="targetName">u_samaccountname</var> source field and change it to <kbd>true</kbd>.
                                                         <div class="alert-warning">
