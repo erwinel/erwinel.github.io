@@ -1,5 +1,5 @@
 declare namespace sn {
-    interface GlideElement {
+    export interface GlideElement {
         /**
          * Gets the object label.
          * @returns {string} The object label.
@@ -26,7 +26,7 @@ declare namespace sn {
          */
         toString(): string;
     }
-    interface GlideRecord {
+    export interface GlideRecord {
         readonly sys_id: GlideElement;
         [key: string]: GlideElement | any;
         /**
@@ -57,7 +57,7 @@ declare namespace sn {
          */
         isNewRecord(): boolean;
     }
-    interface GlideSession {
+    export interface GlideSession {
         isInteractive(): boolean;
         isLoggedIn(): boolean;
     }
@@ -81,7 +81,7 @@ declare namespace sn {
         getInfoMessages(clear?: boolean): string[];
         attachNotificationMessageService(service: app.NotificationMessageService): void;
     }
-    interface GlideSystem {
+    export interface GlideSystem {
         /**
          * Adds an error message for the current session.
          * @param {*} message The message to add.
@@ -180,7 +180,8 @@ declare namespace sn {
         nil<T>(o?: T | null): o is null | undefined;
         warn(message: string, parm1?: any, parm2?: any, parm3?: any, parm4?: any, parm5?: any): void;
     }
-    const gs: Emulated_GlideSystem;
+    export const gs: Emulated_GlideSystem;
+    export {};
 }
 declare namespace sn_emulation_helpers {
     class Emulated_GlideElement implements sn.GlideElement {

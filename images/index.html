@@ -1,160 +1,66 @@
 <!DOCTYPE html>
-<?xml version="1.0" encoding="utf-8"?>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <head>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="app" ng-controller="imageIndex">
+<head>
     <meta name="viewport" content="width=1024, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta charset="utf-8" />
-    <title>images Image Catalog</title>
+    <title>Image Catalog</title>
     <link rel="stylesheet" type="text/css" media="screen" href="../lib/twitter-bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="../lib/angular.js/angular-csp.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="../theme.css" />
     <script type="text/javascript" src="../lib/jquery/jquery.js"></script>
     <script type="text/javascript" src="../lib/twitter-bootstrap/js/bootstrap.bundle.js"></script>
     <script type="text/javascript" src="../lib/angular.js/angular.js"></script>
-    <script type="text/javascript" src="../App/ImageCatalogModule.js"></script>
-  </head>
-  <body>
+    <script type="text/javascript" src="../App/sys.js"></script>
+    <script type="text/javascript" src="../App/app.js"></script>
+    <script type="text/javascript" src="../App/ImageIndex.js"></script>
+</head>
+<body>
     <header class="container-fluid p-1">
-      <h1>images Image Catalog</h1>
+        <h1>Image Catalog</h1>
     </header>
     <section class="container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <h2 xmlns="">Subdirectories</h2>
+        <div class="btn-group" role="group" aria-label="Basic example" ng-hide="isTopLevel">
+            <div ng-repeat="folder in breadcrumb"><button type="button" class="btn btn-outline-secondary" ng-click="folder.selectFolder($event)">{{folder.name}}</button></div>
         </div>
-        <div class="card-body">
-          <ul>
-            <li>
-              <a href="adminSetup/"></a>
+        <ul ng-show="hasFolders">
+            <li ng-repeat="folder in subFolders">
+                <button class="btn btn-outline-secondary" ng-click="folder.selectFolder($event)">{{folder.name}}</button>
+                <span ng-hide="$last"> : </span>
             </li>
-            <li>
-              <a href="initialConfig/"></a>
-            </li>
-            <li>
-              <a href="open-iconic/"></a>
-            </li>
-            <li>
-              <a href="snippets/"></a>
-            </li>
-          </ul>
+        </ul>
+        <div class="card" ng-repeat="folder in subFolders">
+            <image-list name="folder.name" folders="folder.folders" images="folder.images"></image-list>
         </div>
-      </div>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Image</th>
-            <th scope="col">Width</th>
-            <th scope="col">Height</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">
-              <a href="collapse.svg" target="_blank">collapse.svg</a>
-            </th>
-            <td>
-              <img src="collapse.svg" alt="Displayed Image for collapse.svg" width="32" height="32" />
-            </td>
-            <td>8</td>
-            <td>8</td>
-          </tr>
-          <tr>
-            <th scope="row">
-              <a href="ElevateRoles1.PNG">ElevateRoles1.PNG</a>
-            </th>
-            <td>
-              <img src="ElevateRoles1.PNG" alt="Displayed Image for ElevateRoles1.PNG" width="32" height="15" />
-            </td>
-            <td>531</td>
-            <td>257</td>
-          </tr>
-          <tr>
-            <th scope="row">
-              <a href="expand.svg" target="_blank">expand.svg</a>
-            </th>
-            <td>
-              <img src="expand.svg" alt="Displayed Image for expand.svg" width="32" height="32" />
-            </td>
-            <td>8</td>
-            <td>8</td>
-          </tr>
-          <tr>
-            <th scope="row">icons.svg</th>
-            <td colspan="3" />
-          </tr>
-          <tbody>
-            <tr>
-              <th scope="row">
-                <a href="icons.svg#clipboard">clipboard</a>
-              </th>
-              <td>
-                <svg class="fill-light stroke-dark" width="32" height="32">
-                  <use xlink:href="icons.svg#clipboard"></use>
-                </svg>
-              </td>
-              <td>16</td>
-              <td>16</td>
-            </tr>
-            <tr>
-              <th scope="row">
-                <a href="icons.svg#collapse">collapse</a>
-              </th>
-              <td>
-                <svg class="fill-light stroke-dark" width="32" height="32">
-                  <use xlink:href="icons.svg#collapse"></use>
-                </svg>
-              </td>
-              <td>16</td>
-              <td>16</td>
-            </tr>
-            <tr>
-              <th scope="row">
-                <a href="icons.svg#expand">expand</a>
-              </th>
-              <td>
-                <svg class="fill-light stroke-dark" width="32" height="32">
-                  <use xlink:href="icons.svg#expand"></use>
-                </svg>
-              </td>
-              <td>16</td>
-              <td>16</td>
-            </tr>
-          </tbody>
-          <tr>
-            <th scope="row">
-              <a href="moreInfo.svg" target="_blank">moreInfo.svg</a>
-            </th>
-            <td>
-              <img src="moreInfo.svg" alt="Displayed Image for moreInfo.svg" width="32" height="32" />
-            </td>
-            <td>12</td>
-            <td>12</td>
-          </tr>
-          <tr>
-            <th scope="row">
-              <a href="subnav.svg" target="_blank">subnav.svg</a>
-            </th>
-            <td>
-              <img src="subnav.svg" alt="Displayed Image for subnav.svg" width="32" height="16" />
-            </td>
-            <td>16</td>
-            <td>8</td>
-          </tr>
-        </tbody>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Image</th>
-              <th scope="col">Width</th>
-              <th scope="col">Height</th>
-            </tr>
-          </thead>
+        <table class="table table-bordered" ng-show="hasImages">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Width</th>
+                    <th scope="col">Height</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="image in images">
+                    <th scope="row" ng-show="image.isSpriteList" colspan="{{image.colSpan}}">
+                        1: <a ng-href="image.url" target="_blank">{{image.title}}</a>
+                    </th>
+                    <th scope="row" ng-show="image.isImageTag">
+                        2: <a ng-href="image.url" target="_blank">{{image.title}}</a>
+                    </th>
+                    <td>3:
+                        <svg class="fill-light stroke-dark" width="{{image.thumbnailWidth}}" height="{{image.thumbnailHeight}}" ng-show="image.isSvgLink">
+                            <use xlink:href="{{image.url}}"></use>
+                        </svg>
+                        <img ng-src="{{image.url}}" alt="Displayed Image for {{image.fileName}}" width="{{image.thumbnailWidth}}" height="{{image.thumbnailHeight}}" ng-hide="image.isSvgLink" />
+                    </td>
+                    <td>4: {{image.width}}</td>
+                    <td>5: {{image.height}}</td>
+                </tr>
+            </tbody>
         </table>
-      </table>
     </section>
     <footer class="container-fluid">Generated On 2019-07-01 12:07 -04:00</footer>
-  </body>
+</body>
 </html>

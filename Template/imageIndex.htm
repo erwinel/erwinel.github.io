@@ -1,0 +1,36 @@
+<div class="card-header">
+    <h2>{{folderName}}</h2>
+</div>
+<div class="card-body">
+    <div class="card" ng-repeat="folder in subFolders">
+        <image-list name="folder.name" folders="folder.folders" images="folder.images"></image-list>
+    </div>
+    <table class="table table-bordered" ng-show="hasImages">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Image</th>
+                <th scope="col">Width</th>
+                <th scope="col">Height</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="image in images">
+                <th scope="row" ng-show="image.isMultiple" colspan="{{image.colSpan}}">
+                    <a ng-href="image.url" target="_blank">{{image.title}}</a>
+                </th>
+                <th scope="row" ng-show="image.isImageTag">
+                    <a ng-href="image.url" target="_blank">{{image.title}}</a>
+                </th>
+                <td>
+                    <svg class="fill-light stroke-dark" width="{{image.thumbnailWidth}}" height="{{image.thumbnailHeight}}" ng-show="image.isSprite">
+                        <use xlink:href="{{image.url}}"></use>
+                    </svg>
+                    <img ng-src="{{image.url}}" alt="Displayed Image for {{image.fileName}}" width="{{image.thumbnailWidth}}" height="{{image.thumbnailHeight}}" ng-hide="image.isSvgLink" />
+                </td>
+                <td>{{image.width}}</td>
+                <td>{{image.height}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

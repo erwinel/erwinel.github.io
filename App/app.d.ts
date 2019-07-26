@@ -8,48 +8,237 @@ declare namespace app {
     *
     * @type {ng.IModule}
     */
-    let appModule: ng.IModule;
-    const ScopeEvent_OpenMainModalPopupDialog: string;
-    const ScopeEvent_CloseMainModalPopupDialog: string;
-    const ScopeEvent_ShowSetupParametersDialog: string;
-    const ScopeEvent_HideSetupParametersDialog: string;
-    const ScopeEvent_SetupParameterSettingsChanged: string;
-    const ScopeEvent_AddCollapsibleCard: string;
-    const ScopeEvent_: string;
-    const StorageKey_SetupParameterSettings = "targetSysConfigSettings";
-    interface INavigationContainerScope extends ng.IScope {
-        currentItemIndex: number;
-        pageTitle: string;
-        items: INavigationItemScope[];
+    export let appModule: ng.IModule;
+    /**
+     * The relative path of the default page.
+     *
+     * @description - This is for a path string only - This MUST NOT contain relative segment names ("." or ".."), URL query or fragment and MUST NOT start or end with "/".
+     */
+    export const DEFAULT_PAGE_PATH: string;
+    /**
+     * The default root absolute URL of the target ServiceNow instance.
+     *
+     * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
+     */
+    export const DEFAULT_URL_SERVICENOW: string;
+    /**
+     * The default root absolute URL of the remote GIT repository.
+     *
+     * @description - This MUST be an absolute URL and MUST NOT contain a URL query or fragment. If this contains an explicit path (which is usually the case), the path must end with a "/".
+     */
+    export const DEFAULT_URL_GIT_REPOSITORY: string;
+    export const ScopeEvent_OpenMainModalPopupDialog: string;
+    export const ScopeEvent_CloseMainModalPopupDialog: string;
+    export const ScopeEvent_ShowSetupParametersDialog: string;
+    export const ScopeEvent_HideSetupParametersDialog: string;
+    export const ScopeEvent_SetupParameterSettingsChanged: string;
+    export const ScopeEvent_AddCollapsibleCard: string;
+    export const ScopeEvent_: string;
+    export const StorageKey_UrlConfigSettings: string;
+    export const StorageKey_SetupParameterSettings: string;
+    export enum cssValidationClass {
+        isValid = "is-valid",
+        isInvalid = "is-invalid"
     }
-    interface IPageNavigationScope extends ng.IScope {
-        top: INavigationContainerScope;
-        side: INavigationContainerScope;
+    export enum cssFeedbackClass {
+        isValid = "valid-feedback",
+        isInvalid = "invalid-feedback"
     }
-    interface INavigationItemScope extends ng.IScope, INavigationContainerScope {
-        linkTitle: string;
-        pageTitle: string;
-        href: string;
-        class: string[];
-        isCurrent: boolean;
-        onClick(): void;
+    export enum cssAlertClass {
+        alert = "alert",
+        danger = "alert-danger",
+        dark = "alert-dark",
+        dismissible = "alert-dismissible",
+        info = "alert-info",
+        heading = "alert-heading",
+        light = "alert-light",
+        link = "alert-link",
+        primary = "alert-primary",
+        secondary = "alert-secondary",
+        success = "alert-success",
+        warning = "alert-warning"
     }
-    interface IMainControllerScope extends ng.IScope {
+    export interface IUrlConfigSettings {
+        /**
+         * The base URL for the target ServiceNow instance.
+         */
         serviceNowUrl: string;
-        gitRepositoryBaseUrl: string;
-        pageNavigation: IPageNavigationScope;
-        showSetupParametersEditDialog(): void;
+        /**
+         * The base URL for the target remote GIT repository.
+         */
+        gitRepositoryUrl: string;
     }
-    abstract class MainControllerChild<TScope extends IMainControllerScope> implements ng.IController {
-        protected $scope: TScope;
-        $doCheck(): void;
-        constructor($scope: TScope);
-        showSetupParametersEditDialog(): void;
-        hideSetupParametersEditDialog(): void;
-        showModalDialogMessage(message: string, type?: DialogMessageType, title?: string): void;
-        hideModalDialogMessage(): void;
+    interface INavigationDefinition {
+        id?: string;
+        url: string;
+        linkTitle: string;
+        pageTitle?: string;
+        toolTip?: string;
+        sideNavHeading?: string;
+        items?: INavigationDefinition[];
     }
-    type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';
+    export class NavigationUrl {
+        constructor(navItem: NavigationItem, url: string);
+    }
+    export class NavigationItem {
+        private _appConfigData;
+        private _id;
+        private _linkTitle;
+        private _pageTitle;
+        private _toolTip;
+        private _sideNavHeading;
+        private _url;
+        private _isCurrentPage?;
+        private _previousNavItem;
+        private _nextNavItem;
+        private _parentNavItem;
+        private _childNavItems;
+        readonly id: string;
+        readonly linkTitle: string;
+        readonly pageTitle: string;
+        readonly toolTip: string;
+        readonly sideNavHeading: string;
+        /**
+         * The navigation menu hyperlink for the current item.
+         */
+        readonly navMenuHref: string;
+        /**
+         * The relative URL of the current item.
+         */
+        readonly url: string;
+        /**
+         * Indicates whether the current item represents the current page.
+         */
+        readonly isCurrentPage: boolean;
+        /**
+         * Indicates whether the current item represents the current page or the parent of the current page.
+         */
+        readonly hasOrIsCurrentPage: boolean;
+        /**
+         * Indicates whether the current item represents and ancestor of the current page.
+         */
+        readonly hasCurrentPage: boolean;
+        /**
+         * The CSS class names to be applied to the anchor tag.
+         */
+        readonly anchorCssClass: ReadonlyArray<string>;
+        readonly childNavItems: ReadonlyArray<NavigationItem>;
+        readonly hasChildNavItem: boolean;
+        readonly hasSiblingNavItem: boolean;
+        readonly isNestedNavItem: boolean;
+        readonly nestedSideNavChildItems: ReadonlyArray<NavigationItem>;
+        readonly showNestedSideNavChildItems: boolean;
+        readonly parentNavItem: NavigationItem | undefined;
+        constructor(_appConfigData: AppConfigDataService, navDef: INavigationDefinition);
+        precedingSiblings(): NavigationItem[];
+        followingSiblings(): NavigationItem[];
+        getParentNavItems(): NavigationItem[];
+        getBreadcrumbLinks(): NavigationItem[];
+        onClick(event?: BaseJQueryEventObject): void;
+        static createNavItems(appConfigData: AppConfigDataService, items?: INavigationDefinition[]): ReadonlyArray<NavigationItem>;
+        static findCurrentItem(items: ReadonlyArray<NavigationItem>): NavigationItem | undefined;
+        static createSideNavBreadcrumbItems(current?: NavigationItem): ReadonlyArray<NavigationItem>;
+        static createSideNavSiblingItems(current?: NavigationItem): ReadonlyArray<NavigationItem>;
+    }
+    export interface IPopupDialogButtonDefinition<T> {
+        value: T;
+        displayText: string;
+    }
+    export interface ITHisPopupDialogShowCallback<TTHis, TResult> {
+        (this: TTHis, message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<TResult>[], onClose?: {
+            (result?: TResult): void;
+        }): void;
+    }
+    export interface IPopupDialogShowCallback<T> {
+        (message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<T>[], onClose?: {
+            (result?: T): void;
+        }): void;
+    }
+    export class AppConfigDataService {
+        private _sessionStorage;
+        private $log;
+        private $window;
+        private _currentPageId;
+        private _currentPageURL;
+        private _promise;
+        private _serviceNowUrl;
+        private _gitRepositoryUrl;
+        private _relativePagePath;
+        private _pageTitle;
+        private _currentItemClass;
+        private _selectedItemClass;
+        private _otherItemClass;
+        private _topNavItems;
+        private _sideNavBreadcrumbItems;
+        private _sideNavSiblingItems;
+        private _sideNavChildItems;
+        private _serviceNowUrlChangedCallback;
+        private _gitRepositoryUrlChangedCallback;
+        private _pageTitleChangedCallback;
+        private _showMainModalPopupDialogCallback;
+        private _hideMainModalPopupDialogCallback;
+        currentPageId(): string;
+        pagePath(): string;
+        pageTitle(value?: string): string;
+        currentItemClass(): ReadonlyArray<string>;
+        selectedItemClass(): ReadonlyArray<string>;
+        otherItemClass(): ReadonlyArray<string>;
+        topNavItems(): ReadonlyArray<NavigationItem>;
+        serviceNowUrl(value?: URL): URL;
+        gitRepositoryUrl(value?: URL): URL;
+        constructor(_sessionStorage: sessionStorageService, $http: ng.IHttpService, $log: ng.ILogService, $document: ng.IDocumentService, $window: ng.IWindowService);
+        showMainModalPopupDialog<TTHis, TResult>(message: string, title: string | undefined, type: DialogMessageType | undefined, buttons: IPopupDialogButtonDefinition<TResult>[] | undefined, onClose: {
+            (this: TTHis, result?: TResult): void;
+        } | undefined, thisArg: TTHis): void;
+        showMainModalPopupDialog<T>(message: string, title?: string, type?: DialogMessageType, buttons?: IPopupDialogButtonDefinition<T>[], onClose?: {
+            (result?: T): void;
+        }): void;
+        onShowMainModalPopupDialog<TTHis, TResult>(callback: ITHisPopupDialogShowCallback<TTHis, TResult>, thisArg: TTHis): void;
+        onShowMainModalPopupDialog<T>(callback: IPopupDialogShowCallback<T>): void;
+        closeMainModalPopupDialog(result?: any): void;
+        onCloseMainModalPopupDialog<TTHis, TResult>(callback: {
+            (this: TTHis, result?: TResult): void;
+        }, thisArg: TTHis): void;
+        onCloseMainModalPopupDialog<T>(callback: {
+            (result?: T): void;
+        }): void;
+        onServiceNowUrlChanged<T>(callback: {
+            (this: T, value: URL): void;
+        }, thisArg: T): void;
+        onServiceNowUrlChanged(callback: {
+            (value: URL): void;
+        }): void;
+        private raiseServiceNowUrlChanged;
+        onGitRepositoryUrlChanged<T>(callback: {
+            (this: T, value: URL): void;
+        }, thisArg: T): void;
+        onGitRepositoryUrlChanged(callback: {
+            (value: URL): void;
+        }): void;
+        private raiseGitRepositoryUrlChanged;
+        onTitleChanged<T>(callback: {
+            (this: T, value: string): void;
+        }, thisArg: T): void;
+        onTitleChanged(callback: {
+            (value: string): void;
+        }): void;
+        private raiseTitleChanged;
+        onSettingsLoaded<T>(successCallback: {
+            (this: T, svc: AppConfigDataService): void;
+        }, errorCallback: {
+            (this: T, reason: any, svc: AppConfigDataService): void;
+        } | undefined, thisArg: T): void;
+        onSettingsLoaded(successCallback: {
+            (svc: AppConfigDataService): void;
+        }, errorCallback?: {
+            (reason: any, svc: AppConfigDataService): void;
+        }): void;
+        createServiceNowUrl(relativeUrl?: string, toNav?: boolean): string;
+        createGitRepositoryUrl(relativeUrl?: string): string;
+        private applySettings;
+        static toPageId(path: string): string;
+    }
+    export type DialogMessageType = 'info' | 'warning' | 'danger' | 'primary' | 'success';
     interface IDialogScope extends ng.IScope {
         isVisible: boolean;
         title: string;
@@ -58,12 +247,12 @@ declare namespace app {
         show(message: string, type?: DialogMessageType, title?: string): any;
         close(): any;
     }
-    class mainModalPopupDialogController implements ng.IController {
+    export class mainModalPopupDialogController implements ng.IController {
         static show($scope: ng.IScope, message: string, type?: DialogMessageType, title?: string): void;
         static hide($scope: ng.IScope): void;
         constructor($scope: IDialogScope, $rootScope: ng.IScope);
     }
-    class sessionStorageService implements Map<string, string> {
+    export class sessionStorageService implements Map<string, string> {
         private $window;
         private _allKeys;
         private _parsedKeys;
@@ -86,60 +275,12 @@ declare namespace app {
         setObject<T>(key: string, value: T | undefined): any | undefined;
         values(): IterableIterator<string>;
     }
-    class CopyToClipboardService {
+    export class CopyToClipboardService {
         private $window;
         constructor($window: ng.IWindowService);
         copy(element: JQuery, successMsg?: string): void;
     }
-    enum cssValidationClass {
-        isValid = "is-valid",
-        isInvalid = "is-invalid"
-    }
-    enum cssFeedbackClass {
-        isValid = "is-valid",
-        isInvalid = "is-invalid"
-    }
-    interface ISysConfigEditFieldState extends ISysConfigEditScope {
-        original: string;
-        text: string;
-        isValid: boolean;
-        lastValidated: string;
-        validationMessage: string;
-        validationClass: string[];
-        messageClass: string[];
-    }
-    interface ISysConfigEditScope extends ng.IScope {
-        serviceNowUrl: string;
-        gitRepositoryBaseUrl: string;
-        cancel(): void;
-        accept(): void;
-        close(): void;
-        serviceNowUrlField: ISysConfigEditFieldState;
-        gitRepositoryBaseUrlField: ISysConfigEditFieldState;
-    }
-    class targetSysConfigEditController implements ng.IController {
-        protected $scope: ISysConfigEditScope;
-        private _settings;
-        constructor($scope: ISysConfigEditScope, _settings: targetSysConfigSettings);
-        $doCheck(): void;
-        static show($scope: ng.IScope): void;
-        static hide($scope: ng.IScope): void;
-    }
-    interface ISysConfigSettings {
-        serviceNowUrl: string;
-        gitRepositoryBaseUrl: string;
-    }
-    class targetSysConfigSettings {
-        private $rootScope;
-        private _sessionStorage;
-        private _settings;
-        serviceNowUrl: string;
-        gitRepositoryBaseUrl: string;
-        private raiseUpdated;
-        onChanged(scope: ng.IScope, handler: (event: ng.IAngularEvent, settings: ISysConfigSettings) => void): void;
-        constructor($rootScope: ng.IScope, _sessionStorage: sessionStorageService, $http: ng.IHttpService);
-    }
-    interface ISchemaProperties {
+    export interface ISchemaProperties {
         supportsPath?: boolean;
         supportsQuery?: boolean;
         supportsFragment?: boolean;
@@ -150,7 +291,7 @@ declare namespace app {
         schemeSeparator?: string;
         defaultPort?: number;
     }
-    class SchemaProperties implements ISchemaProperties {
+    export class SchemaProperties implements ISchemaProperties {
         readonly name: string;
         readonly description: string;
         readonly supportsPath: boolean;
@@ -237,7 +378,7 @@ declare namespace app {
          **/
         static uriScheme_urn: SchemaProperties;
     }
-    class QueryParameters implements URLSearchParams {
+    export class QueryParameters implements URLSearchParams {
         constructor(params?: string | URLSearchParams);
         append(name: string, value: string): void;
         delete(name: string): void;
@@ -252,7 +393,7 @@ declare namespace app {
         keys(): IterableIterator<string>;
         values(): IterableIterator<string>;
     }
-    class Uri implements URL {
+    export class Uri implements URL {
         private _href;
         private _origin;
         private _schemeName;
@@ -284,19 +425,19 @@ declare namespace app {
         constructor(baseUri: URL | Uri, relativeUri: string | URL | Uri);
         constructor(uri: URL | Uri | string);
     }
-    class UriBuilderService {
+    export class UriBuilderService {
     }
-    enum NotificationMessageType {
+    export enum NotificationMessageType {
         error = 0,
         warning = 1,
         info = 2
     }
-    interface INotificationMessage {
+    export interface INotificationMessage {
         type: NotificationMessageType;
         title?: string;
         message: string;
     }
-    class NotificationMessageService {
+    export class NotificationMessageService {
         readonly $log: ng.ILogService;
         private _messages;
         constructor($log: ng.ILogService);
@@ -309,4 +450,5 @@ declare namespace app {
         getMessages(clear: boolean): INotificationMessage[];
         getMessages(): INotificationMessage[];
     }
+    export {};
 }

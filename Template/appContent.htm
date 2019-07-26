@@ -1,0 +1,78 @@
+<header class="container-fluid p-1"><h1>{{ pageTitle }}</h1></header>
+<nav class="container-fluid navbar navbar-expand-sm p-1 mr-auto">
+    <ul class="navbar-nav">
+        <li class="nav-item" ng-repeat="i in topNavItems"><a ng-href="{{i.navMenuHref}}" ng-class="i.anchorCssClass" ng-click="i.onClick($event)">{{ i.linkTitle }}</a></li>
+    </ul>
+    <button class="btn btn-outline-success" type="button" title="System Information Settings" ng-click="ctrl.openSetupParametersEditDialog($event)"><img src="images/open-iconic/wrench.svg" width="8" height="8" alt="System Information Settings" /></button>
+</nav>
+<section ng-class="mainSectionClass" ng-transclude></section>
+<aside class="container-fluid col-4 col-lg-3" ng-show="showSideMenu">
+    <div class="container-fluid" ng-show="showBreadcrumbLinks">
+        <div class="d-inline p-2 flex-nowrap" ng-repeat="i in sideNavBreadcrumbItems">
+            <span ng-show="$index!=0">&rArr;</span>
+            <a href="{{i.navMenuHref}}" class="btn btn-outline-secondary" role="button">{{ i.linkTitle }}</a>
+        </div>
+    </div>
+    <div class="card" ng-show="showSideNavItems">
+        <div class="card-header" ng-show="showSideNavHeading"><h4>{{sideNavHeading}}</h4></div>
+        <div class="card-body">
+            <ul class="nav flex-column" ng-show="showPrecedingSideNavItems">
+                <li class="nav-item" ng-repeat="i in sideNavItems"><a ng-href="{{i.navMenuHref}}" ng-class="i.anchorCssClass">{{ i.linkTitle }}</a></li>
+                <li class="nav-item" ng-show="showCurrentItem">
+                    <a ng-href="#" ng-click="currentNavItem.onClick($event)" ng-class="currentNavItem.anchorCssClass">{{ currentNavItem.linkTitle }}</a>
+                    <ul class="nav flex-column" ng-show="currentNavItem.showNestedSideNavChildItems">
+                        <li class="nav-item" ng-repeat="i in currentNavItem.nestedSideNavChildItems"><a ng-href="{{i.navMenuHref}}" ng-class="i.anchorCssClass">{{ i.linkTitle }}</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item" ng-repeat="i in followingSideNavItems"><a ng-href="{{i.navMenuHref}}" ng-class="i.anchorCssClass">{{ i.linkTitle }}</a></li>
+            </ul>
+        </div>
+    </div>
+</aside>
+<footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+<div id="mainModalPopupDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mainModalPopupTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mainModalPopupTitle">{{popupDialogTitle}}</h5>
+                <button type="button" class="close" ng-click="ctrl.closePopupDialog($event)" onclick="return false;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div ng-class="popupDialogBodyClass">{{popupDialogMessage}}</div>
+            <div class="modal-footer">
+                <div class="d-inline p-2" ng-repeat="b in popupDialogButtons">
+                    <button type="button" class="btn btn-secondary" ng-click="b.onClick($event, b.value)">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="setupParametersDialog" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Setup definitions</h5>
+                <button type="button" class="close" ng-click="ctrl.closeSetupParametersEditDialog($event)">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body container-fluid">
+                <div class="form-row">
+                    <div class="form-group col-12">
+                        <url-input ng-model="serviceNowUrl" is-valid="serviceNowUrlIsValid" required="true" label-text="ServiceNow URL" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-12">
+                        <url-input ng-model="gitRepositoryUrl" is-valid="gitRepositoryUrlIsValid" allow-path="true" required="true" label-text="GIT Repository Base URL" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" ng-click="ctrl.closeSetupParametersEditDialog($event, true)" ng-disabled="setupParametersAreInvalid">OK</button>
+                <button type="button" class="btn btn-secondary" ng-click="ctrl.closeSetupParametersEditDialog($event, false)">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

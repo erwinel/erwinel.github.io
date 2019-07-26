@@ -412,5 +412,5 @@ class ColorInfo {
         return NaN;
     }
 }
-ColorInfo.HexStringRe = /^(?:\#|0x)?(?:([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})?|([a-f\d])([a-f\d])([a-f\d])([a-f\d])?)$/i;
 exports.ColorInfo = ColorInfo;
+ColorInfo.HexStringRe = /^(?:\#|0x)?(?:([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})?|([a-f\d])([a-f\d])([a-f\d])([a-f\d])?)$/i;

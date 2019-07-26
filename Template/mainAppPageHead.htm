@@ -1,9 +1,9 @@
-<header class="container-fluid p-1"><h1>{{ pageNavigation.pageTitle }}</h1></header>
+<header class="container-fluid p-1"><h1>{{ pageTitle }}</h1></header>
 <nav class="container-fluid navbar navbar-expand-sm p-1 mr-auto">
     <ul class="navbar-nav">
-        <li class="nav-item" ng-repeat="i in pageNavigation.top.items"><a ng-href="{{i.href}}" ng-class="i.class" ng-click="i.onClick()">{{ i.linkTitle }}</a></li>
+        <li class="nav-item" ng-repeat="i in topNavItems"><a ng-href="{{i.href}}" ng-class="i.class" ng-click="i.onClick()">{{ i.linkTitle }}</a></li>
     </ul>
-    <button class="btn btn-outline-success" type="button" title="System Information Settings" ng-click="showSetupParametersEditDialog()" onclick="return false;"><img src="images/open-iconic/wrench.svg" width="8" height="8" alt="System Information Settings" /></button>
+    <button class="btn btn-outline-success" type="button" title="System Information Settings" ng-click="ctrl.openSetupParametersEditDialog($event)"><img src="images/open-iconic/wrench.svg" width="8" height="8" alt="System Information Settings" /></button>
 </nav>
 <div id="mainModalPopupDialog" class="modal fade" tabindex="-1" role="dialog" ng-controller="mainModalPopupDialogController">
     <div class="modal-dialog modal-dialog-centered modal" role="document">
@@ -21,34 +21,30 @@
         </div>
     </div>
 </div>
-<div id="setupParametersDialog" class="modal" tabindex="-1" role="dialog" ng-controller="targetSysConfigEditController">
+<div id="setupParametersDialog" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Setup definitions</h5>
-                <button type="button" class="close" ng-click="close()" onclick="return false;">
+                <button type="button" class="close" ng-click="ctrl.closeSetupParametersEditDialog($event)">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body container-fluid">
                 <div class="form-row">
                     <div class="form-group col-12">
-                        <label for="serviceNowUrlTextBox">ServiceNow URL</label>
-                        <input type="text" ng-class="serviceNowUrlField.validationClass" id="serviceNowUrlTextBox" ng-model="serviceNowUrlField.text" />
-                        <div ng-class="serviceNowUrlField.messageClass">{{ serviceNowUrlField.validationMessage }}</div>
+                        <url-input ng-model="serviceNowUrl" is-valid="serviceNowUrlIsValid" required="true" label-text="ServiceNow URL" />
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-12">
-                        <label for="gitRepositoryBaseUrlTextBox">GIT Repository Base URL</label>
-                        <input type="text" ng-class="gitRepositoryBaseUrlField.validationClass" id="gitRepositoryBaseUrlTextBox" ng-model="gitRepositoryBaseUrlField.text" />
-                        <div ng-class="gitRepositoryBaseUrlField.messageClass">{{ gitRepositoryBaseUrlField.validationMessage }}</div>
+                        <url-input ng-model="gitRepositoryUrl" is-valid="gitRepositoryUrlIsValid" allow-path="true" required="true" label-text="GIT Repository Base URL" />
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" ng-click="accept()" onclick="return false;">OK</button>
-                <button type="button" class="btn btn-secondary" ng-click="cancel()" onclick="return false;">Cancel</button>
+                <button type="button" class="btn btn-secondary" ng-click="ctrl.closeSetupParametersEditDialog($event, true)" ng-disabled="setupParametersAreInvalid">OK</button>
+                <button type="button" class="btn btn-secondary" ng-click="ctrl.closeSetupParametersEditDialog($event, false)">Cancel</button>
             </div>
         </div>
     </div>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="app" ng-controller="mainPageController">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="app">
 <head>
     <meta name="viewport" content="width=1024, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta charset="utf-8" />
-    <title>{{ pageNavigation.pageTitle }}</title>
+    <meta name="app:pageId" content="IncidentManagement" />
+    <title>ServiceNow Implementation Notes - Incident Management</title>
     <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
     <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
     <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
@@ -216,6 +217,7 @@ otherwise <span class="codeNumber">4</span> <span class="text-success">&rArr;</s
                             <ul class="nav flex-column">
                                 <li class="nav-item"><a href="ServiceCatalog.html" class="nav-link">Service Catalog</a></li>
                                 <li class="nav-item"><a class="active nav-link" href="#" onclick="return false;">Incident Management</a></li>
+                                <li class="nav-item"><a href="SecurityOperations.html" class="nav-link">Security Operations</a></li>
                             </ul>
                         </div>
                     </div>

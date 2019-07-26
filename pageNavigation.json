@@ -22,6 +22,11 @@
           "url": "IncidentManagement.html",
           "linkTitle": "Incident Management",
           "pageTitle": "ServiceNow Implementation Notes - Incident Management"
+        },
+        {
+          "url": "SecurityOperations.html",
+          "linkTitle": "Security Operations",
+          "pageTitle": "ServiceNow Implementation Notes - Security Operations"
         }
       ]
     },
@@ -51,9 +56,9 @@
           "pageTitle": "URI Builder"
         },
         {
-          "url": "ColorEditor.html",
-          "linkTitle": "Color Editor",
-          "pageTitle": "Color Editor"
+          "url": "ColorBuilder.html",
+          "linkTitle": "Color Builder",
+          "pageTitle": "Color Builder"
         },
         {
           "url": "SiteDesignNotes.html",

@@ -10,6 +10,25 @@ var app;
     * @type {ng.IModule}
     */
     app.appModule = angular.module("app", []);
+    // #region Constants
+    /**
+     * The relative path of the default page.
+     *
+     * @description - This is for a path string only - This MUST NOT contain relative segment names ("." or ".."), URL query or fragment and MUST NOT start or end with "/".
+     */
+    app.DEFAULT_PAGE_PATH = "index.html";
+    /**
+     * The default root absolute URL of the target ServiceNow instance.
+     *
+     * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
+     */
+    app.DEFAULT_URL_SERVICENOW = "https://inscomscd.service-now.com";
+    /**
+     * The default root absolute URL of the remote GIT repository.
+     *
+     * @description - This MUST be an absolute URL and MUST NOT contain a URL query or fragment. If this contains an explicit path (which is usually the case), the path must end with a "/".
+     */
+    app.DEFAULT_URL_GIT_REPOSITORY = "https://github.com/erwinel/";
     app.ScopeEvent_OpenMainModalPopupDialog = 'OpenMainModalPopupDialog';
     app.ScopeEvent_CloseMainModalPopupDialog = 'CloseMainModalPopupDialog';
     app.ScopeEvent_ShowSetupParametersDialog = 'showSetupParameterDefinitionsControllerDialog';
@@ -17,138 +36,872 @@ var app;
     app.ScopeEvent_SetupParameterSettingsChanged = "SetupParameterSettingsChanged";
     app.ScopeEvent_AddCollapsibleCard = "AddCollapsibleCard";
     app.ScopeEvent_ = "";
+    const DEFAULT_CURRENT_ITEM_CLASS = ["active", "nav-link"];
+    const DEFAULT_SELECTED_ITEM_CLASS = ["active", "nav-link"];
+    const DEFAULT_OTHER_ITEM_CLASS = ["nav-link"];
+    const SERVICENAME_APP_CONFIG_DATA = "appConfigData";
+    const DIRECTIVE_NAME_APPCONTENT = "appContent";
+    const DIRECTIVE_NAME_URLINPUT = "urlInput";
+    app.StorageKey_UrlConfigSettings = "UrlConfig";
     app.StorageKey_SetupParameterSettings = "targetSysConfigSettings";
-    const DefaultURL_ServiceNow = "https://inscomscd.service-now.com";
-    const DefaultURL_GitRepositoryBase = "https://github.com/erwinel";
-    function initializePageNavigationScope(parentScope, location, http) {
-        let scope = parentScope.pageNavigation = (parentScope.$new());
-        scope.top = (scope.pageNavigation.$new());
-        scope.top.items = [];
-        scope.top.currentItemIndex = -1;
-        scope.side = (scope.pageNavigation.$new());
-        scope.side.items = [];
-        scope.side.currentItemIndex = -1;
-        http.get("./pageNavigation.json").then((nav) => {
-            let pageName = location.path().split("/").reduce((previousValue, currentValue) => { return (currentValue.length > 0) ? currentValue : previousValue; }, "").toLowerCase();
-            if (sys.isNil(nav.data))
-                alert("Failed to load navigation from ./pageNavigation.json. Reason (" + nav.status + "): " + nav.statusText);
-            else if (typeof (nav.data.items) === 'undefined')
-                alert("Failed to load navigation from ./pageNavigation.json. Reason: No items returned. Status: (" + nav.status + "): " + nav.statusText);
-            else {
-                nav.data.items.forEach((d, index) => {
-                    let item = toNavItem(pageName, nav.data, scope.top, d);
-                    if ((item.isCurrent || item.currentItemIndex > -1) && scope.top.currentItemIndex < 0)
-                        scope.top.currentItemIndex = index;
-                });
-                if (scope.top.currentItemIndex > -1) {
-                    let sideItem = scope.top.items[scope.top.currentItemIndex];
-                    scope.side.items = sideItem.items;
-                    scope.side.currentItemIndex = sideItem.currentItemIndex;
-                    sideItem.items = [];
-                    sideItem.currentItemIndex = -1;
-                }
-                let container = (scope.side.currentItemIndex < 0) ? scope.top : scope.side;
-                let selectedItem = container.items[(container.currentItemIndex < 0) ? 0 : container.currentItemIndex];
-                while (!selectedItem.isCurrent) {
-                    if (selectedItem.currentItemIndex < 0)
-                        break;
-                    selectedItem = selectedItem.items[selectedItem.currentItemIndex];
-                }
-                scope.pageTitle = selectedItem.pageTitle;
-            }
-        }).catch((reason) => {
-            if (!sys.isNil(reason)) {
-                if (typeof (reason) !== 'string') {
-                    try {
-                        alert("Failed to load navigation from ./pageNavigation.json. Reason: " + JSON.stringify(reason) + ".");
-                    }
-                    catch (_a) {
-                        alert("Failed to load navigation from ./pageNavigation.json. Reason: " + reason + ".");
-                    }
-                }
-                else if ((reason = reason.trim()).length > 0)
-                    alert("Failed to load navigation from ./pageNavigation.json. Reason: " + reason);
-            }
-            alert("Failed to load navigation from ./pageNavigation.json. Reason: unknown.");
-        });
+    let cssValidationClass;
+    (function (cssValidationClass) {
+        cssValidationClass["isValid"] = "is-valid";
+        cssValidationClass["isInvalid"] = "is-invalid";
+    })(cssValidationClass = app.cssValidationClass || (app.cssValidationClass = {}));
+    let cssFeedbackClass;
+    (function (cssFeedbackClass) {
+        cssFeedbackClass["isValid"] = "valid-feedback";
+        cssFeedbackClass["isInvalid"] = "invalid-feedback";
+    })(cssFeedbackClass = app.cssFeedbackClass || (app.cssFeedbackClass = {}));
+    let cssAlertClass;
+    (function (cssAlertClass) {
+        cssAlertClass["alert"] = "alert";
+        cssAlertClass["danger"] = "alert-danger";
+        cssAlertClass["dark"] = "alert-dark";
+        cssAlertClass["dismissible"] = "alert-dismissible";
+        cssAlertClass["info"] = "alert-info";
+        cssAlertClass["heading"] = "alert-heading";
+        cssAlertClass["light"] = "alert-light";
+        cssAlertClass["link"] = "alert-link";
+        cssAlertClass["primary"] = "alert-primary";
+        cssAlertClass["secondary"] = "alert-secondary";
+        cssAlertClass["success"] = "alert-success";
+        cssAlertClass["warning"] = "alert-warning";
+    })(cssAlertClass = app.cssAlertClass || (app.cssAlertClass = {}));
+    class NavigationUrl {
+        constructor(navItem, url) {
+        }
     }
-    // #endregion
-    // #region NavigationItemScope
-    function toNavItem(pageName, config, container, definition) {
-        let item = (container.$new());
-        item.linkTitle = definition.linkTitle;
-        item.pageTitle = (sys.isNilOrWhiteSpace(definition.pageTitle)) ? definition.linkTitle : definition.pageTitle;
-        item.currentItemIndex = -1;
-        if (pageName === definition.url) {
-            item.href = '#';
-            item.class = config.currentItemClass;
-            item.isCurrent = true;
-            item.onClick = () => { return false; };
+    app.NavigationUrl = NavigationUrl;
+    class NavigationItem {
+        constructor(_appConfigData, navDef) {
+            this._appConfigData = _appConfigData;
+            this._url = navDef.url;
+            this._sideNavHeading = (typeof navDef.sideNavHeading === "string") ? navDef.sideNavHeading.trim() : "";
+            this._linkTitle = (typeof navDef.linkTitle === "string" && navDef.linkTitle.length > 0) ? navDef.linkTitle : navDef.url;
+            this._pageTitle = (typeof navDef.pageTitle === "string") ? navDef.pageTitle.trim() : "";
+            this._toolTip = (typeof navDef.toolTip === "string") ? navDef.toolTip.trim() : ((this._pageTitle != this._linkTitle) ? this._pageTitle : "");
+            if (typeof navDef.id !== "string" || (this._id = navDef.id).length === 0)
+                this._id = AppConfigDataService.toPageId(this._url);
+            if (this._id === _appConfigData.currentPageId())
+                this._isCurrentPage = true;
+            this._childNavItems = NavigationItem.createNavItems(_appConfigData, navDef.items);
+            this._childNavItems.forEach((item) => { item._parentNavItem = this; }, this);
+            if (this.isCurrentPage)
+                this.getParentNavItems().forEach((item) => { item._isCurrentPage = false; });
         }
-        else {
-            item.isCurrent = false;
-            item.href = definition.url;
-            item.class = config.otherItemClass;
-            item.onClick = () => { return true; };
+        get id() { return this._id; }
+        get linkTitle() { return this._linkTitle; }
+        get pageTitle() { return this._pageTitle; }
+        get toolTip() { return this._toolTip; }
+        get sideNavHeading() { return this._sideNavHeading; }
+        /**
+         * The navigation menu hyperlink for the current item.
+         */
+        get navMenuHref() { return (this.hasOrIsCurrentPage) ? "#" : this._url; }
+        /**
+         * The relative URL of the current item.
+         */
+        get url() { return this._url; }
+        /**
+         * Indicates whether the current item represents the current page.
+         */
+        get isCurrentPage() { return this._isCurrentPage === true; }
+        /**
+         * Indicates whether the current item represents the current page or the parent of the current page.
+         */
+        get hasOrIsCurrentPage() { return typeof this._isCurrentPage === "boolean"; }
+        /**
+         * Indicates whether the current item represents and ancestor of the current page.
+         */
+        get hasCurrentPage() { return this._isCurrentPage === false; }
+        /**
+         * The CSS class names to be applied to the anchor tag.
+         */
+        get anchorCssClass() { return (this.isCurrentPage) ? this._appConfigData.currentItemClass() : ((this.hasOrIsCurrentPage) ? this._appConfigData.selectedItemClass() : this._appConfigData.otherItemClass()); }
+        get childNavItems() { return this._childNavItems; }
+        get hasChildNavItem() { return this._childNavItems.length > 0; }
+        get hasSiblingNavItem() { return sys.notNil(this._previousNavItem) || sys.notNil(this._nextNavItem); }
+        get isNestedNavItem() { return sys.notNil(this._parentNavItem); }
+        get nestedSideNavChildItems() { return (this.showNestedSideNavChildItems) ? this._childNavItems : []; }
+        get showNestedSideNavChildItems() { return this.isCurrentPage && this.isNestedNavItem && this.hasChildNavItem && !this.hasSiblingNavItem; }
+        get parentNavItem() { return this._parentNavItem; }
+        precedingSiblings() {
+            if (typeof this._previousNavItem === "undefined")
+                return [];
+            let result = this._previousNavItem.precedingSiblings();
+            result.push(this._previousNavItem);
+            return result;
         }
-        item.items = [];
-        if (!sys.isNilOrEmpty(definition.items)) {
-            definition.items.forEach((d, index) => {
-                let childItem = toNavItem(pageName, config, item, d);
-                if ((childItem.isCurrent || childItem.currentItemIndex > -1) && item.currentItemIndex < 0) {
-                    item.currentItemIndex = index;
-                    item.class = config.selectedItemClass;
+        followingSiblings() {
+            let result = [];
+            for (let i = this._nextNavItem; typeof i !== "undefined"; i = i._nextNavItem)
+                result.push(i);
+            return result;
+        }
+        getParentNavItems() {
+            let result = [];
+            for (let i = this._parentNavItem; typeof i !== "undefined"; i = i._parentNavItem)
+                result.unshift(i);
+            return result;
+        }
+        getBreadcrumbLinks() {
+            let result = [];
+            if (sys.notNil(this._parentNavItem) && sys.notNil(this._parentNavItem._parentNavItem))
+                for (let i = this._parentNavItem; typeof i !== "undefined"; i = i._parentNavItem)
+                    result.unshift(i);
+            return result;
+        }
+        onClick(event) {
+            if (this.isCurrentPage && sys.notNil(event)) {
+                if (!event.isDefaultPrevented)
+                    event.preventDefault();
+                if (!event.isPropagationStopped)
+                    event.stopPropagation();
+            }
+        }
+        static createNavItems(appConfigData, items) {
+            if (typeof items !== "object" || items === null)
+                return [];
+            let result = items.filter((value) => typeof value === "object" && value !== null).map((value) => new NavigationItem(appConfigData, value));
+            if (result.length > 0) {
+                let previous = result[0];
+                for (let i = 1; i < result.length; i++)
+                    previous = (result[0]._previousNavItem = previous)._nextNavItem = result[0];
+            }
+            return result;
+        }
+        static findCurrentItem(items) {
+            if (items.length == 0)
+                return undefined;
+            if (items.length == 1)
+                return (items[0].isCurrentPage) ? items[0] : this.findCurrentItem(items[0]._childNavItems);
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].hasOrIsCurrentPage)
+                    return (items[i].isCurrentPage) ? items[i] : this.findCurrentItem(items[i]._childNavItems);
+            }
+        }
+        static createSideNavBreadcrumbItems(current) {
+            if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
+                return [];
+            let result = [];
+            while (typeof (current = current._parentNavItem)._parentNavItem !== "undefined")
+                result.unshift(current);
+            return result;
+        }
+        static createSideNavSiblingItems(current) {
+            if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
+                return [];
+            let result = [current];
+            if (typeof current._previousNavItem === "undefined") {
+                if (typeof current._nextNavItem === "undefined")
+                    return [];
+            }
+            else
+                for (let item = current._previousNavItem; typeof item != "undefined"; item = item._previousNavItem)
+                    result.unshift(item);
+            for (let item = current._nextNavItem; typeof item != "undefined"; item = item._nextNavItem)
+                result.push(item);
+            return result;
+        }
+    }
+    app.NavigationItem = NavigationItem;
+    class AppConfigDataService {
+        constructor(_sessionStorage, $http, $log, $document, $window) {
+            this._sessionStorage = _sessionStorage;
+            this.$log = $log;
+            this.$window = $window;
+            this._serviceNowUrl = new URL(app.DEFAULT_URL_SERVICENOW);
+            this._gitRepositoryUrl = new URL(app.DEFAULT_URL_GIT_REPOSITORY);
+            this._currentItemClass = DEFAULT_CURRENT_ITEM_CLASS;
+            this._selectedItemClass = DEFAULT_SELECTED_ITEM_CLASS;
+            this._otherItemClass = DEFAULT_OTHER_ITEM_CLASS;
+            this._topNavItems = [];
+            this._sideNavBreadcrumbItems = [];
+            this._sideNavSiblingItems = [];
+            this._sideNavChildItems = [];
+            let headElement = $document.find('head').first();
+            let titleElement = headElement.find('title');
+            if (titleElement.length == 0) {
+                headElement.children().append(titleElement = $('<title></title>'));
+                this._pageTitle = "";
+            }
+            else
+                this._pageTitle = titleElement.text().trim();
+            try {
+                this._currentPageURL = new URL($window.location.href);
+            }
+            catch (_a) {
+                // Just in case
+                this._currentPageURL = new URL("http://localhost");
+                this._currentPageURL.pathname = app.DEFAULT_PAGE_PATH;
+            }
+            let segments = (typeof this._currentPageURL.pathname !== "string" || this._currentPageURL.pathname.length == 0 || this._currentPageURL.pathname == "/") ? [] : this._currentPageURL.pathname.split("/").filter((n) => n.length > 0);
+            if (segments.length == 0)
+                segments = app.DEFAULT_PAGE_PATH.split("/");
+            else if (!(/\.html?$/i).test(segments[segments.length - 1])) {
+                let arr = app.DEFAULT_PAGE_PATH.split("/");
+                segments.push(arr[arr.length - 1]);
+            }
+            this._currentPageURL.pathname = "/" + (this._relativePagePath = (segments.length == 1) ? segments[0] : segments.join("/"));
+            if ((this._currentPageId = headElement.find('meta[name="app:pageId"]').attr("content")).length == 0)
+                this._currentPageId = AppConfigDataService.toPageId(this._currentPageURL.pathname);
+            if (this._pageTitle.length === 0)
+                this._pageTitle = this._currentPageId;
+            let svc = this;
+            this._promise = $http.get("./appConfigData.json").then((result) => {
+                if (typeof result.data !== "object")
+                    sys.logResponse(result, $log, "Expected object response type, actual is " + (typeof result.data), true);
+                else if (result.data == null) {
+                    if (sys.toHttpResponseStatusCode(result) === sys.HttpResponseStatusCode.noContent)
+                        $log.warn("Response object was null.");
+                }
+                else {
+                    svc.applySettings(result.data);
+                    if (this._pageTitle.trim() !== titleElement.text().trim())
+                        titleElement.text(this._pageTitle);
+                    return;
+                }
+                result;
+                svc.applySettings();
+            }, (reason) => {
+                $log.error("Unexpected error making application configuration data request: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
+            });
+        }
+        currentPageId() { return this._currentPageId; }
+        pagePath() { return this._relativePagePath; }
+        pageTitle(value) {
+            if (typeof value === "string" && value.trim().length > 0 && value !== this._pageTitle) {
+                this._pageTitle = value;
+                this.raiseTitleChanged();
+            }
+            return this._pageTitle;
+        }
+        currentItemClass() { return this._currentItemClass; }
+        selectedItemClass() { return this._selectedItemClass; }
+        otherItemClass() { return this._otherItemClass; }
+        topNavItems() { return this._topNavItems; }
+        serviceNowUrl(value) {
+            if (typeof value === "object" && value !== null && value instanceof URL && this._serviceNowUrl.href !== value.href) {
+                this._serviceNowUrl = value;
+                this.raiseServiceNowUrlChanged();
+            }
+            return this._serviceNowUrl;
+        }
+        gitRepositoryUrl(value) {
+            if (typeof value === "object" && value !== null && value instanceof URL && this._gitRepositoryUrl.href !== value.href) {
+                this._gitRepositoryUrl = value;
+                this.raiseGitRepositoryUrlChanged();
+            }
+            return this._gitRepositoryUrl;
+        }
+        showMainModalPopupDialog(message, title, type, buttons, onClose, thisArg) {
+            let callback = this._showMainModalPopupDialogCallback;
+            if (typeof callback === "function") {
+                if (arguments.length > 5)
+                    callback(message, title, type, buttons, (result) => callback.call(thisArg, result));
+                else
+                    callback(message, title, type, buttons, onClose);
+            }
+        }
+        onShowMainModalPopupDialog(callback, thisArg) {
+            if (typeof callback !== "function")
+                return;
+            let showMainModalPopupDialogCallback = this._showMainModalPopupDialogCallback;
+            if (arguments.length > 1) {
+                if (typeof showMainModalPopupDialogCallback === "function")
+                    this._showMainModalPopupDialogCallback = (message, title, type, buttons, onClose) => {
+                        try {
+                            showMainModalPopupDialogCallback(title, message, type, buttons, onClose);
+                        }
+                        finally {
+                            callback.call(thisArg, message, title, type, buttons, onClose);
+                        }
+                    };
+                else
+                    this._showMainModalPopupDialogCallback = (message, title, type, buttons, onClose) => {
+                        callback.call(thisArg, message, title, type, buttons, onClose);
+                    };
+            }
+            else if (typeof showMainModalPopupDialogCallback === "function")
+                this._showMainModalPopupDialogCallback = (message, title, type, buttons, onClose) => {
+                    try {
+                        showMainModalPopupDialogCallback(message, title, type, buttons, onClose);
+                    }
+                    finally {
+                        callback(message, title, type, buttons, onClose);
+                    }
+                };
+            else
+                this._showMainModalPopupDialogCallback = callback;
+        }
+        closeMainModalPopupDialog(result) {
+            let callback = this._hideMainModalPopupDialogCallback;
+            if (typeof callback === "function")
+                callback(result);
+        }
+        onCloseMainModalPopupDialog(callback, thisArg) {
+            if (typeof callback !== "function")
+                return;
+            let hideMainModalPopupDialogCallback = this._hideMainModalPopupDialogCallback;
+            if (arguments.length > 1) {
+                if (typeof hideMainModalPopupDialogCallback === "function")
+                    this._hideMainModalPopupDialogCallback = (result) => {
+                        try {
+                            hideMainModalPopupDialogCallback(result);
+                        }
+                        finally {
+                            callback.call(result);
+                        }
+                    };
+                else
+                    this._hideMainModalPopupDialogCallback = (result) => {
+                        callback.call(result);
+                    };
+            }
+            else if (typeof hideMainModalPopupDialogCallback === "function")
+                this._hideMainModalPopupDialogCallback = (result) => {
+                    try {
+                        hideMainModalPopupDialogCallback(result);
+                    }
+                    finally {
+                        callback(result);
+                    }
+                };
+            else
+                this._hideMainModalPopupDialogCallback = callback;
+        }
+        onServiceNowUrlChanged(callback, thisArg) {
+            if (typeof callback !== "function")
+                return;
+            let serviceNowUrlChangedCallback = this._serviceNowUrlChangedCallback;
+            if (arguments.length > 1) {
+                if (typeof serviceNowUrlChangedCallback === "function")
+                    this._serviceNowUrlChangedCallback = (value) => { try {
+                        serviceNowUrlChangedCallback(value);
+                    }
+                    finally {
+                        callback.call(thisArg, value);
+                    } };
+                else
+                    this._serviceNowUrlChangedCallback = (value) => { callback.call(thisArg, value); };
+                callback.call(thisArg, this._serviceNowUrl);
+                return;
+            }
+            if (typeof serviceNowUrlChangedCallback === "function")
+                this._serviceNowUrlChangedCallback = (value) => { try {
+                    serviceNowUrlChangedCallback(value);
+                }
+                finally {
+                    callback(value);
+                } };
+            else
+                this._serviceNowUrlChangedCallback = callback;
+            callback(this._serviceNowUrl);
+        }
+        raiseServiceNowUrlChanged() {
+            let callback = this._serviceNowUrlChangedCallback;
+            if (typeof callback === "function")
+                callback(this._serviceNowUrl);
+        }
+        onGitRepositoryUrlChanged(callback, thisArg) {
+            if (typeof callback !== "function")
+                return;
+            let gitRepositoryUrlChangedCallback = this._gitRepositoryUrlChangedCallback;
+            if (arguments.length > 1) {
+                if (typeof gitRepositoryUrlChangedCallback === "function")
+                    this._gitRepositoryUrlChangedCallback = (value) => { try {
+                        gitRepositoryUrlChangedCallback(value);
+                    }
+                    finally {
+                        callback.call(thisArg, value);
+                    } };
+                else
+                    this._gitRepositoryUrlChangedCallback = (value) => { callback.call(thisArg, value); };
+                callback.call(thisArg, this._serviceNowUrl);
+                return;
+            }
+            if (typeof gitRepositoryUrlChangedCallback === "function")
+                this._gitRepositoryUrlChangedCallback = (value) => { try {
+                    gitRepositoryUrlChangedCallback(value);
+                }
+                finally {
+                    callback(value);
+                } };
+            else
+                this._gitRepositoryUrlChangedCallback = callback;
+            callback(this._gitRepositoryUrl);
+        }
+        raiseGitRepositoryUrlChanged() {
+            let callback = this._gitRepositoryUrlChangedCallback;
+            if (typeof callback === "function")
+                callback(this._gitRepositoryUrl);
+        }
+        onTitleChanged(callback, thisArg) {
+            if (typeof callback !== "function")
+                return;
+            let pageTitleChangedCallback = this._pageTitleChangedCallback;
+            if (arguments.length > 1) {
+                if (typeof pageTitleChangedCallback === "function")
+                    this._pageTitleChangedCallback = (value) => { try {
+                        pageTitleChangedCallback(value);
+                    }
+                    finally {
+                        callback.call(thisArg, value);
+                    } };
+                else
+                    this._pageTitleChangedCallback = (value) => { callback.call(thisArg, value); };
+                callback.call(thisArg, this._serviceNowUrl);
+                return;
+            }
+            if (typeof pageTitleChangedCallback === "function")
+                this._pageTitleChangedCallback = (value) => { try {
+                    pageTitleChangedCallback(value);
+                }
+                finally {
+                    callback(value);
+                } };
+            else
+                this._pageTitleChangedCallback = callback;
+            callback(this._pageTitle);
+        }
+        raiseTitleChanged() {
+            let callback = this._pageTitleChangedCallback;
+            if (typeof callback === "function")
+                callback(this._pageTitle);
+        }
+        onSettingsLoaded(successCallback, errorCallback, thisArg) {
+            let svc = this;
+            this._promise.then(() => {
+                if (arguments.length > 2)
+                    successCallback.call(thisArg, svc);
+                else
+                    successCallback(svc);
+            }, (reason) => {
+                if (typeof errorCallback === "function") {
+                    if (arguments.length > 2)
+                        errorCallback.call(thisArg, reason, svc);
+                    else
+                        errorCallback(reason, svc);
                 }
             });
         }
-        container.items.push(item);
-        return item;
+        createServiceNowUrl(relativeUrl, toNav) {
+            if (typeof relativeUrl === "string" && relativeUrl.length > 0 && relativeUrl !== ".") {
+                let url = new URL(relativeUrl, sys.makeDirectoryUrl(this._serviceNowUrl));
+                if (toNav === true) {
+                    let search = url.pathname.replace('/', '%2F');
+                    url.pathname = '/nav_to.do';
+                    if (typeof url.search === "string" && url.search.length > 0)
+                        search += encodeURIComponent(url.search);
+                    if (typeof url.hash === "string" && url.hash.length > 0) {
+                        search += encodeURIComponent(url.hash);
+                        url.hash = '';
+                    }
+                    url.search = "?uri=" + search;
+                }
+                return url.href;
+            }
+            return this._serviceNowUrl.href;
+        }
+        createGitRepositoryUrl(relativeUrl) {
+            if (typeof relativeUrl === "string" && relativeUrl.length > 0 && relativeUrl !== ".")
+                return (new URL(relativeUrl, sys.makeDirectoryUrl(this._gitRepositoryUrl))).href;
+            return this._gitRepositoryUrl.href;
+        }
+        applySettings(appJson) {
+            let settings = this._sessionStorage.getObject(app.StorageKey_UrlConfigSettings);
+            if (typeof settings === "object" && settings !== null) {
+                if (typeof settings.serviceNowUrl === "string" && settings.serviceNowUrl.length > 0)
+                    this.serviceNowUrl(new URL(settings.serviceNowUrl));
+                else if (typeof appJson === "object" && appJson !== null && typeof appJson.serviceNowUrl === "string" && appJson.serviceNowUrl.length > 0)
+                    this.serviceNowUrl(new URL(appJson.serviceNowUrl));
+                if (typeof settings.gitRepositoryUrl === "string" && settings.gitRepositoryUrl.length > 0)
+                    this.gitRepositoryUrl(new URL(settings.gitRepositoryUrl));
+                else if (typeof appJson === "object" && appJson !== null && typeof appJson.gitRepositoryUrl === "string" && appJson.gitRepositoryUrl.length > 0)
+                    this.gitRepositoryUrl(new URL(appJson.gitRepositoryUrl));
+            }
+            else if (typeof appJson === "object" && appJson !== null) {
+                if (typeof appJson.serviceNowUrl === "string" && appJson.serviceNowUrl.length > 0)
+                    this.serviceNowUrl(new URL(appJson.serviceNowUrl));
+                if (typeof appJson.gitRepositoryUrl === "string" && appJson.gitRepositoryUrl.length > 0)
+                    this.gitRepositoryUrl(new URL(appJson.gitRepositoryUrl));
+            }
+            this._sessionStorage.setObject(app.StorageKey_UrlConfigSettings, settings);
+            if (typeof appJson === "object" && appJson !== null && typeof appJson.navigation === "object" && appJson.navigation !== null)
+                this._topNavItems = NavigationItem.createNavItems(this, appJson.navigation.items);
+            else
+                this._topNavItems = NavigationItem.createNavItems(this);
+            let current = NavigationItem.findCurrentItem(this.topNavItems());
+            if (sys.notNil(current) && current.pageTitle.length > 0)
+                this.pageTitle(current.pageTitle);
+            this._sideNavBreadcrumbItems = NavigationItem.createSideNavBreadcrumbItems(current);
+            this._sideNavSiblingItems = NavigationItem.createSideNavSiblingItems(current);
+        }
+        static toPageId(path) {
+            let arr;
+            let i;
+            if (typeof path !== "string" || path.length == 0 || path == "/" || (arr = path.split("/").filter((value) => value.length > 0)).length === 0)
+                arr = app.DEFAULT_PAGE_PATH.split("/").filter((value) => value.length > 0);
+            let n = arr.pop();
+            if ((i = n.lastIndexOf(".")) < 1 || i === n.length - 1) {
+                let a = app.DEFAULT_PAGE_PATH.split("/").filter((value) => value.length > 0);
+                arr.push(n);
+                n = a[a.length - 1];
+                if ((i = n.lastIndexOf(".")) < 0) {
+                    arr.push(n);
+                    return arr.join("/");
+                }
+            }
+            arr.push(n.substr(0, i));
+            return (arr.length === 1) ? arr[0] : arr.join("/");
+        }
     }
-    // #endregion
-    // #region Directives
+    app.AppConfigDataService = AppConfigDataService;
+    app.appModule.factory(SERVICENAME_APP_CONFIG_DATA, ["sessionStorageService", "$http", '$log', '$document', '$window', AppConfigDataService]);
+    class UrlInputFieldController {
+        constructor($scope) {
+            this.$scope = $scope;
+            this._isEmpty = true;
+            this._invalidFormat = false;
+            let ctrl = this;
+        }
+        validate(value) {
+            if (typeof value != "string" || value.trim().length === 0) {
+                if (this.$scope.required === true) {
+                    this.$scope.inputClass = [cssFeedbackClass.isInvalid];
+                    this.$scope.messageClass = [cssAlertClass.alert, cssAlertClass.warning];
+                    this.$scope.validationMessage = "URL not provided.";
+                    this.$scope.isValid = false;
+                }
+                else {
+                    this.$scope.isValid = true;
+                    this.$scope.inputClass = [cssFeedbackClass.isValid];
+                    this.$scope.messageClass = [];
+                    this.$scope.validationMessage = "";
+                    this.$scope.textModel = "";
+                }
+                return this.$scope.isValid;
+            }
+            let url;
+            try {
+                url = new URL(value);
+            }
+            catch (_a) {
+                let i = value.indexOf('#');
+                let hash;
+                if (i > -1) {
+                    hash = value.substr(i);
+                    value = value.substr(0, i);
+                }
+                else
+                    hash = '';
+                let search;
+                i = value.indexOf('?');
+                if (i > -1) {
+                    search = value.substr(i);
+                    value = value.substr(0, i);
+                }
+                else
+                    search = '';
+                try {
+                    url = new URL(((value.length > 0) ? new URL(value, 'http://tempuri.org') : new URL('http://tempuri.org')) + search + hash);
+                }
+                catch (err) {
+                    this.$scope.inputClass = [cssFeedbackClass.isInvalid];
+                    this.$scope.messageClass = [cssAlertClass.alert, cssAlertClass.danger];
+                    this.$scope.validationMessage = "Invalid URL format: " + err;
+                    this.$scope.isValid = false;
+                    return false;
+                }
+                if (this.$scope.allowRelative !== true) {
+                    this.$scope.inputClass = [cssFeedbackClass.isInvalid];
+                    this.$scope.messageClass = [cssAlertClass.alert, cssAlertClass.danger];
+                    this.$scope.validationMessage = "Relative URL not allowed";
+                    this.$scope.isValid = false;
+                    return false;
+                }
+            }
+            if (url.hash.length > 0 && this.$scope.allowFragment !== true)
+                this.$scope.validationMessage = "URL fragment not allowed";
+            else if (url.search.length > 0 && this.$scope.allowQuery !== true)
+                this.$scope.validationMessage = "URL query string not allowed";
+            else if (url.pathname.length > 0 && url.pathname != "/" && this.$scope.allowPath !== true)
+                this.$scope.validationMessage = "URL path not allowed";
+            else {
+                this.$scope.isValid = true;
+                this.$scope.inputClass = [cssFeedbackClass.isValid];
+                this.$scope.messageClass = [];
+                this.$scope.validationMessage = "";
+                this.$scope.textModel = value;
+                return true;
+            }
+            this.$scope.inputClass = [cssFeedbackClass.isInvalid];
+            this.$scope.messageClass = [cssAlertClass.alert, cssAlertClass.danger];
+            this.$scope.isValid = false;
+            return false;
+        }
+        static createDirective() {
+            return {
+                restrict: "E",
+                controller: ['$scope', UrlInputFieldController],
+                controllerAs: 'ctrl',
+                link: (scope, element, attrs) => {
+                    if (typeof scope.textBoxId !== "string" || scope.textBoxId.trim().length == 0) {
+                        let i = 0;
+                        let id = DIRECTIVE_NAME_URLINPUT + ":" + i++;
+                        for (let e = $(id); sys.notNil(e) && e.length > 0; e = $(id))
+                            id = DIRECTIVE_NAME_URLINPUT + ":" + i++;
+                        scope.textBoxId = id;
+                    }
+                    scope.$watch('textModel', (value) => {
+                        if (typeof value === "string" && value !== scope.text)
+                            scope.text = value;
+                    });
+                    scope.$watch('text', (value) => { scope.ctrl.validate((typeof value !== "string") ? "" : value); });
+                    scope.$watchGroup(["required", "allowRelative", "allowPath", "allowQuery", "allowFragment"], () => { scope.ctrl.validate((typeof scope.text !== "string") ? "" : scope.text); });
+                },
+                scope: {
+                    textModel: '=',
+                    isValid: '=?',
+                    allowPath: '=?',
+                    allowFragment: '=?',
+                    allowQuery: '=?',
+                    allowRelative: '=?',
+                    required: '=?',
+                    labelText: '@',
+                    textBoxId: '@?'
+                },
+                template: '<label for="{{textBoxId}}">{{labelText}}</label><input type="text" ng-class="inputClass" id="{{textBoxId}}" ng-model="text" /><div ng-class="messageClass" ng-hide="isValid">{{validationMessage}}</div>'
+            };
+        }
+    }
+    app.appModule.directive(DIRECTIVE_NAME_URLINPUT, UrlInputFieldController.createDirective);
+    class AppContentController {
+        constructor($scope, $log, $window, appConfigData) {
+            this.$scope = $scope;
+            this.$log = $log;
+            this.$window = $window;
+            this.appConfigData = appConfigData;
+            $scope.serviceNowUrlIsValid = $scope.gitRepositoryUrlIsValid = $scope.setupParametersAreInvalid = true;
+            $scope.setupParametersDialogVisible = $scope.showSideMenu = $scope.showBreadcrumbLinks = $scope.showSideNavItems = $scope.showSideNavHeading = $scope.showCurrentItem = $scope.popupDialogVisible = false;
+            $scope.topNavItems = $scope.sideNavBreadcrumbItems = $scope.sideNavItems = $scope.followingSideNavItems = [];
+            $scope.popupDialogButtons = [];
+            $scope.sideNavHeading = $scope.popupDialogTitle = $scope.popupDialogMessage = '';
+            $scope.pageTitle = appConfigData.pageTitle();
+            $scope.serviceNowUrl = appConfigData.serviceNowUrl().href;
+            $scope.gitRepositoryUrl = appConfigData.gitRepositoryUrl().href;
+            $scope.popupDialogBodyClass = [];
+            this.updateMainSectionClass();
+            $scope.$watchGroup(['serviceNowUrlIsValid', 'gitRepositoryBaseUrlIsValid'], () => {
+                let areValid = $scope.serviceNowUrlIsValid && $scope.gitRepositoryBaseUrlIsValid;
+                if (areValid !== $scope.setupParametersAreInvalid)
+                    $scope.setupParametersAreInvalid = areValid;
+            });
+            appConfigData.onShowMainModalPopupDialog((message, title, type, buttons, onClose) => {
+                if ($scope.popupDialogVisible) {
+                    $('#mainModalPopupDialog').modal('hide');
+                    $scope.popupDialogVisible = false;
+                    if (typeof $scope.onPopupDialogClose === "function")
+                        $scope.onPopupDialogClose();
+                }
+                $scope.popupDialogMessage = message;
+                $scope.onClose = onClose;
+                if (typeof buttons !== "object" || buttons === null || ($scope.popupDialogButtons = buttons.filter(b => typeof b === "object" && b !== null)).length === 0)
+                    $scope.popupDialogButtons = [{ displayText: "Close", onClick: (event) => { $scope.ctrl.closePopupDialog(event); } }];
+                else
+                    $scope.popupDialogButtons.forEach((value) => {
+                        value.onClick = (event) => $scope.ctrl.closePopupDialog(event, value.value);
+                    });
+                if (sys.isNilOrWhiteSpace(title)) {
+                    switch (type) {
+                        case 'warning':
+                            $scope.popupDialogTitle = 'Warning';
+                            break;
+                        case 'danger':
+                            $scope.popupDialogTitle = 'Critical';
+                            break;
+                        case 'success':
+                            $scope.popupDialogTitle = 'Success';
+                            break;
+                        default:
+                            $scope.popupDialogTitle = 'Notice';
+                            type = "info";
+                            break;
+                    }
+                }
+                else
+                    $scope.popupDialogTitle = title;
+                $scope.popupDialogBodyClass = ['modal-body', 'alert', 'alert-' + type];
+                $('#mainModalPopupDialog').modal('show');
+                $scope.setupParametersDialogVisible = true;
+            });
+            appConfigData.onCloseMainModalPopupDialog((result) => {
+                if ($scope.popupDialogVisible) {
+                    $('#mainModalPopupDialog').modal('hide');
+                    $scope.popupDialogVisible = false;
+                    if (typeof $scope.onPopupDialogClose === "function") {
+                        if (arguments.length > 0)
+                            $scope.onPopupDialogClose(result);
+                        else
+                            $scope.onPopupDialogClose();
+                    }
+                }
+            });
+            appConfigData.onTitleChanged((value) => { $scope.pageTitle = value; });
+            appConfigData.onServiceNowUrlChanged((value) => { $scope.serviceNowUrl = value.href; });
+            appConfigData.onGitRepositoryUrlChanged((value) => { $scope.gitRepositoryBaseUrl = value.href; });
+            appConfigData.onSettingsLoaded(() => {
+                $scope.topNavItems = appConfigData.topNavItems();
+                let currentNavItem = NavigationItem.findCurrentItem($scope.topNavItems);
+                if (sys.isNil(currentNavItem)) {
+                    $scope.showBreadcrumbLinks = $scope.showSideMenu = $scope.showSideNavHeading = $scope.showSideNavItems = $scope.showCurrentItem = false;
+                    $scope.sideNavHeading = '';
+                    $scope.sideNavBreadcrumbItems = $scope.sideNavItems = $scope.followingSideNavItems = [];
+                    $scope.currentNavItem = undefined;
+                }
+                else {
+                    if (currentNavItem.isNestedNavItem) {
+                        $scope.showBreadcrumbLinks = ($scope.sideNavBreadcrumbItems = currentNavItem.getBreadcrumbLinks()).length > 0;
+                        let parentNavItem = currentNavItem.parentNavItem;
+                        if (currentNavItem.hasSiblingNavItem) {
+                            $scope.showSideMenu = $scope.showSideNavItems = $scope.showCurrentItem = true;
+                            $scope.sideNavItems = currentNavItem.precedingSiblings();
+                            $scope.followingSideNavItems = currentNavItem.followingSiblings();
+                            $scope.showSideNavHeading = ($scope.sideNavHeading = parentNavItem.sideNavHeading.trim()).length > 0;
+                            $scope.currentNavItem = currentNavItem;
+                        }
+                        else {
+                            $scope.showSideNavItems = $scope.showSideNavHeading = $scope.showCurrentItem = false;
+                            $scope.followingSideNavItems = $scope.sideNavItems = [];
+                            $scope.showSideMenu = $scope.showBreadcrumbLinks;
+                            $scope.sideNavHeading = '';
+                            $scope.currentNavItem = undefined;
+                        }
+                    }
+                    else {
+                        $scope.currentNavItem = undefined;
+                        $scope.showBreadcrumbLinks = $scope.showCurrentItem = false;
+                        $scope.sideNavBreadcrumbItems = $scope.followingSideNavItems = [];
+                        $scope.showSideMenu = $scope.showSideNavItems = currentNavItem.hasChildNavItem;
+                        if ($scope.showSideMenu) {
+                            $scope.showSideNavHeading = ($scope.sideNavHeading = currentNavItem.sideNavHeading.trim()).length > 0;
+                            $scope.sideNavItems = currentNavItem.childNavItems;
+                        }
+                        else {
+                            $scope.sideNavItems = [];
+                            $scope.sideNavHeading = '';
+                            $scope.showSideNavHeading = $scope.showSideNavItems = false;
+                        }
+                    }
+                }
+                this.updateMainSectionClass();
+            }, (reason) => {
+                $log.error("Error loading application settings: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
+                $window.alert("Unexpected error loading application settings. See browser log for more detail.");
+            }, this);
+        }
+        updateMainSectionClass() {
+            if (this.$scope.showSideMenu)
+                this.$scope.mainSectionClass = ["container-fluid", "col-8", "col-lg-9"];
+            else
+                this.$scope.mainSectionClass = ["container-fluid", "col-12"];
+        }
+        openSetupParametersEditDialog(event) {
+            sys.preventEventDefault(event);
+            if (!this.$scope.setupParametersDialogVisible) {
+                $("#setupParametersDialog").modal('show');
+                this.$scope.setupParametersDialogVisible = true;
+            }
+        }
+        closeSetupParametersEditDialog(event, accept) {
+            sys.preventEventDefault(event);
+            if (this.$scope.setupParametersDialogVisible) {
+                $("#setupParametersDialog").modal('hide');
+                this.$scope.setupParametersDialogVisible = false;
+            }
+        }
+        closePopupDialog(event, result) {
+            sys.preventEventDefault(event);
+            if (this.$scope.popupDialogVisible) {
+                $("#mainModalPopupDialog").modal('hide');
+                this.$scope.popupDialogVisible = false;
+                if (typeof this.$scope.onPopupDialogClose === "function") {
+                    if (arguments.length > 1)
+                        this.$scope.onPopupDialogClose(result);
+                    else
+                        this.$scope.onPopupDialogClose();
+                }
+            }
+        }
+        $onInit() { }
+    }
+    app.appModule.directive(DIRECTIVE_NAME_APPCONTENT, () => {
+        return {
+            controller: ['$scope', '$log', '$window', SERVICENAME_APP_CONFIG_DATA, AppContentController],
+            controllerAs: 'ctrl',
+            restrict: "E",
+            scope: true,
+            templateUrl: 'Template/appContent.htm'
+        };
+    });
+    class MainAppPageHeadController {
+        constructor($scope, $log, $window, appConfigData) {
+            this.$scope = $scope;
+            this.$log = $log;
+            this.$window = $window;
+            this.appConfigData = appConfigData;
+            $scope.serviceNowUrlIsValid = $scope.gitRepositoryUrlIsValid = $scope.setupParametersAreInvalid = true;
+            $scope.setupParametersDialogVisible = false;
+            $scope.topNavItems = [];
+            $scope.$watchGroup(['serviceNowUrlIsValid', 'gitRepositoryBaseUrlIsValid'], () => {
+                let areValid = $scope.serviceNowUrlIsValid && $scope.gitRepositoryBaseUrlIsValid;
+                if (areValid !== $scope.setupParametersAreInvalid)
+                    $scope.setupParametersAreInvalid = areValid;
+            });
+            appConfigData.onTitleChanged((value) => { $scope.pageTitle = value; });
+            appConfigData.onServiceNowUrlChanged((value) => { $scope.serviceNowUrl = value.href; });
+            appConfigData.onGitRepositoryUrlChanged((value) => { $scope.gitRepositoryBaseUrl = value.href; });
+            appConfigData.onSettingsLoaded(() => {
+                $scope.topNavItems = appConfigData.topNavItems();
+            }, (reason) => {
+                $log.error("Error loading application settings: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
+                $window.alert("Unexpected error loading application settings. See browser log for more detail.");
+            }, this);
+        }
+        openSetupParametersEditDialog(event) {
+            sys.preventEventDefault(event);
+            if (!this.$scope.setupParametersDialogVisible) {
+                $("#setupParametersDialog").modal('show');
+                this.$scope.setupParametersDialogVisible = true;
+            }
+        }
+        closeSetupParametersEditDialog(event, accept) {
+            sys.preventEventDefault(event);
+            if (!this.$scope.setupParametersDialogVisible) {
+                $("#setupParametersDialog").modal('hide');
+                this.$scope.setupParametersDialogVisible = false;
+            }
+        }
+        $onInit() { }
+    }
     app.appModule.directive("mainAppPageHead", () => {
         return {
+            controller: ['$scope', '$log', '$window', SERVICENAME_APP_CONFIG_DATA, MainAppPageHeadController],
+            controllerAs: 'ctrl',
             restrict: "E",
             scope: true,
             templateUrl: 'Template/mainAppPageHead.htm'
         };
     });
-    class mainPageController {
-        constructor($scope, $location, $http, settings) {
-            this.$scope = $scope;
-            this.$location = $location;
-            this.$http = $http;
-            this.settings = settings;
-            $scope.serviceNowUrl = settings.serviceNowUrl;
-            $scope.gitRepositoryBaseUrl = settings.gitRepositoryBaseUrl;
-            settings.onChanged($scope, (event, value) => {
-                $scope.serviceNowUrl = value.serviceNowUrl;
-                $scope.gitRepositoryBaseUrl = value.gitRepositoryBaseUrl;
-            });
-            initializePageNavigationScope($scope, $location, $http);
-            $scope.showSetupParametersEditDialog = () => {
-                targetSysConfigEditController.show($scope);
-            };
-        }
-        $doCheck() { }
-        showSetupParametersEditDialog() { targetSysConfigEditController.show(this.$scope); }
-        hideSetupParametersEditDialog() { targetSysConfigEditController.hide(this.$scope); }
-        showModalDialogMessage(message, type = 'info', title) { mainModalPopupDialogController.show(this.$scope, message, type, title); }
-        hideModalDialogMessage() { mainModalPopupDialogController.hide(this.$scope); }
-    }
-    app.appModule.controller("mainPageController", ['$scope', "$location", "$http", "targetSysConfigSettings", mainPageController]);
-    class MainControllerChild {
-        constructor($scope) {
-            this.$scope = $scope;
-        }
-        $doCheck() { }
-        showSetupParametersEditDialog() { targetSysConfigEditController.show(this.$scope); }
-        hideSetupParametersEditDialog() { targetSysConfigEditController.hide(this.$scope); }
-        showModalDialogMessage(message, type = 'info', title) { mainModalPopupDialogController.show(this.$scope, message, type, title); }
-        hideModalDialogMessage() { mainModalPopupDialogController.hide(this.$scope); }
-    }
-    app.MainControllerChild = MainControllerChild;
     class mainModalPopupDialogController {
+        static show($scope, message, type, title) {
+            $scope.$broadcast(app.ScopeEvent_OpenMainModalPopupDialog, message, type, title);
+        }
+        static hide($scope) {
+            $scope.$broadcast(app.ScopeEvent_CloseMainModalPopupDialog);
+        }
         constructor($scope, $rootScope) {
             $scope.title = '';
             $scope.message = '';
@@ -178,12 +931,6 @@ var app;
             });
             $rootScope.$on(app.ScopeEvent_CloseMainModalPopupDialog, (event) => { $('#mainModalPopupDialog').modal('hide'); });
         }
-        static show($scope, message, type, title) {
-            $scope.$broadcast(app.ScopeEvent_OpenMainModalPopupDialog, message, type, title);
-        }
-        static hide($scope) {
-            $scope.$broadcast(app.ScopeEvent_CloseMainModalPopupDialog);
-        }
     }
     app.mainModalPopupDialogController = mainModalPopupDialogController;
     app.appModule.controller("mainModalPopupDialogController", ['$scope', '$rootScope', mainModalPopupDialogController]);
@@ -203,7 +950,7 @@ var app;
                 try {
                     let key = this._keys[this._index];
                     let value = this._window.sessionStorage.getItem(key);
-                    if (!sys.isNil(value))
+                    if (sys.notNil(value))
                         return { done: false, value: [key, value] };
                     this._index = this._keys.length;
                 }
@@ -227,7 +974,7 @@ var app;
             else if (this._index < this._keys.length) {
                 try {
                     let value = this._window.sessionStorage.getItem(this._keys[this._index]);
-                    if (!sys.isNil(value))
+                    if (sys.notNil(value))
                         return { done: false, value: value };
                     this._index = this._keys.length;
                 }
@@ -291,7 +1038,7 @@ var app;
                             value = this.$window.sessionStorage.getItem(key);
                         }
                         catch ( /* okay to ignore */_a) { /* okay to ignore */ }
-                        if (!sys.isNil(value))
+                        if (sys.notNil(value))
                             callbackfn(value, key, this);
                     }
                 }, this);
@@ -303,7 +1050,7 @@ var app;
                             value = this.$window.sessionStorage.getItem(key);
                         }
                         catch ( /* okay to ignore */_a) { /* okay to ignore */ }
-                        if (!sys.isNil(value))
+                        if (sys.notNil(value))
                             callbackfn.call(thisArg, value, key, this);
                     }
                 }, this);
@@ -421,6 +1168,8 @@ var app;
     }
     app.CopyToClipboardService = CopyToClipboardService;
     app.appModule.service("copyToClipboardService", ["$window", CopyToClipboardService]);
+    // #endregion
+    // #region copyToClipboardButton directive <copy-to-clipboard-button target="id" class="" success-message=""></copy-to-clipboard-button>
     const btnCssClassRe = /(^|\s)btn(\s|$)/g;
     const btnStyleCssClassRe = /(^|\s)btn-\S/g;
     const paddingCssClassRe = /(^|\s)p(l|t|r|b)?-\S/g;
@@ -464,6 +1213,91 @@ var app;
         $onInit() { }
     }
     app.appModule.directive("copyToClipboardButton", ClipboardCopyController.createDirective);
+    class SnInstanceLinkController {
+        constructor($scope, appConfigData) {
+            $scope.href = '';
+            appConfigData.onServiceNowUrlChanged((value) => {
+                if (typeof $scope.relativeUrlModel === "string" && $scope.relativeUrlModel.length > 0)
+                    $scope.href = appConfigData.createServiceNowUrl($scope.relativeUrlModel, sys.asBoolean($scope.toNav));
+                else
+                    $scope.href = appConfigData.createServiceNowUrl($scope.relativeUrl, sys.asBoolean($scope.toNav));
+            });
+            $scope.$watchGroup(['relativeUrlModel', 'relativeUrl', 'toNav'], () => {
+                if (typeof $scope.relativeUrlModel === "string" && $scope.relativeUrlModel.length > 0)
+                    $scope.href = appConfigData.createServiceNowUrl($scope.relativeUrlModel, sys.asBoolean($scope.toNav));
+                else
+                    $scope.href = appConfigData.createServiceNowUrl($scope.relativeUrl, sys.asBoolean($scope.toNav));
+            });
+        }
+    }
+    app.appModule.directive("snInstanceLink", () => {
+        return {
+            restrict: "E",
+            controller: ['$scope', 'appConfigData', SnInstanceLinkController],
+            link: (scope, element, attrs) => {
+                if (typeof attrs.target !== "string")
+                    attrs.$set("target", "_blank");
+            },
+            scope: {
+                relativeUrl: "@?",
+                relativeUrlModel: "=?",
+                toNav: "@?"
+            },
+            replace: true,
+            template: '<a ng-href="{{href}}" ng-transclude></a>',
+            transclude: true
+        };
+    });
+    class GitnInstanceLinkController {
+        constructor($scope, appConfigData) {
+            $scope.linkText = $scope.href = '';
+            appConfigData.onGitRepositoryUrlChanged((value) => {
+                if (typeof $scope.relativeUrlModel === "string" && $scope.relativeUrlModel.length > 0)
+                    $scope.href = appConfigData.createGitRepositoryUrl($scope.relativeUrlModel);
+                else
+                    $scope.href = appConfigData.createGitRepositoryUrl($scope.relativeUrl);
+            });
+            $scope.$watchGroup(['relativeUrlModel', 'relativeUrl'], () => {
+                if (typeof $scope.relativeUrlModel === "string" && $scope.relativeUrlModel.length > 0)
+                    $scope.href = appConfigData.createGitRepositoryUrl($scope.relativeUrlModel);
+                else
+                    $scope.href = appConfigData.createGitRepositoryUrl($scope.relativeUrl);
+            });
+            $scope.$watchGroup(['textModel', 'text', 'href'], () => {
+                $scope.linkText = (typeof $scope.textModel === "string" && $scope.textModel.length > 0) ? $scope.textModel : ((typeof $scope.text === "string" && $scope.text.length > 0) ? $scope.text : $scope.href);
+            });
+            $scope.linkText = (typeof $scope.textModel === "string" && $scope.textModel.length > 0) ? $scope.textModel : ((typeof $scope.text === "string" && $scope.text.length > 0) ? $scope.text : $scope.href);
+        }
+    }
+    app.appModule.directive("gitInstanceLink", () => {
+        return {
+            restrict: "E",
+            controller: ['$scope', 'appConfigData', GitnInstanceLinkController],
+            link: (scope, element, attrs) => {
+                if (typeof attrs.target !== "string")
+                    attrs.$set("target", "_blank");
+            },
+            scope: {
+                relativeUrl: "@?",
+                relativeUrlModel: "=?",
+                text: "@?",
+                textModel: "=?"
+            },
+            replace: true,
+            template: '<a ng-href="{{href}}">{{linkText}}</a>'
+        };
+    });
+    // #endregion
+    // #region pageTitle directive - <title page-title></title>
+    class PageTitleDirectiveController {
+        constructor($element, appConfigData) { appConfigData.onTitleChanged((value) => { $element.text(value); }); }
+    }
+    app.appModule.directive("gitInstanceLink", () => {
+        return {
+            restrict: "A",
+            controller: ['$element', 'appConfigData', PageTitleDirectiveController]
+        };
+    });
     app.appModule.directive("externalLink", () => {
         return {
             restrict: "E",
@@ -512,214 +1346,247 @@ var app;
     });
     // #endregion
     // #region Target SyStem Configuration Information
-    let cssValidationClass;
-    (function (cssValidationClass) {
-        cssValidationClass["isValid"] = "is-valid";
-        cssValidationClass["isInvalid"] = "is-invalid";
-    })(cssValidationClass = app.cssValidationClass || (app.cssValidationClass = {}));
-    let cssFeedbackClass;
-    (function (cssFeedbackClass) {
-        cssFeedbackClass["isValid"] = "is-valid";
-        cssFeedbackClass["isInvalid"] = "is-invalid";
-    })(cssFeedbackClass = app.cssFeedbackClass || (app.cssFeedbackClass = {}));
-    class targetSysConfigEditController {
-        constructor($scope, _settings) {
-            this.$scope = $scope;
-            this._settings = _settings;
-            $scope.serviceNowUrlField = ($scope.$new());
-            $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = _settings.serviceNowUrl;
-            $scope.serviceNowUrlField.validationMessage = '';
-            $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-            $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-            $scope.serviceNowUrlField.isValid = true;
-            $scope.gitRepositoryBaseUrlField = ($scope.$new());
-            $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = _settings.gitRepositoryBaseUrl;
-            $scope.gitRepositoryBaseUrlField.validationMessage = '';
-            $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-            $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
-            $scope.gitRepositoryBaseUrlField.isValid = true;
-            $scope.message = '';
-            $scope.bodyClass = '';
-            $scope.close = () => { $('#setupParametersDialog').modal('hide'); };
-            $scope.cancel = () => {
-                $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.original;
-                $scope.serviceNowUrlField.validationMessage = '';
-                $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-                $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-                $scope.serviceNowUrlField.isValid = true;
-                $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.original;
-                $scope.gitRepositoryBaseUrlField.validationMessage = '';
-                $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-                $scope.gitRepositoryBaseUrlField.isValid = true;
-                $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
-                $('#setupParametersDialog').modal('hide');
-            };
-            $scope.accept = () => {
-                this.$doCheck();
-                if (!$scope.serviceNowUrlField.isValid) {
-                    if (!$scope.gitRepositoryBaseUrlField.isValid)
-                        alert("ServiceNow URL and GIT Repository Base URL are not valid.");
-                    alert("ServiceNow URL is not valid.");
-                    return;
-                }
-                if (!$scope.gitRepositoryBaseUrlField.isValid) {
-                    alert("GIT Repository Base URL is not valid.");
-                    return;
-                }
-                $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.text =
-                    sys.subStringBefore(sys.subStringBefore($scope.serviceNowUrlField.text, '#'), '?');
-                $scope.serviceNowUrlField.validationMessage = '';
-                $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-                $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-                $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated =
-                    $scope.gitRepositoryBaseUrlField.text = sys.subStringBefore(sys.subStringBefore($scope.gitRepositoryBaseUrlField.text, '#'), '?');
-                $scope.gitRepositoryBaseUrlField.validationMessage = '';
-                $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-                $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
-                $('#setupParametersDialog').modal('hide');
-                this._settings.serviceNowUrl = $scope.serviceNowUrlField.original;
-                this._settings.gitRepositoryBaseUrl = $scope.gitRepositoryBaseUrlField.original;
-            };
-            $scope.$on(app.ScopeEvent_ShowSetupParametersDialog, (event) => {
-                $('#setupParametersDialog').modal('show');
-            });
-            $scope.$on(app.ScopeEvent_HideSetupParametersDialog, (event) => {
-                $('#setupParametersDialog').modal('hide');
-            });
-        }
-        $doCheck() {
-            [this.$scope.serviceNowUrlField, this.$scope.gitRepositoryBaseUrlField].forEach((item) => {
-                if (item.lastValidated === item.text)
-                    return;
-                let uri = sys.asString(item.text, true, '');
-                item.lastValidated = uri;
-                if (uri.length === 0)
-                    item.validationMessage = 'URL is required.';
-                else {
-                    let fragment = '', query = '';
-                    let i = uri.indexOf('#');
-                    if (i > -1) {
-                        fragment = uri.substr(i);
-                        uri = uri.substr(0, i);
-                    }
-                    i = uri.indexOf('?');
-                    if (i > -1) {
-                        fragment = uri.substr(i);
-                        uri = uri.substr(0, i);
-                    }
-                    let match;
-                    if (uri.length > 0)
-                        match = sys.uriParseRegex.exec(uri);
-                    if (sys.isNilOrEmpty(match))
-                        item.validationMessage = 'Invalid URL.';
-                    else if (sys.isNilOrWhiteSpace(match[sys.uriParseGroup.origin]))
-                        item.validationMessage = 'URL cannot be relative.';
-                    else if (sys.isNilOrWhiteSpace(match[sys.uriParseGroup.schemeName]) || sys.isNilOrWhiteSpace(match[sys.uriParseGroup.hostname]))
-                        item.validationMessage = 'Invalid URL.';
-                    else {
-                        item.isValid = true;
-                        if (query.length > 0)
-                            item.validationMessage = 'URI query string will be ignored.';
-                        else if (fragment.length > 0)
-                            item.validationMessage = 'URI fragment (hash) will be ignored.';
-                        else
-                            return;
-                        item.validationClass = ['form-control', cssValidationClass.isInvalid];
-                        item.messageClass = ['invalid-feedback', 'text-warning'];
-                        return;
-                    }
-                }
-                item.isValid = false;
-                item.validationClass = ['form-control', cssValidationClass.isInvalid];
-                item.messageClass = ['invalid-feedback'];
-            });
-        }
-        static show($scope) {
-            $scope.$broadcast(app.ScopeEvent_ShowSetupParametersDialog);
-        }
-        static hide($scope) {
-            $scope.$broadcast(app.ScopeEvent_HideSetupParametersDialog);
-        }
-    }
-    app.targetSysConfigEditController = targetSysConfigEditController;
-    app.appModule.controller("targetSysConfigEditController", ['$scope', 'targetSysConfigSettings', targetSysConfigEditController]);
-    class targetSysConfigSettings {
-        constructor($rootScope, _sessionStorage, $http) {
-            this.$rootScope = $rootScope;
-            this._sessionStorage = _sessionStorage;
-            this._settings = _sessionStorage.getObject("targetSysConfigSettings");
-            if (sys.isNil(this._settings))
-                this._settings = { serviceNowUrl: DefaultURL_ServiceNow, gitRepositoryBaseUrl: DefaultURL_GitRepositoryBase };
-            else {
-                if (sys.isNilOrWhiteSpace(this._settings.serviceNowUrl))
-                    this._settings.serviceNowUrl = DefaultURL_ServiceNow;
-                if (sys.isNilOrWhiteSpace(this._settings.gitRepositoryBaseUrl))
-                    this._settings.gitRepositoryBaseUrl = DefaultURL_GitRepositoryBase;
-            }
-            $http.get("./defaults.json").then((nav) => {
-                if (sys.isNil(nav.data))
-                    return;
-                if (sys.isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl) {
-                    if (sys.isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl)
-                        return;
-                    this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
-                }
-                else {
-                    this._settings.serviceNowUrl = nav.data.serviceNowUrl;
-                    if (!sys.isNil(nav.data.serviceNowUrl) && this._settings.serviceNowUrl !== nav.data.serviceNowUrl)
-                        this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
-                }
-                this._sessionStorage.setObject(app.StorageKey_SetupParameterSettings, this._settings);
-                this.raiseUpdated();
-            });
-        }
-        get serviceNowUrl() { return this._settings.serviceNowUrl; }
-        set serviceNowUrl(value) {
-            if (value === this._settings.serviceNowUrl)
-                return;
-            if (sys.isNilOrWhiteSpace(value))
-                throw new Error("URL cannot be empty.");
-            let parsedUrl = sys.parseUriString(value);
-            if (sys.isNil(parsedUrl.origin))
-                throw new Error("URL cannot be relative.");
-            if (!(sys.isNil(parsedUrl.queryString) && sys.isNil(parsedUrl.fragment) && parsedUrl.path.length == 0)) {
-                if (value === parsedUrl.origin.value)
-                    return;
-                this._settings.serviceNowUrl = parsedUrl.origin.value;
-            }
-            else
-                this._settings.serviceNowUrl = value;
-            this._sessionStorage.setObject(app.StorageKey_SetupParameterSettings, this._settings);
-            this.raiseUpdated();
-        }
-        get gitRepositoryBaseUrl() { return this._settings.gitRepositoryBaseUrl; }
-        set gitRepositoryBaseUrl(value) {
-            if (value === this._settings.gitRepositoryBaseUrl)
-                return;
-            if (sys.isNilOrWhiteSpace(value))
-                throw new Error("URL cannot be empty.");
-            let parsedUrl = sys.parseUriString(value);
-            if (sys.isNil(parsedUrl.origin))
-                throw new Error("URL cannot be relative.");
-            if (!(sys.isNil(parsedUrl.queryString) && sys.isNil(parsedUrl.fragment))) {
-                value = parsedUrl.origin.value + parsedUrl.path;
-                if (value === this._settings.gitRepositoryBaseUrl)
-                    return;
-            }
-            this._settings.gitRepositoryBaseUrl = value;
-            this._sessionStorage.setObject(app.StorageKey_SetupParameterSettings, this._settings);
-            this.raiseUpdated();
-        }
-        raiseUpdated() {
-            this.$rootScope.$emit(app.ScopeEvent_SetupParameterSettingsChanged, {
-                serviceNowUrl: this._settings.serviceNowUrl,
-                gitRepositoryBaseUrl: this._settings.gitRepositoryBaseUrl
-            });
-        }
-        onChanged(scope, handler) { scope.$on(app.ScopeEvent_SetupParameterSettingsChanged, handler); }
-    }
-    app.targetSysConfigSettings = targetSysConfigSettings;
-    app.appModule.factory("targetSysConfigSettings", ["$rootScope", "sessionStorageService", "$http", targetSysConfigSettings]);
+    //// #region targetSysConfigEditController
+    //interface ISysConfigEditFieldState extends ISysConfigEditScope {
+    //    original: string;
+    //    text: string;
+    //    isValid: boolean;
+    //    lastValidated: string;
+    //    validationMessage: string;
+    //    validationClass: string[];
+    //    messageClass: string[];
+    //}
+    //interface ISysConfigEditScope extends ng.IScope {
+    //    serviceNowUrl: string;
+    //    gitRepositoryBaseUrl: string;
+    //    cancel(): void;
+    //    accept(): void;
+    //    close(): void;
+    //    serviceNowUrlField: ISysConfigEditFieldState;
+    //    gitRepositoryBaseUrlField: ISysConfigEditFieldState;
+    //}
+    //export class targetSysConfigEditController implements ng.IController {
+    //    constructor(protected $scope: ISysConfigEditScope, private _settings: targetSysConfigSettings) {
+    //        $scope.serviceNowUrlField = <ISysConfigEditFieldState>($scope.$new());
+    //        $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = _settings.serviceNowUrl;
+    //        $scope.serviceNowUrlField.validationMessage = '';
+    //        $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+    //        $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
+    //        $scope.serviceNowUrlField.isValid = true;
+    //        $scope.gitRepositoryBaseUrlField = <ISysConfigEditFieldState>($scope.$new());
+    //        $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = _settings.gitRepositoryBaseUrl;
+    //        $scope.gitRepositoryBaseUrlField.validationMessage = '';
+    //        $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+    //        $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
+    //        $scope.gitRepositoryBaseUrlField.isValid = true;
+    //        $scope.message = '';
+    //        $scope.bodyClass = '';
+    //        $scope.close = () => { $('#setupParametersDialog').modal('hide'); }
+    //        $scope.cancel = () => {
+    //            $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.original;
+    //            $scope.serviceNowUrlField.validationMessage = '';
+    //            $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+    //            $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
+    //            $scope.serviceNowUrlField.isValid = true;
+    //            $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.original;
+    //            $scope.gitRepositoryBaseUrlField.validationMessage = '';
+    //            $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+    //            $scope.gitRepositoryBaseUrlField.isValid = true;
+    //            $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
+    //            $('#setupParametersDialog').modal('hide');
+    //        };
+    //        $scope.accept = () => {
+    //            this.$doCheck();
+    //            if (!$scope.serviceNowUrlField.isValid) {
+    //                if (!$scope.gitRepositoryBaseUrlField.isValid)
+    //                    alert("ServiceNow URL and GIT Repository Base URL are not valid.");
+    //                alert("ServiceNow URL is not valid.");
+    //                return;
+    //            }
+    //            if (!$scope.gitRepositoryBaseUrlField.isValid) {
+    //                alert("GIT Repository Base URL is not valid.");
+    //                return;
+    //            }
+    //            $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.text =
+    //                sys.subStringBefore(sys.subStringBefore($scope.serviceNowUrlField.text, '#'), '?');
+    //            $scope.serviceNowUrlField.validationMessage = '';
+    //            $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+    //            $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
+    //            $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated =
+    //                $scope.gitRepositoryBaseUrlField.text = sys.subStringBefore(sys.subStringBefore($scope.gitRepositoryBaseUrlField.text, '#'), '?');
+    //            $scope.gitRepositoryBaseUrlField.validationMessage = '';
+    //            $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
+    //            $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
+    //            $('#setupParametersDialog').modal('hide');
+    //            this._settings.serviceNowUrl = $scope.serviceNowUrlField.original;
+    //            this._settings.gitRepositoryBaseUrl = $scope.gitRepositoryBaseUrlField.original;
+    //        };
+    //        $scope.$on(ScopeEvent_ShowSetupParametersDialog, (event: ng.IAngularEvent) => {
+    //            $('#setupParametersDialog').modal('show');
+    //        });
+    //        $scope.$on(ScopeEvent_HideSetupParametersDialog, (event: ng.IAngularEvent) => {
+    //            $('#setupParametersDialog').modal('hide');
+    //        });
+    //    }
+    //    $doCheck() {
+    //        [this.$scope.serviceNowUrlField, this.$scope.gitRepositoryBaseUrlField].forEach((item: ISysConfigEditFieldState) => {
+    //            if (item.lastValidated === item.text)
+    //                return;
+    //            let uri: string = sys.asString(item.text, true, '');
+    //            item.lastValidated = uri;
+    //            if (uri.length === 0)
+    //                item.validationMessage = 'URL is required.';
+    //            else {
+    //                let fragment: string = '', query: string = '';
+    //                let i: number = uri.indexOf('#');
+    //                if (i > -1) {
+    //                    fragment = uri.substr(i);
+    //                    uri = uri.substr(0, i);
+    //                }
+    //                i = uri.indexOf('?');
+    //                if (i > -1) {
+    //                    fragment = uri.substr(i);
+    //                    uri = uri.substr(0, i);
+    //                }
+    //                let match: RegExpExecArray | null | undefined;
+    //                if (uri.length > 0)
+    //                    match = sys.uriParseRegex.exec(uri);
+    //                if (sys.isNilOrEmpty(match))
+    //                    item.validationMessage = 'Invalid URL.';
+    //                else if (sys.isNilOrWhiteSpace(match[sys.uriParseGroup.origin]))
+    //                    item.validationMessage = 'URL cannot be relative.';
+    //                else if (sys.isNilOrWhiteSpace(match[sys.uriParseGroup.schemeName]) || sys.isNilOrWhiteSpace(match[sys.uriParseGroup.hostname]))
+    //                    item.validationMessage = 'Invalid URL.';
+    //                else {
+    //                    item.isValid = true;
+    //                    if (query.length > 0)
+    //                        item.validationMessage = 'URI query string will be ignored.';
+    //                    else if (fragment.length > 0)
+    //                        item.validationMessage = 'URI fragment (hash) will be ignored.';
+    //                    else
+    //                        return;
+    //                    item.validationClass = ['form-control', cssValidationClass.isInvalid];
+    //                    item.messageClass = ['invalid-feedback', 'text-warning'];
+    //                    return;
+    //                }
+    //            }
+    //            item.isValid = false;
+    //            item.validationClass = ['form-control', cssValidationClass.isInvalid];
+    //            item.messageClass = ['invalid-feedback'];
+    //        });
+    //    }
+    //    static show($scope: ng.IScope) {
+    //        $scope.$broadcast(ScopeEvent_ShowSetupParametersDialog);
+    //    }
+    //    static hide($scope: ng.IScope) {
+    //        $scope.$broadcast(ScopeEvent_HideSetupParametersDialog);
+    //    }
+    //}
+    //appModule.controller("targetSysConfigEditController", ['$scope', 'targetSysConfigSettings', targetSysConfigEditController]);
+    //// #endregion
+    // #region targetSysConfigSettings Service
+    ///**
+    // * System configuration settings.
+    // */
+    //export interface ISysConfigSettings {
+    //    /**
+    //     * The base URL for the target ServiceNow instance.
+    //     */
+    //    serviceNowUrl: string;
+    //    /**
+    //     * The base URL for the target remote GIT repository.
+    //     */
+    //    gitRepositoryBaseUrl: string;
+    //}
+    ///**
+    // * This defines the callback for handling system settings change events.
+    // *
+    // * @export
+    // * @param event - The event that was raised.
+    // * @param settings - The new value for the settings.
+    // */
+    //export interface ISettingsChangeEventHandler {
+    //    (event: ng.IAngularEvent, settings: ISysConfigSettings): void;
+    //}
+    //export class targetSysConfigSettings {
+    //    private _settings: ISysConfigSettings;
+    //    get serviceNowUrl(): string { return this._settings.serviceNowUrl; }
+    //    set serviceNowUrl(value: string) {
+    //        if (value === this._settings.serviceNowUrl)
+    //            return;
+    //        if (sys.isNilOrWhiteSpace(value))
+    //            throw new Error("URL cannot be empty.");
+    //        let parsedUrl: sys.IParsedUriString = sys.parseUriString(value);
+    //        if (sys.isNil(parsedUrl.origin))
+    //            throw new Error("URL cannot be relative.");
+    //        if (!(sys.isNil(parsedUrl.queryString) && sys.isNil(parsedUrl.fragment) && parsedUrl.path.length == 0)) {
+    //            if (value === parsedUrl.origin.value)
+    //                return;
+    //            this._settings.serviceNowUrl = parsedUrl.origin.value;
+    //        } else
+    //            this._settings.serviceNowUrl = value;
+    //        this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
+    //        this.raiseUpdated();
+    //    }
+    //    get gitRepositoryBaseUrl(): string { return this._settings.gitRepositoryBaseUrl; }
+    //    set gitRepositoryBaseUrl(value: string) {
+    //        if (value === this._settings.gitRepositoryBaseUrl)
+    //            return;
+    //        if (sys.isNilOrWhiteSpace(value))
+    //            throw new Error("URL cannot be empty.");
+    //        let parsedUrl: sys.IParsedUriString = sys.parseUriString(value);
+    //        if (sys.isNil(parsedUrl.origin))
+    //            throw new Error("URL cannot be relative.");
+    //        if (!(sys.isNil(parsedUrl.queryString) && sys.isNil(parsedUrl.fragment))) {
+    //            value = parsedUrl.origin.value + parsedUrl.path;
+    //            if (value === this._settings.gitRepositoryBaseUrl)
+    //                return;
+    //        }
+    //        this._settings.gitRepositoryBaseUrl = value;
+    //        this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
+    //        this.raiseUpdated();
+    //    }
+    //    private raiseUpdated() {
+    //        this.$rootScope.$emit(ScopeEvent_SetupParameterSettingsChanged, <ISysConfigSettings>{
+    //            serviceNowUrl: this._settings.serviceNowUrl,
+    //            gitRepositoryBaseUrl: this._settings.gitRepositoryBaseUrl
+    //        });
+    //    }
+    //    /**
+    //     * Adds event listener for settings change event.
+    //     * 
+    //     * @param scope
+    //     * @param handler
+    //     */
+    //    onChanged(scope: ng.IScope, handler: (event: ng.IAngularEvent, settings: ISysConfigSettings) => void) { scope.$on(ScopeEvent_SetupParameterSettingsChanged, handler); }
+    //    constructor(private $rootScope: ng.IScope, private _sessionStorage: sessionStorageService, $http: ng.IHttpService) {
+    //        this._settings = _sessionStorage.getObject<ISysConfigSettings>("targetSysConfigSettings");
+    //        if (sys.isNil(this._settings))
+    //            this._settings = { serviceNowUrl: DefaultURL_ServiceNow, gitRepositoryBaseUrl: DefaultURL_GitRepositoryBase };
+    //        else {
+    //            if (sys.isNilOrWhiteSpace(this._settings.serviceNowUrl))
+    //                this._settings.serviceNowUrl = DefaultURL_ServiceNow;
+    //            if (sys.isNilOrWhiteSpace(this._settings.gitRepositoryBaseUrl))
+    //                this._settings.gitRepositoryBaseUrl = DefaultURL_GitRepositoryBase;
+    //        }
+    //        $http.get("./defaults.json").then((nav: ng.IHttpPromiseCallbackArg<ISysConfigSettings>) => {
+    //            if (sys.isNil(nav.data))
+    //                return;
+    //            if (sys.isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl) {
+    //                if (sys.isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl)
+    //                    return;
+    //                this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
+    //            } else {
+    //                this._settings.serviceNowUrl = nav.data.serviceNowUrl;
+    //                if (sys.notNil(nav.data.serviceNowUrl) && this._settings.serviceNowUrl !== nav.data.serviceNowUrl)
+    //                    this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
+    //            }
+    //            this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
+    //            this.raiseUpdated();
+    //        });
+    //    }
+    //}
+    //appModule.factory("targetSysConfigSettings", ["$rootScope", "sessionStorageService", "$http", targetSysConfigSettings]);
     // #endregion
     // #endregion
     // #region urlBuilderService

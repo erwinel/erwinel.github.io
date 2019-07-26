@@ -178,8 +178,6 @@ var inicidentManagment;
         new PriorityMatcherRule(3600, 3, 3, false, false, 5)
     ];
     class IncidentManagmentController {
-        get priorityMatcherColumns() { return this._priorityMatcherColumns; }
-        get priorityMatcherRules() { return this._priorityMatcherRules; }
         constructor() {
             let controller = this;
             function onSortChangeCallback(col) {
@@ -200,6 +198,8 @@ var inicidentManagment;
             this._priorityMatcherColumns[0].isCurrent = true;
             this._priorityMatcherRules = PriorityMatcherRule.getRules(this._priorityMatcherColumns[0]);
         }
+        get priorityMatcherColumns() { return this._priorityMatcherColumns; }
+        get priorityMatcherRules() { return this._priorityMatcherRules; }
         $doCheck() { }
     }
     app.appModule.controller("incidentManagmentController", [IncidentManagmentController]);
