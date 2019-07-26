@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="app" ng-controller="mainPageController">
+<head>
+    <meta name="viewport" content="width=1024, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta charset="utf-8" />
+    <title>{{ pageNavigation.pageTitle }}</title>
+    <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
+    <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="lib/twitter-bootstrap/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="lib/angular.js/angular.js"></script>
+    <script type="text/javascript" src="App/sys.js"></script>
+    <script type="text/javascript" src="App/app.js"></script>
+</head>
+<body>
+    <main-app-page-head></main-app-page-head>
+    <form id="setupOverviewTasksForm" action="initialConfig.html">
+        <div class="container-fluid">
+            <div class="row flex-nowrap">
+                <section class="container-fluid col-8 col-lg-9">
+                    <div class="card">
+                        <div class="card-header"><h2>Security Incident Module</h2></div>
+                        <div class="card-body">
+                            <div class="border border-warning">
+                                <div class="alert-warning">
+                                    <strong>Category Field Weak Dependency Notice:</strong>
+                                    Changes to any names of security incident catalog categories and items must be coordinated with the category and subcategory choice fields in the
+                                    <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fsys_db_object.do%3Fsys_id%3Dsn_si_incident%26sysparm_refkey%3Dname">Security Incident (sn_si_incident)</external-link>
+                                    table.
+                                </div>
+                                
+                                The titles of all categories within the SEuciryt I
+
+                                table must match the titles of the categories listed in the
+                                <external-link ng-href="{{serviceNowUrl}}" relative-uri="/nav_to.do?uri=%2Fsc_catalog.do%3Fsys_id%3D8797c663ff123100158bffffffffff86">Security Incident Catalog</external-link>
+                                Categories are assigned to new security incidents according to the category and subcategory of the catalog item
+                            </div>
+                        </div>
+                    </div>
+                    
+                    short_description Max Length 160
+                    description
+                    caller
+                    category
+                    subcategory
+
+                    javascript:var uri = gs.action.getGlideURI();var sys_id=uri.get('sysparm_id');var gr = new GlideRecord('sc_cat_item');gr.get(sys_id);gr.short_description;
+
+                    (new global.SMTemplates()).newFromCatalogItem(current, gs, '8797c663ff123100158bffffffffff86',
+                    'The Security Incident department has been contacted regarding your request<br />The \'My Requests\' module provides access to this, and all of your other open requests<br />', producer);
+                </section>
+                <aside class="container-fluid col-4 col-lg-3">
+                    <div class="card">
+                        <div class="card-header"><h4>Modules</h4></div>
+                        <div class="card-body">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"><a href="ServiceCatalog.html" class="nav-link">Service Catalog</a></li>
+                                <li class="nav-item"><a href="IncidentManagement.html" class="nav-link">Incident Management</a></li>
+                                <li class="nav-item"><a class="active nav-link" href="#" onclick="return false;">Security Operations</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </form>
+    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+</body>
+</html>

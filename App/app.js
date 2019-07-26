@@ -1,6 +1,6 @@
-/// <reference path="Scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="Scripts/typings/bootstrap/index.d.ts" />
-/// <reference path="Scripts/typings/jquery/jquery.d.ts" />
+/// <reference path="../Scripts/typings/angularjs/angular.d.ts" />
+/// <reference path="../Scripts/typings/bootstrap/index.d.ts" />
+/// <reference path="../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="sys.ts" />
 var app;
 (function (app) {
