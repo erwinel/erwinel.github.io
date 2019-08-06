@@ -14,28 +14,24 @@ var app;
     /**
      * The relative path of the default page.
      *
+     * @type {string}
      * @description - This is for a path string only - This MUST NOT contain relative segment names ("." or ".."), URL query or fragment and MUST NOT start or end with "/".
      */
     app.DEFAULT_PAGE_PATH = "index.html";
     /**
      * The default root absolute URL of the target ServiceNow instance.
      *
+     * @type {string}
      * @description - This MUST be an absolute URL and MUST NOT contain an explicit path (cannot end with "/"), URL query or fragment.
      */
     app.DEFAULT_URL_SERVICENOW = "https://inscomscd.service-now.com";
     /**
      * The default root absolute URL of the remote GIT repository.
      *
+     * @type {string}
      * @description - This MUST be an absolute URL and MUST NOT contain a URL query or fragment. If this contains an explicit path (which is usually the case), the path must end with a "/".
      */
     app.DEFAULT_URL_GIT_REPOSITORY = "https://github.com/erwinel/";
-    app.ScopeEvent_OpenMainModalPopupDialog = 'OpenMainModalPopupDialog';
-    app.ScopeEvent_CloseMainModalPopupDialog = 'CloseMainModalPopupDialog';
-    app.ScopeEvent_ShowSetupParametersDialog = 'showSetupParameterDefinitionsControllerDialog';
-    app.ScopeEvent_HideSetupParametersDialog = 'hideSetupParameterDefinitionsControllerDialog';
-    app.ScopeEvent_SetupParameterSettingsChanged = "SetupParameterSettingsChanged";
-    app.ScopeEvent_AddCollapsibleCard = "AddCollapsibleCard";
-    app.ScopeEvent_ = "";
     const DEFAULT_CURRENT_ITEM_CLASS = ["active", "nav-link"];
     const DEFAULT_SELECTED_ITEM_CLASS = ["active", "nav-link"];
     const DEFAULT_OTHER_ITEM_CLASS = ["nav-link"];
@@ -44,16 +40,37 @@ var app;
     const DIRECTIVE_NAME_URLINPUT = "urlInput";
     app.StorageKey_UrlConfigSettings = "UrlConfig";
     app.StorageKey_SetupParameterSettings = "targetSysConfigSettings";
+    /**
+     *
+     *
+     * @export
+     * @enum {string}
+     */
     let cssValidationClass;
     (function (cssValidationClass) {
+        /**
+         *
+         */
         cssValidationClass["isValid"] = "is-valid";
         cssValidationClass["isInvalid"] = "is-invalid";
     })(cssValidationClass = app.cssValidationClass || (app.cssValidationClass = {}));
+    /**
+     *
+     *
+     * @export
+     * @enum {string}
+     */
     let cssFeedbackClass;
     (function (cssFeedbackClass) {
         cssFeedbackClass["isValid"] = "valid-feedback";
         cssFeedbackClass["isInvalid"] = "invalid-feedback";
     })(cssFeedbackClass = app.cssFeedbackClass || (app.cssFeedbackClass = {}));
+    /**
+     *
+     *
+     * @export
+     * @enum {string}
+     */
     let cssAlertClass;
     (function (cssAlertClass) {
         cssAlertClass["alert"] = "alert";
@@ -69,12 +86,20 @@ var app;
         cssAlertClass["success"] = "alert-success";
         cssAlertClass["warning"] = "alert-warning";
     })(cssAlertClass = app.cssAlertClass || (app.cssAlertClass = {}));
-    class NavigationUrl {
-        constructor(navItem, url) {
-        }
-    }
-    app.NavigationUrl = NavigationUrl;
+    /**
+     * Represents a menu navigation item.
+     *
+     * @export
+     * @class NavigationItem
+     */
     class NavigationItem {
+        /**
+         * Creates an instance of NavigationItem.
+         *
+         * @param {AppConfigDataService} _appConfigData - The appConfigData service provider.
+         * @param {INavigationDefinition} navDef - The navigation menu item definition.
+         * @memberof NavigationItem
+         */
         constructor(_appConfigData, navDef) {
             this._appConfigData = _appConfigData;
             this._url = navDef.url;
@@ -89,44 +114,158 @@ var app;
             this._childNavItems = NavigationItem.createNavItems(_appConfigData, navDef.items);
             this._childNavItems.forEach((item) => { item._parentNavItem = this; }, this);
             if (this.isCurrentPage)
-                this.getParentNavItems().forEach((item) => { item._isCurrentPage = false; });
+                this.getAncestorNavItems().forEach((item) => { item._isCurrentPage = false; });
         }
+        /**
+         * The unique identifier of the navigation menu item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
+         */
         get id() { return this._id; }
+        /**
+         * The display text for the current navigation menu item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
+         */
         get linkTitle() { return this._linkTitle; }
+        /**
+         * The title of the page that corresponds to the current navigation menu item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
+         */
         get pageTitle() { return this._pageTitle; }
+        /**
+         * The tooltip for the current navigation menu item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
+         */
         get toolTip() { return this._toolTip; }
+        /**
+         * The secondary navigation heading text for child navigation menu items.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
+         */
         get sideNavHeading() { return this._sideNavHeading; }
         /**
          * The navigation menu hyperlink for the current item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
          */
         get navMenuHref() { return (this.hasOrIsCurrentPage) ? "#" : this._url; }
         /**
-         * The relative URL of the current item.
+         * The relative URL of the current navigation menu item.
+         *
+         * @readonly
+         * @type {string}
+         * @memberof NavigationItem
          */
         get url() { return this._url; }
         /**
-         * Indicates whether the current item represents the current page.
+         * Indicates whether the current navigation menu item represents the current page.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
          */
         get isCurrentPage() { return this._isCurrentPage === true; }
         /**
-         * Indicates whether the current item represents the current page or the parent of the current page.
+         * Indicates whether the current navigation menu item represents the current page or the parent of the current page.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
          */
         get hasOrIsCurrentPage() { return typeof this._isCurrentPage === "boolean"; }
         /**
-         * Indicates whether the current item represents and ancestor of the current page.
+         * Indicates whether the current navigation menu item represents an ancestor of the current page.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
          */
         get hasCurrentPage() { return this._isCurrentPage === false; }
         /**
          * The CSS class names to be applied to the anchor tag.
+         *
+         * @readonly
+         * @type {ReadonlyArray<string>}
+         * @memberof NavigationItem
          */
         get anchorCssClass() { return (this.isCurrentPage) ? this._appConfigData.currentItemClass() : ((this.hasOrIsCurrentPage) ? this._appConfigData.selectedItemClass() : this._appConfigData.otherItemClass()); }
+        /**
+         * The child navigation menu items to display within the secondary navigation menu.
+         *
+         * @readonly
+         * @type {ReadonlyArray<NavigationItem>}
+         * @memberof NavigationItem
+         */
         get childNavItems() { return this._childNavItems; }
+        /**
+         * Indicates whether the current navigation menu item has child menu items.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
+         */
         get hasChildNavItem() { return this._childNavItems.length > 0; }
+        /**
+         * Indicates whether the current navigation menu item has sibling items that share the same parent menu item.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
+         */
         get hasSiblingNavItem() { return sys.notNil(this._previousNavItem) || sys.notNil(this._nextNavItem); }
+        /**
+         * Indicates whether the current navigation menu item is a child item of another.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
+         */
         get isNestedNavItem() { return sys.notNil(this._parentNavItem); }
+        /**
+         * Navigation menu items to be displayed as nested items within the secondary navigation menu.
+         *
+         * @readonly
+         * @type {ReadonlyArray<NavigationItem>}
+         * @memberof NavigationItem
+         */
         get nestedSideNavChildItems() { return (this.showNestedSideNavChildItems) ? this._childNavItems : []; }
+        /**
+         * Indicates whether the current navigation menu item represents the current page, is being displayed within the secondary navigation menu, and has child items.
+         *
+         * @readonly
+         * @type {boolean}
+         * @memberof NavigationItem
+         */
         get showNestedSideNavChildItems() { return this.isCurrentPage && this.isNestedNavItem && this.hasChildNavItem && !this.hasSiblingNavItem; }
+        /**
+         * Gets the parent navigation menu item.
+         *
+         * @readonly
+         * @type {(NavigationItem | undefined)}
+         * @memberof NavigationItem
+         */
         get parentNavItem() { return this._parentNavItem; }
+        /**
+         * Gets preceding sibling items for the current menu navigation item.
+         *
+         * @returns {NavigationItem[]}
+         * @memberof NavigationItem
+         */
         precedingSiblings() {
             if (typeof this._previousNavItem === "undefined")
                 return [];
@@ -134,18 +273,36 @@ var app;
             result.push(this._previousNavItem);
             return result;
         }
+        /**
+         * Gets following sibling items for the current menu navigation item.
+         *
+         * @returns {NavigationItem[]}
+         * @memberof NavigationItem
+         */
         followingSiblings() {
             let result = [];
             for (let i = this._nextNavItem; typeof i !== "undefined"; i = i._nextNavItem)
                 result.push(i);
             return result;
         }
-        getParentNavItems() {
+        /**
+         * Gets all ancestor navigation menu items.
+         *
+         * @returns {NavigationItem[]}
+         * @memberof NavigationItem
+         */
+        getAncestorNavItems() {
             let result = [];
             for (let i = this._parentNavItem; typeof i !== "undefined"; i = i._parentNavItem)
                 result.unshift(i);
             return result;
         }
+        /**
+         * Gets ancestor navigation menu items that do not appear in the primary navigation menu.
+         *
+         * @returns {NavigationItem[]}
+         * @memberof NavigationItem
+         */
         getBreadcrumbLinks() {
             let result = [];
             if (sys.notNil(this._parentNavItem) && sys.notNil(this._parentNavItem._parentNavItem))
@@ -153,6 +310,13 @@ var app;
                     result.unshift(i);
             return result;
         }
+        /**
+         * Handles the menu item click event.
+         *
+         * @param {BaseJQueryEventObject} [event]
+         * @memberof NavigationItem
+         * @description The purpose of this member is to prevent the default action for the navigation menu item that represents the current page.
+         */
         onClick(event) {
             if (this.isCurrentPage && sys.notNil(event)) {
                 if (!event.isDefaultPrevented)
@@ -161,6 +325,15 @@ var app;
                     event.stopPropagation();
             }
         }
+        /**
+         * Creates a navigation menu item objects from navigation menu definition objects.
+         *
+         * @static
+         * @param {AppConfigDataService} appConfigData - The application configuration data service provider.
+         * @param {INavigationDefinition[]} [items] - Defines the navigation menu items to be created.
+         * @returns {ReadonlyArray<NavigationItem>} - The navigation menu item objects.
+         * @memberof NavigationItem
+         */
         static createNavItems(appConfigData, items) {
             if (typeof items !== "object" || items === null)
                 return [];
@@ -172,6 +345,14 @@ var app;
             }
             return result;
         }
+        /**
+         * Finds the navigation menu item that represents the current page.
+         *
+         * @static
+         * @param {ReadonlyArray<NavigationItem>} items - Navigation menu items to recursively search.
+         * @returns {(NavigationItem | undefined)} - The navigation menu item that represents the current page or undefined if none are found that represent the current page.
+         * @memberof NavigationItem
+         */
         static findCurrentItem(items) {
             if (items.length == 0)
                 return undefined;
@@ -182,6 +363,14 @@ var app;
                     return (items[i].isCurrentPage) ? items[i] : this.findCurrentItem(items[i]._childNavItems);
             }
         }
+        /**
+         * Creates an array of ancestor navigation menu items to be displayed as breadcrumb links.
+         *
+         * @static
+         * @param {NavigationItem} [current] - The navigation menu item that represents the current page.
+         * @returns {ReadonlyArray<NavigationItem>}
+         * @memberof NavigationItem
+         */
         static createSideNavBreadcrumbItems(current) {
             if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
                 return [];
@@ -190,6 +379,14 @@ var app;
                 result.unshift(current);
             return result;
         }
+        /**
+         * Creates an array of sibling navigation menu items.
+         *
+         * @static
+         * @param {NavigationItem} [current] - The navigation menu item that represents the current page.
+         * @returns {ReadonlyArray<NavigationItem>}
+         * @memberof NavigationItem
+         */
         static createSideNavSiblingItems(current) {
             if (typeof current === "undefined" || typeof current._parentNavItem === "undefined")
                 return [];
@@ -207,7 +404,22 @@ var app;
         }
     }
     app.NavigationItem = NavigationItem;
+    /**
+     * Class which implements the appConfigData service.
+     *
+     * @export
+     * @class AppConfigDataService
+     */
     class AppConfigDataService {
+        /**
+         *Creates an instance of AppConfigDataService.
+         * @param {sessionStorageService} _sessionStorage - The sessionStorage service provider.
+         * @param {ng.IHttpService} $http - The $http service provider.
+         * @param {ng.ILogService} $log - The $log service provider.
+         * @param {ng.IDocumentService} $document - The $document service provider.
+         * @param {ng.IWindowService} $window - The $window service provider
+         * @memberof AppConfigDataService
+         */
         constructor(_sessionStorage, $http, $log, $document, $window) {
             this._sessionStorage = _sessionStorage;
             this.$log = $log;
@@ -218,9 +430,6 @@ var app;
             this._selectedItemClass = DEFAULT_SELECTED_ITEM_CLASS;
             this._otherItemClass = DEFAULT_OTHER_ITEM_CLASS;
             this._topNavItems = [];
-            this._sideNavBreadcrumbItems = [];
-            this._sideNavSiblingItems = [];
-            this._sideNavChildItems = [];
             let headElement = $document.find('head').first();
             let titleElement = headElement.find('title');
             if (titleElement.length == 0) {
@@ -269,8 +478,27 @@ var app;
                 $log.error("Unexpected error making application configuration data request: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
             });
         }
+        /**
+         * Gets the current page ID.
+         *
+         * @returns {string} The value of the "content" attribute for the html meta tag with the name attribute of "app:pageId".
+         * @memberof AppConfigDataService
+         */
         currentPageId() { return this._currentPageId; }
+        /**
+         * Gets relative path to the current page.
+         *
+         * @returns {string}
+         * @memberof AppConfigDataService
+         */
         pagePath() { return this._relativePagePath; }
+        /**
+         * Gets or sets the title of the current page
+         *
+         * @param {string} [value] - The optional value to set for the page title.
+         * @returns {string} The title of the current apge.
+         * @memberof AppConfigDataService
+         */
         pageTitle(value) {
             if (typeof value === "string" && value.trim().length > 0 && value !== this._pageTitle) {
                 this._pageTitle = value;
@@ -278,10 +506,42 @@ var app;
             }
             return this._pageTitle;
         }
+        /**
+         * Gets the CSS class names to apply to navigation menu items that are ancestors of the item that represents the current page.
+         *
+         * @returns {ReadonlyArray<string>}
+         * @memberof AppConfigDataService
+         */
         currentItemClass() { return this._currentItemClass; }
+        /**
+         * Gets the CSS class names to apply to the navigation menu item that represents the current page.
+         *
+         * @returns {ReadonlyArray<string>}
+         * @memberof AppConfigDataService
+         */
         selectedItemClass() { return this._selectedItemClass; }
+        /**
+         * Gets the CSS class names to apply to the navigation menu item that do not represent the current page or any of its ancestors.
+         *
+         * @returns {ReadonlyArray<string>}
+         * @memberof AppConfigDataService
+         */
         otherItemClass() { return this._otherItemClass; }
+        /**
+         * Gets the navigation menu items that appear in the primary navigation menu.
+         *
+         * @returns {ReadonlyArray<NavigationItem>}
+         * @memberof AppConfigDataService
+         */
         topNavItems() { return this._topNavItems; }
+        /**
+         * Gets or sets the base URL for the target ServiceNow instance.
+         *
+         * @param {URL} [value] - Optionally specify new value for base URL of the target ServiceNow instance.
+         * @returns {URL}
+         * @memberof AppConfigDataService
+         * @description Changes in this value cause any callbacks specified through {@link AppConfigDataService#onServiceNowUrlChanged} to be invoked.
+         */
         serviceNowUrl(value) {
             if (typeof value === "object" && value !== null && value instanceof URL && this._serviceNowUrl.href !== value.href) {
                 this._serviceNowUrl = value;
@@ -289,6 +549,14 @@ var app;
             }
             return this._serviceNowUrl;
         }
+        /**
+         * Gets or sets the base URL for the GIT repository being used by the target ServiceNow instance.
+         *
+         * @param {URL} [value] - Optionally specify new value for base URL of the GIT repository being used by the target ServiceNow instance.
+         * @returns {URL}
+         * @memberof AppConfigDataService
+         * @description Changes in this value cause any callbacks specified through {@link AppConfigDataService#onGitRepositoryUrlChanged} to be invoked.
+         */
         gitRepositoryUrl(value) {
             if (typeof value === "object" && value !== null && value instanceof URL && this._gitRepositoryUrl.href !== value.href) {
                 this._gitRepositoryUrl = value;
@@ -336,6 +604,12 @@ var app;
             else
                 this._showMainModalPopupDialogCallback = callback;
         }
+        /**
+         * Closes the main modal popup dialog.
+         *
+         * @param {*} [result] - Result value to apply.
+         * @memberof AppConfigDataService
+         */
         closeMainModalPopupDialog(result) {
             let callback = this._hideMainModalPopupDialogCallback;
             if (typeof callback === "function")
@@ -352,12 +626,12 @@ var app;
                             hideMainModalPopupDialogCallback(result);
                         }
                         finally {
-                            callback.call(result);
+                            callback.call(thisArg, result);
                         }
                     };
                 else
                     this._hideMainModalPopupDialogCallback = (result) => {
-                        callback.call(result);
+                        callback.call(thisArg, result);
                     };
             }
             else if (typeof hideMainModalPopupDialogCallback === "function")
@@ -487,6 +761,14 @@ var app;
                 }
             });
         }
+        /**
+         * Creates an absolute ServiceNow URL from a relative URL.
+         *
+         * @param {string} [relativeUrl] - The relative ServiceNow URL.
+         * @param {boolean} [toNav] - Whether to encapsulate the relative path within "/nav_to.do?uri=path".
+         * @returns {string}
+         * @memberof AppConfigDataService
+         */
         createServiceNowUrl(relativeUrl, toNav) {
             if (typeof relativeUrl === "string" && relativeUrl.length > 0 && relativeUrl !== ".") {
                 let url = new URL(relativeUrl, sys.makeDirectoryUrl(this._serviceNowUrl));
@@ -505,6 +787,13 @@ var app;
             }
             return this._serviceNowUrl.href;
         }
+        /**
+         * Creates an absolute git URL from a relative URL.
+         *
+         * @param {string} [relativeUrl] - The relative GIT URL.
+         * @returns {string}
+         * @memberof AppConfigDataService
+         */
         createGitRepositoryUrl(relativeUrl) {
             if (typeof relativeUrl === "string" && relativeUrl.length > 0 && relativeUrl !== ".")
                 return (new URL(relativeUrl, sys.makeDirectoryUrl(this._gitRepositoryUrl))).href;
@@ -536,9 +825,17 @@ var app;
             let current = NavigationItem.findCurrentItem(this.topNavItems());
             if (sys.notNil(current) && current.pageTitle.length > 0)
                 this.pageTitle(current.pageTitle);
-            this._sideNavBreadcrumbItems = NavigationItem.createSideNavBreadcrumbItems(current);
-            this._sideNavSiblingItems = NavigationItem.createSideNavSiblingItems(current);
+            //this._sideNavBreadcrumbItems = NavigationItem.createSideNavBreadcrumbItems(current);
+            //this._sideNavSiblingItems = NavigationItem.createSideNavSiblingItems(current);
         }
+        /**
+         * Converts a URL path to a fallback (default) page ID.
+         *
+         * @static
+         * @param {string} path - The URL Path to convert.
+         * @returns {string} The fallback page ID for the given URL path.
+         * @memberof AppConfigDataService
+         */
         static toPageId(path) {
             let arr;
             let i;
@@ -678,7 +975,22 @@ var app;
         }
     }
     app.appModule.directive(DIRECTIVE_NAME_URLINPUT, UrlInputFieldController.createDirective);
+    /**
+     * Implements the controller for the appContent directive
+     *
+     * @class AppContentController
+     * @implements {ng.IController}
+     */
     class AppContentController {
+        /**
+         * Creates an instance of AppContentController.
+         *
+         * @param {IAppContentDirectiveScope} $scope - The scope for the current appContent directive.
+         * @param {ng.ILogService} $log - The $log service.
+         * @param {ng.IWindowService} $window - The $window service.
+         * @param {AppConfigDataService} appConfigData - The appConfigData service.
+         * @memberof AppContentController
+         */
         constructor($scope, $log, $window, appConfigData) {
             this.$scope = $scope;
             this.$log = $log;
@@ -709,10 +1021,10 @@ var app;
                 $scope.popupDialogMessage = message;
                 $scope.onClose = onClose;
                 if (typeof buttons !== "object" || buttons === null || ($scope.popupDialogButtons = buttons.filter(b => typeof b === "object" && b !== null)).length === 0)
-                    $scope.popupDialogButtons = [{ displayText: "Close", onClick: (event) => { $scope.ctrl.closePopupDialog(event); } }];
+                    $scope.popupDialogButtons = [{ displayText: "Close", onClick: (event) => { $scope.appContentController.closePopupDialog(event); } }];
                 else
                     $scope.popupDialogButtons.forEach((value) => {
-                        value.onClick = (event) => $scope.ctrl.closePopupDialog(event, value.value);
+                        value.onClick = (event) => $scope.appContentController.closePopupDialog(event, value.value);
                     });
                 if (sys.isNilOrWhiteSpace(title)) {
                     switch (type) {
@@ -808,6 +1120,12 @@ var app;
             else
                 this.$scope.mainSectionClass = ["container-fluid", "col-12"];
         }
+        /**
+         * Opens the edit dialog for setup parameters.
+         *
+         * @param {JQueryInputEventObject} [event] - The event object.
+         * @memberof AppContentController
+         */
         openSetupParametersEditDialog(event) {
             sys.preventEventDefault(event);
             if (!this.$scope.setupParametersDialogVisible) {
@@ -815,6 +1133,13 @@ var app;
                 this.$scope.setupParametersDialogVisible = true;
             }
         }
+        /**
+         * Closes the edit dialog for setup parameters.
+         *
+         * @param {JQueryInputEventObject} [event] - The event object.
+         * @param {boolean} [accept] - Whether to accept any validated changes that were made.
+         * @memberof AppContentController
+         */
         closeSetupParametersEditDialog(event, accept) {
             sys.preventEventDefault(event);
             if (this.$scope.setupParametersDialogVisible) {
@@ -822,6 +1147,13 @@ var app;
                 this.$scope.setupParametersDialogVisible = false;
             }
         }
+        /**
+         * Closes the main modal popup dialog.
+         *
+         * @param {JQueryInputEventObject} [event] - The event object.
+         * @param {*} [result] - The result value use as the the modal dialog result.
+         * @memberof AppContentController
+         */
         closePopupDialog(event, result) {
             sys.preventEventDefault(event);
             if (this.$scope.popupDialogVisible) {
@@ -837,103 +1169,16 @@ var app;
         }
         $onInit() { }
     }
+    app.AppContentController = AppContentController;
     app.appModule.directive(DIRECTIVE_NAME_APPCONTENT, () => {
         return {
             controller: ['$scope', '$log', '$window', SERVICENAME_APP_CONFIG_DATA, AppContentController],
-            controllerAs: 'ctrl',
+            controllerAs: 'appContentController',
             restrict: "E",
             scope: true,
             templateUrl: 'Template/appContent.htm'
         };
     });
-    class MainAppPageHeadController {
-        constructor($scope, $log, $window, appConfigData) {
-            this.$scope = $scope;
-            this.$log = $log;
-            this.$window = $window;
-            this.appConfigData = appConfigData;
-            $scope.serviceNowUrlIsValid = $scope.gitRepositoryUrlIsValid = $scope.setupParametersAreInvalid = true;
-            $scope.setupParametersDialogVisible = false;
-            $scope.topNavItems = [];
-            $scope.$watchGroup(['serviceNowUrlIsValid', 'gitRepositoryBaseUrlIsValid'], () => {
-                let areValid = $scope.serviceNowUrlIsValid && $scope.gitRepositoryBaseUrlIsValid;
-                if (areValid !== $scope.setupParametersAreInvalid)
-                    $scope.setupParametersAreInvalid = areValid;
-            });
-            appConfigData.onTitleChanged((value) => { $scope.pageTitle = value; });
-            appConfigData.onServiceNowUrlChanged((value) => { $scope.serviceNowUrl = value.href; });
-            appConfigData.onGitRepositoryUrlChanged((value) => { $scope.gitRepositoryBaseUrl = value.href; });
-            appConfigData.onSettingsLoaded(() => {
-                $scope.topNavItems = appConfigData.topNavItems();
-            }, (reason) => {
-                $log.error("Error loading application settings: " + ((typeof reason === "object") ? angular.toJson(reason) : reason));
-                $window.alert("Unexpected error loading application settings. See browser log for more detail.");
-            }, this);
-        }
-        openSetupParametersEditDialog(event) {
-            sys.preventEventDefault(event);
-            if (!this.$scope.setupParametersDialogVisible) {
-                $("#setupParametersDialog").modal('show');
-                this.$scope.setupParametersDialogVisible = true;
-            }
-        }
-        closeSetupParametersEditDialog(event, accept) {
-            sys.preventEventDefault(event);
-            if (!this.$scope.setupParametersDialogVisible) {
-                $("#setupParametersDialog").modal('hide');
-                this.$scope.setupParametersDialogVisible = false;
-            }
-        }
-        $onInit() { }
-    }
-    app.appModule.directive("mainAppPageHead", () => {
-        return {
-            controller: ['$scope', '$log', '$window', SERVICENAME_APP_CONFIG_DATA, MainAppPageHeadController],
-            controllerAs: 'ctrl',
-            restrict: "E",
-            scope: true,
-            templateUrl: 'Template/mainAppPageHead.htm'
-        };
-    });
-    class mainModalPopupDialogController {
-        static show($scope, message, type, title) {
-            $scope.$broadcast(app.ScopeEvent_OpenMainModalPopupDialog, message, type, title);
-        }
-        static hide($scope) {
-            $scope.$broadcast(app.ScopeEvent_CloseMainModalPopupDialog);
-        }
-        constructor($scope, $rootScope) {
-            $scope.title = '';
-            $scope.message = '';
-            $scope.bodyClass = '';
-            $scope.close = () => { $('#mainModalPopupDialog').modal('hide'); };
-            $rootScope.$on(app.ScopeEvent_OpenMainModalPopupDialog, (event, message, type, title) => {
-                if (sys.isNilOrWhiteSpace(title)) {
-                    switch (type) {
-                        case 'warning':
-                            $scope.title = 'Warning';
-                            break;
-                        case 'danger':
-                            $scope.title = 'Critical';
-                            break;
-                        case 'success':
-                            $scope.title = 'Success';
-                            break;
-                        default:
-                            $scope.title = 'Notice';
-                    }
-                }
-                else
-                    $scope.title = title;
-                $scope.bodyClass = 'modal-body alert alert-' + type;
-                $scope.message = (sys.isNil(message)) ? '' : message;
-                $('#mainModalPopupDialog').modal('show');
-            });
-            $rootScope.$on(app.ScopeEvent_CloseMainModalPopupDialog, (event) => { $('#mainModalPopupDialog').modal('hide'); });
-        }
-    }
-    app.mainModalPopupDialogController = mainModalPopupDialogController;
-    app.appModule.controller("mainModalPopupDialogController", ['$scope', '$rootScope', mainModalPopupDialogController]);
     // #endregion
     // #region Session Storage Service
     class SessionStorageEntryEnumerator {
@@ -1344,250 +1589,6 @@ var app;
             }
         };
     });
-    // #endregion
-    // #region Target SyStem Configuration Information
-    //// #region targetSysConfigEditController
-    //interface ISysConfigEditFieldState extends ISysConfigEditScope {
-    //    original: string;
-    //    text: string;
-    //    isValid: boolean;
-    //    lastValidated: string;
-    //    validationMessage: string;
-    //    validationClass: string[];
-    //    messageClass: string[];
-    //}
-    //interface ISysConfigEditScope extends ng.IScope {
-    //    serviceNowUrl: string;
-    //    gitRepositoryBaseUrl: string;
-    //    cancel(): void;
-    //    accept(): void;
-    //    close(): void;
-    //    serviceNowUrlField: ISysConfigEditFieldState;
-    //    gitRepositoryBaseUrlField: ISysConfigEditFieldState;
-    //}
-    //export class targetSysConfigEditController implements ng.IController {
-    //    constructor(protected $scope: ISysConfigEditScope, private _settings: targetSysConfigSettings) {
-    //        $scope.serviceNowUrlField = <ISysConfigEditFieldState>($scope.$new());
-    //        $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = _settings.serviceNowUrl;
-    //        $scope.serviceNowUrlField.validationMessage = '';
-    //        $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //        $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-    //        $scope.serviceNowUrlField.isValid = true;
-    //        $scope.gitRepositoryBaseUrlField = <ISysConfigEditFieldState>($scope.$new());
-    //        $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = _settings.gitRepositoryBaseUrl;
-    //        $scope.gitRepositoryBaseUrlField.validationMessage = '';
-    //        $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //        $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
-    //        $scope.gitRepositoryBaseUrlField.isValid = true;
-    //        $scope.message = '';
-    //        $scope.bodyClass = '';
-    //        $scope.close = () => { $('#setupParametersDialog').modal('hide'); }
-    //        $scope.cancel = () => {
-    //            $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.original;
-    //            $scope.serviceNowUrlField.validationMessage = '';
-    //            $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //            $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-    //            $scope.serviceNowUrlField.isValid = true;
-    //            $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated = $scope.gitRepositoryBaseUrlField.original;
-    //            $scope.gitRepositoryBaseUrlField.validationMessage = '';
-    //            $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //            $scope.gitRepositoryBaseUrlField.isValid = true;
-    //            $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
-    //            $('#setupParametersDialog').modal('hide');
-    //        };
-    //        $scope.accept = () => {
-    //            this.$doCheck();
-    //            if (!$scope.serviceNowUrlField.isValid) {
-    //                if (!$scope.gitRepositoryBaseUrlField.isValid)
-    //                    alert("ServiceNow URL and GIT Repository Base URL are not valid.");
-    //                alert("ServiceNow URL is not valid.");
-    //                return;
-    //            }
-    //            if (!$scope.gitRepositoryBaseUrlField.isValid) {
-    //                alert("GIT Repository Base URL is not valid.");
-    //                return;
-    //            }
-    //            $scope.serviceNowUrlField.original = $scope.serviceNowUrlField.text = $scope.serviceNowUrlField.lastValidated = $scope.serviceNowUrlField.text =
-    //                sys.subStringBefore(sys.subStringBefore($scope.serviceNowUrlField.text, '#'), '?');
-    //            $scope.serviceNowUrlField.validationMessage = '';
-    //            $scope.serviceNowUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //            $scope.serviceNowUrlField.messageClass = ['invalid-feedback'];
-    //            $scope.gitRepositoryBaseUrlField.original = $scope.gitRepositoryBaseUrlField.text = $scope.gitRepositoryBaseUrlField.lastValidated =
-    //                $scope.gitRepositoryBaseUrlField.text = sys.subStringBefore(sys.subStringBefore($scope.gitRepositoryBaseUrlField.text, '#'), '?');
-    //            $scope.gitRepositoryBaseUrlField.validationMessage = '';
-    //            $scope.gitRepositoryBaseUrlField.validationClass = ['form-control', cssValidationClass.isValid];
-    //            $scope.gitRepositoryBaseUrlField.messageClass = ['invalid-feedback'];
-    //            $('#setupParametersDialog').modal('hide');
-    //            this._settings.serviceNowUrl = $scope.serviceNowUrlField.original;
-    //            this._settings.gitRepositoryBaseUrl = $scope.gitRepositoryBaseUrlField.original;
-    //        };
-    //        $scope.$on(ScopeEvent_ShowSetupParametersDialog, (event: ng.IAngularEvent) => {
-    //            $('#setupParametersDialog').modal('show');
-    //        });
-    //        $scope.$on(ScopeEvent_HideSetupParametersDialog, (event: ng.IAngularEvent) => {
-    //            $('#setupParametersDialog').modal('hide');
-    //        });
-    //    }
-    //    $doCheck() {
-    //        [this.$scope.serviceNowUrlField, this.$scope.gitRepositoryBaseUrlField].forEach((item: ISysConfigEditFieldState) => {
-    //            if (item.lastValidated === item.text)
-    //                return;
-    //            let uri: string = sys.asString(item.text, true, '');
-    //            item.lastValidated = uri;
-    //            if (uri.length === 0)
-    //                item.validationMessage = 'URL is required.';
-    //            else {
-    //                let fragment: string = '', query: string = '';
-    //                let i: number = uri.indexOf('#');
-    //                if (i > -1) {
-    //                    fragment = uri.substr(i);
-    //                    uri = uri.substr(0, i);
-    //                }
-    //                i = uri.indexOf('?');
-    //                if (i > -1) {
-    //                    fragment = uri.substr(i);
-    //                    uri = uri.substr(0, i);
-    //                }
-    //                let match: RegExpExecArray | null | undefined;
-    //                if (uri.length > 0)
-    //                    match = sys.uriParseRegex.exec(uri);
-    //                if (sys.isNilOrEmpty(match))
-    //                    item.validationMessage = 'Invalid URL.';
-    //                else if (sys.isNilOrWhiteSpace(match[sys.uriParseGroup.origin]))
-    //                    item.validationMessage = 'URL cannot be relative.';
-    //                else if (sys.isNilOrWhiteSpace(match[sys.uriParseGroup.schemeName]) || sys.isNilOrWhiteSpace(match[sys.uriParseGroup.hostname]))
-    //                    item.validationMessage = 'Invalid URL.';
-    //                else {
-    //                    item.isValid = true;
-    //                    if (query.length > 0)
-    //                        item.validationMessage = 'URI query string will be ignored.';
-    //                    else if (fragment.length > 0)
-    //                        item.validationMessage = 'URI fragment (hash) will be ignored.';
-    //                    else
-    //                        return;
-    //                    item.validationClass = ['form-control', cssValidationClass.isInvalid];
-    //                    item.messageClass = ['invalid-feedback', 'text-warning'];
-    //                    return;
-    //                }
-    //            }
-    //            item.isValid = false;
-    //            item.validationClass = ['form-control', cssValidationClass.isInvalid];
-    //            item.messageClass = ['invalid-feedback'];
-    //        });
-    //    }
-    //    static show($scope: ng.IScope) {
-    //        $scope.$broadcast(ScopeEvent_ShowSetupParametersDialog);
-    //    }
-    //    static hide($scope: ng.IScope) {
-    //        $scope.$broadcast(ScopeEvent_HideSetupParametersDialog);
-    //    }
-    //}
-    //appModule.controller("targetSysConfigEditController", ['$scope', 'targetSysConfigSettings', targetSysConfigEditController]);
-    //// #endregion
-    // #region targetSysConfigSettings Service
-    ///**
-    // * System configuration settings.
-    // */
-    //export interface ISysConfigSettings {
-    //    /**
-    //     * The base URL for the target ServiceNow instance.
-    //     */
-    //    serviceNowUrl: string;
-    //    /**
-    //     * The base URL for the target remote GIT repository.
-    //     */
-    //    gitRepositoryBaseUrl: string;
-    //}
-    ///**
-    // * This defines the callback for handling system settings change events.
-    // *
-    // * @export
-    // * @param event - The event that was raised.
-    // * @param settings - The new value for the settings.
-    // */
-    //export interface ISettingsChangeEventHandler {
-    //    (event: ng.IAngularEvent, settings: ISysConfigSettings): void;
-    //}
-    //export class targetSysConfigSettings {
-    //    private _settings: ISysConfigSettings;
-    //    get serviceNowUrl(): string { return this._settings.serviceNowUrl; }
-    //    set serviceNowUrl(value: string) {
-    //        if (value === this._settings.serviceNowUrl)
-    //            return;
-    //        if (sys.isNilOrWhiteSpace(value))
-    //            throw new Error("URL cannot be empty.");
-    //        let parsedUrl: sys.IParsedUriString = sys.parseUriString(value);
-    //        if (sys.isNil(parsedUrl.origin))
-    //            throw new Error("URL cannot be relative.");
-    //        if (!(sys.isNil(parsedUrl.queryString) && sys.isNil(parsedUrl.fragment) && parsedUrl.path.length == 0)) {
-    //            if (value === parsedUrl.origin.value)
-    //                return;
-    //            this._settings.serviceNowUrl = parsedUrl.origin.value;
-    //        } else
-    //            this._settings.serviceNowUrl = value;
-    //        this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
-    //        this.raiseUpdated();
-    //    }
-    //    get gitRepositoryBaseUrl(): string { return this._settings.gitRepositoryBaseUrl; }
-    //    set gitRepositoryBaseUrl(value: string) {
-    //        if (value === this._settings.gitRepositoryBaseUrl)
-    //            return;
-    //        if (sys.isNilOrWhiteSpace(value))
-    //            throw new Error("URL cannot be empty.");
-    //        let parsedUrl: sys.IParsedUriString = sys.parseUriString(value);
-    //        if (sys.isNil(parsedUrl.origin))
-    //            throw new Error("URL cannot be relative.");
-    //        if (!(sys.isNil(parsedUrl.queryString) && sys.isNil(parsedUrl.fragment))) {
-    //            value = parsedUrl.origin.value + parsedUrl.path;
-    //            if (value === this._settings.gitRepositoryBaseUrl)
-    //                return;
-    //        }
-    //        this._settings.gitRepositoryBaseUrl = value;
-    //        this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
-    //        this.raiseUpdated();
-    //    }
-    //    private raiseUpdated() {
-    //        this.$rootScope.$emit(ScopeEvent_SetupParameterSettingsChanged, <ISysConfigSettings>{
-    //            serviceNowUrl: this._settings.serviceNowUrl,
-    //            gitRepositoryBaseUrl: this._settings.gitRepositoryBaseUrl
-    //        });
-    //    }
-    //    /**
-    //     * Adds event listener for settings change event.
-    //     * 
-    //     * @param scope
-    //     * @param handler
-    //     */
-    //    onChanged(scope: ng.IScope, handler: (event: ng.IAngularEvent, settings: ISysConfigSettings) => void) { scope.$on(ScopeEvent_SetupParameterSettingsChanged, handler); }
-    //    constructor(private $rootScope: ng.IScope, private _sessionStorage: sessionStorageService, $http: ng.IHttpService) {
-    //        this._settings = _sessionStorage.getObject<ISysConfigSettings>("targetSysConfigSettings");
-    //        if (sys.isNil(this._settings))
-    //            this._settings = { serviceNowUrl: DefaultURL_ServiceNow, gitRepositoryBaseUrl: DefaultURL_GitRepositoryBase };
-    //        else {
-    //            if (sys.isNilOrWhiteSpace(this._settings.serviceNowUrl))
-    //                this._settings.serviceNowUrl = DefaultURL_ServiceNow;
-    //            if (sys.isNilOrWhiteSpace(this._settings.gitRepositoryBaseUrl))
-    //                this._settings.gitRepositoryBaseUrl = DefaultURL_GitRepositoryBase;
-    //        }
-    //        $http.get("./defaults.json").then((nav: ng.IHttpPromiseCallbackArg<ISysConfigSettings>) => {
-    //            if (sys.isNil(nav.data))
-    //                return;
-    //            if (sys.isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl) {
-    //                if (sys.isNil(nav.data.serviceNowUrl) || this._settings.serviceNowUrl === nav.data.serviceNowUrl)
-    //                    return;
-    //                this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
-    //            } else {
-    //                this._settings.serviceNowUrl = nav.data.serviceNowUrl;
-    //                if (sys.notNil(nav.data.serviceNowUrl) && this._settings.serviceNowUrl !== nav.data.serviceNowUrl)
-    //                    this._settings.gitRepositoryBaseUrl = nav.data.gitRepositoryBaseUrl;
-    //            }
-    //            this._sessionStorage.setObject(StorageKey_SetupParameterSettings, this._settings);
-    //            this.raiseUpdated();
-    //        });
-    //    }
-    //}
-    //appModule.factory("targetSysConfigSettings", ["$rootScope", "sessionStorageService", "$http", targetSysConfigSettings]);
-    // #endregion
     // #endregion
     // #region urlBuilderService
     const uriParseRegex = /^(([^\\\/@:]*)(:[\\\/]{0,2})((?=[^\\\/@:]*(?::[^\\\/@:]*)?@)([^\\\/@:]*)(:[^\\\/@:]*)?@)?([^\\\/@:]*)(?:(?=:\d*(?:[\\\/:]|$)):(\d*))?(?=[\\\/:]|$))?(.+)?$/;

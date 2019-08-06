@@ -6,6 +6,23 @@
     <meta charset="utf-8" />
     <meta name="app:pageId" content="ColorBuilder" />
     <title>Color Builder</title>
+    <script>
+        //<![CDATA[
+        var url = new URL(document.location.href);
+        url.hash = "";
+        url.search = "";
+        var segments = url.pathname.split("/");
+        var i = segments.length - 1;
+        if (i > 1 && segments[i - 1].length == 0) {
+            i--;
+            segments.pop();
+        }
+        if (segments[i].match(/\.html?$/i))
+            segments.pop();
+        url.pathname = (segments[i].length > 0) ? segments.join("/") + "/" : segments.join("/");
+        document.write('<base href="' + url.href + '" />');
+            //]]>
+    </script>
     <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
     <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
     <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
@@ -17,27 +34,6 @@
     <script type="text/javascript" src="App/colorBuilder.js"></script>
 </head>
 <body>
-    <main-app-page-head></main-app-page-head>
-    <div class="container-fluid">
-        <div class="row flex-nowrap">
-            <section class="container-fluid col-8 col-lg-9"></section>
-            <aside class="container-fluid col-4 col-lg-3">
-                <div class="card">
-                    <div class="card-header"><h4>Resource Pages</h4></div>
-                    <div class="card-body">
-                        <ul class="nav flex-column">
-                            <li class="nav-item"><a href="DevNotes.html" class="nav-link">Development Notes</a></li>
-                            <li class="nav-item"><a href="Snippets.html" class="nav-link">Code Snippets</a></li>
-                            <li class="nav-item"><a href="RegexTester.html" class="nav-link">Regex Tester</a></li>
-                            <li class="nav-item"><a href="URIBuilder.html" class="nav-link">URI Builder</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link active" onclick="return false;">Color Builder</a></li>
-                        </ul>
-                        <small><a href="SiteDesignNotes.html" class="nav-link">Documentation Website Design Notes</a></small>
-                    </div>
-                </div>
-            </aside>
-        </div>
-    </div>
-    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+    <app-content></app-content>
 </body>
 </html>

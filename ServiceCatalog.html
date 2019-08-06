@@ -6,6 +6,23 @@
     <meta charset="utf-8" />
     <meta name="app:pageId" content="ServiceCatalog" />
     <title>ServiceNow Implementation Notes - Service Catalog</title>
+    <script>
+        //<![CDATA[
+        var url = new URL(document.location.href);
+        url.hash = "";
+        url.search = "";
+        var segments = url.pathname.split("/");
+        var i = segments.length - 1;
+        if (i > 1 && segments[i - 1].length == 0) {
+            i--;
+            segments.pop();
+        }
+        if (segments[i].match(/\.html?$/i))
+            segments.pop();
+        url.pathname = (segments[i].length > 0) ? segments.join("/") + "/" : segments.join("/");
+        document.write('<base href="' + url.href + '" />');
+            //]]>
+    </script>
     <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
     <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
     <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
@@ -16,24 +33,6 @@
     <script type="text/javascript" src="App/app.js"></script>
 </head>
 <body>
-    <main-app-page-head></main-app-page-head>
-    <div class="container-fluid">
-        <div class="row flex-nowrap">
-            <section class="container-fluid col-8 col-lg-9"></section>
-            <aside class="container-fluid col-4 col-lg-3">
-                <div class="card">
-                    <div class="card-header"><h4>Modules</h4></div>
-                    <div class="card-body">
-                        <ul class="nav flex-column">
-                            <li class="nav-item"><a href="#" class="active nav-link" onclick="return false;">Service Catalog</a></li>
-                            <li class="nav-item"><a class="nav-link" href="IncidentManagement.html">Incident Management</a></li>
-                            <li class="nav-item"><a href="SecurityOperations.html" class="nav-link">Security Operations</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </aside>
-        </div>
-    </div>
-    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+    <app-content></app-content>
 </body>
 </html>

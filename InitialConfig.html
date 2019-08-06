@@ -6,6 +6,23 @@
     <meta charset="utf-8" />
     <meta name="app:pageId" content="InitialConfig" />
     <title>Initial Configuration Instructions</title>
+    <script>
+        //<![CDATA[
+        var url = new URL(document.location.href);
+        url.hash = "";
+        url.search = "";
+        var segments = url.pathname.split("/");
+        var i = segments.length - 1;
+        if (i > 1 && segments[i - 1].length == 0) {
+            i--;
+            segments.pop();
+        }
+        if (segments[i].match(/\.html?$/i))
+            segments.pop();
+        url.pathname = (segments[i].length > 0) ? segments.join("/") + "/" : segments.join("/");
+        document.write('<base href="' + url.href + '" />');
+            //]]>
+    </script>
     <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
     <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
     <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
@@ -17,621 +34,622 @@
     <script type="text/javascript" src="App/accordionGroup.js"></script>
 </head>
 <body>
-    <main-app-page-head></main-app-page-head>
-    <section class="container-fluid">
-        <form id="setupOverviewTasksForm" action="initialConfig.html">
-            <accordion-group>
+    <app-content><form id="setupOverviewTasksForm" action="initialConfig.html">
+    <accordion-group>
+        <div class="card">
+            <div class="card-header p-1" accordion-group-toggle-on-click="adminLogins"><h2 class="card-title mb-0">1. Add Administrative Logins</h2></div>
+            <div class="card-body" accordion-group-content-item="adminLogins">
+                <div class="detail">
+                    Create application administrative accounts in ServiceNow and assign the following roles:
+                    <ul>
+                        <li>admin</li>
+                        <li>security_admin</li>
+                    </ul>
+                    <p class="alert-info">
+                        <strong>Note:</strong>
+                        In order to be able to add the security_admin role, you will need to elevate roles to security_admin.
+                    </p>
+                </div>
                 <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="adminLogins"><h2 class="card-title mb-0">1. Add Administrative Logins</h2></div>
-                    <div class="card-body" accordion-group-content-item="adminLogins">
+                    <div class="card-header">
+                        <h3>Accounts on internet cloud instance</h3>
+                    </div>
+                    <div class="card-body">
+                        In order to properly attribute where changes were made, administrative accounts on internet cloud instances (hosted by ServiceNow)
+                        the login account name should start with the person's last name, followed by their first initial, and end in "_da".
+                        <br />Example:
+                        <samp>Leonard Erwine &rArr; erwinel_da</samp>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header p-1" accordion-group-toggle-on-click="initialUpdateSet"><h2 class="card-title mb-0">2. Import Initial Update Set</h2></div>
+            <div class="card-body" accordion-group-content-item="initialUpdateSet">
+                <div class="detail">
+                    Load and apply the <a href="downloads/sys_remote_update_set_Initial_Setup.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
+                    <var class="targetName">downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
+                    <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header p-1" accordion-group-toggle-on-click="utilityApplication"><h2 class="card-title mb-0">3. Import Utility Application</h2></div>
+            <div class="card-body" accordion-group-content-item="utilityApplication">
+                <div class="detail">
+                    In this step you will be importing a utility application which includes many utility framework functionality to support
+                    other scripts. This will also create a custom system property which can be used by automated processes to determine
+                    whether the current instance is for production, UAT, Testing, Development or if it is a sandbox instance.
+                </div>
+                <ol>
+                    <li>
+                        Import the <var class="targetName">util</var> application from <kbd><git-instance-link relative-url="x_44813_util.git"></git-instance-link></kbd>.
+                        <!-- <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
+                        to view instructions for importing applications from source countrol.</div> -->
+                    </li>
+                    <li>
+                        Once the application is imported, select that application in order to put your session in the correct
+                        scope, and then close out the <var class="targetName">Application Studio</var> browser tab.
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header p-1" accordion-group-toggle-on-click="initialConfig"><h2 class="card-title mb-0">4. Initial Config</h2></div>
+            <div class="card-body" accordion-group-content-item="initialConfig">
+                <div class="detail">
+                    <div class="detail">
+                        In this step you will specify whether the current instance is for production, UAT, Testing, Development or if it is a
+                        sandbox instance, and then you will execute a fix script to apply the corresponding color theme and other SDLC-related
+                        settings, such as the logo heading text.
+                    </div>
+                    <ol>
+                        <li>
+                            Navigate to
+                            <samp class="navPath">
+                                <var>System Properties</var> &rArr;
+                                <sn-instance-link relative-url="/$system_properties_ui.do?sysparm_title=System%20Configuration&sysparm_category=System%20Configuration" to-nav="true"><var>Basic Configuration</var></sn-instance-link>
+                            </samp>.
+                            If you are in the &quot;Util&quot; application scope, you will see the following message:
+                            <img src="images/initialConfig/globalApplicationWarning.png" alt="Example of application selection dialog" class="figure-img img-fluid rounded" />
+                            This is intentional. It is important to ensure you are in the &quot;Util&quot; application scope, otherwise the
+                            next change will not be saved.
+                        </li>
+                        <li>Set <var class="targetName">SDLC Config Stage</var> to the ServiceNow SDLC stage for the current server.</li>
+                        <li>Change to the <var class="targetName">Global</var> application scope.</li>
+                        <li>
+                            Navigate to <samp class="navPath"><var>System Definition</var> &rArr; <sn-instance-link relative-url="/sys_script_fix_list.do" to-nav="true"><var>Fix Scripts</var></sn-instance-link></samp>.
+                        </li>
+                        <li>
+                            Open the fix script named <sn-instance-link relative-url="/sys_script_fix.do?sys_id=64638a60dbe31300e298771ebf96193a" to-nav="true"><var class="targetName">Initial Army Config</var></sn-instance-link>.
+                        </li>
+                        <li>
+                            Click
+                            <var class="targetName">Run Fix Script</var>.
+                        </li>
+                        <li>
+                            Click
+                            <var class="targetName">Proceed</var> if you wish to wait for the script to finish; otherwise, click
+                            <var class="targetName">Proceed in Background</var> to let it run in the background. This script can take several minutes to finish. If
+                            you chose to let it run in the foreground, the logged output that occurred during script execution will be displayed
+                            when it is finished. At the bottom of the output, you should see a line that indicates it has succeeded.
+                            <br />
+                            <!-- <button (click)="openFigure('Example of completed fix script', 'images/initialConfig/initialArmyConfigSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
+                                <img src="images/initialConfig/initialArmyConfigSuccess_sm.png" alt="Click to view example of completed fix script" class="figure-img img-fluid rounded" />
+                            </button> Refresh the browser page to see the applied color scheme. -->
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header p-1" accordion-group-toggle-on-click="uploadLogo"><h2 class="card-title mb-0">5. Upload logo image</h2></div>
+            <div class="card-body" accordion-group-content-item="uploadLogo">
+                <div class="detail">
+                    To automate configuration settings for graphical images, it would require significant overhead. Therefore, the logo image
+                    will need to be uploaded manually.
+                </div>
+                <ol>
+                    <li>Ensure you are in the <var class="targetName">Global</var> application scope.</li>
+                    <li>
+                        Navigate to <samp class="navPath">
+                            <var>System Properties</var> &rArr;
+                            <sn-instance-link relative-url="/$system_properties_ui.do?sysparm_title=System%20Configuration&sysparm_category=System%20Configuration" to-nav="true"><var>Basic Configuration</var></sn-instance-link>
+                        </samp>.
+                    </li>
+                    <li>
+                        Scroll to the <var class="targetName">Banner Image</var> property and click on the
+                        <var class="targetName">+</var> icon to upload the banner image.
+                        <!-- <button (click)="openFigure('Example of banner image setting', 'images/initialConfig/bannerImageSetting_lg.png')"
+                            class="btn btn-outline-primary mb-2 mr-2">
+                            <img src="images/initialConfig/bannerImageSetting_sm.png" alt="Click to view example of banner image setting" class="figure-img img-fluid rounded" />
+                        </button> -->
+                    </li>
+                    <li>
+                        Upload the logo image corresponding to the SDLC stage you previously configured.
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header p-1" accordion-group-toggle-on-click="bulkPluginActivation"><h2 class="card-title mb-0">6. Bulk Plugin Activation</h2></div>
+            <div class="card-body" accordion-group-content-item="bulkPluginActivation">
+                <div class="detail">
+                    In this step you will launch a fix script which will activate plugins in the background. Plugin activation progress can
+                    be monitored from the progress workers list.
+                </div>
+                <ol>
+                    <li>
+                        Navigate to <samp class="navPath"><var>System Definition</var> &rArr; <sn-instance-link relative-url="/sys_script_fix_list.do" to-nav="true"><var>Fix Scripts</var></sn-instance-link></samp>.
+                    </li>
+                    <li>
+                        Open the fix script named
+                        <sn-instance-link relative-url="/sys_script_fix.do?sys_id=c4cf8a68dbe31300e298771ebf9619a3" to-nav="true"><var class="targetName">Army Bulk Plugin Activation</var></sn-instance-link><var class="targetName"></var>.
+                    </li>
+                    <li>
+                        Click
+                        <var class="targetName">Run Fix Script</var>.
+                    </li>
+                    <li>
+                        Click
+                        <var class="targetName">Proceed</var> if you wish to wait for the script to finish; otherwise, click
+                        <var class="targetName">Proceed in Background</var> to let it run in the background. This script can take a long time to finish.
+                    </li>
+                </ol>
+                <div class="detail">
+                    To monitor the progress of plugin activations, navigate to
+                    <samp class="navPath"><var>System Diagnostics</var> &rArr; <sn-instance-link relative-url="/sys_progress_worker_list.do" to-nav="true"><var>Progress Workers</var></sn-instance-link></samp>.
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Known Issues and Warnings</h3>
+                    </div>
+                    <div class="card-body">
                         <div class="detail">
-                            Create application administrative accounts in ServiceNow and assign the following roles:
+                            The following plugins were observed to have been activated on the on-prem UAT instance, but not on the cloud dev instance:
                             <ul>
-                                <li>admin</li>
-                                <li>security_admin</li>
+                                <li>com.snc.ppm_teamspace_1</li>
+                                <li>com.snc.ppm_teamspace_2</li>
+                                <li>com.snc.ppm_teamspace_3</li>
+                                <li>com.snc.ppm_teamspace_4</li>
                             </ul>
-                            <p class="alert-info">
-                                <strong>Note:</strong>
-                                In order to be able to add the security_admin role, you will need to elevate roles to security_admin.
-                            </p>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>Accounts on internet cloud instance</h3>
-                            </div>
-                            <div class="card-body">
-                                In order to properly attribute where changes were made, administrative accounts on internet cloud instances (hosted by ServiceNow)
-                                the login account name should start with the person's last name, followed by their first initial, and end in "_da".
-                                <br />Example:
-                                <samp>Leonard Erwine &rArr; erwinel_da</samp>
-                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="initialUpdateSet"><h2 class="card-title mb-0">2. Import Initial Update Set</h2></div>
-                    <div class="card-body" accordion-group-content-item="initialUpdateSet">
-                        <div class="detail">
-                            Load and apply the <a href="downloads/sys_remote_update_set_Initial_Setup.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
-                            <var class="targetName">downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
-                            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
-                        </div>
+        <div class="card">
+            <div class="card-header p-1" accordion-group-toggle-on-click="physicalNetworksApplication"><h2 class="card-title mb-0">7. Import Physical Networks Application</h2></div>
+            <div class="card-body" accordion-group-content-item="physicalNetworksApplication">
+                <div class="detail">
+                    <div class="detail">
+                        In this step you will be importing an application that defines a common list of physically seprated networks (as configuration items) that can be used for
+                        &quot;network&quot; pick lists.
                     </div>
+                    <ol>
+                        <li>
+                            Import the util application from <kbd><git-instance-link relative-url="x_44813_phys_net_network.git"></git-instance-link></kbd>.
+                        </li>
+                        <li>
+                            Once the application is imported, select that application in order to put your session in the correct
+                            scope, and then close out the <var class="targetName">Application Studio</var> browser tab.
+                        </li>
+                        <li>
+                            In the original ServiceNow browser tab, you will need to refresh the browser screen to see the new menu item that was added when this application was imported.
+                        </li>
+                        <li>Navigate to <samp class="navPath"><var>Physical Networks</var> &rArr; <sn-instance-link relative-url="/x_44813_phys_net_network_list.do" to-nav="true"><var>Physical Networks</var></sn-instance-link></samp>.</li>
+                        <li>Add the names of the physical networks. If there are any existing items you do not want, you may delete them.</li>
+                        <li>Change to the <var class="targetName">Global</var> application scope when finished.</li>
+                    </ol>
                 </div>
+            </div>
+        </div>
 
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="utilityApplication"><h2 class="card-title mb-0">3. Import Utility Application</h2></div>
-                    <div class="card-body" accordion-group-content-item="utilityApplication">
-                        <div class="detail">
-                            In this step you will be importing a utility application which includes many utility framework functionality to support
-                            other scripts. This will also create a custom system property which can be used by automated processes to determine
-                            whether the current instance is for production, UAT, Testing, Development or if it is a sandbox instance.
+        <div class="card">
+            <div class="card-header p-1" accordion-group-toggle-on-click="serviceCatalog"><h2 class="card-title mb-0">8. Import Service Catalog Update Set</h2></div>
+            <div class="card-body" accordion-group-content-item="serviceCatalog">
+                <div class="detail">
+                    Load and apply the <a href="downloads/sys_remote_update_set_Service_Catalog.xml" target="_blank">sys_remote_update_set_Service_Catalog.xml</a> File in the
+                    <var class="targetName">downloads</var> folder of this documentation to apply the global update set that sets up the service catalog.
+                    <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Known Issues and Warnings</h3>
                         </div>
-                        <ol>
-                            <li>
-                                Import the <var class="targetName">util</var> application from <kbd><git-instance-link relative-url="x_44813_util.git"></git-instance-link></kbd>.
-                                <!-- <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
-                    to view instructions for importing applications from source countrol.</div> -->
-                            </li>
-                            <li>
-                                Once the application is imported, select that application in order to put your session in the correct
-                                scope, and then close out the <var class="targetName">Application Studio</var> browser tab.
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="initialConfig"><h2 class="card-title mb-0">4. Initial Config</h2></div>
-                    <div class="card-body" accordion-group-content-item="initialConfig">
-                        <div class="detail">
+                        <div class="card-body">
                             <div class="detail">
-                                In this step you will specify whether the current instance is for production, UAT, Testing, Development or if it is a
-                                sandbox instance, and then you will execute a fix script to apply the corresponding color theme and other SDLC-related
-                                settings, such as the logo heading text.
+                                The following preview problems may occur, in which case, follow the recommended action:
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Remote Update</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Recommended Action</th>
+                                            <th scope="col">Missing Item</th>
+                                            <th scope="col">Missing Item Table</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">sys_template_4b0c59fb0a0a0b990034955050427d5f</th>
+                                            <td>Could not find a record in sys_user for column user referenced in this update</td>
+                                            <td>Accept remote update</td>
+                                            <td>glide.maint</td>
+                                            <td>sys_user</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">sys_template_4b175dd20a0a0b99004f35e506563fc6</th>
+                                            <td>Could not find a record in sys_user for column user referenced in this update</td>
+                                            <td>Accept remote update</td>
+                                            <td>glide.maint</td>
+                                            <td>sys_user</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">sc_category_b0fdfb01932002009ca87a75e57ffbe9</th>
+                                            <td>Could not find a record in sc_homepage_renderer for column homepage_renderer referenced in this update</td>
+                                            <td>Accept remote update</td>
+                                            <td>Default</td>
+                                            <td>sc_homepage_renderer</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">sc_category_2c0b59874f7b4200086eeed18110c71f</th>
+                                            <td>Could not find a record in sc_homepage_renderer for column homepage_renderer referenced in this update</td>
+                                            <td>Accept remote update</td>
+                                            <td>Default</td>
+                                            <td>sc_homepage_renderer</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header p-1" accordion-group-toggle-on-click="incidentManagement"><h2 class="card-title mb-0">9. Import Incident Management Update Set</h2></div>
+            <div class="card-body" accordion-group-content-item="incidentManagement">
+                <div class="detail">
+                    <div class="alert-warning">
+                        <strong>NOTICE:</strong>
+                        You must elevate your role to security_admin before committing this update set!
+                    </div>
+                    Load and apply the <a href="downloads/sys_remote_update_set_Incident_Management.xml" target="_blank">sys_remote_update_set_Incident_Management.xml</a> File in the
+                    <var class="targetName">downloads</var> folder of this documentation to apply the global update set that configures incident-related settings.
+                    <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Known Issues and Warnings</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="detail">
+                                <h5 class="alert-warning">Data Loss Warning</h5>
+                                When committing the update set, you will get a warning that states that all items in sys_dictionary_u_vip_priority_lookup_matcher_rules_u_caller will be deleted.
+                                It is okay to proceed, because this update set will be re-defining these lookup rules. However, the lookup rules will probably need to be cleaned up afterward:
+                                <ol>
+                                    <li>Navigate to <samp class="navPath"><var>System Policy</var> &rArr; <var>Rules</var> &rArr; <var>Caller VIP Lookup Rules</var></samp>.</li>
+                                    <li>Delete any items which have an empty <var class="targetName">Caller</var>.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header p-1" accordion-group-toggle-on-click="adImport"><h2 class="card-title mb-0">10. Configure Active Directory Import</h2></div>
+            <div class="card-body" accordion-group-content-item="adImport">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Update / Create LDAP Server</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="detail">
                             <ol>
                                 <li>
                                     Navigate to
-                                    <samp class="navPath"><var>System Properties</var> &rArr;
-                                        <sn-instance-link relative-url="/$system_properties_ui.do?sysparm_title=System%20Configuration&sysparm_category=System%20Configuration" to-nav="true"><var>Basic Configuration</var></sn-instance-link></samp>.
-                                        If you are in the &quot;Util&quot; application scope, you will see the following message:
-                                    <img src="images/initialConfig/globalApplicationWarning.png" alt="Example of application selection dialog" class="figure-img img-fluid rounded" />
-                                    This is intentional. It is important to ensure you are in the &quot;Util&quot; application scope, otherwise the
-                                    next change will not be saved.
-                                </li>
-                                <li>Set <var class="targetName">SDLC Config Stage</var> to the ServiceNow SDLC stage for the current server.</li>
-                                <li>Change to the <var class="targetName">Global</var> application scope.</li>
-                                <li>
-                                    Navigate to <samp class="navPath"><var>System Definition</var> &rArr; <sn-instance-link relative-url="/sys_script_fix_list.do" to-nav="true"><var>Fix Scripts</var></sn-instance-link></samp>.
+                                    <samp class="navPath"><var>System LDAP</var> &rArr; <sn-instance-link relative-url="/ldap_server_config_list.do" to-nav="true"><var>LDAP Servers</var></sn-instance-link></samp>
+                                    and open the pre-defined LDAP server if one exists; otherwise, navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <var>Create New Server</var></samp> to create a new record.
                                 </li>
                                 <li>
-                                    Open the fix script named <sn-instance-link relative-url="/sys_script_fix.do?sys_id=64638a60dbe31300e298771ebf96193a" to-nav="true"><var class="targetName">Initial Army Config</var></sn-instance-link>.
-                                </li>
-                                <li>
-                                    Click
-                                    <var class="targetName">Run Fix Script</var>.
-                                </li>
-                                <li>
-                                    Click
-                                    <var class="targetName">Proceed</var> if you wish to wait for the script to finish; otherwise, click
-                                    <var class="targetName">Proceed in Background</var> to let it run in the background. This script can take several minutes to finish. If
-                                    you chose to let it run in the foreground, the logged output that occurred during script execution will be displayed
-                                    when it is finished. At the bottom of the output, you should see a line that indicates it has succeeded.
-                                    <br />
-                                    <!-- <button (click)="openFigure('Example of completed fix script', 'images/initialConfig/initialArmyConfigSuccess_lg.png')" class="btn btn-outline-primary mb-2 mr-2">
-                            <img src="images/initialConfig/initialArmyConfigSuccess_sm.png" alt="Click to view example of completed fix script" class="figure-img img-fluid rounded" />
-                        </button> Refresh the browser page to see the applied color scheme. -->
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="uploadLogo"><h2 class="card-title mb-0">5. Upload logo image</h2></div>
-                    <div class="card-body" accordion-group-content-item="uploadLogo">
-                        <div class="detail">
-                            To automate configuration settings for graphical images, it would require significant overhead. Therefore, the logo image
-                            will need to be uploaded manually.
-                        </div>
-                        <ol>
-                            <li>Ensure you are in the <var class="targetName">Global</var> application scope.</li>
-                            <li>
-                                Navigate to <samp class="navPath"><var>System Properties</var> &rArr;
-                                <sn-instance-link relative-url="/$system_properties_ui.do?sysparm_title=System%20Configuration&sysparm_category=System%20Configuration" to-nav="true"><var>Basic Configuration</var></sn-instance-link></samp>.
-                            </li>
-                            <li>
-                                Scroll to the <var class="targetName">Banner Image</var> property and click on the
-                                <var class="targetName">+</var> icon to upload the banner image.
-                                <!-- <button (click)="openFigure('Example of banner image setting', 'images/initialConfig/bannerImageSetting_lg.png')"
-                        class="btn btn-outline-primary mb-2 mr-2">
-                        <img src="images/initialConfig/bannerImageSetting_sm.png" alt="Click to view example of banner image setting" class="figure-img img-fluid rounded" />
-                    </button> -->
-                            </li>
-                            <li>
-                                Upload the logo image corresponding to the SDLC stage you previously configured.
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="bulkPluginActivation"><h2 class="card-title mb-0">6. Bulk Plugin Activation</h2></div>
-                    <div class="card-body" accordion-group-content-item="bulkPluginActivation">
-                        <div class="detail">
-                            In this step you will launch a fix script which will activate plugins in the background. Plugin activation progress can
-                            be monitored from the progress workers list.
-                        </div>
-                        <ol>
-                            <li>
-                                Navigate to <samp class="navPath"><var>System Definition</var> &rArr; <sn-instance-link relative-url="/sys_script_fix_list.do" to-nav="true"><var>Fix Scripts</var></sn-instance-link></samp>.
-                            </li>
-                            <li>
-                                Open the fix script named
-                                <sn-instance-link relative-url="/sys_script_fix.do?sys_id=c4cf8a68dbe31300e298771ebf9619a3" to-nav="true"><var class="targetName">Army Bulk Plugin Activation</var></sn-instance-link><var class="targetName"></var>.
-                            </li>
-                            <li>
-                                Click
-                                <var class="targetName">Run Fix Script</var>.
-                            </li>
-                            <li>
-                                Click
-                                <var class="targetName">Proceed</var> if you wish to wait for the script to finish; otherwise, click
-                                <var class="targetName">Proceed in Background</var> to let it run in the background. This script can take a long time to finish.
-                            </li>
-                        </ol>
-                        <div class="detail">
-                            To monitor the progress of plugin activations, navigate to
-                            <samp class="navPath"><var>System Diagnostics</var> &rArr; <sn-instance-link relative-url="/sys_progress_worker_list.do" to-nav="true"><var>Progress Workers</var></sn-instance-link></samp>.
-                        </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>Known Issues and Warnings</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="detail">
-                                    The following plugins were observed to have been activated on the on-prem UAT instance, but not on the cloud dev instance:
+                                    If editing an existing record, provide the following information in the form, then save changes, staying on the same form (not update):
                                     <ul>
-                                        <li>com.snc.ppm_teamspace_1</li>
-                                        <li>com.snc.ppm_teamspace_2</li>
-                                        <li>com.snc.ppm_teamspace_3</li>
-                                        <li>com.snc.ppm_teamspace_4</li>
+                                        <li><var class="targetName">Name</var> - This is the display name, not the server name. If creating a new server.</li>
+                                        <li><var class="targetName">Active</var> - <em>checked</em></li>
+                                        <li><var class="targetName">Login distinguished name</var> - The login name, which should be in the format <code>account@domain.name</code>.</li>
+                                        <li><var class="targetName">Password</var> - The authentication password.</li>
+                                        <li><var class="targetName">Starting search directory</var> - This is the DN of the root of the directory search.</li>
+                                        <li><var class="targetName">MID Server</var> - This can initially be left blank.</li>
                                     </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="physicalNetworksApplication"><h2 class="card-title mb-0">7. Import Physical Networks Application</h2></div>
-                    <div class="card-body" accordion-group-content-item="physicalNetworksApplication">
-                        <div class="detail">
-                            <div class="detail">
-                                In this step you will be importing an application that defines a common list of physically seprated networks (as configuration items) that can be used for
-                                &quot;network&quot; pick lists.
-                            </div>
-                            <ol>
-                                <li>
-                                    Import the util application from <kbd><git-instance-link relative-url="x_44813_phys_net_network.git"></git-instance-link></kbd>.
-                                </li>
-                                <li>
-                                    Once the application is imported, select that application in order to put your session in the correct
-                                    scope, and then close out the <var class="targetName">Application Studio</var> browser tab.
-                                </li>
-                                <li>
-                                    In the original ServiceNow browser tab, you will need to refresh the browser screen to see the new menu item that was added when this application was imported.
-                                </li>
-                                <li>Navigate to <samp class="navPath"><var>Physical Networks</var> &rArr; <sn-instance-link relative-url="/x_44813_phys_net_network_list.do" to-nav="true"><var>Physical Networks</var></sn-instance-link></samp>.</li>
-                                <li>Add the names of the physical networks. If there are any existing items you do not want, you may delete them.</li>
-                                <li>Change to the <var class="targetName">Global</var> application scope when finished.</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="serviceCatalog"><h2 class="card-title mb-0">8. Import Service Catalog Update Set</h2></div>
-                    <div class="card-body" accordion-group-content-item="serviceCatalog">
-                        <div class="detail">
-                            Load and apply the <a href="downloads/sys_remote_update_set_Service_Catalog.xml" target="_blank">sys_remote_update_set_Service_Catalog.xml</a> File in the
-                            <var class="targetName">downloads</var> folder of this documentation to apply the global update set that sets up the service catalog.
-                            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3>Known Issues and Warnings</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="detail">
-                                        The following preview problems may occur, in which case, follow the recommended action:
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Remote Update</th>
-                                                    <th scope="col">Description</th>
-                                                    <th scope="col">Recommended Action</th>
-                                                    <th scope="col">Missing Item</th>
-                                                    <th scope="col">Missing Item Table</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row">sys_template_4b0c59fb0a0a0b990034955050427d5f</th>
-                                                    <td>Could not find a record in sys_user for column user referenced in this update</td>
-                                                    <td>Accept remote update</td>
-                                                    <td>glide.maint</td>
-                                                    <td>sys_user</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">sys_template_4b175dd20a0a0b99004f35e506563fc6</th>
-                                                    <td>Could not find a record in sys_user for column user referenced in this update</td>
-                                                    <td>Accept remote update</td>
-                                                    <td>glide.maint</td>
-                                                    <td>sys_user</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">sc_category_b0fdfb01932002009ca87a75e57ffbe9</th>
-                                                    <td>Could not find a record in sc_homepage_renderer for column homepage_renderer referenced in this update</td>
-                                                    <td>Accept remote update</td>
-                                                    <td>Default</td>
-                                                    <td>sc_homepage_renderer</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">sc_category_2c0b59874f7b4200086eeed18110c71f</th>
-                                                    <td>Could not find a record in sc_homepage_renderer for column homepage_renderer referenced in this update</td>
-                                                    <td>Accept remote update</td>
-                                                    <td>Default</td>
-                                                    <td>sc_homepage_renderer</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="incidentManagement"><h2 class="card-title mb-0">9. Import Incident Management Update Set</h2></div>
-                    <div class="card-body" accordion-group-content-item="incidentManagement">
-                        <div class="detail">
-                            <div class="alert-warning">
-                                <strong>NOTICE:</strong>
-                                You must elevate your role to security_admin before committing this update set!
-                            </div>
-                            Load and apply the <a href="downloads/sys_remote_update_set_Incident_Management.xml" target="_blank">sys_remote_update_set_Incident_Management.xml</a> File in the
-                            <var class="targetName">downloads</var> folder of this documentation to apply the global update set that configures incident-related settings.
-                            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3>Known Issues and Warnings</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="detail">
-                                        <h5 class="alert-warning">Data Loss Warning</h5>
-                                        When committing the update set, you will get a warning that states that all items in sys_dictionary_u_vip_priority_lookup_matcher_rules_u_caller will be deleted.
-                                        It is okay to proceed, because this update set will be re-defining these lookup rules. However, the lookup rules will probably need to be cleaned up afterward:
-                                        <ol>
-                                            <li>Navigate to <samp class="navPath"><var>System Policy</var> &rArr; <var>Rules</var> &rArr; <var>Caller VIP Lookup Rules</var></samp>.</li>
-                                            <li>Delete any items which have an empty <var class="targetName">Caller</var>.</li>
-                                        </ol>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="adImport"><h2 class="card-title mb-0">10. Configure Active Directory Import</h2></div>
-                    <div class="card-body" accordion-group-content-item="adImport">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>Update / Create LDAP Server</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="detail">
+                                    If adding a new LDAP server:
                                     <ol>
                                         <li>
-                                            Navigate to
-                                            <samp class="navPath"><var>System LDAP</var> &rArr; <sn-instance-link relative-url="/ldap_server_config_list.do" to-nav="true"><var>LDAP Servers</var></sn-instance-link></samp>
-                                            and open the pre-defined LDAP server if one exists; otherwise, navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <var>Create New Server</var></samp> to create a new record.</li>
-                                        <li>
-                                            If editing an existing record, provide the following information in the form, then save changes, staying on the same form (not update):
+                                            In the <var class="targetName">New LDAP Server</var> form, provide the following information:
                                             <ul>
-                                                <li><var class="targetName">Name</var> - This is the display name, not the server name. If creating a new server.</li>
+                                                <li><var class="targetName">Type of LDAP server</var> - Active Directory</li>
+                                                <li><var class="targetName">Server name</var> - The actual DNS name of the server.</li>
+                                                <li><var class="targetName">Server URL</var> - The LDAP URL of the server in the form of <code>ldap://host-name:port-number</code>, where <var>port-number</var> is usually 389.</li>
+                                                <li><var class="targetName">Starting search directory</var> - This is the DN of the root of the directory search.</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            Click the <var class="targetName">Submit</var> button, then provide the following information, then save changes, staying on the same form (not update):
+                                            <ul>
                                                 <li><var class="targetName">Active</var> - <em>checked</em></li>
                                                 <li><var class="targetName">Login distinguished name</var> - The login name, which should be in the format <code>account@domain.name</code>.</li>
                                                 <li><var class="targetName">Password</var> - The authentication password.</li>
-                                                <li><var class="targetName">Starting search directory</var> - This is the DN of the root of the directory search.</li>
                                                 <li><var class="targetName">MID Server</var> - This can initially be left blank.</li>
                                             </ul>
-                                            If adding a new LDAP server:
-                                            <ol>
-                                                <li>
-                                                    In the <var class="targetName">New LDAP Server</var> form, provide the following information:
-                                                    <ul>
-                                                        <li><var class="targetName">Type of LDAP server</var> - Active Directory</li>
-                                                        <li><var class="targetName">Server name</var> - The actual DNS name of the server.</li>
-                                                        <li><var class="targetName">Server URL</var> - The LDAP URL of the server in the form of <code>ldap://host-name:port-number</code>, where <var>port-number</var> is usually 389.</li>
-                                                        <li><var class="targetName">Starting search directory</var> - This is the DN of the root of the directory search.</li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    Click the <var class="targetName">Submit</var> button, then provide the following information, then save changes, staying on the same form (not update):
-                                                    <ul>
-                                                        <li><var class="targetName">Active</var> - <em>checked</em></li>
-                                                        <li><var class="targetName">Login distinguished name</var> - The login name, which should be in the format <code>account@domain.name</code>.</li>
-                                                        <li><var class="targetName">Password</var> - The authentication password.</li>
-                                                        <li><var class="targetName">MID Server</var> - This can initially be left blank.</li>
-                                                    </ul>
-                                                </li>
+                                        </li>
 
-                                            </ol>
-                                        </li>
-                                        <li>
-                                            Under LDAP Server URLs, use <var class="targetName">Insert a new row...</var> to add the LDAP URL for each of the LDAP servers.
-                                            <var class="targetName">Active</var> and <var class="targetName">Operational Status</var> should both be set to true.
-                                        </li>
-                                        <li>
-                                            In the <var class="targetName">Advanced Options</var> section, check the following fields and save changes:
-                                            <ul>
-                                                <li>Listener</li>
-                                                <li>Paging</li>
-                                            </ul>
-                                        </li>
                                     </ol>
+                                </li>
+                                <li>
+                                    Under LDAP Server URLs, use <var class="targetName">Insert a new row...</var> to add the LDAP URL for each of the LDAP servers.
+                                    <var class="targetName">Active</var> and <var class="targetName">Operational Status</var> should both be set to true.
+                                </li>
+                                <li>
+                                    In the <var class="targetName">Advanced Options</var> section, check the following fields and save changes:
+                                    <ul>
+                                        <li>Listener</li>
+                                        <li>Paging</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Create LDAP OU Definitions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Enterprise Users Active Directory Import</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="detail">
+                                    Navigate to
+                                    <samp class="navPath"><var>System LDAP</var> &rArr; <sn-instance-link relative-url="/ldap_server_config_list.do" to-nav="true"><var>LDAP Servers</var></sn-instance-link></samp> and open the LDAP server that was just created/updated in the previous section.
+                                    <div class="alert-info">Currently, groups are not being imported. If this changes, then all users must be imported before the LDAP Group definitions can be imported.</div>
                                 </div>
+                                <ol>
+                                    <li>
+                                        Under <var class="targetName">LDAP OU Definitions</var> at the bottom of the page, add an entry for Enterprise Users. If you had created a new LDAP server, then you should edit/verify the existing ones:
+                                        <ul>
+                                            <li><var class="targetName">Name</var> - <kbd>Enterprise User Import</kbd></li>
+                                            <li><var class="targetName">RDN</var> - The canonical name of the LDAP folder to import from (ie. <code>OU=Enterprise Users</code>).</li>
+                                            <li>
+                                                <var class="targetName">Query Field</var> - <kbd>sAMAccountName</kbd>.
+                                                <div class="alert-warning">
+                                                    This specification was taken from existing documentation.
+                                                    We may need to test whether it would work if we used userPincipalName, instead.
+                                                </div>
+                                            </li>
+                                            <li><var class="targetName">Active</var> - checked</li>
+                                            <li><var class="targetName">Server</var> - This should be the same as the parent record we started from.</li>
+                                            <li><var class="targetName">Table</var> - <kbd>User [sys_user]</kbd></li>
+                                            <li>
+                                                <var class="targetName">Filter</var> - <code>(&amp;(objectClass=person)(sn=*)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))</code>
+                                                <div class="alert-info">
+                                                    Utilize the <var class="targetName">Test connection</var> link under <var class="targetName">Related Links</var>
+                                                    to verify there are no errors in the filter.
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Under <var class="targetName">Data Sources</var>, add a new entry:
+                                        <ul>
+                                            <li><var class="targetName">Name</var> - <kbd>Enterprise LDAP users</kbd></li>
+                                            <li><var class="targetName">Import set table label</var> - <kbd>Enterprise User Import</kbd>.</li>
+                                            <li><var class="targetName">Import set table name</var> - This should be automatically generated as <output>u_enterprise_user_import</output>.</li>
+                                            <li><var class="targetName">Type</var> - <kbd>LDAP</kbd></li>
+                                            <li><var class="targetName">LDAP Target</var> - <kbd>Enterprise User Import</kbd>.</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Create Transform Map
+                                        <ol>
+                                            <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Test Load 20 records</var>.</li>
+                                            <li>
+                                                Select <var class="targetName">Create Transform Map</var> and provide the following values:
+                                                <ul>
+                                                    <li><var class="targetName">Name</var> - <kbd>Enterprise Enterprise User Import</kbd></li>
+                                                    <li><var class="targetName">Source table</var> - <kbd>Enterprise User Import [u_enterprise_user_import]</kbd>.</li>
+                                                    <li><var class="targetName">Target Table</var> - <kbd>User [sys_user]</kbd></li>
+                                                    <li><var class="targetName">Active</var> - checked</li>
+                                                    <li><var class="targetName">Run business rules</var> - checked</li>
+                                                    <li><var class="targetName">Enforce mandatory fields</var> - No</li>
+                                                    <li><var class="targetName">Copy empty fields</var> - unchecked</li>
+                                                    <li><var class="targetName">Run script</var> - unchecked</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li>
+                                        Map LDAP fields
+                                        <ol>
+                                            <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Auto Map Matching Fields</var>.</li>
+                                            <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Mapping assist</var> to ensure all fields are mapped appropriately.</li>
+                                        </ol>
+                                    </li>
+                                    <li>
+                                        Coalesce Enterprise User Imports
+                                        <ol>
+                                            <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <sn-instance-link relative-url="/sys_transform_map_list.do" to-nav="true"><var>Transform Maps</var></sn-instance-link> &rArr; <var>Enterprise User Import</var></samp>.</li>
+                                            <li>
+                                                Under the <var class="targetName">Field Maps</var> tab, double-click the <var class="targetName">Coalesce</var> value for the
+                                                <var class="targetName">u_samaccountname</var> source field and change it to <kbd>true</kbd>.
+                                                <div class="alert-warning">
+                                                    This specification was taken from existing documentation.
+                                                    If we used userPincipalName instead of samAccountName, then we will coalesce using the <var class="targetName">u_userprincipalname</var> field, instead.
+                                                </div>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Transform</var>, and in the resulting page, click the <var class="targetName">Transform</var> button to apply the transform map.</li>
+                                    <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <var>Data Sources</var></samp> and open the <var class="targetName">Enterprise LDAP users</var> data source.</li>
+                                    <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Load all records</var>.</li>
+                                    <li>Once all users are loaded, click <var class="targetName">Run Transform</var>, and then in the resulting page, click the <var class="targetName">Transform</var> button.</li>
+                                </ol>
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-header">
-                                <h3>Create LDAP OU Definitions</h3>
+                                <h4>Admin Users Active Directory Import</h4>
                             </div>
                             <div class="card-body">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4>Enterprise Users Active Directory Import</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="detail">
-                                            Navigate to
-                                            <samp class="navPath"><var>System LDAP</var> &rArr; <sn-instance-link relative-url="/ldap_server_config_list.do" to-nav="true"><var>LDAP Servers</var></sn-instance-link></samp> and open the LDAP server that was just created/updated in the previous section.
-                                            <div class="alert-info">Currently, groups are not being imported. If this changes, then all users must be imported before the LDAP Group definitions can be imported.</div>
-                                        </div>
-                                        <ol>
-                                            <li>
-                                                Under <var class="targetName">LDAP OU Definitions</var> at the bottom of the page, add an entry for Enterprise Users. If you had created a new LDAP server, then you should edit/verify the existing ones:
-                                                <ul>
-                                                    <li><var class="targetName">Name</var> - <kbd>Enterprise User Import</kbd></li>
-                                                    <li><var class="targetName">RDN</var> - The canonical name of the LDAP folder to import from (ie. <code>OU=Enterprise Users</code>).</li>
-                                                    <li>
-                                                        <var class="targetName">Query Field</var> - <kbd>sAMAccountName</kbd>.
-                                                        <div class="alert-warning">
-                                                            This specification was taken from existing documentation.
-                                                            We may need to test whether it would work if we used userPincipalName, instead.
-                                                        </div>
-                                                    </li>
-                                                    <li><var class="targetName">Active</var> - checked</li>
-                                                    <li><var class="targetName">Server</var> - This should be the same as the parent record we started from.</li>
-                                                    <li><var class="targetName">Table</var> - <kbd>User [sys_user]</kbd></li>
-                                                    <li>
-                                                        <var class="targetName">Filter</var> - <code>(&amp;(objectClass=person)(sn=*)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))</code>
-                                                        <div class="alert-info">
-                                                            Utilize the <var class="targetName">Test connection</var> link under <var class="targetName">Related Links</var>
-                                                            to verify there are no errors in the filter.
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                Under <var class="targetName">Data Sources</var>, add a new entry:
-                                                <ul>
-                                                    <li><var class="targetName">Name</var> - <kbd>Enterprise LDAP users</kbd></li>
-                                                    <li><var class="targetName">Import set table label</var> - <kbd>Enterprise User Import</kbd>.</li>
-                                                    <li><var class="targetName">Import set table name</var> - This should be automatically generated as <output>u_enterprise_user_import</output>.</li>
-                                                    <li><var class="targetName">Type</var> - <kbd>LDAP</kbd></li>
-                                                    <li><var class="targetName">LDAP Target</var> - <kbd>Enterprise User Import</kbd>.</li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                Create Transform Map
-                                                <ol>
-                                                    <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Test Load 20 records</var>.</li>
-                                                    <li>
-                                                        Select <var class="targetName">Create Transform Map</var> and provide the following values:
-                                                        <ul>
-                                                            <li><var class="targetName">Name</var> - <kbd>Enterprise Enterprise User Import</kbd></li>
-                                                            <li><var class="targetName">Source table</var> - <kbd>Enterprise User Import [u_enterprise_user_import]</kbd>.</li>
-                                                            <li><var class="targetName">Target Table</var> - <kbd>User [sys_user]</kbd></li>
-                                                            <li><var class="targetName">Active</var> - checked</li>
-                                                            <li><var class="targetName">Run business rules</var> - checked</li>
-                                                            <li><var class="targetName">Enforce mandatory fields</var> - No</li>
-                                                            <li><var class="targetName">Copy empty fields</var> - unchecked</li>
-                                                            <li><var class="targetName">Run script</var> - unchecked</li>
-                                                        </ul>
-                                                    </li>
-                                                </ol>
-                                            </li>
-                                            <li>
-                                                Map LDAP fields
-                                                <ol>
-                                                    <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Auto Map Matching Fields</var>.</li>
-                                                    <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Mapping assist</var> to ensure all fields are mapped appropriately.</li>
-                                                </ol>
-                                            </li>
-                                            <li>
-                                                Coalesce Enterprise User Imports
-                                                <ol>
-                                                    <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <sn-instance-link relative-url="/sys_transform_map_list.do" to-nav="true"><var>Transform Maps</var></sn-instance-link> &rArr; <var>Enterprise User Import</var></samp>.</li>
-                                                    <li>
-                                                        Under the <var class="targetName">Field Maps</var> tab, double-click the <var class="targetName">Coalesce</var> value for the
-                                                        <var class="targetName">u_samaccountname</var> source field and change it to <kbd>true</kbd>.
-                                                        <div class="alert-warning">
-                                                            This specification was taken from existing documentation.
-                                                            If we used userPincipalName instead of samAccountName, then we will coalesce using the <var class="targetName">u_userprincipalname</var> field, instead.
-                                                        </div>
-                                                    </li>
-                                                </ol>
-                                            </li>
-                                            <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Transform</var>, and in the resulting page, click the <var class="targetName">Transform</var> button to apply the transform map.</li>
-                                            <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <var>Data Sources</var></samp> and open the <var class="targetName">Enterprise LDAP users</var> data source.</li>
-                                            <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Load all records</var>.</li>
-                                            <li>Once all users are loaded, click <var class="targetName">Run Transform</var>, and then in the resulting page, click the <var class="targetName">Transform</var> button.</li>
-                                        </ol>
-                                    </div>
+                                <div class="detail">
+                                    Navigate to
+                                    <samp class="navPath"><var>System LDAP</var> &rArr; <sn-instance-link relative-url="/ldap_server_config_list.do" to-nav="true"><var>LDAP Servers</var></sn-instance-link></samp> and open the LDAP server that was just created/updated in the previous section.
+                                    <div class="alert-info">All users must be imported before the LDAP Group definitions can be imported.</div>
                                 </div>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4>Admin Users Active Directory Import</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="detail">
-                                            Navigate to
-                                            <samp class="navPath"><var>System LDAP</var> &rArr; <sn-instance-link relative-url="/ldap_server_config_list.do" to-nav="true"><var>LDAP Servers</var></sn-instance-link></samp> and open the LDAP server that was just created/updated in the previous section.
-                                            <div class="alert-info">All users must be imported before the LDAP Group definitions can be imported.</div>
-                                        </div>
-                                        <ol>
+                                <ol>
+                                    <li>
+                                        Under <var class="targetName">LDAP OU Definitions</var> at the bottom of the page, add an entry for Admin Users:
+                                        <ul>
+                                            <li><var class="targetName">Name</var> - <kbd>Admin User Import</kbd></li>
+                                            <li><var class="targetName">RDN</var> - The canonical name of the LDAP folder to import from (ie. <code>OU=Administration</code>).</li>
                                             <li>
-                                                Under <var class="targetName">LDAP OU Definitions</var> at the bottom of the page, add an entry for Admin Users:
+                                                <var class="targetName">Query Field</var> - <kbd>sAMAccountName</kbd>.
+                                                <div class="alert-warning">
+                                                    This specification was taken from existing documentation.
+                                                    We may need to test whether it would work if we used userPincipalName, instead.
+                                                </div>
+                                            </li>
+                                            <li><var class="targetName">Active</var> - checked</li>
+                                            <li><var class="targetName">Server</var> - This should be the same as the parent record we started from.</li>
+                                            <li><var class="targetName">Table</var> - <kbd>User [sys_user]</kbd></li>
+                                            <li>
+                                                <var class="targetName">Filter</var> - <code>(&amp;(objectClass=person)(sn=*)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))</code>
+                                                <div class="alert-info">Utilize the <samp>Test connection</samp> link under <samp>Related Links</samp> to verify there are no errors in the filter.</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Under <var class="targetName">Data Sources</var>, add a new entry:
+                                        <ul>
+                                            <li><var class="targetName">Name</var> - <kbd>Admin LDAP users</kbd></li>
+                                            <li><var class="targetName">Import set table label</var> - <kbd>Admin User Import</kbd>.</li>
+                                            <li><var class="targetName">Import set table name</var> - This should be automatically generated as <output>u_admin_user_import</output>.</li>
+                                            <li><var class="targetName">Type</var> - <kbd>LDAP</kbd></li>
+                                            <li><var class="targetName">LDAP Target</var> - <kbd>Admin User Import</kbd>.</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Create Transform Map
+                                        <ol>
+                                            <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Test Load 20 records</var>.</li>
+                                            <li>
+                                                Select <var class="targetName">Create Transform Map</var> and provide the following values:
                                                 <ul>
                                                     <li><var class="targetName">Name</var> - <kbd>Admin User Import</kbd></li>
-                                                    <li><var class="targetName">RDN</var> - The canonical name of the LDAP folder to import from (ie. <code>OU=Administration</code>).</li>
-                                                    <li>
-                                                        <var class="targetName">Query Field</var> - <kbd>sAMAccountName</kbd>.
-                                                        <div class="alert-warning">
-                                                            This specification was taken from existing documentation.
-                                                            We may need to test whether it would work if we used userPincipalName, instead.
-                                                        </div>
-                                                    </li>
+                                                    <li><var class="targetName">Source table</var> - <kbd>Admin User Import [u_admin_user_import]</kbd>.</li>
+                                                    <li><var class="targetName">Target Table</var> - <kbd>User [sys_user]</kbd></li>
                                                     <li><var class="targetName">Active</var> - checked</li>
-                                                    <li><var class="targetName">Server</var> - This should be the same as the parent record we started from.</li>
-                                                    <li><var class="targetName">Table</var> - <kbd>User [sys_user]</kbd></li>
-                                                    <li>
-                                                        <var class="targetName">Filter</var> - <code>(&amp;(objectClass=person)(sn=*)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))</code>
-                                                        <div class="alert-info">Utilize the <samp>Test connection</samp> link under <samp>Related Links</samp> to verify there are no errors in the filter.</div>
-                                                    </li>
+                                                    <li><var class="targetName">Run business rules</var> - checked</li>
+                                                    <li><var class="targetName">Enforce mandatory fields</var> - No</li>
+                                                    <li><var class="targetName">Copy empty fields</var> - unchecked</li>
+                                                    <li><var class="targetName">Run script</var> - unchecked</li>
                                                 </ul>
                                             </li>
-                                            <li>
-                                                Under <var class="targetName">Data Sources</var>, add a new entry:
-                                                <ul>
-                                                    <li><var class="targetName">Name</var> - <kbd>Admin LDAP users</kbd></li>
-                                                    <li><var class="targetName">Import set table label</var> - <kbd>Admin User Import</kbd>.</li>
-                                                    <li><var class="targetName">Import set table name</var> - This should be automatically generated as <output>u_admin_user_import</output>.</li>
-                                                    <li><var class="targetName">Type</var> - <kbd>LDAP</kbd></li>
-                                                    <li><var class="targetName">LDAP Target</var> - <kbd>Admin User Import</kbd>.</li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                Create Transform Map
-                                                <ol>
-                                                    <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Test Load 20 records</var>.</li>
-                                                    <li>
-                                                        Select <var class="targetName">Create Transform Map</var> and provide the following values:
-                                                        <ul>
-                                                            <li><var class="targetName">Name</var> - <kbd>Admin User Import</kbd></li>
-                                                            <li><var class="targetName">Source table</var> - <kbd>Admin User Import [u_admin_user_import]</kbd>.</li>
-                                                            <li><var class="targetName">Target Table</var> - <kbd>User [sys_user]</kbd></li>
-                                                            <li><var class="targetName">Active</var> - checked</li>
-                                                            <li><var class="targetName">Run business rules</var> - checked</li>
-                                                            <li><var class="targetName">Enforce mandatory fields</var> - No</li>
-                                                            <li><var class="targetName">Copy empty fields</var> - unchecked</li>
-                                                            <li><var class="targetName">Run script</var> - unchecked</li>
-                                                        </ul>
-                                                    </li>
-                                                </ol>
-                                            </li>
-                                            <li>
-                                                Map LDAP fields
-                                                <ol>
-                                                    <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Auto Map Matching Fields</var>.</li>
-                                                    <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Mapping assist</var> to ensure all fields are mapped appropriately.</li>
-                                                </ol>
-                                            </li>
-                                            <li>
-                                                Coalesce Admin User Imports
-                                                <ol>
-                                                    <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <sn-instance-link relative-url="/sys_transform_map_list.do" to-nav="true"><var>Transform Maps</var></sn-instance-link> &rArr; <var>Admin User Import</var></samp>.</li>
-                                                    <li>
-                                                        Under the <var class="targetName">Field Maps</var> tab, double-click the <var class="targetName">Coalesce</var> value for the <var class="targetName">u_samaccountname</var> source field and change it to <kbd>true</kbd>.
-                                                        <div class="alert-warning">
-                                                            This specification was taken from existing documentation.
-                                                            If we used userPincipalName instead of samAccountName, then we will coalesce using the <var class="targetName">u_userprincipalname</var> field, instead.
-                                                        </div>
-                                                    </li>
-                                                </ol>
-                                            </li>
-                                            <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Transform</var>, and in the resulting page, click the <var class="targetName">Transform</var> button to apply the transform map.</li>
-                                            <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <var>Data Sources</var></samp> and open the <var class="targetName">Admin LDAP users</var> data source.</li>
-                                            <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Load all records</var>.</li>
-                                            <li>Once all users are loaded, click <var class="targetName">Run Transform</var>, and then in the resulting page, click the <var class="targetName">Transform</var> button.</li>
                                         </ol>
-                                    </div>
+                                    </li>
+                                    <li>
+                                        Map LDAP fields
+                                        <ol>
+                                            <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Auto Map Matching Fields</var>.</li>
+                                            <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Mapping assist</var> to ensure all fields are mapped appropriately.</li>
+                                        </ol>
+                                    </li>
+                                    <li>
+                                        Coalesce Admin User Imports
+                                        <ol>
+                                            <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <sn-instance-link relative-url="/sys_transform_map_list.do" to-nav="true"><var>Transform Maps</var></sn-instance-link> &rArr; <var>Admin User Import</var></samp>.</li>
+                                            <li>
+                                                Under the <var class="targetName">Field Maps</var> tab, double-click the <var class="targetName">Coalesce</var> value for the <var class="targetName">u_samaccountname</var> source field and change it to <kbd>true</kbd>.
+                                                <div class="alert-warning">
+                                                    This specification was taken from existing documentation.
+                                                    If we used userPincipalName instead of samAccountName, then we will coalesce using the <var class="targetName">u_userprincipalname</var> field, instead.
+                                                </div>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Transform</var>, and in the resulting page, click the <var class="targetName">Transform</var> button to apply the transform map.</li>
+                                    <li>Navigate to <samp class="navPath"><var>System LDAP</var> &rArr; <var>Data Sources</var></samp> and open the <var class="targetName">Admin LDAP users</var> data source.</li>
+                                    <li>Under <var class="targetName">Related Links</var>, click <var class="targetName">Load all records</var>.</li>
+                                    <li>Once all users are loaded, click <var class="targetName">Run Transform</var>, and then in the resulting page, click the <var class="targetName">Transform</var> button.</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Active Directory Group Import</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="detail">
+                                    <em>Not yet documented...</em>
                                 </div>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4>Active Directory Group Import</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="detail">
-                                            <em>Not yet documented...</em>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="modal fade" tabindex="-1" role="dialog" ng-show="elevateRolesVisible">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="elevateRolesModalLabel">Elevating Roles</h5>
-                                <button type="button" class="close" ng-click="closeElevateRoles" onclick="return false;">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <img src="images/ElevateRoles1.PNG" width="531" height="257" alt="Screen clip of elevating roles" />
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" ng-click="closeElevateRoles" onclick="return false;">Close</button>
-                            </div>
-                        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" ng-show="elevateRolesVisible">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="elevateRolesModalLabel">Elevating Roles</h5>
+                        <button type="button" class="close" ng-click="closeElevateRoles" onclick="return false;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="images/ElevateRoles1.PNG" width="531" height="257" alt="Screen clip of elevating roles" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" ng-click="closeElevateRoles" onclick="return false;">Close</button>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="modal fade" tabindex="-1" role="dialog" ng-show="systemTimeZoneVisible">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="getSystemTimeZoneModalLabel">System Time Zone</h5>
-                                <button type="button" class="close" ng-click="closeSystemTimeZone" onclick="return false;">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                To view the system time zone, navigate to <a ng-href="serviceNow.systempropertiesUrl" target="_blank" ng-click="serviceNow.onClick()">
-                                    <var>
-                                        System Properties <img src="images/subnav.svg" width="16" height="8" alt="Sub-menu selection" />
-                                        Basic Configuration
-                                    </var>
-                                </a>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" ng-click="closeSystemTimeZone" onclick="return false;">Close</button>
-                            </div>
-                        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" ng-show="systemTimeZoneVisible">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="getSystemTimeZoneModalLabel">System Time Zone</h5>
+                        <button type="button" class="close" ng-click="closeSystemTimeZone" onclick="return false;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        To view the system time zone, navigate to <a ng-href="serviceNow.systempropertiesUrl" target="_blank" ng-click="serviceNow.onClick()">
+                            <var>
+                                System Properties <img src="images/subnav.svg" width="16" height="8" alt="Sub-menu selection" />
+                                Basic Configuration
+                            </var>
+                        </a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" ng-click="closeSystemTimeZone" onclick="return false;">Close</button>
                     </div>
                 </div>
-            </accordion-group>
-        </form>
-    </section>
-    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+            </div>
+        </div>
+    </accordion-group>
+</form></app-content>
 </body>
 </html>

@@ -544,7 +544,7 @@ var regexTester;
         EditMode[EditMode["singleLine"] = 0] = "singleLine";
         EditMode[EditMode["multiLine"] = 1] = "multiLine";
         EditMode[EditMode["item"] = 2] = "item";
-    })(EditMode || (EditMode = {}));
+    })(EditMode = regexTester.EditMode || (regexTester.EditMode = {}));
     class RegexTesterController {
         constructor($scope, $q, $log, localRegexStorage) {
             this.$scope = $scope;
@@ -853,6 +853,7 @@ var regexTester;
         }
         $doCheck() { }
     }
+    regexTester.RegexTesterController = RegexTesterController;
     app.appModule.controller("regexTester", ["$scope", "$q", "$log", "localRegexStorage", RegexTesterController]);
     // #endregion
 })(regexTester || (regexTester = {}));

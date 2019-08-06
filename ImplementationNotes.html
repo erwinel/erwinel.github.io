@@ -6,6 +6,23 @@
     <meta charset="utf-8" />
     <meta name="app:pageId" content="ImplementationNotes" />
     <title>ServiceNow Implementation Notes</title>
+    <script>
+        //<![CDATA[
+        var url = new URL(document.location.href);
+        url.hash = "";
+        url.search = "";
+        var segments = url.pathname.split("/");
+        var i = segments.length - 1;
+        if (i > 1 && segments[i - 1].length == 0) {
+            i--;
+            segments.pop();
+        }
+        if (segments[i].match(/\.html?$/i))
+            segments.pop();
+        url.pathname = (segments[i].length > 0) ? segments.join("/") + "/" : segments.join("/");
+        document.write('<base href="' + url.href + '" />');
+            //]]>
+    </script>
     <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
     <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
     <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
@@ -16,19 +33,15 @@
     <script type="text/javascript" src="App/app.js"></script>
 </head>
 <body>
-    <main-app-page-head></main-app-page-head>
-    <section class="container-fluid">
-        <div class="card">
-            <div class="card-header"><h2>Modules</h2></div>
-            <div class="card-body">
-                <ul>
-                    <li><a href="ServiceCatalog.html">Service Catalog</a></li>
-                    <li><a href="IncidentManagement.html">Incident Management</a></li>
-                    <li><a href="SecurityOperations.html">Security Operations</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+    <app-content><div class="card">
+    <div class="card-header"><h2>Modules</h2></div>
+    <div class="card-body">
+        <ul>
+            <li><a href="ServiceCatalog.html">Service Catalog</a></li>
+            <li><a href="IncidentManagement.html">Incident Management</a></li>
+            <li><a href="SecurityOperations.html">Security Operations</a></li>
+        </ul>
+    </div>
+</div></app-content>
 </body>
 </html>

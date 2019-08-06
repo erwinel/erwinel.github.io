@@ -6,6 +6,23 @@
     <meta charset="utf-8" />
     <meta name="app:pageId" content="ChangeManagement" />
     <title>ServiceNow Implementation Notes - Change Management</title>
+    <script>
+        //<![CDATA[
+        var url = new URL(document.location.href);
+        url.hash = "";
+        url.search = "";
+        var segments = url.pathname.split("/");
+        var i = segments.length - 1;
+        if (i > 1 && segments[i - 1].length == 0) {
+            i--;
+            segments.pop();
+        }
+        if (segments[i].match(/\.html?$/i))
+            segments.pop();
+        url.pathname = (segments[i].length > 0) ? segments.join("/") + "/" : segments.join("/");
+        document.write('<base href="' + url.href + '" />');
+            //]]>
+    </script>
     <link rel="stylesheet" href="lib/twitter-bootstrap/css/bootstrap.css" type="text/css" />
     <link rel="stylesheet" href="lib/angular.js/angular-csp.css" type="text/css" />
     <link rel="stylesheet" type="text/css" media="screen" href="theme.css" />
@@ -16,27 +33,6 @@
     <script type="text/javascript" src="App/app.js"></script>
 </head>
 <body>
-    <main-app-page-head></main-app-page-head>
-    <form id="setupOverviewTasksForm" action="initialConfig.html">
-        <div class="container-fluid">
-            <div class="row flex-nowrap">
-                <section class="container-fluid col-8 col-lg-9">
-                    integrate the code of the UI Action "Risk Assessment" (/sys_ui_action.do?sys_id=8d300156d7033200532c24837e6103e8) with another action on the change before it gets to CAB, forcing the user to take the survey before proceeding
-                </section>
-                <aside class="container-fluid col-4 col-lg-3">
-                    <div class="card">
-                        <div class="card-header"><h4>Modules</h4></div>
-                        <div class="card-body">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"><a href="ServiceCatalog.html" class="nav-link">Service Catalog</a></li>
-                                <li class="nav-item"><a class="active nav-link" href="#" onclick="return false;">Incident Management</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </aside>
-            </div>
-        </div>
-    </form>
-    <footer class="container-fluid ">ServiceNow Installation and Implementation Documentation &copy; US Army 2019.</footer>
+    <app-content>integrate the code of the UI Action "Risk Assessment" (/sys_ui_action.do?sys_id=8d300156d7033200532c24837e6103e8) with another action on the change before it gets to CAB, forcing the user to take the survey before proceeding</app-content>
 </body>
 </html>

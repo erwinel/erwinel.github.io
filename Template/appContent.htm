@@ -3,7 +3,7 @@
     <ul class="navbar-nav">
         <li class="nav-item" ng-repeat="i in topNavItems"><a ng-href="{{i.navMenuHref}}" ng-class="i.anchorCssClass" ng-click="i.onClick($event)">{{ i.linkTitle }}</a></li>
     </ul>
-    <button class="btn btn-outline-success" type="button" title="System Information Settings" ng-click="ctrl.openSetupParametersEditDialog($event)"><img src="images/open-iconic/wrench.svg" width="8" height="8" alt="System Information Settings" /></button>
+    <button class="btn btn-outline-success" type="button" title="System Information Settings" ng-click="appContentController.openSetupParametersEditDialog($event)"><img src="images/open-iconic/wrench.svg" width="8" height="8" alt="System Information Settings" /></button>
 </nav>
 <section ng-class="mainSectionClass" ng-transclude></section>
 <aside class="container-fluid col-4 col-lg-3" ng-show="showSideMenu">
@@ -16,7 +16,7 @@
     <div class="card" ng-show="showSideNavItems">
         <div class="card-header" ng-show="showSideNavHeading"><h4>{{sideNavHeading}}</h4></div>
         <div class="card-body">
-            <ul class="nav flex-column" ng-show="showPrecedingSideNavItems">
+            <ul class="nav flex-column">
                 <li class="nav-item" ng-repeat="i in sideNavItems"><a ng-href="{{i.navMenuHref}}" ng-class="i.anchorCssClass">{{ i.linkTitle }}</a></li>
                 <li class="nav-item" ng-show="showCurrentItem">
                     <a ng-href="#" ng-click="currentNavItem.onClick($event)" ng-class="currentNavItem.anchorCssClass">{{ currentNavItem.linkTitle }}</a>
@@ -35,7 +35,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="mainModalPopupTitle">{{popupDialogTitle}}</h5>
-                <button type="button" class="close" ng-click="ctrl.closePopupDialog($event)" onclick="return false;">
+                <button type="button" class="close" ng-click="appContentController.closePopupDialog($event)" onclick="return false;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -53,7 +53,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Setup definitions</h5>
-                <button type="button" class="close" ng-click="ctrl.closeSetupParametersEditDialog($event)">
+                <button type="button" class="close" ng-click="appContentController.closeSetupParametersEditDialog($event)">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -70,8 +70,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" ng-click="ctrl.closeSetupParametersEditDialog($event, true)" ng-disabled="setupParametersAreInvalid">OK</button>
-                <button type="button" class="btn btn-secondary" ng-click="ctrl.closeSetupParametersEditDialog($event, false)">Cancel</button>
+                <button type="button" class="btn btn-secondary" ng-click="appContentController.closeSetupParametersEditDialog($event, true)" ng-disabled="setupParametersAreInvalid">OK</button>
+                <button type="button" class="btn btn-secondary" ng-click="appContentController.closeSetupParametersEditDialog($event, false)">Cancel</button>
             </div>
         </div>
     </div>
