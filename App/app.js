@@ -1841,10 +1841,10 @@ var app;
     // #endregion
     // #region aConfigLink directive
     /**
-        * Defines the directive name as "aConfigLink".
-        * @export
-        * @constant {string}
-        */
+     * Defines the directive name as "aConfigLink".
+     * @export
+     * @constant {string}
+     */
     app.DIRECTIVE_NAME_aConfigLink = "aConfigLink";
     const DEFAULT_TARGET = "_blank";
     class aConfigLinkController {
