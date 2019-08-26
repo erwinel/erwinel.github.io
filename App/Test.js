@@ -120,3 +120,4 @@ module.service('appConfigData', ['$log', AppConfigDataService]).directive("snIns
         template: '<a ng-href="{{href}}" ng-transclude></a>'
     };
 }).controller("mainController", ['$scope', 'appConfigData', '$log', MainController]);
+//# sourceMappingURL=Test.js.map

@@ -857,3 +857,4 @@ var regexTester;
     app.appModule.controller("regexTester", ["$scope", "$q", "$log", "localRegexStorage", RegexTesterController]);
     // #endregion
 })(regexTester || (regexTester = {}));
+//# sourceMappingURL=regexTester.js.map

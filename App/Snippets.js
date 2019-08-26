@@ -48,3 +48,4 @@ var snippets;
     }
     app.appModule.controller("moveToUpdateSetController", ['$scope', 'copyToClipboardService', MoveToUpdateSetController]);
 })(snippets || (snippets = {}));
+//# sourceMappingURL=Snippets.js.map

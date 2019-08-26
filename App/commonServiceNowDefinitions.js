@@ -253,3 +253,4 @@ var sn_emulation_helpers;
     }
     sn_emulation_helpers.Emulated_GlideRecord = Emulated_GlideRecord;
 })(sn_emulation_helpers || (sn_emulation_helpers = {}));
+//# sourceMappingURL=commonServiceNowDefinitions.js.map

@@ -1021,3 +1021,4 @@ var uriBuilder_old;
     UriBuilderController._schemeSeparatorOptions = ["://", ":/", ":"];
     app.appModule.controller("uriBuilderController_old", ["$Scope", UriBuilderController]);
 })(uriBuilder_old || (uriBuilder_old = {}));
+//# sourceMappingURL=uriBuilder.js.map

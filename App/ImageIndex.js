@@ -452,3 +452,4 @@ var imageIndex;
     }
     app.appModule.controller("imageIndex", ['$scope', ImageIndexController]);
 })(imageIndex || (imageIndex = {}));
+//# sourceMappingURL=ImageIndex.js.map

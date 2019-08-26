@@ -34,22 +34,42 @@
     <script type="text/javascript" src="App/accordionGroup.js"></script>
 </head>
 <body>
-    <app-content><form action="Snippets.html">
-    <div class="card">
-        <div class="card-header p-1">
-            <h2 class="card-title mb-0">UI Actions</h2>
-        </div>
-        <div class="card-body">
-            <accordion-group>
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="updatePreviewProblems"><h2 class="card-title mb-0">Update Preview Problems</h2></div>
-                    <div class="card-body" accordion-group-content-item="updatePreviewProblems">
-                        https://dev75813.service-now.com/sys_update_preview_problem_list.do
+    <app-content><form action="DevNotes.html">
+    <accordion-group>
+        <div class="card">
+            <div class="card-header p-1" accordion-group-toggle-on-click="relatedTables"><h2 class="card-title mb-0">Related Tables</h2></div>
+            <div class="card-body" accordion-group-content-item="relatedTables">
+                <accordion-group>
+                    <div class="card">
+                        <div class="card-header p-1" accordion-group-toggle-on-click="updateSets"><h2 class="card-title mb-0">Update Sets</h2></div>
+                        <div class="card-body" accordion-group-content-item="updateSets">
+                            <dl>
+                                <dt>Table: <sn-instance-link relative-url="/sys_remote_update_set_list.do">Retrieved Update Sets</sn-instance-link></dt>
+                                <dd>
+                                    Referenced By:
+                                    <dl>
+                                        <dt>Update Preview Problems</dt>
+                                        <dd>
+                                            <sn-instance-link relative-url="/sys_update_preview_problem_list.do">/sys_update_preview_problem_list.do?sysparm_query=remote_update_set%3D=<var>sys_id</var></sn-instance-link>
+                                        </dd>
+                                        <dt>Customer Updates</dt>
+                                        <dd><sn-instance-link relative-url="/sys_update_xml_list.do">/sys_update_xml_list.do?sysparm_query=remote_update_set%3D=<var>sys_id</var></sn-instance-link>
+                                            <dl>
+                                                <dt>Update Preview Problems</dt>
+                                                <dd>
+                                                    <sn-instance-link relative-url="/sys_update_preview_problem_list.do">/sys_update_preview_problem_list.do?sysparm_query=remote_update%3D=<var>sys_id</var></sn-instance-link>
+                                                </dd>
+                                            </dl>
+                                        </dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+                        </div>
                     </div>
-                </div>
-            </accordion-group>
+                </accordion-group>
+            </div>
         </div>
-    </div>
+    </accordion-group>
 </form></app-content>
 </body>
 </html>
