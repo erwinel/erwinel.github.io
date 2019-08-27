@@ -14,13 +14,13 @@ var sn;
             this._errorMessages.push(message);
             let service = this._service;
             if (typeof service === "object" && service != null)
-                service.addNotificationMessage(message, "Emulated Glide Session Message", app.NotificationMessageType.error);
+                service.addNotificationMessage(message, "Emulated Glide Session Message", notificationMessageService.NotificationMessageType.error);
         }
         addInfoMessage(message) {
             this._infoMessages.push(message);
             let service = this._service;
             if (typeof service === "object" && service != null)
-                service.addNotificationMessage(message, "Emulated Glide Session Message", app.NotificationMessageType.info);
+                service.addNotificationMessage(message, "Emulated Glide Session Message", notificationMessageService.NotificationMessageType.info);
         }
         debug(message) {
             let service = this._service;
@@ -86,8 +86,8 @@ var sn;
                         break;
                 }
             });
-            errorMessages.forEach((message) => service.addNotificationMessage(message, "Emulated Glide Session Message", app.NotificationMessageType.error));
-            infoMessages.forEach((message) => service.addNotificationMessage(message, "Emulated Glide Session Message", app.NotificationMessageType.info));
+            errorMessages.forEach((message) => service.addNotificationMessage(message, "Emulated Glide Session Message", notificationMessageService.NotificationMessageType.error));
+            infoMessages.forEach((message) => service.addNotificationMessage(message, "Emulated Glide Session Message", notificationMessageService.NotificationMessageType.info));
         }
     }
     class Emulated_GlideSystem {

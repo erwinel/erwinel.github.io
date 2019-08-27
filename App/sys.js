@@ -1484,5 +1484,123 @@ var sys;
         return result;
     }
     sys.parseUriString = parseUriString;
+    const classNameRe = /^\[object\s(.*)\]$/;
+    function getAllClassNames(obj) {
+        let t = jQuery.type(obj);
+        let n;
+        let l;
+        switch (t) {
+            case "array":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && n.toLowerCase() !== "object")
+                    t = n;
+                else
+                    t = "Array";
+                break;
+            case "date":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && n.toLowerCase() !== "object")
+                    t = n;
+                else
+                    t = "Date";
+                break;
+            case "error":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && n.toLowerCase() !== "object")
+                    t = n;
+                else
+                    t = "Error";
+                break;
+            case "regexp":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && n.toLowerCase() !== "object")
+                    t = n;
+                else
+                    t = "RegExp";
+                break;
+            case "object":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n))
+                    t = n;
+                else {
+                    let m = Object.prototype.toString.call(obj).match(classNameRe);
+                    if (notNilOrEmpty(m))
+                        t = m[1];
+                }
+                break;
+            default:
+                return [t];
+        }
+        obj = Object.getPrototypeOf(obj);
+        if (isNil(obj))
+            return [t];
+        let r = getAllClassNames(obj).filter((value) => value !== t);
+        if (r.length == 0)
+            return [t];
+        if (t === "object")
+            r.push(t);
+        else
+            r.unshift(t);
+        return r;
+    }
+    sys.getAllClassNames = getAllClassNames;
+    function getClassName(obj) {
+        let t = jQuery.type(obj);
+        let n;
+        let l;
+        switch (t) {
+            case "array":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && (l = n.toLowerCase()) !== "array" && l !== "object")
+                    return n;
+                t = "Array";
+                break;
+            case "date":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && (l = n.toLowerCase()) !== "date" && l !== "object")
+                    return n;
+                t = "Date";
+                break;
+            case "error":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && (l = n.toLowerCase()) !== "error" && l !== "object")
+                    return n;
+                t = "Error";
+                break;
+            case "regexp":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n) && (l = n.toLowerCase()) !== "regexp" && l !== "object")
+                    return n;
+                t = "RegExp";
+                break;
+            case "object":
+                n = obj[Symbol.toStringTag];
+                if (notNilOrEmpty(n)) {
+                    if (n.toLowerCase() !== "object")
+                        return n;
+                    t = (obj instanceof jQuery) ? "jQuery" : n;
+                }
+                else {
+                    let m = Object.prototype.toString.call(obj).match(classNameRe);
+                    if (notNilOrEmpty(m)) {
+                        if (m[1].toLowerCase() !== "object")
+                            return m[1];
+                        if (obj instanceof jQuery)
+                            t = "jQuery";
+                    }
+                    else if (obj instanceof jQuery)
+                        t = "jQuery";
+                }
+                break;
+            default:
+                return t;
+        }
+        obj = Object.getPrototypeOf(obj);
+        if (isNil(obj))
+            return t;
+        n = getClassName(obj);
+        return (n.toLowerCase() === "object") ? t : n;
+    }
+    sys.getClassName = getClassName;
 })(sys || (sys = {}));
 //# sourceMappingURL=sys.js.map
