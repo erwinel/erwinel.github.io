@@ -148,6 +148,14 @@ samp.navPath {
 
 .codeLabel { color: sandybrown; }
 .codeNumber { color: cyan; }
+code .xmlElementName { color: aqua; }
+code .xmlMarkupSymbol { color: skyblue; }
+code .xmlCDataSection { color: lightgray; }
+code .xmlAttributeName { color: orangered; }
+code .xmlOptionalAttributeName { color: indianred; }
+code .xmlAttributeValue { color: sandybrown; }
+code .xmlOptionalAttributeValue { color: tan; }
+code .xmlComment { color: lawngreen; }
 
 /* For using colors to quickly demonstrate cross-referenced information */
 .referenceGroup1 { background-color: lightblue; }

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2019-09-12 23:22:33">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Change Management - CAB Workbench">18351d53eb32120034d1eeea1206fe79</application>
+<application_name>Change Management - CAB Workbench</application_name>
+<application_scope>sn_change_cab</application_scope>
+<application_version>1.0.0</application_version>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description/>
+<inserted/>
+<name>Email Config</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date>2019-09-12 23:04:00</release_date>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>b025f826dbf73700b53f341f7c9619f3</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:22:32</sys_created_on>
+<sys_id>cb5a3c2adbf73700b53f341f7c961912</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:22:32</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Change Management - CAB Workbench">18351d53eb32120034d1eeea1206fe79</application>
+<category>customer</category>
+<comments/>
+<name>sysevent_email_template_8c67e44eebf022002a7a666cd206fe4d</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sysevent_email_template"&gt;&lt;sysevent_email_template action="INSERT_OR_UPDATE"&gt;&lt;collection&gt;cab_agenda_item&lt;/collection&gt;&lt;email_layout display_value="Classification Unsubscribe and Preferences Helvetica"&gt;62e1950cdb64130093da55d0cf9619e8&lt;/email_layout&gt;&lt;message/&gt;&lt;message_html&gt;&lt;![CDATA[&lt;div style="font-family: 'Helvetica Neue'; font-size: 14px;"&gt;
+&lt;p&gt;${mail_script:cab.change_request.delegate.hello}&lt;/p&gt;
+&lt;p&gt;You have been requested to attend CAB Meeting &lt;strong&gt;${cab_meeting.name}&lt;/strong&gt; on ${cab_meeting.start} as a delegate for ${task.assigned_to}.&lt;/p&gt;
+&lt;p&gt;To view the Change Request record click ${task.URI_REF}.&lt;/p&gt;
+&lt;p&gt;You will be notified once ${cab_meeting.manager} finalizes the agenda.&lt;/p&gt;
+&lt;/div&gt;]]&gt;&lt;/message_html&gt;&lt;message_list/&gt;&lt;message_text/&gt;&lt;name&gt;CAB Change Request Delegate added&lt;/name&gt;&lt;sms_alternate/&gt;&lt;subject&gt;Please attend CAB Meeting ${cab_meeting.name} to represent Change Request ${task}&lt;/subject&gt;&lt;sys_class_name&gt;sysevent_email_template&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2016-07-25 00:38:30&lt;/sys_created_on&gt;&lt;sys_id&gt;8c67e44eebf022002a7a666cd206fe4d&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;CAB Change Request Delegate added&lt;/sys_name&gt;&lt;sys_package display_value="Change Management - CAB Workbench" source="sn_change_cab"&gt;18351d53eb32120034d1eeea1206fe79&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Change Management - CAB Workbench"&gt;18351d53eb32120034d1eeea1206fe79&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_email_template_8c67e44eebf022002a7a666cd206fe4d&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-09-12 23:00:21&lt;/sys_updated_on&gt;&lt;sys_version&gt;2&lt;/sys_version&gt;&lt;/sysevent_email_template&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1583729463</payload_hash>
+<remote_update_set display_value="Email Config">cb5a3c2adbf73700b53f341f7c961912</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:22:32</sys_created_on>
+<sys_id>075a3c2adbf73700b53f341f7c961913</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16d27b4c7690000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:22:32</sys_updated_on>
+<table>cab_agenda_item</table>
+<target_name>CAB Change Request Delegate added</target_name>
+<type>Email Template</type>
+<update_domain>global</update_domain>
+<update_guid>0645bc26eff73700e6db2959e48db8a0</update_guid>
+<update_guid_history>0645bc26eff73700e6db2959e48db8a0:1583729463,4645bc265df73700516e66b54592079f:-1906127739</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Change Management - CAB Workbench">18351d53eb32120034d1eeea1206fe79</application>
+<category>customer</category>
+<comments/>
+<name>sysevent_email_template_245da637eb5022002a7a666cd206feca</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sysevent_email_template"&gt;&lt;sysevent_email_template action="INSERT_OR_UPDATE"&gt;&lt;collection&gt;cab_agenda_item&lt;/collection&gt;&lt;email_layout display_value="Classification Unsubscribe and Preferences Helvetica"&gt;62e1950cdb64130093da55d0cf9619e8&lt;/email_layout&gt;&lt;message/&gt;&lt;message_html&gt;&lt;![CDATA[&lt;p style="font-family: 'Helvetica Neue'; font-size: 14px;"&gt;&lt;span style="font-family: arial, helvetica, sans-serif; font-size: small;"&gt;Hello,&lt;/span&gt;&lt;/p&gt;
+&lt;p style="font-size: 11px;"&gt;&lt;span style="font-family: arial, helvetica, sans-serif; font-size: small;"&gt;The agenda Item &lt;strong&gt;${task}&lt;/strong&gt; is coming up for discussion in &lt;strong&gt;${cab_meeting}&lt;/strong&gt;.&lt;/span&gt;&lt;/p&gt;
+&lt;p style="font-size: 11px;"&gt;&lt;span style="font-family: arial, helvetica, sans-serif; font-size: small;"&gt;${mail_script:cab.agenda_item.get_portal_link}&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;]]&gt;&lt;/message_html&gt;&lt;message_list/&gt;&lt;message_text/&gt;&lt;name&gt;CAB Agenda item about to be discussed&lt;/name&gt;&lt;sms_alternate/&gt;&lt;subject&gt;Agenda item ${task} is coming up for discussion in ${cab_meeting}&lt;/subject&gt;&lt;sys_class_name&gt;sysevent_email_template&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2016-07-06 00:22:28&lt;/sys_created_on&gt;&lt;sys_id&gt;245da637eb5022002a7a666cd206feca&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name&gt;CAB Agenda item about to be discussed&lt;/sys_name&gt;&lt;sys_package display_value="Change Management - CAB Workbench" source="sn_change_cab"&gt;18351d53eb32120034d1eeea1206fe79&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Change Management - CAB Workbench"&gt;18351d53eb32120034d1eeea1206fe79&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_email_template_245da637eb5022002a7a666cd206feca&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-09-12 23:00:35&lt;/sys_updated_on&gt;&lt;sys_version&gt;2&lt;/sys_version&gt;&lt;/sysevent_email_template&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-1413167791</payload_hash>
+<remote_update_set display_value="Email Config">cb5a3c2adbf73700b53f341f7c961912</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:22:32</sys_created_on>
+<sys_id>435a3c2adbf73700b53f341f7c961913</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16d27b4fa830000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:22:32</sys_updated_on>
+<table>cab_agenda_item</table>
+<target_name>CAB Agenda item about to be discussed</target_name>
+<type>Email Template</type>
+<update_domain>global</update_domain>
+<update_guid>51553c26aff73700cdb3f71156a29db5</update_guid>
+<update_guid_history>51553c26aff73700cdb3f71156a29db5:-1413167791,91553c26f6f737001624154264b206b4:-302656013</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Change Management - CAB Workbench">18351d53eb32120034d1eeea1206fe79</application>
+<category>customer</category>
+<comments/>
+<name>sysevent_email_template_cd4327e5ebf022002a7a666cd206fe3d</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sysevent_email_template"&gt;&lt;sysevent_email_template action="INSERT_OR_UPDATE"&gt;&lt;collection&gt;cab_attendee&lt;/collection&gt;&lt;email_layout display_value="Classification Unsubscribe and Preferences Helvetica"&gt;62e1950cdb64130093da55d0cf9619e8&lt;/email_layout&gt;&lt;message/&gt;&lt;message_html&gt;&lt;![CDATA[&lt;div style="font-family: 'Helvetica Neue'; font-size: 14px;"&gt;
+&lt;p&gt;${mail_script:cab.meeting.attendee.hello}&lt;/p&gt;
+&lt;p&gt;You have been requested to attend CAB Meeting &lt;strong&gt;${cab_meeting.name}&lt;/strong&gt; on ${cab_meeting.start} as a delegate for ${cab_meeting.manager}.&lt;/p&gt;
+&lt;p&gt;You will receive a notification for the CAB agenda once ${cab_meeting.manager} finalizes the CAB agenda.&lt;/p&gt;
+&lt;/div&gt;]]&gt;&lt;/message_html&gt;&lt;message_list/&gt;&lt;message_text/&gt;&lt;name&gt;CAB Meeting Delegate added&lt;/name&gt;&lt;sms_alternate/&gt;&lt;subject&gt;You have been assigned as a CAB Manager delegate for "${cab_meeting.name}" on ${cab_meeting.start}&lt;/subject&gt;&lt;sys_class_name&gt;sysevent_email_template&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2016-07-24 01:12:46&lt;/sys_created_on&gt;&lt;sys_id&gt;cd4327e5ebf022002a7a666cd206fe3d&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name&gt;CAB Meeting Delegate added&lt;/sys_name&gt;&lt;sys_package display_value="Change Management - CAB Workbench" source="sn_change_cab"&gt;18351d53eb32120034d1eeea1206fe79&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Change Management - CAB Workbench"&gt;18351d53eb32120034d1eeea1206fe79&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_email_template_cd4327e5ebf022002a7a666cd206fe3d&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;erwinel_da&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-09-12 23:00:28&lt;/sys_updated_on&gt;&lt;sys_version&gt;2&lt;/sys_version&gt;&lt;/sysevent_email_template&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-407757802</payload_hash>
+<remote_update_set display_value="Email Config">cb5a3c2adbf73700b53f341f7c961912</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>erwinel_da</sys_created_by>
+<sys_created_on>2019-09-12 23:22:32</sys_created_on>
+<sys_id>c75a3c2adbf73700b53f341f7c961913</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>16d27b4e0090000001</sys_recorded_at>
+<sys_updated_by>erwinel_da</sys_updated_by>
+<sys_updated_on>2019-09-12 23:22:32</sys_updated_on>
+<table>cab_attendee</table>
+<target_name>CAB Meeting Delegate added</target_name>
+<type>Email Template</type>
+<update_domain>global</update_domain>
+<update_guid>e7453c26f8f737000ec41dfb7d540e8c</update_guid>
+<update_guid_history>e7453c26f8f737000ec41dfb7d540e8c:-407757802,2b453c2647f737002995073a9b2e518b:-1051061968</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>

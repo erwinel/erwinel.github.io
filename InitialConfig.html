@@ -71,7 +71,14 @@
                         <div class="detail">
                             Load and apply the <a href="downloads/sys_remote_update_set_Initial_Setup.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
                             <var class="targetName">downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
-                            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
+                            <!--
+
+
+if (gs.getUserID() == current.sys_id || gs.getUser().hasRoles())
+    answer = true;
+else
+    answer = false;
+                                        -->
                         </div>
                     </div>
                 </div>
@@ -87,13 +94,10 @@
                         <ol>
                             <li>
                                 Import the <var class="targetName">util</var> application from <kbd><config-url base="git" href="x_44813_util.git"></config-url></kbd>.
-                                <!-- <div><button (click)="openHowtoImportApplication('util')" class="btn btn-outline-primary mb-2 mr-2">Click Here</button>
-        to view instructions for importing applications from source countrol.</div> -->
                             </li>
-                            <li>
-                                Once the application is imported, select that application in order to put your session in the correct
-                                scope, and then close out the <var class="targetName">Application Studio</var> browser tab.
-                            </li>
+                            <li>Once the application is imported, select the <var>Util</var> application to open it in <var class="targetName">ServiceNow Studio</var>.</li>
+                            <li>Next, open <sn-nav-link path-nodes="Source Control/Switch Branch" /> from the menu at the top of the screen and select the branch named <kbd>V1.1</kbd> in the dropdown.</li>
+                            <li>Click the <kbd>Switch Branch</kbd> button. You will see a message saying that it's uninstalling and then re-installing the application. Once it's done, close out the <var class="targetName">ServiceNow Studio</var> browser tab.</li>
                         </ol>
                     </div>
                 </div>
@@ -236,6 +240,9 @@
                                     Once the application is imported, select that application in order to put your session in the correct
                                     scope, and then close out the <var class="targetName">Application Studio</var> browser tab.
                                 </li>
+                                <li>Once the application is imported, select the <var>Physical Networks</var> application to open it in <var class="targetName">ServiceNow Studio</var>.</li>
+                                <li>Next, open <sn-nav-link path-nodes="Source Control/Switch Branch" /> from the menu at the top of the screen and select the branch named <kbd>V1</kbd> in the dropdown.</li>
+                                <li>Click the <kbd>Switch Branch</kbd> button. You will see a message saying that it's uninstalling and then re-installing the application. Once it's done, close out the <var class="targetName">ServiceNow Studio</var> browser tab.</li>
                                 <li>
                                     In the original ServiceNow browser tab, you will need to refresh the browser screen to see the new menu item that was added when this application was imported.
                                 </li>

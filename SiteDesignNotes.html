@@ -36,66 +36,122 @@
 <body>
     <app-content><accordion-group>
     <div class="card">
+        This page contains notes on the general design of this documentation website.
         <div class="card-header p-1" accordion-group-toggle-on-click="tables"><h2 class="card-title mb-0">Tables</h2></div>
-        <div class="card-body" accordion-group-content-item="tables" auto-expand="false">
+        <div class="card-body" accordion-group-content-item="tables">
             <accordion-group>
                 <div class="card">
                     <div class="card-header p-1" accordion-group-toggle-on-click="fieldsGrid"><h2 class="card-title mb-0">fieldsGrid</h2></div>
-                    <div class="card-body" accordion-group-content-item="fieldsGrid" auto-expand="false">
+                    <div class="card-body" accordion-group-content-item="fieldsGrid">
                         <div class="card-text">Purpose: Display name/value pairs where the name is displayed to the left of the value.</div>
                         <accordion-group>
                             <div class="card">
                                 <div class="card-header p-1" accordion-group-toggle-on-click="fieldsGridExCode">
                                     <h3 class="card-title mb-0">Example Code</h3>
                                 </div>
-                                <div class="card-body pre-scrollable" accordion-group-content-item="fieldsGridExCode">
-                                    <copy-to-clipboard-button target="fieldsGridExCode" success-message="Code copied"></copy-to-clipboard-button>
-                                    <code class="pre-scrollable multi-line" id="fieldsGridExCode">
-                                        &lt;table class=&quot;table table-striped fieldsGrid&quot;&gt;
-                                        &lt;thead class=&quot;thead-dark&quot;&gt;
-                                        &lt;tr&gt;
-                                        &lt;th scope=&quot;colgroup&quot; colspan=&quot;2&quot;&gt;Col 1&lt;/th&gt;
-                                        &lt;th scope=&quot;colgroup&quot; colspan=&quot;2&quot;&gt;Col 2&lt;/th&gt;
-                                        &lt;th scope=&quot;colgroup&quot; colspan=&quot;2&quot;&gt;Col 3&lt;/th&gt;
-                                        &lt;/tr&gt;
-                                        &lt;/thead&gt;
-                                        &lt;tbody&gt;
-                                        &lt;tr&gt;
-                                        &lt;th&gt;Field 1:&lt;/th&gt;
-                                        &lt;td&gt;Value 1&lt;/td&gt;
-                                        &lt;th&gt;Field A:&lt;/th&gt;
-                                        &lt;td&gt;Value A&lt;/td&gt;
-                                        &lt;th&gt;Field B:&lt;/th&gt;
-                                        &lt;td&gt;Value B&lt;/td&gt;
-                                        &lt;/tr&gt;
-                                        &lt;tr&gt;
-                                        &lt;th scope=&quot;row&quot;&gt;Field 2:&lt;/th&gt;
-                                        &lt;td&gt;Value 2&lt;/td&gt;
-                                        &lt;th&gt;Field C:&lt;/th&gt;
-                                        &lt;td colspan=&quot;3&quot;&gt;Value C&lt;/td&gt;
-                                        &lt;/tr&gt;
-                                        &lt;tr&gt;
-                                        &lt;th&gt;Field 3:&lt;/th&gt;
-                                        &lt;td&gt;Value 3&lt;/td&gt;
-                                        &lt;th&gt;Field D:&lt;/th&gt;
-                                        &lt;td&gt;Value D&lt;/td&gt;
-                                        &lt;th&gt;Field E:&lt;/th&gt;
-                                        &lt;td&gt;Value E&lt;/td&gt;
-                                        &lt;/tr&gt;
-                                        &lt;/tbody&gt;
-                                        &lt;/table&gt;
-                                    </code>
+                                <div class="card-body" accordion-group-content-item="fieldsGridExCode">
+                                    <h4>Simple Table</h4>
+                                    <copy-to-clipboard-button target="fieldsGridExCodeSimple" success-message="Code copied"></copy-to-clipboard-button>
+                                    <code class="pre-scrollable multi-line" id="fieldsGridExCodeSimple"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">table</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"table table-striped fieldsGrid"</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">thead</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"thead-dark"</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">tr</span><span class="xmlMarkupSymbol">&gt;</span>
+            <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">th</span> <span class="xmlAttributeName">scope</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"col"</span><span class="xmlMarkupSymbol">&gt;</span>Name<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">th</span><span class="xmlMarkupSymbol">&gt;</span>
+            <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">th</span> <span class="xmlAttributeName">scope</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"col"</span><span class="xmlMarkupSymbol">&gt;</span>Value<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">th</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">tr</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">thead</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">tbody</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">tr</span><span class="xmlMarkupSymbol">&gt;</span>
+            <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">th</span><span class="xmlMarkupSymbol">&gt;</span>Field 1:<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">th</span><span class="xmlMarkupSymbol">&gt;</span>
+            <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">td</span><span class="xmlMarkupSymbol">&gt;</span>Value 1<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">td</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">tr</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">tr</span><span class="xmlMarkupSymbol">&gt;</span>
+            <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">th</span> <span class="xmlAttributeName">scope</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"row"</span><span class="xmlMarkupSymbol">&gt;</span>Field 2:<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">th</span><span class="xmlMarkupSymbol">&gt;</span>
+            <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">td</span><span class="xmlMarkupSymbol">&gt;</span>Value 2<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">td</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">tr</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">tbody</span><span class="xmlMarkupSymbol">&gt;</span>
+<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">table</span><span class="xmlMarkupSymbol">&gt;</span></code>
+                                    <h4>With column groups</h4>
+                                    <copy-to-clipboard-button target="fieldsGridExCodeColGrp" success-message="Code copied"></copy-to-clipboard-button>
+                                    <code class="pre-scrollable multi-line" id="fieldsGridExCodeColGrp">&lt;table class=&quot;table table-striped fieldsGrid&quot;&gt;
+    &lt;thead class=&quot;thead-dark&quot;&gt;
+        &lt;tr&gt;
+            &lt;th scope=&quot;colgroup&quot; colspan=&quot;2&quot;&gt;Col 1&lt;/th&gt;
+            &lt;th scope=&quot;colgroup&quot; colspan=&quot;2&quot;&gt;Col 2&lt;/th&gt;
+            &lt;th scope=&quot;colgroup&quot; colspan=&quot;2&quot;&gt;Col 3&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope=&quot;col&quot;&gt;Name&lt;/th&gt;
+            &lt;th scope=&quot;col&quot;&gt;Value&lt;/th&gt;
+            &lt;th scope=&quot;col&quot;&gt;Name&lt;/th&gt;
+            &lt;th scope=&quot;col&quot;&gt;Value&lt;/th&gt;
+            &lt;th scope=&quot;col&quot;&gt;Name&lt;/th&gt;
+            &lt;th scope=&quot;col&quot;&gt;Value&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Field 1:&lt;/th&gt;
+            &lt;td&gt;Value 1&lt;/td&gt;
+            &lt;th&gt;Field A:&lt;/th&gt;
+            &lt;td&gt;Value A&lt;/td&gt;
+            &lt;th&gt;Field B:&lt;/th&gt;
+            &lt;td&gt;Value B&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope=&quot;row&quot;&gt;Field 2:&lt;/th&gt;
+            &lt;td&gt;Value 2&lt;/td&gt;
+            &lt;th&gt;Field C:&lt;/th&gt;
+            &lt;td colspan=&quot;3&quot;&gt;Value C&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Field 3:&lt;/th&gt;
+            &lt;td&gt;Value 3&lt;/td&gt;
+            &lt;th&gt;Field D:&lt;/th&gt;
+            &lt;td&gt;Value D&lt;/td&gt;
+            &lt;th&gt;Field E:&lt;/th&gt;
+            &lt;td&gt;Value E&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code>
                                 </div>
                             </div>
                             <div class="card">
                                 <div class="card-header p-1" accordion-group-toggle-on-click="fieldsGridExDisp"><h3 class="card-title mb-0">Example Display</h3></div>
                                 <div class="card-body" accordion-group-content-item="fieldsGridExDisp">
+                                    <h4>Simple Table</h4>
+                                    <table class="table table-striped fieldsGrid">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>Field 1:</th>
+                                                <td>Value 1</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Field 2:</th>
+                                                <td>Value 2</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <h4>With column groups</h4>
                                     <table class="table table-striped fieldsGrid">
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th scope="colgroup" colspan="2">Col 1</th>
                                                 <th scope="colgroup" colspan="2">Col 2</th>
                                                 <th scope="colgroup" colspan="2">Col 3</th>
+                                            </tr>
+                                            <tr>
+                                                <th scope="col" class="text-right">Name</th>
+                                                <th scope="col" class="text-left">Value</th>
+                                                <th scope="col" class="text-right">Name</th>
+                                                <th scope="col" class="text-left">Value</th>
+                                                <th scope="col" class="text-right">Name</th>
+                                                <th scope="col" class="text-left">Value</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -133,44 +189,36 @@
     </div>
     <div class="card">
         <div class="card-header p-1" accordion-group-toggle-on-click="inlineStyles"><h2 class="card-title mb-0">Inline Styles</h2></div>
-        <div class="card-body" accordion-group-content-item="inlineStyles" auto-expand="true">
+        <div class="card-body" accordion-group-content-item="inlineStyles">
             <accordion-group>
                 <div class="card">
                     <div class="card-header p-1" accordion-group-toggle-on-click="targetNameInlineStyle"><h3>Target Name</h3></div>
                     <div class="card-body" accordion-group-content-item="targetNameInlineStyle">
+                        The name of the target item.
                         <div class="card">
                             <div class="card-header p-1"><h4>Example</h4></div>
                             <div class="card-body"><var class="targetName">Example Name</var></div>
                         </div>
                         <div class="card">
                             <div class="card-header p-1"><h4>Code</h4><copy-to-clipboard-button target="targetNameInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></div>
-                            <div class="card-body"><code class="multi-line" id="targetNameInlineStyle">&lt;var class=&quot;targetName&quot;&gt;Example Name&lt;/var&gt;</code></div>
+                            <div class="card-body"><code class="multi-line" id="targetNameInlineStyle"><span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span></span>
+                                <span class="text-nowrap"><span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"targetName"</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol">&gt;</span></span>Example
+                                Name<span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span></span></code></div>
                         </div>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="userInputInlineStyle"><h3>User Input Text</h3></div>
+                    <div class="card-header p-1" accordion-group-toggle-on-click="userInputInlineStyle"><h3>User-Provided Text</h3></div>
                     <div class="card-body" accordion-group-content-item="userInputInlineStyle">
+                        Indicates text that the user is to type in response to a prompt.
                         <div class="card">
                             <div class="card-header p-1"><h4>Example</h4></div>
                             <div class="card-body"><kbd>Example User Input</kbd></div>
                         </div>
                         <div class="card">
                             <div class="card-header p-1"><h4>Code</h4><copy-to-clipboard-button target="userInputInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></div>
-                            <div class="card-body"><code class="multi-line" id="userInputInlineStyle">&lt;kbd&gt;Example User Input&lt;/kbd&gt;</code></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="navPathInlineStyle"><h3>Navigation Path</h3></div>
-                    <div class="card-body" accordion-group-content-item="navPathInlineStyle">
-                        <div class="card">
-                            <div class="card-header p-1"><h4>Example</h4></div>
-                            <div class="card-body"><samp class="navPath"><var>Start Node</var> &rArr; <var>Intermediate Node</var> &rArr; <var>Terminal Node</var></samp></div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header p-1"><h4>Code</h4><copy-to-clipboard-button target="navPathInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></div>
-                            <div class="card-body"><code class="multi-line" id="navPathInlineStyle">&lt;samp class=&quot;navPath&quot;&gt;&lt;var&gt;Start Node&lt;/var&gt; &amp;rArr; &lt;var&gt;Intermediate Node&lt;/var&gt; &amp;rArr; &lt;var&gt;Terminal Node&lt;/var&gt;&lt;/samp&gt;</code></div>
+                            <div class="card-body"><code class="multi-line" id="userInputInlineStyle"><span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">kbd</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol">&gt;</span></span>Example
+                                User Input<span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">kbd</span><span class="xmlMarkupSymbol">&gt;</span></span></code></div>
                         </div>
                     </div>
                 </div>
@@ -183,7 +231,9 @@
                         </div>
                         <div class="card">
                             <div class="card-header p-1"><h4>Code</h4><copy-to-clipboard-button target="outputInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></div>
-                            <div class="card-body"><code class="multi-line" id="outputInlineStyle">&lt;output&gt;Example Output&lt;/output&gt;</code></div>
+                            <div class="card-body"><code class="multi-line" id="outputInlineStyle">Following is the
+                                <span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">output</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol">&gt;</span></span>Example
+                                Output<span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">output</span><span class="xmlMarkupSymbol">&gt;</span></span></code></div>
                         </div>
                     </div>
                 </div>
@@ -196,7 +246,9 @@
                         </div>
                         <div class="card">
                             <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sampleInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
-                            <div class="card-body"><code class="multi-line" id="sampleInlineStyle">&lt;samp&gt;Sample Text&lt;/samp&gt;</code></div>
+                            <div class="card-body"><code class="multi-line" id="sampleInlineStyle">Following is the
+                                <span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">samp</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol">&gt;</span></span>Sample
+                                Text<span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">samp</span><span class="xmlMarkupSymbol">&gt;</span></span></code></div>
                         </div>
                     </div>
                 </div>
@@ -209,7 +261,8 @@
                         </div>
                         <div class="card">
                             <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sourceCodeInlineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
-                            <div class="card-body"><code class="multi-line" id="sourceCodeInlineStyle">&lt;code&gt;hasRole(&amp;#39;admin&amp;#39;) &amp;amp;&amp;amp; !current.IsNewRecord()&lt;/code&gt;</code></div>
+                            <div class="card-body"><code class="multi-line" id="sourceCodeInlineStyle"><span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">code</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol">&gt;</span></span>hasRole('admin')
+                                &amp;&amp; !current.IsNewRecord()<span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">code</span><span class="xmlMarkupSymbol">&gt;</span></span></code></div>
                         </div>
                     </div>
                 </div>
@@ -235,10 +288,10 @@
                         <div class="card">
                             <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="outputMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
                             <div class="card-body">
-                                <code class="multi-line" id="outputMultiLineStyle">
-                                    &lt;output&gt;Example
-                                    Output&lt;/output&gt;
-                                </code>
+                                <code class="multi-line" id="outputMultiLineStyle"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">output</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"pre-scrollable multi-line"</span><span class="xmlMarkupSymbol">&gt;</span>
+    Example
+    Output
+<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">output</span><span class="xmlMarkupSymbol">&gt;</span></code>
                             </div>
                         </div>
                     </div>
@@ -258,10 +311,10 @@
                         <div class="card">
                             <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sampleMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
                             <div class="card-body">
-                                <code class="multi-line" id="sampleMultiLineStyle">
-                                    &lt;samp&gt;Sample
-                                    Text&lt;/samp&gt;
-                                </code>
+                                <code class="multi-line" id="sampleMultiLineStyle"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">samp</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"pre-scrollable multi-line"</span><span class="xmlMarkupSymbol">&gt;</span>
+    Sample
+    Text
+<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">samp</span><span class="xmlMarkupSymbol">&gt;</span></code>
                             </div>
                         </div>
                     </div>
@@ -281,10 +334,10 @@
                         <div class="card">
                             <div class="card-header p-1"><h4>Code<copy-to-clipboard-button target="sourceCodeMultiLineStyle" success-message="Code Copied"></copy-to-clipboard-button></h4></div>
                             <div class="card-body">
-                                <code class="multi-line" id="sourceCodeMultiLineStyle">
-                                    &lt;code class=&quot;pre-scrollable multi-line&quot;&gt;current.update();
-                                    action.setRedirectURL(current);&lt;/code&gt;
-                                </code>
+                                <code class="multi-line" id="sourceCodeMultiLineStyle"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">code</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"pre-scrollable multi-line"</span><span class="xmlMarkupSymbol">&gt;</span>
+    current.update();
+    action.setRedirectURL(current);
+<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">code</span><span class="xmlMarkupSymbol">&gt;</span></code>
                             </div>
                         </div>
                     </div>
@@ -293,47 +346,305 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-header p-1" accordion-group-toggle-on-click="collapsibleCards"><h2 class="card-title mb-0">Collapsible Cards</h2></div>
-        <div class="card-body" accordion-group-content-item="collapsibleCards">
+        <div class="card-header p-1" accordion-group-toggle-on-click="angularJsDirectives"><h3 class="card-title mb-0">Interactive AngularJS Directives</h3></div>
+        <div class="card-body" accordion-group-content-item="angularJsDirectives">
             <accordion-group>
                 <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="collapsibleCardsExCode">
-                        <h3 class="card-title mb-0">Example Code</h3>
-                    </div>
-                    <div class="card-body pre-scrollable" accordion-group-content-item="collapsibleCardsExCode">
-                        <copy-to-clipboard-button target="collapsibleCardsExCode" success-message="Code copied"></copy-to-clipboard-button>
-                        <code class="pre-scrollable multi-line" id="collapsibleCardsExCode">
-                            &lt;accordion-group&gt;
-                            &lt;div class=&quot;card&quot;&gt;
-                            &lt;div class=&quot;card-header p-1&quot; accordion-group-toggle-on-click=&quot;arbitraryCardName1&quot;&gt;&lt;h2 class=&quot;card-title mb-0&quot;&gt;Card 1 Title&lt;/h2&gt;&lt;/div&gt;
-                            &lt;div class=&quot;card-body&quot; accordion-group-content-item=&quot;arbitraryCardName1&quot;&gt;
-                            Card 1 Content
-                            &lt;/div&gt;
-                            &lt;/div&gt;
-                            &lt;div class=&quot;card&quot;&gt;
-                            &lt;div class=&quot;card-header p-1&quot; accordion-group-toggle-on-click=&quot;arbitraryCardName2&quot;&gt;&lt;h2 class=&quot;card-title mb-0&quot;&gt;Card 2 Title&lt;/h2&gt;&lt;/div&gt;
-                            &lt;div class=&quot;card-body&quot; accordion-group-content-item=&quot;arbitraryCardName2&quot;&gt;
-                            Card 2 Content
-                            &lt;/div&gt;
-                            &lt;/div&gt;
-                            &lt;/accordion-group&gt;
-                        </code>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="collapsibleCardsExDisp"><h3 class="card-title mb-0">Example Display</h3></div>
-                    <div class="card-body" accordion-group-content-item="collapsibleCardsExDisp">
+                    <div class="card-header p-1" accordion-group-toggle-on-click="angularJsCopyToClipboard"><h4 class="card-title mb-0">Copy to Clipboard</h4></div>
+                    <div class="card-body" accordion-group-content-item="angularJsCopyToClipboard">
                         <accordion-group>
                             <div class="card">
-                                <div class="card-header p-1" accordion-group-toggle-on-click="arbitraryCardName1"><h2 class="card-title mb-0">Card 1 Title</h2></div>
-                                <div class="card-body" accordion-group-content-item="arbitraryCardName1">
-                                    Card 1 Content
+                                <div class="card-header p-1" accordion-group-toggle-on-click="angularCopyToClipboardUsage"><h5 class="card-title mb-0">Usage</h5></div>
+                                <div class="card-body" accordion-group-content-item="angularCopyToClipboardUsage">
+                                    <code>
+                                        <span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">copy-to-clipboard-button</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">target</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"id of target element"</span></span>
+                                        <span class="text-nowrap"><span class="xmlOptionalAttributeName">success-message</span><span class="xmlMarkupSymbol">=</span><span class="xmlOptionalAttributeValue">"text"</span></span>
+                                        <span class="text-nowrap"><span class="xmlOptionalAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlOptionalAttributeValue">"class name"</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol">&gt;&lt;/</span><span class="xmlElementName">copy-to-clipboard-button</span><span class="xmlMarkupSymbol">&gt;</span></span>
+                                    </code>
+                                    <table class="table table-striped fieldsGrid">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Attribute</th>
+                                                <th scope="col">Required</th>
+                                                <th scope="col">Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>target</th>
+                                                <td>Yes</td>
+                                                <td>The <var>id</var> attribute value of the target element whose inner text is to be copied to the clipboard when this directive's button is clicked.</td>
+                                            </tr>
+                                            <tr>
+                                                <th>success-message</th>
+                                                <td>No</td>
+                                                <td>The message to display after text is succssfully copied to clipboard.</td>
+                                            </tr>
+                                            <tr>
+                                                <th>class</th>
+                                                <td>No</td>
+                                                <td>The class names to apply to the button produced by this directive. Defaults to &quot;btn btn-light btn-outline-dark p1&quot;.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                             <div class="card">
-                                <div class="card-header p-1" accordion-group-toggle-on-click="arbitraryCardName2"><h2 class="card-title mb-0">Card 2 Title</h2></div>
-                                <div class="card-body" accordion-group-content-item="arbitraryCardName2">
-                                    Card 2 Content
+                                <div class="card-header p-1" accordion-group-toggle-on-click="angularSingleLineCopyToClipboard"><h5 class="card-title mb-0">Single-line Content</h5></div>
+                                <div class="card-body" accordion-group-content-item="angularSingleLineCopyToClipboard">
+                                    Copy element containing single-line code content to clipboard.
+                                    <copy-to-clipboard-button target="angularSingleLineCopyToClipboard" success-message="Code copied"></copy-to-clipboard-button>
+                                    <code class="pre-scrollable multi-line" id="angularSingleLineCopyToClipboard"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">copy-to-clipboard-button</span> <span class="xmlAttributeName">target</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"idOfElementContainingCodeAsInnerText"</span> <span class="xmlAttributeName">success-message</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"Code copied"</span><span class="xmlMarkupSymbol">&gt;&lt;/</span><span class="xmlElementName">copy-to-clipboard-button</span><span class="xmlMarkupSymbol">&gt;</span>
+<span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">code</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"text-monospace"</span> <span class="xmlAttributeName">id</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"idOfElementContainingCodeAsInnerText"</span><span class="xmlMarkupSymbol">&gt;</span>hasRole('admin') &amp;&amp; !current.IsNewRecord()<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">code</span><span class="xmlMarkupSymbol">&gt;</span></code>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header p-1" accordion-group-toggle-on-click="angularMultiLineCopyToClipboard"><h5 class="card-title mb-0">Multiple-line Content</h5></div>
+                                <div class="card-body" accordion-group-content-item="angularMultiLineCopyToClipboard">
+                                    Copy element containing mutiple-line code content to clipboard.
+                                    <copy-to-clipboard-button target="angularMultiLineCopyToClipboard" success-message="Code copied"></copy-to-clipboard-button>
+                                    <code class="pre-scrollable multi-line" id="angularMultiLineCopyToClipboard"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">copy-to-clipboard-button</span> <span class="xmlAttributeName">target</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"idOfElementContainingCodeAsInnerText"</span> <span class="xmlAttributeName">success-message</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"Code copied"</span><span class="xmlMarkupSymbol">&gt;&lt;/</span><span class="xmlElementName">copy-to-clipboard-button</span><span class="xmlMarkupSymbol">&gt;</span>
+<span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">code</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"pre-scrollable multi-line"</span> <span class="xmlAttributeName">id</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"idOfElementContainingCodeAsInnerText"</span><span class="xmlMarkupSymbol">&gt;</span>Multi-Line
+    Text<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">code</span><span class="xmlMarkupSymbol">&gt;</span></code>
+                                </div>
+                            </div>
+                        </accordion-group>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header p-1" accordion-group-toggle-on-click="angularJsAccordionGroup"><h2 class="card-title mb-0">Accordion Group</h2></div>
+                    <div class="card-body" accordion-group-content-item="angularJsAccordionGroup">
+                        Using directives in the accordionGroup namespace.
+                        <div class="card">
+                            <div class="card-header p-1" accordion-group-toggle-on-click="angularJsAccordionExample"><h2 class="card-title mb-0">Examples</h2></div>
+                            <div class="card-body" accordion-group-content-item="angularJsAccordionExample">
+                                <accordion-group>
+                                    <div class="card">
+                                        <div class="card-header p-1" accordion-group-toggle-on-click="collapsibleCards"><h2 class="card-title mb-0">Collapsible Cards</h2></div>
+                                        <div class="card-body" accordion-group-content-item="collapsibleCards">
+                                            <accordion-group>
+                                                <div class="card">
+                                                    <div class="card-header p-1" accordion-group-toggle-on-click="collapsibleCardsExCode">
+                                                        <h3 class="card-title mb-0">Example Code</h3>
+                                                    </div>
+                                                    <div class="card-body pre-scrollable" accordion-group-content-item="collapsibleCardsExCode">
+                                                        <copy-to-clipboard-button target="collapsibleCardsExCode" success-message="Code copied"></copy-to-clipboard-button>
+                                                        <code class="pre-scrollable multi-line" id="collapsibleCardsExCode">&lt;accordion-group&gt;
+    &lt;div class=&quot;card&quot;&gt;
+        &lt;div class=&quot;card-header p-1&quot; accordion-group-toggle-on-click=&quot;arbitraryCardName1&quot;&gt;&lt;h2 class=&quot;card-title mb-0&quot;&gt;Card 1 Title&lt;/h2&gt;&lt;/div&gt;
+        &lt;div class=&quot;card-body&quot; accordion-group-content-item=&quot;arbitraryCardName1&quot;&gt;
+            Card 1 Content
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card&quot;&gt;
+        &lt;div class=&quot;card-header p-1&quot; accordion-group-toggle-on-click=&quot;arbitraryCardName2&quot;&gt;&lt;h2 class=&quot;card-title mb-0&quot;&gt;Card 2 Title&lt;/h2&gt;&lt;/div&gt;
+        &lt;div class=&quot;card-body&quot; accordion-group-content-item=&quot;arbitraryCardName2&quot;&gt;
+            Card 2 Content
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/accordion-group&gt;</code>
+                                                    </div>
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-header p-1" accordion-group-toggle-on-click="collapsibleCardsExDisp"><h3 class="card-title mb-0">Example Display</h3></div>
+                                                    <div class="card-body" accordion-group-content-item="collapsibleCardsExDisp">
+                                                        <accordion-group>
+                                                            <div class="card">
+                                                                <div class="card-header p-1" accordion-group-toggle-on-click="arbitraryCardName1"><h2 class="card-title mb-0">Card 1 Title</h2></div>
+                                                                <div class="card-body" accordion-group-content-item="arbitraryCardName1">
+                                                                    Card 1 Content
+                                                                </div>
+                                                            </div>
+                                                            <div class="card">
+                                                                <div class="card-header p-1" accordion-group-toggle-on-click="arbitraryCardName2"><h2 class="card-title mb-0">Card 2 Title</h2></div>
+                                                                <div class="card-body" accordion-group-content-item="arbitraryCardName2">
+                                                                    Card 2 Content
+                                                                </div>
+                                                            </div>
+                                                        </accordion-group>
+                                                    </div>
+                                                </div>
+                                            </accordion-group>
+                                        </div>
+                                    </div>
+                                </accordion-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header p-1" accordion-group-toggle-on-click="angularJsNavigation"><h4 class="card-title mb-0">Navigation Links</h4></div>
+                    <div class="card-body" accordion-group-content-item="angularJsNavigation">
+                        <accordion-group>
+                            <div class="card">
+                                <div class="card-header p-1" accordion-group-toggle-on-click="angularJsNavUsage"><h5 class="card-title mb-0">Usage</h5></div>
+                                <div class="card-body" accordion-group-content-item="angularJsNavUsage">
+                                    <code><span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">sn-nav-link</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">path-nodes</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"delimited/text"</span></span>
+                                        <span class="text-nowrap"><span class="xmlOptionalAttributeName">href</span><span class="xmlMarkupSymbol">=</span><span class="xmlOptionalAttributeValue">"relativeURL"</span></span>
+                                        <span class="text-nowrap"><span class="xmlOptionalAttributeName">href-model</span><span class="xmlMarkupSymbol">=</span><span class="xmlOptionalAttributeValue">"modelVar"</span></span>
+                                        <span class="text-nowrap"><span class="xmlOptionalAttributeName">link-index</span><span class="xmlMarkupSymbol">=</span><span class="xmlOptionalAttributeValue">"number"</span></span>
+                                        <span class="text-nowrap"><span class="xmlOptionalAttributeName">node-separator</span><span class="xmlMarkupSymbol">=</span><span class="xmlOptionalAttributeValue">"delimiterChar"</span></span>
+                                        <span class="text-nowrap"><span class="xmlOptionalAttributeName">to-nav</span><span class="xmlMarkupSymbol">=</span><span class="xmlOptionalAttributeValue">"true|false"</span></span>
+                                        <span class="text-nowrap"><span class="xmlOptionalAttributeName">target</span><span class="xmlMarkupSymbol">=</span><span class="xmlOptionalAttributeValue">"string"</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol">&gt;&lt;/</span><span class="xmlElementName">sn-nav-link</span><span class="xmlMarkupSymbol">&gt;</span></span></code>
+                                    <table class="table table-striped fieldsGrid">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Attribute</th>
+                                                <th scope="col">Required</th>
+                                                <th scope="col">Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>path-nodes</th>
+                                                <td>Yes</td>
+                                                <td>Delimited text string representing the path nodes to navigate.</td>
+                                            </tr>
+                                            <tr>
+                                                <th>href</th>
+                                                <td>No</td>
+                                                <td>The static URL that is relative to the target ServiceNow instance.</td>
+                                            </tr>
+                                            <tr>
+                                                <th>href-model</th>
+                                                <td>No</td>
+                                                <td>The model variable containing the URL that is relative to the target ServiceNow instance.</td>
+                                            </tr>
+                                            <tr>
+                                                <th>link-index</th>
+                                                <td>No</td>
+                                                <td>The zero-based index of the navigation node that is to be rendered as a hyperlink. The default is the the last node.
+                                                This is ignore if no <var>href</var> or <var>href-mode</var> is specified.</td>
+                                            </tr>
+                                            <tr>
+                                                <th>node-separator</th>
+                                                <td>No</td>
+                                                <td>The character that separates individual navigation node text in <var>path-nodes</var>.
+                                                    The default is a forward slash <em>(&quot;/&quot;)</em>.</td>
+                                            </tr>
+                                            <tr>
+                                                <th>to-nav</th>
+                                                <td>No</td>
+                                                <td>Indicates whether the link is encoded as a <var>uri</var> query parameter to the ServiceNow <var>nav_to.do</var> page.</td>
+                                            </tr>
+                                            <tr>
+                                                <th>target</th>
+                                                <td>No</td>
+                                                <td>The target for the hyperlink. The default is <code>_blank</code>.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header p-1" accordion-group-toggle-on-click="angularJsNavExamples"><h5 class="card-title mb-0">Examples</h5></div>
+                                <div class="card-body" accordion-group-content-item="angularJsNavExamples">
+                                    <h6>Simple statically defined relative URL.</h6>
+                                    <copy-to-clipboard-button target="angularJsNavSimpleCopyToClipboard" success-message="Code copied"></copy-to-clipboard-button>
+                                    <code id="angularJsNavSimpleCopyToClipboard"><span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">sn-nav-link</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">path-nodes</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"System LDAP/Data Sources"</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">href</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"/sys_data_source_list.do"</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol"> /&gt;</span></span>
+                                    </code>
+                                    Will be transpiled as:
+                                    <code class="pre-scrollable multi-line"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">samp</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"navPath"</span><span class="xmlMarkupSymbol">&gt;</span>
+     <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>System LDAP<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlElementName">&amp;rArr;</span>
+     <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+     <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">a</span> <span class="xmlAttributeName">href</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"https://yourinstance.servicenow.com/sys_data_source_list.do"</span> <span class="xmlAttributeName">target</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"_blank"</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"targetName"</span><span class="xmlMarkupSymbol">&gt;</span>Data Sources<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+     <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">a</span><span class="xmlMarkupSymbol">&gt;</span>
+<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">samp</span><span class="xmlMarkupSymbol">&gt;</span></code>
+                                    <h6>Navigation path with alternate link index.</h6>
+                                    <copy-to-clipboard-button target="angularJsNavIndexCopyToClipboard" success-message="Code copied"></copy-to-clipboard-button>
+                                    <code id="angularJsNavIndexCopyToClipboard"><span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">sn-nav-link</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">path-nodes</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"System LDAP/Transform Maps/Enterprise User Import"</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">link-index</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"1"</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">href</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"/sys_transform_map_list.do"</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol"> /&gt;</span></span>
+                                    </code>
+                                    Will be transpiled as:
+                                    <code class="pre-scrollable multi-line"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">samp</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"navPath"</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>System LDAP<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlElementName">&amp;rArr;</span>
+     <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+     <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">a</span> <span class="xmlAttributeName">href</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"https://yourinstance.servicenow.com/sys_transform_map_list.do"</span> <span class="xmlAttributeName">target</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"_blank"</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>Transform Maps<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+     <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">a</span><span class="xmlMarkupSymbol">&gt;</span>
+     <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlElementName">&amp;rArr;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"targetName"</span><span class="xmlMarkupSymbol">&gt;</span>Enterprise User Import<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+     <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">samp</span><span class="xmlMarkupSymbol">&gt;</span></code>
+                                    <h6>Navigation path with alternate node separator.</h6>
+                                    <copy-to-clipboard-button target="angularJsNavAltSepCopyToClipboard" success-message="Code copied"></copy-to-clipboard-button>
+                                    <code id="angularJsNavAltSepCopyToClipboard"><span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">sn-nav-link</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">path-nodes</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"Configuration|Identification/Reconciliation|CI Identifiers"</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">node-separator</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"|"</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">href</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"/cmdb_identifier_list.do"</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol"> /&gt;</span></span>
+                                    </code>
+                                    Will be transpiled as:
+                                    <code class="pre-scrollable multi-line"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">samp</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"navPath"</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>Configuration<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlElementName">&amp;rArr;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>Identification/Reconciliation<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlElementName">&amp;rArr;</span>
+    <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">a</span> <span class="xmlAttributeName">href</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"https://yourinstance.servicenow.com/cmdb_identifier_list.do"</span> <span class="xmlAttributeName">target</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"_blank"</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"targetName"</span><span class="xmlMarkupSymbol">&gt;</span>CI Identifiers<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">a</span><span class="xmlMarkupSymbol">&gt;</span>
+<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">samp</span><span class="xmlMarkupSymbol">&gt;</span></code>
+                                    <h6>Statically defined relative URL encoded in nav_to.do query parameter.</h6>
+                                    <copy-to-clipboard-button target="angularJsNavToCopyToClipboard" success-message="Code copied"></copy-to-clipboard-button>
+                                    <code id="angularJsNavToCopyToClipboard"><span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">sn-nav-link</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">path-nodes</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"System LDAP/Data Sources"</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">href</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"/sys_data_source_list.do"</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">to-nav</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"true"</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol"> /&gt;</span></span>
+                                    </code>
+                                    Will be transpiled as:
+                                    <code class="pre-scrollable multi-line"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">samp</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"navPath"</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>System LDAP<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlElementName">&amp;rArr;</span>
+        <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">a</span> <span class="xmlAttributeName">href</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"https://yourinstance.servicenow.com/nav_to.do?uri=%2Fsys_data_source_list.do"</span> <span class="xmlAttributeName">target</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"_blank"</span><span class="xmlMarkupSymbol">&gt;</span>
+            <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"targetName"</span><span class="xmlMarkupSymbol">&gt;</span>Data Sources<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">a</span><span class="xmlMarkupSymbol">&gt;</span>
+<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">samp</span><span class="xmlMarkupSymbol">&gt;</span></code>
+                                    <h6>Bound URL model.</h6>
+                                    <copy-to-clipboard-button target="angularJsNavModelCopyToClipboard" success-message="Code copied"></copy-to-clipboard-button>
+                                    <code id="angularJsNavModelCopyToClipboard"><span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">sn-nav-link</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">path-nodes</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"System LDAP/Data Sources"</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">href-model</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"modelVar"</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol"> /&gt;</span></span>
+                                    </code>
+                                    Will be transpiled as:
+                                    <code class="pre-scrollable multi-line"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">samp</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"navPath"</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>System LDAP<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlElementName">&amp;rArr;</span>
+    <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">a</span> <span class="xmlAttributeName">href</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"https://yourinstance.servicenow.com/sys_data_source_list.do"</span> <span class="xmlAttributeName">target</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"_blank"</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"targetName"</span><span class="xmlMarkupSymbol">&gt;</span>Data Sources<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">a</span><span class="xmlMarkupSymbol">&gt;</span>
+<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">samp</span><span class="xmlMarkupSymbol">&gt;</span></code>
+                                    <h6>Navigation path with no relative URL.</h6>
+                                    <copy-to-clipboard-button target="angularJsNavNoUrlCopyToClipboard" success-message="Code copied"></copy-to-clipboard-button>
+                                    <code id="angularJsNavNoUrlCopyToClipboard"><span class="text-nowrap"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">sn-nav-link</span></span>
+                                        <span class="text-nowrap"><span class="xmlAttributeName">path-nodes</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"System Policy/Rules/Caller VIP Lookup Rules"</span></span><span class="text-nowrap"><span class="xmlMarkupSymbol"> /&gt;</span></span>
+                                    </code>
+                                    Will be transpiled as:
+                                    <code class="pre-scrollable multi-line"><span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">samp</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"navPath"</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>System Policy<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlElementName">&amp;rArr;</span>
+        <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>Rules<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+        <span class="xmlElementName">&amp;rArr;</span>
+    <span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">span</span><span class="xmlMarkupSymbol">&gt;</span>
+    <span class="xmlMarkupSymbol">&lt;</span><span class="xmlElementName">var</span> <span class="xmlAttributeName">class</span><span class="xmlMarkupSymbol">=</span><span class="xmlAttributeValue">"targetName"</span><span class="xmlMarkupSymbol">&gt;</span>Caller VIP Lookup Rules<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">var</span><span class="xmlMarkupSymbol">&gt;</span>
+<span class="xmlMarkupSymbol">&lt;/</span><span class="xmlElementName">samp</span><span class="xmlMarkupSymbol">&gt;</span></code>
                                 </div>
                             </div>
                         </accordion-group>
