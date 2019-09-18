@@ -69,16 +69,17 @@
                     <div class="card-header p-1" accordion-group-toggle-on-click="initialUpdateSet"><h2 class="card-title mb-0">2. Import Initial Update Set</h2></div>
                     <div class="card-body" accordion-group-content-item="initialUpdateSet">
                         <div class="detail">
-                            Load and apply the <a href="downloads/sys_remote_update_set_Initial_Setup.xml" target="_blank">sys_remote_update_set_Initial_Setup.xml</a> File in the
+                            Load and apply the <a href="downloads/sys_remote_update_set_Initial_Update_Set_Stage_1.xml" target="_blank">sys_remote_update_set_Initial_Update_Set_Stage_1.xml</a> File in the
                             <var class="targetName">downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
-                            <!--
-
-
-if (gs.getUserID() == current.sys_id || gs.getUser().hasRoles())
-    answer = true;
-else
-    answer = false;
-                                        -->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header p-1"><h3 class="card-title mb-0">Unclass Only</h3></div>
+                        <div class="card-body">
+                            <div class="detail">
+                                Load and apply the <a href="downloads/sys_remote_update_set_Unclass_Setup_Stage_1.xml" target="_blank">sys_remote_update_set_Unclass_Setup_Stage_1.xml</a> File in the
+                                <var class="targetName">downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -97,7 +98,8 @@ else
                             </li>
                             <li>Once the application is imported, select the <var>Util</var> application to open it in <var class="targetName">ServiceNow Studio</var>.</li>
                             <li>Next, open <sn-nav-link path-nodes="Source Control/Switch Branch" /> from the menu at the top of the screen and select the branch named <kbd>V1.1</kbd> in the dropdown.</li>
-                            <li>Click the <kbd>Switch Branch</kbd> button. You will see a message saying that it's uninstalling and then re-installing the application. Once it's done, close out the <var class="targetName">ServiceNow Studio</var> browser tab.</li>
+                            <li>Select the <var>V1.1</var> branc and click the <kbd>Switch Branch</kbd> button. You will see a message saying that it's uninstalling and then re-installing the application.
+                                Once it's done, close out the <var class="targetName">ServiceNow Studio</var> browser tab.</li>
                         </ol>
                     </div>
                 </div>
@@ -242,7 +244,8 @@ else
                                 </li>
                                 <li>Once the application is imported, select the <var>Physical Networks</var> application to open it in <var class="targetName">ServiceNow Studio</var>.</li>
                                 <li>Next, open <sn-nav-link path-nodes="Source Control/Switch Branch" /> from the menu at the top of the screen and select the branch named <kbd>V1</kbd> in the dropdown.</li>
-                                <li>Click the <kbd>Switch Branch</kbd> button. You will see a message saying that it's uninstalling and then re-installing the application. Once it's done, close out the <var class="targetName">ServiceNow Studio</var> browser tab.</li>
+                                <li>Select the <var>V1</var> branch and click the <kbd>Switch Branch</kbd> button. You will see a message saying that it's uninstalling and then re-installing the application.
+                                    Once it's done, close out the <var class="targetName">ServiceNow Studio</var> browser tab.</li>
                                 <li>
                                     In the original ServiceNow browser tab, you will need to refresh the browser screen to see the new menu item that was added when this application was imported.
                                 </li>
@@ -255,12 +258,14 @@ else
                 </div>
 
                 <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="serviceCatalog"><h2 class="card-title mb-0">8. Import Service Catalog Update Set</h2></div>
+                    <div class="card-header p-1" accordion-group-toggle-on-click="serviceCatalog"><h2 class="card-title mb-0">8. Import Stage 2 Update Sets</h2></div>
                     <div class="card-body" accordion-group-content-item="serviceCatalog">
                         <div class="detail">
-                            Load and apply the <a href="downloads/sys_remote_update_set_Service_Catalog.xml" target="_blank">sys_remote_update_set_Service_Catalog.xml</a> File in the
-                            <var class="targetName">downloads</var> folder of this documentation to apply the global update set that sets up the service catalog.
-                            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
+                            Load and apply the update sets from the <a href="downloads/sys_remote_update_set_Initial_Update_Set_Stage_2.xml" target="_blank">sys_remote_update_set_Initial_Update_Set_Stage_2.xml</a>,
+                            <a href="downloads/sys_remote_update_set_Security_Incident_Setup" target="_blank">sys_remote_update_set_Security_Incident_Setup.xml</a>,
+                            <a href="downloads/sys_remote_update_set_EmailConfig_CabWorkbench" target="_blank">sys_remote_update_set_EmailConfig_CabWorkbench.xml</a> and
+                            <a href="downloads/sys_remote_update_set_EmailConfig_TargetedCommunications" target="_blank">sys_remote_update_set_EmailConfig_TargetedCommunications.xml</a>
+                            files within the <var class="targetName">downloads</var> folder of this documentation to apply the global update set that sets up the service catalog.
                             <div class="card">
                                 <div class="card-header">
                                     <h3>Known Issues and Warnings</h3>
@@ -280,14 +285,7 @@ else
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <th scope="row">sys_template_4b0c59fb0a0a0b990034955050427d5f</th>
-                                                    <td>Could not find a record in sys_user for column user referenced in this update</td>
-                                                    <td>Accept remote update</td>
-                                                    <td>glide.maint</td>
-                                                    <td>sys_user</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">sys_template_4b175dd20a0a0b99004f35e506563fc6</th>
+                                                    <th scope="row"><em>(various)</em></th>
                                                     <td>Could not find a record in sys_user for column user referenced in this update</td>
                                                     <td>Accept remote update</td>
                                                     <td>glide.maint</td>
@@ -309,6 +307,22 @@ else
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4>Pre-Activation Warning</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="detail">
+                                                    <h5 class="alert-warning">Data Loss Warning</h5>
+                                                    When committing the update set, you will get a warning that states that all items in sys_dictionary_u_vip_priority_lookup_matcher_rules_u_caller will be deleted.
+                                                    It is okay to proceed, because this update set will be re-defining these lookup rules. However, the lookup rules will probably need to be cleaned up afterward:
+                                                    <ol>
+                                                        <li>Navigate to <sn-nav-link path-nodes="System Policy/Rules/Caller VIP Lookup Rules"></sn-nav-link>.</li>
+                                                        <li>Delete any items which have an empty <var class="targetName">Caller</var>.</li>
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -317,48 +331,7 @@ else
                 </div>
 
                 <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="incidentManagement"><h2 class="card-title mb-0">9. Import Incident Management Update Set</h2></div>
-                    <div class="card-body" accordion-group-content-item="incidentManagement">
-                        <div class="detail">
-                            <div class="alert-warning">
-                                <strong>NOTICE:</strong>
-                                You must elevate your role to security_admin before committing this update set!
-                            </div>
-                            Load and apply the <a href="downloads/sys_remote_update_set_Incident_Management.xml" target="_blank">sys_remote_update_set_Incident_Management.xml</a> File in the
-                            <var class="targetName">downloads</var> folder of this documentation to apply the global update set that configures incident-related settings.
-                            <!-- <div><button (click)="openHowtoImportUpdateSet()" class="btn btn-outline-primary mb-2 mr-2">Click Here</button> to view instructions for applying update sets.</div> -->
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3>Known Issues and Warnings</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="detail">
-                                        <h5 class="alert-warning">Data Loss Warning</h5>
-                                        When committing the update set, you will get a warning that states that all items in sys_dictionary_u_vip_priority_lookup_matcher_rules_u_caller will be deleted.
-                                        It is okay to proceed, because this update set will be re-defining these lookup rules. However, the lookup rules will probably need to be cleaned up afterward:
-                                        <ol>
-                                            <li>Navigate to <sn-nav-link path-nodes="System Policy/Rules/Caller VIP Lookup Rules"></sn-nav-link>.</li>
-                                            <li>Delete any items which have an empty <var class="targetName">Caller</var>.</li>
-                                        </ol>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="securityIncidentUpdateSet"><h2 class="card-title mb-0">10. Import Security Incident Update Set</h2></div>
-                    <div class="card-body" accordion-group-content-item="securityIncidentUpdateSet">
-                        <div class="detail">
-                            Load and apply the <a href="downloads/sys_remote_update_set_Security_Incident_Setup.xml" target="_blank">sys_remote_update_set_Security_Incident_Setup.xml</a> File in the
-                            <var class="targetName">downloads</var> folder of this documentation to apply the initial global update set, which prepares the ServiceNow instance.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="adSync"><h2 class="card-title mb-0">11. Configure Active Directory Synchronization</h2><em>On-Prem Instances only</em></div>
+                    <div class="card-header p-1" accordion-group-toggle-on-click="adSync"><h2 class="card-title mb-0">9. Configure Active Directory Synchronization</h2><em>On-Prem Instances only</em></div>
                     <div class="card-body" accordion-group-content-item="adSync">
                         <div class="card">
                             <div class="card-header">
@@ -635,7 +608,7 @@ else
                 </div>
 
                 <div class="card">
-                    <div class="card-header p-1" accordion-group-toggle-on-click="configureSso"><h2 class="card-title mb-0">12. Configure Single Sign-On</h2><em>On-Prem Instances only</em></div>
+                    <div class="card-header p-1" accordion-group-toggle-on-click="configureSso"><h2 class="card-title mb-0">10. Configure Single Sign-On</h2><em>On-Prem Instances only</em></div>
                     <div class="card-body" accordion-group-content-item="configureSso">
                         <div class="card">
                             <div class="card-header">
