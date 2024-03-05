@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2024-02-26 22:41:16">
+<x_g_doj_usmsprogop_u_cmdb_ci_physical_network action="INSERT_OR_UPDATE">
+<asset display_value=""/>
+<asset_tag/>
+<assigned/>
+<assigned_to display_value=""/>
+<assignment_group display_value=""/>
+<attestation_score/>
+<attestation_status>Not Yet Reviewed</attestation_status>
+<attested>false</attested>
+<attested_by display_value=""/>
+<attested_date/>
+<attributes/>
+<business_unit display_value=""/>
+<can_print>false</can_print>
+<category/>
+<change_control display_value=""/>
+<checked_in/>
+<checked_out/>
+<comments/>
+<company display_value=""/>
+<correlation_id/>
+<cost/>
+<cost_cc>USD</cost_cc>
+<cost_center display_value=""/>
+<delivery_date/>
+<department display_value=""/>
+<discovery_source/>
+<dns_domain/>
+<due/>
+<due_in/>
+<duplicate_of display_value=""/>
+<environment/>
+<fault_count>0</fault_count>
+<first_discovered/>
+<fqdn/>
+<gl_account/>
+<install_date/>
+<install_status>1</install_status>
+<invoice_number/>
+<ip_address/>
+<justification/>
+<last_discovered/>
+<lease_id/>
+<life_cycle_stage display_value=""/>
+<life_cycle_stage_status display_value=""/>
+<location display_value=""/>
+<mac_address/>
+<maintenance_schedule display_value=""/>
+<managed_by display_value=""/>
+<managed_by_group display_value=""/>
+<manufacturer display_value=""/>
+<model_id display_value=""/>
+<model_number/>
+<monitor>false</monitor>
+<name>Red</name>
+<operational_status>1</operational_status>
+<order_date/>
+<owned_by display_value=""/>
+<po_number/>
+<purchase_date/>
+<schedule display_value=""/>
+<serial_number/>
+<short_description/>
+<skip_sync>false</skip_sync>
+<start_date/>
+<subcategory/>
+<support_group display_value=""/>
+<supported_by display_value=""/>
+<sys_class_name>x_g_doj_usmsprogop_u_cmdb_ci_physical_network</sys_class_name>
+<sys_class_path>/!!/$3</sys_class_path>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2023-07-27 22:02:32</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>17ffdaa91b10b150edce10ad9c4bcb3b</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2023-07-27 22:05:43</sys_updated_on>
+<u_display_order>100</u_display_order>
+<u_restricted_transfer_networks>93106a691b10b150edce10ad9c4bcb4d,e750aea91b10b150edce10ad9c4bcb74,727022e91b10b150edce10ad9c4bcbcc,678022a91b10b150edce10ad9c4bcb07</u_restricted_transfer_networks>
+<unverified>false</unverified>
+<vendor display_value=""/>
+<warranty_expiration/>
+</x_g_doj_usmsprogop_u_cmdb_ci_physical_network>
+<x_g_doj_usmsprogop_u_cmdb_ci_physical_network action="INSERT_OR_UPDATE">
+<asset display_value=""/>
+<asset_tag/>
+<assigned/>
+<assigned_to display_value=""/>
+<assignment_group display_value=""/>
+<attestation_score/>
+<attestation_status>Not Yet Reviewed</attestation_status>
+<attested>false</attested>
+<attested_by display_value=""/>
+<attested_date/>
+<attributes/>
+<business_unit display_value=""/>
+<can_print>false</can_print>
+<category/>
+<change_control display_value=""/>
+<checked_in/>
+<checked_out/>
+<comments/>
+<company display_value=""/>
+<correlation_id/>
+<cost/>
+<cost_cc>USD</cost_cc>
+<cost_center display_value=""/>
+<delivery_date/>
+<department display_value=""/>
+<discovery_source/>
+<dns_domain/>
+<due/>
+<due_in/>
+<duplicate_of display_value=""/>
+<environment/>
+<fault_count>0</fault_count>
+<first_discovered/>
+<fqdn/>
+<gl_account/>
+<install_date/>
+<install_status>1</install_status>
+<invoice_number/>
+<ip_address/>
+<justification/>
+<last_discovered/>
+<lease_id/>
+<life_cycle_stage display_value=""/>
+<life_cycle_stage_status display_value=""/>
+<location display_value=""/>
+<mac_address/>
+<maintenance_schedule display_value=""/>
+<managed_by display_value=""/>
+<managed_by_group display_value=""/>
+<manufacturer display_value=""/>
+<model_id display_value=""/>
+<model_number/>
+<monitor>false</monitor>
+<name>PO</name>
+<operational_status>2</operational_status>
+<order_date/>
+<owned_by display_value=""/>
+<po_number/>
+<purchase_date/>
+<schedule display_value=""/>
+<serial_number/>
+<short_description/>
+<skip_sync>false</skip_sync>
+<start_date/>
+<subcategory/>
+<support_group display_value=""/>
+<supported_by display_value=""/>
+<sys_class_name>x_g_doj_usmsprogop_u_cmdb_ci_physical_network</sys_class_name>
+<sys_class_path>/!!/$3</sys_class_path>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2023-07-27 22:03:03</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>93106a691b10b150edce10ad9c4bcb4d</sys_id>
+<sys_mod_count>3</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-02-26 22:40:54</sys_updated_on>
+<u_display_order>200</u_display_order>
+<u_restricted_transfer_networks>e750aea91b10b150edce10ad9c4bcb74</u_restricted_transfer_networks>
+<unverified>false</unverified>
+<vendor display_value=""/>
+<warranty_expiration/>
+</x_g_doj_usmsprogop_u_cmdb_ci_physical_network>
+<x_g_doj_usmsprogop_u_cmdb_ci_physical_network action="INSERT_OR_UPDATE">
+<asset display_value=""/>
+<asset_tag/>
+<assigned/>
+<assigned_to display_value=""/>
+<assignment_group display_value=""/>
+<attestation_score/>
+<attestation_status>Not Yet Reviewed</attestation_status>
+<attested>false</attested>
+<attested_by display_value=""/>
+<attested_date/>
+<attributes/>
+<business_unit display_value=""/>
+<can_print>false</can_print>
+<category/>
+<change_control display_value=""/>
+<checked_in/>
+<checked_out/>
+<comments/>
+<company display_value=""/>
+<correlation_id/>
+<cost/>
+<cost_cc>USD</cost_cc>
+<cost_center display_value=""/>
+<delivery_date/>
+<department display_value=""/>
+<discovery_source/>
+<dns_domain/>
+<due/>
+<due_in/>
+<duplicate_of display_value=""/>
+<environment/>
+<fault_count>0</fault_count>
+<first_discovered/>
+<fqdn/>
+<gl_account/>
+<install_date/>
+<install_status>1</install_status>
+<invoice_number/>
+<ip_address/>
+<justification/>
+<last_discovered/>
+<lease_id/>
+<life_cycle_stage display_value=""/>
+<life_cycle_stage_status display_value=""/>
+<location display_value=""/>
+<mac_address/>
+<maintenance_schedule display_value=""/>
+<managed_by display_value=""/>
+<managed_by_group display_value=""/>
+<manufacturer display_value=""/>
+<model_id display_value=""/>
+<model_number/>
+<monitor>false</monitor>
+<name>JCON</name>
+<operational_status>1</operational_status>
+<order_date/>
+<owned_by display_value=""/>
+<po_number/>
+<purchase_date/>
+<schedule display_value=""/>
+<serial_number/>
+<short_description/>
+<skip_sync>false</skip_sync>
+<start_date/>
+<subcategory/>
+<support_group display_value=""/>
+<supported_by display_value=""/>
+<sys_class_name>x_g_doj_usmsprogop_u_cmdb_ci_physical_network</sys_class_name>
+<sys_class_path>/!!/$3</sys_class_path>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2023-07-27 22:04:06</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>e750aea91b10b150edce10ad9c4bcb74</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2023-07-27 22:04:06</sys_updated_on>
+<u_display_order>300</u_display_order>
+<u_restricted_transfer_networks/>
+<unverified>false</unverified>
+<vendor display_value=""/>
+<warranty_expiration/>
+</x_g_doj_usmsprogop_u_cmdb_ci_physical_network>
+<x_g_doj_usmsprogop_u_cmdb_ci_physical_network action="INSERT_OR_UPDATE">
+<asset display_value=""/>
+<asset_tag/>
+<assigned/>
+<assigned_to display_value=""/>
+<assignment_group display_value=""/>
+<attestation_score/>
+<attestation_status>Not Yet Reviewed</attestation_status>
+<attested>false</attested>
+<attested_by display_value=""/>
+<attested_date/>
+<attributes/>
+<business_unit display_value=""/>
+<can_print>false</can_print>
+<category/>
+<change_control display_value=""/>
+<checked_in/>
+<checked_out/>
+<comments/>
+<company display_value=""/>
+<correlation_id/>
+<cost/>
+<cost_cc>USD</cost_cc>
+<cost_center display_value=""/>
+<delivery_date/>
+<department display_value=""/>
+<discovery_source/>
+<dns_domain/>
+<due/>
+<due_in/>
+<duplicate_of display_value=""/>
+<environment/>
+<fault_count>0</fault_count>
+<first_discovered/>
+<fqdn/>
+<gl_account/>
+<install_date/>
+<install_status>1</install_status>
+<invoice_number/>
+<ip_address/>
+<justification/>
+<last_discovered/>
+<lease_id/>
+<life_cycle_stage display_value=""/>
+<life_cycle_stage_status display_value=""/>
+<location display_value=""/>
+<mac_address/>
+<maintenance_schedule display_value=""/>
+<managed_by display_value=""/>
+<managed_by_group display_value=""/>
+<manufacturer display_value=""/>
+<model_id display_value=""/>
+<model_number/>
+<monitor>false</monitor>
+<name>Dev</name>
+<operational_status>1</operational_status>
+<order_date/>
+<owned_by display_value=""/>
+<po_number/>
+<purchase_date/>
+<schedule display_value=""/>
+<serial_number/>
+<short_description/>
+<skip_sync>false</skip_sync>
+<start_date/>
+<subcategory/>
+<support_group display_value=""/>
+<supported_by display_value=""/>
+<sys_class_name>x_g_doj_usmsprogop_u_cmdb_ci_physical_network</sys_class_name>
+<sys_class_path>/!!/$3</sys_class_path>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2023-07-27 22:04:29</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>727022e91b10b150edce10ad9c4bcbcc</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2023-07-27 22:07:04</sys_updated_on>
+<u_display_order>400</u_display_order>
+<u_restricted_transfer_networks>93106a691b10b150edce10ad9c4bcb4d,e750aea91b10b150edce10ad9c4bcb74,678022a91b10b150edce10ad9c4bcb07</u_restricted_transfer_networks>
+<unverified>false</unverified>
+<vendor display_value=""/>
+<warranty_expiration/>
+</x_g_doj_usmsprogop_u_cmdb_ci_physical_network>
+<x_g_doj_usmsprogop_u_cmdb_ci_physical_network action="INSERT_OR_UPDATE">
+<asset display_value=""/>
+<asset_tag/>
+<assigned/>
+<assigned_to display_value=""/>
+<assignment_group display_value=""/>
+<attestation_score/>
+<attestation_status>Not Yet Reviewed</attestation_status>
+<attested>false</attested>
+<attested_by display_value=""/>
+<attested_date/>
+<attributes/>
+<business_unit display_value=""/>
+<can_print>false</can_print>
+<category/>
+<change_control display_value=""/>
+<checked_in/>
+<checked_out/>
+<comments/>
+<company display_value=""/>
+<correlation_id/>
+<cost/>
+<cost_cc>USD</cost_cc>
+<cost_center display_value=""/>
+<delivery_date/>
+<department display_value=""/>
+<discovery_source/>
+<dns_domain/>
+<due/>
+<due_in/>
+<duplicate_of display_value=""/>
+<environment/>
+<fault_count>0</fault_count>
+<first_discovered/>
+<fqdn/>
+<gl_account/>
+<install_date/>
+<install_status>1</install_status>
+<invoice_number/>
+<ip_address/>
+<justification/>
+<last_discovered/>
+<lease_id/>
+<life_cycle_stage display_value=""/>
+<life_cycle_stage_status display_value=""/>
+<location display_value=""/>
+<mac_address/>
+<maintenance_schedule display_value=""/>
+<managed_by display_value=""/>
+<managed_by_group display_value=""/>
+<manufacturer display_value=""/>
+<model_id display_value=""/>
+<model_number/>
+<monitor>false</monitor>
+<name>Black</name>
+<operational_status>1</operational_status>
+<order_date/>
+<owned_by display_value=""/>
+<po_number/>
+<purchase_date/>
+<schedule display_value=""/>
+<serial_number/>
+<short_description/>
+<skip_sync>false</skip_sync>
+<start_date/>
+<subcategory/>
+<support_group display_value=""/>
+<supported_by display_value=""/>
+<sys_class_name>x_g_doj_usmsprogop_u_cmdb_ci_physical_network</sys_class_name>
+<sys_class_path>/!!/$3</sys_class_path>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2023-07-27 22:05:10</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>678022a91b10b150edce10ad9c4bcb07</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2023-07-27 22:05:10</sys_updated_on>
+<u_display_order>500</u_display_order>
+<u_restricted_transfer_networks>e750aea91b10b150edce10ad9c4bcb74</u_restricted_transfer_networks>
+<unverified>false</unverified>
+<vendor display_value=""/>
+<warranty_expiration/>
+</x_g_doj_usmsprogop_u_cmdb_ci_physical_network>
+</unload>

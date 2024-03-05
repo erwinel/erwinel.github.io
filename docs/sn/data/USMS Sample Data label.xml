@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2022-10-28 19:01:03">
+<label action="INSERT_OR_UPDATE">
+<active>true</active>
+<background_color/>
+<color/>
+<global>true</global>
+<group_list/>
+<home_page>false</home_page>
+<icon/>
+<max_entries>20</max_entries>
+<name>USMS Sample Data</name>
+<navigation>true</navigation>
+<order/>
+<owner display_value="System Administrator">6816f79cc0a8016401c5a33be04be441</owner>
+<roles/>
+<short_description/>
+<sys_class_name>label</sys_class_name>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2022-10-28 16:21:24</sys_created_on>
+<sys_default>false</sys_default>
+<sys_id>5891a88a47b611103f08bce5536d43b6</sys_id>
+<sys_mod_count>2</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-03-04 20:38:23</sys_updated_on>
+<type>standard</type>
+<user_list/>
+<viewable_by>everyone</viewable_by>
+</label>
+</unload>

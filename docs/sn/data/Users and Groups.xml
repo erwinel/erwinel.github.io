@@ -4,7 +4,7 @@
 <active>true</active>
 <background_color/>
 <color/>
-<global>false</global>
+<global>true</global>
 <group_list/>
 <home_page>false</home_page>
 <icon/>
@@ -20,12 +20,12 @@
 <sys_created_on>2022-10-28 16:21:24</sys_created_on>
 <sys_default>false</sys_default>
 <sys_id>5891a88a47b611103f08bce5536d43b6</sys_id>
-<sys_mod_count>1</sys_mod_count>
-<sys_updated_by>admin</sys_updated_by>
-<sys_updated_on>2022-10-28 16:27:32</sys_updated_on>
+<sys_mod_count>2</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-03-04 20:38:23</sys_updated_on>
 <type>standard</type>
 <user_list/>
-<viewable_by>me</viewable_by>
+<viewable_by>everyone</viewable_by>
 </label>
 <core_company action="INSERT_OR_UPDATE">
 <apple_icon/>
@@ -809,6 +809,72 @@
 <web_service_access_only>false</web_service_access_only>
 <zip/>
 </sys_user>
+<sys_user action="INSERT_OR_UPDATE">
+<active>true</active>
+<avatar/>
+<building display_value=""/>
+<calendar_integration>1</calendar_integration>
+<city/>
+<company display_value=""/>
+<cost_center display_value=""/>
+<country/>
+<date_format/>
+<default_perspective display_value=""/>
+<department display_value="IT Program Operations">2a8f6e21477211103f08bce5536d4340</department>
+<edu_status>faculty</edu_status>
+<email>lenny@erwinefamily.net</email>
+<employee_number/>
+<enable_multifactor_authn>false</enable_multifactor_authn>
+<failed_attempts/>
+<federated_id/>
+<first_name>Tess</first_name>
+<gender/>
+<home_phone/>
+<internal_integration_user>false</internal_integration_user>
+<introduction/>
+<last_login/>
+<last_login_device/>
+<last_login_time/>
+<last_name>Turr</last_name>
+<last_password/>
+<ldap_server display_value=""/>
+<location display_value=""/>
+<locked_out>false</locked_out>
+<manager display_value=""/>
+<middle_name/>
+<mobile_phone/>
+<name>Tess Turr</name>
+<notification>2</notification>
+<password_needs_reset>false</password_needs_reset>
+<phone/>
+<photo/>
+<preferred_language/>
+<roles/>
+<schedule display_value=""/>
+<source/>
+<sso_source/>
+<state/>
+<street/>
+<sys_class_name>sys_user</sys_class_name>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-03-04 20:16:50</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>c6ee847087f4865005610dc60cbb3594</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-03-04 20:16:50</sys_updated_on>
+<time_format/>
+<time_zone>US/Eastern</time_zone>
+<title>Software Tester</title>
+<u_contractor>false</u_contractor>
+<u_region display_value=""/>
+<user_name/>
+<user_password/>
+<vip>false</vip>
+<web_service_access_only>false</web_service_access_only>
+<zip/>
+</sys_user>
 <cmn_notif_device action="INSERT_OR_UPDATE">
 <active>true</active>
 <email_address/>
@@ -989,6 +1055,26 @@
 <type>Email</type>
 <user display_value="Crystal Ball">d43e0b932f22111004e4d3f62799b62e</user>
 </cmn_notif_device>
+<cmn_notif_device action="INSERT_OR_UPDATE">
+<active>true</active>
+<email_address>lenny@erwinefamily.net</email_address>
+<group display_value=""/>
+<name>Primary email</name>
+<order>1</order>
+<phone_number/>
+<primary_email>true</primary_email>
+<push_app display_value=""/>
+<schedule display_value=""/>
+<service_provider display_value=""/>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-03-04 20:16:50</sys_created_on>
+<sys_id>c04fc87087f4865005610dc60cbb35f2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-03-04 20:16:50</sys_updated_on>
+<type>Email</type>
+<user display_value="Tess Turr">c6ee847087f4865005610dc60cbb3594</user>
+</cmn_notif_device>
 <sys_user_grmember action="INSERT_OR_UPDATE">
 <group display_value="Asset Management" name="Asset Management">0a1e2405af769110617c1fd0442749be</group>
 <points>0</points>
@@ -1024,6 +1110,16 @@
 <sys_updated_by>admin</sys_updated_by>
 <sys_updated_on>2022-10-28 18:07:37</sys_updated_on>
 <user display_value="Service Minion">5e3093172f22111004e4d3f62799b6db</user>
+</sys_user_grmember>
+<sys_user_grmember action="INSERT_OR_UPDATE">
+<group display_value="Software Testers" name="Software Testers">06420dbc87a44a10bf9f85970cbb35b0</group>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-03-04 20:17:03</sys_created_on>
+<sys_id>1f4f407887f44a50bf9f85970cbb35d2</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-03-04 20:17:03</sys_updated_on>
+<user display_value="Tess Turr">c6ee847087f4865005610dc60cbb3594</user>
 </sys_user_grmember>
 <label_entry action="INSERT_OR_UPDATE">
 <auto display_value=""/>
@@ -1575,6 +1671,29 @@
 <table_key>d2025b5f1bb9d010edce10ad9c4bcb40</table_key>
 <title>Group - Networks</title>
 <url>sys_user_group.do?sys_id=d2025b5f1bb9d010edce10ad9c4bcb40&amp;sysparm_view=</url>
+<view_name/>
+</label_entry>
+<label_entry action="INSERT_OR_UPDATE">
+<auto display_value=""/>
+<comments/>
+<id_display>Tess Turr</id_display>
+<id_type>User</id_type>
+<label display_value="USMS Sample Data">5891a88a47b611103f08bce5536d43b6</label>
+<notify_onchange>false</notify_onchange>
+<notify_script display_value=""/>
+<notify_when table="sys_user"/>
+<read>yes</read>
+<reference_count/>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-03-04 20:38:42</sys_created_on>
+<sys_id>084410f887344a50c2420dc60cbb3581</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-03-04 20:38:42</sys_updated_on>
+<table>sys_user</table>
+<table_key>c6ee847087f4865005610dc60cbb3594</table_key>
+<title>User - Tess Turr</title>
+<url>sys_user.do?sys_id=c6ee847087f4865005610dc60cbb3594&amp;sysparm_view=</url>
 <view_name/>
 </label_entry>
 <sys_ui_bookmark action="INSERT_OR_UPDATE">
