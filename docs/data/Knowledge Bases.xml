@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2022-10-31 16:47:48">
+<kb_knowledge_base action="INSERT_OR_UPDATE">
+<active>true</active>
+<application display_value="Global">global</application>
+<approval_description/>
+<article_validity/>
+<card_color/>
+<data_policy display_value="Data policy for Using ServiceNow knowledge base">e9361f5b2f22111004e4d3f62799b6ce</data_policy>
+<description/>
+<disable_category_editing>false</disable_category_editing>
+<disable_commenting>false</disable_commenting>
+<disable_mark_as_helpful>false</disable_mark_as_helpful>
+<disable_rating>false</disable_rating>
+<disable_suggesting>false</disable_suggesting>
+<enable_socialqa>false</enable_socialqa>
+<icon/>
+<kb_managers/>
+<kb_version>3</kb_version>
+<mandatory_fields/>
+<order/>
+<owner display_value="System Administrator">6816f79cc0a8016401c5a33be04be441</owner>
+<question_annotation/>
+<retire_workflow display_value="Knowledge - Instant Retire">3d18ef12c30031000096dfdc64d3aeb6</retire_workflow>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2022-10-20 16:27:21</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>7a2cec7aaf91f01064bb30330e274939</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2022-10-20 16:27:21</sys_updated_on>
+<table>kb_knowledge</table>
+<template/>
+<title>Using ServiceNow</title>
+<workflow display_value="Knowledge - Instant Publish">fbe441019f112100d8f8700c267fcf1a</workflow>
+</kb_knowledge_base>
+<kb_knowledge_base action="INSERT_OR_UPDATE">
+<active>true</active>
+<application display_value="Global">global</application>
+<approval_description/>
+<article_validity/>
+<card_color/>
+<data_policy display_value="Data policy for Team Knowledge knowledge base">c9d5dfd72f22111004e4d3f62799b6ce</data_policy>
+<description/>
+<disable_category_editing>false</disable_category_editing>
+<disable_commenting>false</disable_commenting>
+<disable_mark_as_helpful>false</disable_mark_as_helpful>
+<disable_rating>false</disable_rating>
+<disable_suggesting>false</disable_suggesting>
+<enable_socialqa>false</enable_socialqa>
+<icon/>
+<kb_managers/>
+<kb_version>3</kb_version>
+<mandatory_fields/>
+<order/>
+<owner display_value="System Administrator">6816f79cc0a8016401c5a33be04be441</owner>
+<question_annotation/>
+<retire_workflow display_value="Knowledge - Instant Retire">3d18ef12c30031000096dfdc64d3aeb6</retire_workflow>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2022-10-20 16:25:41</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>6941e943afd9b4103a4ea33b3e2749e7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2022-10-20 16:25:41</sys_updated_on>
+<table>kb_knowledge</table>
+<template/>
+<title>Team Knowledge</title>
+<workflow display_value="Knowledge - Instant Publish">fbe441019f112100d8f8700c267fcf1a</workflow>
+</kb_knowledge_base>
+<kb_category action="INSERT_OR_UPDATE">
+<active>true</active>
+<full_category>Infrastructure</full_category>
+<label>Infrastructure</label>
+<parent_id>6941e943afd9b4103a4ea33b3e2749e7</parent_id>
+<parent_table>kb_knowledge_base</parent_table>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2022-10-20 16:59:08</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>4ef1a943afd9b410394e933b3e2749d4</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2022-10-20 16:59:08</sys_updated_on>
+<value>infrastructure</value>
+</kb_category>
+<kb_category action="INSERT_OR_UPDATE">
+<active>true</active>
+<full_category>Standard Operating Procedure</full_category>
+<label>Standard Operating Procedure</label>
+<parent_id>7a2cec7aaf91f01064bb30330e274939</parent_id>
+<parent_table>kb_knowledge_base</parent_table>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2022-10-20 16:57:59</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>4bf23095afd3f85019d98dd7672749cf</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2022-10-20 16:57:59</sys_updated_on>
+<value>standard_operating_procedure</value>
+</kb_category>
+<kb_category action="INSERT_OR_UPDATE">
+<active>true</active>
+<full_category>Infrastructure / ServiceNow</full_category>
+<label>ServiceNow</label>
+<parent_id>4ef1a943afd9b410394e933b3e2749d4</parent_id>
+<parent_table>kb_category</parent_table>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2022-10-20 16:59:39</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>3d681cadafbed11019d98dd767274962</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2022-10-20 16:59:39</sys_updated_on>
+<value>servicenow</value>
+</kb_category>
+<kb_category action="INSERT_OR_UPDATE">
+<active>true</active>
+<full_category>Standard Operating Procedure / Agile</full_category>
+<label>Agile</label>
+<parent_id>4bf23095afd3f85019d98dd7672749cf</parent_id>
+<parent_table>kb_category</parent_table>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2022-10-20 16:58:27</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>9383add2af129510404b8dd76727499a</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2022-10-20 16:58:27</sys_updated_on>
+<value>agile</value>
+</kb_category>
+<kb_category action="INSERT_OR_UPDATE">
+<active>true</active>
+<full_category>Administration</full_category>
+<label>Administration</label>
+<parent_id>7a2cec7aaf91f01064bb30330e274939</parent_id>
+<parent_table>kb_knowledge_base</parent_table>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2022-10-20 16:57:21</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>3c81c186afd1f01064bb303e0e274937</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2022-10-20 16:57:21</sys_updated_on>
+<value>administration</value>
+</kb_category>
+<user_criteria action="INSERT_OR_UPDATE">
+<active>true</active>
+<advanced>false</advanced>
+<company/>
+<department/>
+<group name="Application Development">0a52d3dcd7011200f2d224837e6103f2</group>
+<location/>
+<match_all>false</match_all>
+<name>Members of Application Development Group</name>
+<role/>
+<script><![CDATA[/** Scripted User Criteria is not cached, and evaluated everytime, so performance is dependent on the script.
+* Populate `answer` with true/false or evaluate to true/false
+* The script is evaluated in the scope the user criteria is defined
+* Don't use `current` in the script or populate the variable
+* Don't use `gs.getUser()` or  `gs.getUserID()`, 
+* instead use `user_id` which contains the user sys_id against whom the evaluation is happening.
+*/]]></script>
+<sys_class_name>user_criteria</sys_class_name>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2022-10-20 17:43:50</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>b6572f9b2f62111004e4d3f62799b6f3</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_name>Members of Application Development Group</sys_name>
+<sys_package display_value="Global" source="global">global</sys_package>
+<sys_policy/>
+<sys_scope display_value="Global">global</sys_scope>
+<sys_update_name>user_criteria_b6572f9b2f62111004e4d3f62799b6f3</sys_update_name>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2022-10-20 17:43:50</sys_updated_on>
+<user/>
+</user_criteria>
+<kb_category action="INSERT_OR_UPDATE">
+<active>true</active>
+<full_category>ServiceNow Applications</full_category>
+<label>ServiceNow Applications</label>
+<parent_id>7a2cec7aaf91f01064bb30330e274939</parent_id>
+<parent_table>kb_knowledge_base</parent_table>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2023-07-27 18:08:30</sys_created_on>
+<sys_domain>global</sys_domain>
+<sys_domain_path>/</sys_domain_path>
+<sys_id>556a696d1b5c7150edce10ad9c4bcbae</sys_id>
+<sys_mod_count>1</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2023-07-27 18:08:30</sys_updated_on>
+<value/>
+</kb_category>
+</unload>

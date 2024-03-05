@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2024-01-25 15:41:49">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description/>
+<inserted/>
+<name>Pre-prod Config Sync - 2023-07-20 LTE</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date>2023-07-20 15:35:58</release_date>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>e6354ddb1b80f910edce10ad9c4bcb4c</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>c74a56c8878c0a10c2420dc60cbb35b6</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_dictionary_sys_user_name</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update&gt;&lt;sys_dictionary action="INSERT_OR_UPDATE" element="name" table="sys_user"&gt;&lt;active&gt;true&lt;/active&gt;&lt;array&gt;false&lt;/array&gt;&lt;attributes/&gt;&lt;audit&gt;false&lt;/audit&gt;&lt;calculation&gt;&lt;![CDATA[if (current.first_name.nil() &amp;&amp; current.last_name.nil() &amp;&amp; !current.name.nil()) {
+  var names = current.name.toString().split(" ");
+  if (names.length &gt; 1) {
+    current.first_name = names[0];
+    names.shift();
+    current.last_name = names.join(" ");
+  } else 
+    current.last_name = names[0];
+}  
+
+if(current.first_name.nil()) { 
+    current.last_name; 
+  } else { 
+    current.first_name + ' ' + current.last_name;
+  }]]&gt;&lt;/calculation&gt;&lt;choice&gt;0&lt;/choice&gt;&lt;choice_field/&gt;&lt;choice_table/&gt;&lt;column_label&gt;Name&lt;/column_label&gt;&lt;comments/&gt;&lt;create_roles/&gt;&lt;default_value/&gt;&lt;defaultsort/&gt;&lt;delete_roles/&gt;&lt;dependent/&gt;&lt;dependent_on_field/&gt;&lt;display&gt;true&lt;/display&gt;&lt;dynamic_creation&gt;false&lt;/dynamic_creation&gt;&lt;dynamic_creation_script/&gt;&lt;dynamic_default_value/&gt;&lt;dynamic_ref_qual/&gt;&lt;element&gt;name&lt;/element&gt;&lt;element_reference&gt;false&lt;/element_reference&gt;&lt;foreign_database/&gt;&lt;formula/&gt;&lt;function_definition/&gt;&lt;function_field&gt;false&lt;/function_field&gt;&lt;internal_type display_value="String"&gt;string&lt;/internal_type&gt;&lt;mandatory&gt;false&lt;/mandatory&gt;&lt;max_length&gt;151&lt;/max_length&gt;&lt;name&gt;sys_user&lt;/name&gt;&lt;next_element/&gt;&lt;primary&gt;false&lt;/primary&gt;&lt;read_only&gt;false&lt;/read_only&gt;&lt;read_roles/&gt;&lt;reference/&gt;&lt;reference_cascade_rule/&gt;&lt;reference_floats&gt;false&lt;/reference_floats&gt;&lt;reference_key/&gt;&lt;reference_qual/&gt;&lt;reference_qual_condition/&gt;&lt;reference_type/&gt;&lt;spell_check&gt;false&lt;/spell_check&gt;&lt;staged&gt;false&lt;/staged&gt;&lt;sys_class_name&gt;sys_dictionary&lt;/sys_class_name&gt;&lt;sys_created_by&gt;glide.maint&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2007-11-19 23:59:27&lt;/sys_created_on&gt;&lt;sys_id&gt;9f3bb900db300010df0bf81d0f9619e1&lt;/sys_id&gt;&lt;sys_name&gt;Name&lt;/sys_name&gt;&lt;sys_package display_value="System (glidesoft)" source="glidesoft"&gt;e94b3d00db300010df0bf81d0f9619ff&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_dictionary_sys_user_name&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;michael.dobbs&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-07-29 19:45:48&lt;/sys_updated_on&gt;&lt;table_reference&gt;false&lt;/table_reference&gt;&lt;text_index&gt;false&lt;/text_index&gt;&lt;unique&gt;false&lt;/unique&gt;&lt;use_dependent_field&gt;false&lt;/use_dependent_field&gt;&lt;use_dynamic_default&gt;false&lt;/use_dynamic_default&gt;&lt;use_reference_qualifier&gt;simple&lt;/use_reference_qualifier&gt;&lt;virtual&gt;true&lt;/virtual&gt;&lt;virtual_type/&gt;&lt;widget/&gt;&lt;write_roles/&gt;&lt;xml_view&gt;false&lt;/xml_view&gt;&lt;array_denormalized&gt;false&lt;/array_denormalized&gt;&lt;sizeclass/&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;/sys_dictionary&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-258046535</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>034a56c8878c0a10c2420dc60cbb35b9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f1b0000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>sys_user</table>
+<target_name>User.Name</target_name>
+<type>Dictionary</type>
+<update_domain>global</update_domain>
+<update_guid>b11fc17591de14103fe79cafbd64ee13</update_guid>
+<update_guid_history>b11fc17591de14103fe79cafbd64ee13:-258046535,d3c1e27c2fb29410881025d104b2898a:2025905988,e2a1627cb4b2941088d4bdbf29e1a941:54287140,b11fc17591de14103fe79cafbd64ee13:-258046535,291fcd359ade141015846ea9106df18f:-1111148126</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_dictionary_cmn_location_u_metro_office</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update&gt;&lt;sys_dictionary action="INSERT_OR_UPDATE" element="u_metro_office" table="cmn_location"&gt;&lt;active&gt;true&lt;/active&gt;&lt;array&gt;false&lt;/array&gt;&lt;array_denormalized&gt;false&lt;/array_denormalized&gt;&lt;attributes&gt;edge_encryption_enabled=true&lt;/attributes&gt;&lt;audit&gt;false&lt;/audit&gt;&lt;calculation&gt;&lt;![CDATA[(function calculatedFieldValue(current) {
+
+//current.setValue('u_metro_office', String(current.getValue('u_site_id')) + ' - ' + current.getValue('city'));
+	
+	return current.u_site_id + ' - '+current.city;
+
+})(current);]]&gt;&lt;/calculation&gt;&lt;choice/&gt;&lt;choice_field/&gt;&lt;choice_table/&gt;&lt;column_label&gt;Metro Office&lt;/column_label&gt;&lt;comments/&gt;&lt;create_roles/&gt;&lt;default_value/&gt;&lt;defaultsort/&gt;&lt;delete_roles/&gt;&lt;dependent/&gt;&lt;dependent_on_field/&gt;&lt;display&gt;true&lt;/display&gt;&lt;dynamic_creation&gt;false&lt;/dynamic_creation&gt;&lt;dynamic_creation_script/&gt;&lt;dynamic_default_value/&gt;&lt;dynamic_ref_qual/&gt;&lt;element&gt;u_metro_office&lt;/element&gt;&lt;element_reference&gt;false&lt;/element_reference&gt;&lt;foreign_database/&gt;&lt;function_definition/&gt;&lt;function_field&gt;false&lt;/function_field&gt;&lt;internal_type display_value="String"&gt;string&lt;/internal_type&gt;&lt;mandatory&gt;false&lt;/mandatory&gt;&lt;max_length&gt;100&lt;/max_length&gt;&lt;name&gt;cmn_location&lt;/name&gt;&lt;next_element/&gt;&lt;primary&gt;false&lt;/primary&gt;&lt;read_only&gt;false&lt;/read_only&gt;&lt;read_roles/&gt;&lt;reference/&gt;&lt;reference_cascade_rule/&gt;&lt;reference_floats&gt;false&lt;/reference_floats&gt;&lt;reference_key/&gt;&lt;reference_qual/&gt;&lt;reference_qual_condition/&gt;&lt;reference_type/&gt;&lt;sizeclass/&gt;&lt;spell_check&gt;false&lt;/spell_check&gt;&lt;staged&gt;false&lt;/staged&gt;&lt;sys_class_name&gt;sys_dictionary&lt;/sys_class_name&gt;&lt;sys_created_by&gt;tanner.smith&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-07-28 03:15:04&lt;/sys_created_on&gt;&lt;sys_id&gt;d7b2ecdd1b5ed010edce10ad9c4bcb34&lt;/sys_id&gt;&lt;sys_mod_count&gt;31&lt;/sys_mod_count&gt;&lt;sys_name&gt;Metro Office&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_dictionary_cmn_location_u_metro_office&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;jeremiah.puleo&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-08-05 14:53:31&lt;/sys_updated_on&gt;&lt;table_reference&gt;false&lt;/table_reference&gt;&lt;text_index&gt;false&lt;/text_index&gt;&lt;unique&gt;false&lt;/unique&gt;&lt;use_dependent_field&gt;false&lt;/use_dependent_field&gt;&lt;use_dynamic_default&gt;false&lt;/use_dynamic_default&gt;&lt;use_reference_qualifier&gt;simple&lt;/use_reference_qualifier&gt;&lt;virtual&gt;false&lt;/virtual&gt;&lt;widget/&gt;&lt;write_roles/&gt;&lt;xml_view&gt;false&lt;/xml_view&gt;&lt;/sys_dictionary&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1792535659</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>074a56c8878c0a10c2420dc60cbb35b8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f500000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location.Metro Office</target_name>
+<type>Dictionary</type>
+<update_domain>global</update_domain>
+<update_guid>6c5f0c403ca2581092ddd84ab81e6218</update_guid>
+<update_guid_history>6c5f0c403ca2581092ddd84ab81e6218:1792535659,6c5f0c403ca2581092ddd84ab81e6218:1792535659,4aaec0401ca2581005a8e363994c7f30:1789754720,ad35de52661a9010397d19dd0aecda40:-174745767,a3f7ff19c5d61010b000c09816acffe8:1210817262,ec50b7d18e16141083b5a42aa715ab55:-1120731497,1e007bd110161410da4b07a668b3386a:-1750457246,28cf6f9180161410865abf9060d508d7:1416109477,f0af6351d116141092d99f063f069883:-1293518148,1eee6f9130161410fa2991c6420dadcd:-860307464,29c42f5d9ad21410aed87660b1fc6d96:-267749704,dc94235d8ad21410d60f9cd16bb671a6:-460018799,19736f1d3fd2141060e274aba28127f9:-1726315073,cc53e71d6fd214107e9cb666e5c3ba6b:-941554459,6433ab1dbcd21410826c7cd699aedd7b:195711120,d692afd9aed214103310a91ef9c74409:-1096213056,dc11a7d970d21410d378ba8ccd36390d:39776719,a54ce495ef9ed010a3326b282c659f36:-1956284723,9d2c2495e99ed0101a3e240424127bb0:988752981,b80c6c55dd9ed010b84a7122f3e387e7:91127152,b0ebec55df9ed010f3cb412e543232c6:1779144517,58abe855d89ed01075cf0e39930aafbf:-855916699,79ba6055f19ed010a821f972d74b8cde:1173952179,e3b8ecd10e9ed01059b943287c130915:1345807717,706828d1469ed010d06f0eb0a4846388:279042133,05d6e891eb9ed010f3d503a08338dbc1:783585561,f346a091a89ed010487c998dbb247fac:703509553,e285e851949ed01089cbfdc4389284a3:1254559348,e8946c11c59ed010b940145717f2d1d6:1722794181,2c93e411fb9ed010b6d50d330feef909:-593466618,48836811a79ed01041d9040978ad318a:-520633631,69732411349ed010cb5aa798d174005d:1359144060,97b2ecdd085ed0102932020554edef66:1056890787</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_db_object_db3bb900db300010df0bf81d0f9619d8</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_object"><sys_db_object action="INSERT_OR_UPDATE"><access>public</access><actions_access>true</actions_access><alter_access>true</alter_access><caller_access/><client_scripts_access>true</client_scripts_access><configuration_access>false</configuration_access><create_access>true</create_access><create_access_controls>false</create_access_controls><delete_access>false</delete_access><is_extendable>false</is_extendable><label>User</label><live_feed_enabled>false</live_feed_enabled><name>sys_user</name><number_ref/><provider_class/><read_access>true</read_access><scriptable_table>false</scriptable_table><super_class/><sys_class_name>sys_db_object</sys_class_name><sys_created_by>system</sys_created_by><sys_created_on>2019-10-25 02:43:58</sys_created_on><sys_id>db3bb900db300010df0bf81d0f9619d8</sys_id><sys_mod_count>1</sys_mod_count><sys_name>User</sys_name><sys_package display_value="System (apps/system_user)" source="apps/system_user">723bb900db300010df0bf81d0f96194a</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_db_object_db3bb900db300010df0bf81d0f9619d8</sys_update_name><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 19:45:48</sys_updated_on><update_access>true</update_access><user_role/><ws_access>true</ws_access><extension_model/><sys_class_code/><sys_class_path/></sys_db_object></record_update>]]></payload>
+<payload_hash>-852200251</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>0b4a56c8878c0a10c2420dc60cbb35b7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f230000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>sys_user</table>
+<target_name>User</target_name>
+<type>Table</type>
+<update_domain>global</update_domain>
+<update_guid>f11fc17562de1410cf755b1241b74b19</update_guid>
+<update_guid_history>f11fc17562de1410cf755b1241b74b19:-852200251,f11fc17562de1410cf755b1241b74b19:-852200251,351fc175dede1410e41ff4555b429115:1545797961</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_choice_cmn_location_u_region</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_choice action="INSERT_OR_UPDATE" field="u_region" table="cmn_location" version="3"><sys_choice action="INSERT_OR_UPDATE"><dependent_value/><element>u_region</element><hint/><inactive>false</inactive><label>HQ</label><language>en</language><name>cmn_location</name><sequence>1</sequence><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-08-06 15:24:27</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>faefd59c1b2e5810edce10ad9c4bcbbb</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-08-06 15:24:27</sys_updated_on><value>HQ</value></sys_choice><sys_choice action="INSERT_OR_UPDATE"><dependent_value/><element>u_region</element><hint/><inactive>false</inactive><label>East</label><language>en</language><name>cmn_location</name><sequence>2</sequence><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-08-06 17:24:23</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>d07bf15c1b6e5810edce10ad9c4bcb7e</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-08-06 17:24:23</sys_updated_on><value>East</value></sys_choice><sys_choice action="INSERT_OR_UPDATE"><dependent_value/><element>u_region</element><hint/><inactive>false</inactive><label>North</label><language>en</language><name>cmn_location</name><sequence>2</sequence><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-08-06 17:24:35</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>c77b35dc1b6e5810edce10ad9c4bcb73</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-08-06 17:24:35</sys_updated_on><value>North</value></sys_choice><sys_choice action="INSERT_OR_UPDATE"><dependent_value/><element>u_region</element><hint/><inactive>false</inactive><label>South</label><language>en</language><name>cmn_location</name><sequence>2</sequence><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-08-06 17:24:46</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>3d8bb1dc1b6e5810edce10ad9c4bcb07</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-08-06 17:24:46</sys_updated_on><value>South</value></sys_choice><sys_choice action="INSERT_OR_UPDATE"><dependent_value/><element>u_region</element><hint/><inactive>false</inactive><label>West</label><language>en</language><name>cmn_location</name><sequence>2</sequence><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-08-06 15:24:59</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>9f00259c1b2e5810edce10ad9c4bcb3a</sys_id><sys_mod_count>3</sys_mod_count><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-08-06 17:24:01</sys_updated_on><value>West</value></sys_choice><sys_choice_set action="INSERT_OR_UPDATE"><element>u_region</element><name>cmn_location</name><sys_class_name>sys_choice_set</sys_class_name><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-08-06 15:24:27</sys_created_on><sys_id>5fff199c1b2e5810edce10ad9c4bcbc0</sys_id><sys_mod_count>0</sys_mod_count><sys_name>u_region</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_choice_cmn_location_u_region</sys_update_name><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-08-06 15:24:27</sys_updated_on></sys_choice_set></sys_choice></record_update>]]></payload>
+<payload_hash>619951736</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>0f4a56c8878c0a10c2420dc60cbb35b6</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f660000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location.Region</target_name>
+<type>Choice list</type>
+<update_domain>global</update_domain>
+<update_guid>b98bb1dcde6e581024f13d52a1026309</update_guid>
+<update_guid_history>b98bb1dcde6e581024f13d52a1026309:619951736,b98bb1dcde6e581024f13d52a1026309:619951736,477b35dc296e5810e6918c449dd4d675:-635802538,147bf15c446e5810b35cc8a35f8e7680:-48805196,765bf958b16e5810135d5ff502301f6f:-1371659232,6d5bb1dc826e581035bb8448602264cf:-360345098,62d0e1dc9b2e5810ce01f25e051b620e:-986526644,5f10299c772e5810580ba9a2016eb7c7:21386765,2bff199c472e5810a946832c742a75c2:137844776</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_ui_section_434dba9dc0a801640003eb8a19faf7ca</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="" section_id="434dba9dc0a801640003eb8a19faf7ca" sys_domain="global" table="cmn_location" version="3" view=""><sys_ui_element action="INSERT_OR_UPDATE"><element>name</element><position>0</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>19f9917d1bde1410edce10ad9c4bcb02</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>street</element><position>1</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>91f9917d1bde1410edce10ad9c4bcb03</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>city</element><position>2</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>19f9917d1bde1410edce10ad9c4bcb03</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>state</element><position>3</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>9df9917d1bde1410edce10ad9c4bcb03</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>zip</element><position>4</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>15f9917d1bde1410edce10ad9c4bcb04</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>country</element><position>5</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>99f9917d1bde1410edce10ad9c4bcb04</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.split</element><position>6</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>11f9917d1bde1410edce10ad9c4bcb05</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type>.split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>u_type</element><position>7</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>95f9917d1bde1410edce10ad9c4bcb05</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>u_region</element><position>8</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>1df9917d1bde1410edce10ad9c4bcb05</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>contact</element><position>9</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>91f9917d1bde1410edce10ad9c4bcb06</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>phone</element><position>10</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>19f9917d1bde1410edce10ad9c4bcb06</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>fax_phone</element><position>11</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>9df9917d1bde1410edce10ad9c4bcb06</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>parent</element><position>12</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>15f9917d1bde1410edce10ad9c4bcb07</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>latitude</element><position>13</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>99f9917d1bde1410edce10ad9c4bcb07</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>longitude</element><position>14</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>11f9917d1bde1410edce10ad9c4bcb08</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>u_site_id</element><position>15</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>95f9917d1bde1410edce10ad9c4bcb08</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>u_metro_office</element><position>16</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>1df9917d1bde1410edce10ad9c4bcb08</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>company</element><position>17</position><sys_created_by>michael.dobbs</sys_created_by><sys_created_on>2020-07-29 20:33:17</sys_created_on><sys_id>91f9917d1bde1410edce10ad9c4bcb09</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="cmn_location" sys_domain="global" view="Default view">434dba9dc0a801640003eb8a19faf7ca</sys_ui_section><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-29 20:33:17</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption/><header>false</header><name>cmn_location</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>fred.luddy</sys_created_by><sys_created_on>2005-01-05 14:36:02</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>434dba9dc0a801640003eb8a19faf7ca</sys_id><sys_mod_count>1</sys_mod_count><sys_name>cmn_location</sys_name><sys_overrides/><sys_package display_value="System (apps/system_ui)" source="apps/system_ui">bd2b7500db300010df0bf81d0f9619c6</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_ui_section_434dba9dc0a801640003eb8a19faf7ca</sys_update_name><sys_updated_by>system</sys_updated_by><sys_updated_on>2019-10-25 04:44:48</sys_updated_on><sys_user/><title>true</title><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
+<payload_hash>-352961491</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>0f4a56c8878c0a10c2420dc60cbb35b9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f330000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location</target_name>
+<type>Form Layout</type>
+<update_domain>global</update_domain>
+<update_guid>19f9917d59de1410b4b5e360b8cdc80b</update_guid>
+<update_guid_history>19f9917d59de1410b4b5e360b8cdc80b:-352961491,44377e3df691501087e98b20522e75bf:-1021837503,2fbb679cc85344102803af72f363c92e:-951815066,92e6160b853250107fd344d932816a50:384969707,19f9917d59de1410b4b5e360b8cdc80b:-352961491,c807ac91199ed0105944bb3438db1676:-990983209,3fb4e451639ed010b08dee3dc8526281:-1866731859,9008f242a853845025d208317b520f16:-1062566751,3e0a9bfcd45284101150ba5b564434d0:-1053002983,7a0a9bfc125284105967c16a553e35c9:-951815066</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_dictionary_cmn_location_name</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_dictionary action="INSERT_OR_UPDATE" element="name" table="cmn_location"><active>true</active><array>false</array><attributes/><audit>false</audit><calculation/><choice/><choice_field/><choice_table/><column_label>Name</column_label><comments/><create_roles/><default_value/><defaultsort/><delete_roles/><dependent/><dependent_on_field/><display>false</display><dynamic_creation>false</dynamic_creation><dynamic_creation_script/><dynamic_default_value/><dynamic_ref_qual/><element>name</element><element_reference>false</element_reference><foreign_database/><formula/><function_definition/><function_field>false</function_field><internal_type display_value="String">string</internal_type><mandatory>false</mandatory><max_length>100</max_length><name>cmn_location</name><next_element/><primary>false</primary><read_only>false</read_only><read_roles/><reference/><reference_cascade_rule/><reference_floats>false</reference_floats><reference_key/><reference_qual/><reference_qual_condition/><reference_type/><spell_check>false</spell_check><staged>false</staged><sys_class_name>sys_dictionary</sys_class_name><sys_created_by>glide.maint</sys_created_by><sys_created_on>2010-03-30 11:28:46</sys_created_on><sys_id>0b3bb900db300010df0bf81d0f96199e</sys_id><sys_name>Name</sys_name><sys_package display_value="Contract Management" source="com.snc.contract_management">80388ec0db340010df0bf81d0f961995</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_dictionary_cmn_location_name</sys_update_name><sys_updated_by>jeremiah.puleo</sys_updated_by><sys_updated_on>2020-08-05 14:53:31</sys_updated_on><table_reference>false</table_reference><text_index>false</text_index><unique>false</unique><use_dependent_field>false</use_dependent_field><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><virtual>false</virtual><virtual_type/><widget/><write_roles/><xml_view>false</xml_view><array_denormalized>false</array_denormalized><sizeclass/><sys_mod_count>5</sys_mod_count></sys_dictionary></record_update>]]></payload>
+<payload_hash>-1068559772</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>434a56c8878c0a10c2420dc60cbb35b8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f4a0000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location.Name</target_name>
+<type>Dictionary</type>
+<update_domain>global</update_domain>
+<update_guid>a45f0c401fa25810bc7beb3227e45617</update_guid>
+<update_guid_history>a45f0c401fa25810bc7beb3227e45617:-1068559772,a45f0c401fa25810bc7beb3227e45617:-1068559772,3f955692c41a9010f8cebd84128bf760:-11870027,6b6592929c1a90100cccef40a75bcb72:-1068559772,e535de52a21a90107edfef5f9ead0842:-11870027,71ba60555c9ed010dd5cb162a9d2f8dd:-1068559772,b5ba6055109ed010a0e3ce3d123d7cb2:-11870027</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_db_object_0b3bb900db300010df0bf81d0f96199c</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_object"><sys_db_object action="INSERT_OR_UPDATE"><access>public</access><actions_access>true</actions_access><alter_access>true</alter_access><caller_access/><client_scripts_access>true</client_scripts_access><configuration_access>false</configuration_access><create_access>true</create_access><create_access_controls>false</create_access_controls><delete_access>false</delete_access><is_extendable>false</is_extendable><label>Location</label><live_feed_enabled>false</live_feed_enabled><name>cmn_location</name><number_ref/><provider_class/><read_access>true</read_access><scriptable_table>false</scriptable_table><super_class/><sys_class_name>sys_db_object</sys_class_name><sys_created_by>system</sys_created_by><sys_created_on>2019-10-25 02:43:57</sys_created_on><sys_id>0b3bb900db300010df0bf81d0f96199c</sys_id><sys_mod_count>1</sys_mod_count><sys_name>Location</sys_name><sys_package display_value="System (apps/system_user)" source="apps/system_user">723bb900db300010df0bf81d0f96194a</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_db_object_0b3bb900db300010df0bf81d0f96199c</sys_update_name><sys_updated_by>jeremiah.puleo</sys_updated_by><sys_updated_on>2020-07-29 20:30:49</sys_updated_on><update_access>true</update_access><user_role/><ws_access>true</ws_access><extension_model/><sys_class_code/><sys_class_path/></sys_db_object></record_update>]]></payload>
+<payload_hash>-1065994900</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>474a56c8878c0a10c2420dc60cbb35b7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f2b0000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location</target_name>
+<type>Table</type>
+<update_domain>global</update_domain>
+<update_guid>9d69553d8fde14108144c9c28f0f3bd3</update_guid>
+<update_guid_history>9d69553d8fde14108144c9c28f0f3bd3:-1065994900,9d69553d8fde14108144c9c28f0f3bd3:-1065994900,d169553d2cde14105c633bd848c4a5d0:-1846529255</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_script_ec7f8c401ba25810edce10ad9c4bcba7</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script"&gt;&lt;sys_script action="INSERT_OR_UPDATE"&gt;&lt;abort_action&gt;false&lt;/abort_action&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;action_delete&gt;false&lt;/action_delete&gt;&lt;action_insert&gt;true&lt;/action_insert&gt;&lt;action_query&gt;false&lt;/action_query&gt;&lt;action_update&gt;true&lt;/action_update&gt;&lt;active&gt;true&lt;/active&gt;&lt;add_message&gt;false&lt;/add_message&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;change_fields&gt;false&lt;/change_fields&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;collection&gt;cmn_location&lt;/collection&gt;&lt;condition/&gt;&lt;description/&gt;&lt;execute_function&gt;false&lt;/execute_function&gt;&lt;filter_condition/&gt;&lt;is_rest&gt;false&lt;/is_rest&gt;&lt;message/&gt;&lt;name&gt;Set metro office&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;priority&gt;100&lt;/priority&gt;&lt;rest_method/&gt;&lt;rest_method_text/&gt;&lt;rest_service/&gt;&lt;rest_service_text/&gt;&lt;rest_variables/&gt;&lt;role_conditions/&gt;&lt;script&gt;&lt;![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	// Add your code here
+	current.u_metro_office=current.u_site_id + ' - '+current.city;
+
+})(current, previous);]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;jeremiah.puleo&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-08-05 14:55:08&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;ec7f8c401ba25810edce10ad9c4bcba7&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name&gt;Set metro office&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_ec7f8c401ba25810edce10ad9c4bcba7&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;jeremiah.puleo&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-08-05 15:43:43&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;when&gt;before&lt;/when&gt;&lt;/sys_script&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=ec7f8c401ba25810edce10ad9c4bcba7"/&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-91881178</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>4b4a56c8878c0a10c2420dc60cbb35b9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f580000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Set metro office</target_name>
+<type>Business Rule</type>
+<update_domain>global</update_domain>
+<update_guid>bbca18c4a2a25810637e6ffbfd715398</update_guid>
+<update_guid_history>bbca18c4a2a25810637e6ffbfd715398:-91881178,4cd83dd0aff6141058ed498cbddf6da2:545051411,bbca18c4a2a25810637e6ffbfd715398:-91881178,39d0988095a25810d57b11f3b93dab91:-1787950598,51cf40801aa2581016f9caad71f0470c:-138478540,c0bf4c4092a2581037bbb0b836891d2e:-386929178</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_dictionary_item_option_new_set_type</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_dictionary action="INSERT_OR_UPDATE" element="type" table="item_option_new_set"><active>true</active><array>false</array><attributes>edge_encryption_enabled=true</attributes><audit>false</audit><calculation/><choice>3</choice><choice_field/><choice_table/><column_label>Type</column_label><comments/><create_roles/><default_value>one_to_one</default_value><defaultsort/><delete_roles/><dependent/><dependent_on_field/><display>false</display><dynamic_creation>false</dynamic_creation><dynamic_creation_script/><dynamic_default_value/><dynamic_ref_qual/><element>type</element><element_reference>false</element_reference><foreign_database/><formula/><function_definition/><function_field>false</function_field><internal_type display_value="String">string</internal_type><mandatory>false</mandatory><max_length>40</max_length><name>item_option_new_set</name><next_element/><primary>false</primary><read_only>true</read_only><read_roles/><reference/><reference_cascade_rule/><reference_floats>false</reference_floats><reference_key/><reference_qual/><reference_qual_condition/><reference_type/><spell_check>false</spell_check><staged>false</staged><sys_class_name>sys_dictionary</sys_class_name><sys_created_by>system</sys_created_by><sys_created_on>2019-10-25 03:30:51</sys_created_on><sys_id>46f54a88dbf00010df0bf81d0f9619de</sys_id><sys_name>Type</sys_name><sys_package display_value="Service Catalog Platform" source="com.glideapp.servicecatalog.platform">9be5c688dbf00010df0bf81d0f9619f3</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_dictionary_item_option_new_set_type</sys_update_name><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-07-28 18:42:50</sys_updated_on><table_reference>false</table_reference><text_index>false</text_index><unique>false</unique><use_dependent_field>false</use_dependent_field><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><virtual>false</virtual><virtual_type/><widget/><write_roles/><xml_view>false</xml_view><array_denormalized>false</array_denormalized><sizeclass/><sys_mod_count>2</sys_mod_count></sys_dictionary></record_update>]]></payload>
+<payload_hash>2054128905</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>4f4a56c8878c0a10c2420dc60cbb35b8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f140000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>item_option_new_set</table>
+<target_name>Variable Set.Type</target_name>
+<type>Dictionary</type>
+<update_domain>global</update_domain>
+<update_guid>f117fbd5fe161410d57793b22e58b955</update_guid>
+<update_guid_history>f117fbd5fe161410d57793b22e58b955:2054128905,f117fbd5fe161410d57793b22e58b955:2054128905,b0f6fbd5ad1614106e9cd929281ddc8d:2029456774,74f6b3d54e16141034fd1494ed8ba433:2054128905</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_documentation_cmn_location_u_site_id_en</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_documentation element="u_site_id" label="Site ID" language="en" table="cmn_location"><sys_documentation action="INSERT_OR_UPDATE"><element>u_site_id</element><help/><hint/><label>Site ID</label><language>en</language><name>cmn_location</name><plural>Site IDs</plural><sys_class_name>sys_documentation</sys_class_name><sys_created_by>tanner.smith</sys_created_by><sys_created_on>2020-07-28 02:58:41</sys_created_on><sys_id>57fe185d1b5ed010edce10ad9c4bcbb9</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Site ID</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_documentation_cmn_location_u_site_id_en</sys_update_name><sys_updated_by>tanner.smith</sys_updated_by><sys_updated_on>2020-07-28 02:58:41</sys_updated_on><url/><url_target/></sys_documentation></sys_documentation></record_update>]]></payload>
+<payload_hash>12176109</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>874a56c8878c0a10c2420dc60cbb35b9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48efd0000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location.Site ID</target_name>
+<type>Field Label</type>
+<update_domain>global</update_domain>
+<update_guid>9ffe185d2e5ed010ace570c23250aec7</update_guid>
+<update_guid_history>9ffe185d2e5ed010ace570c23250aec7:12176109,9ffe185d2e5ed010ace570c23250aec7:12176109</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_dictionary_cmn_location_u_site_id</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_dictionary action="INSERT_OR_UPDATE" element="u_site_id" table="cmn_location"><active>true</active><array>false</array><array_denormalized>false</array_denormalized><attributes/><audit>false</audit><calculation/><choice>0</choice><choice_field/><choice_table/><column_label>Site ID</column_label><comments/><create_roles/><default_value/><defaultsort/><delete_roles/><dependent/><dependent_on_field/><display>false</display><dynamic_creation>false</dynamic_creation><dynamic_creation_script/><dynamic_default_value/><dynamic_ref_qual/><element>u_site_id</element><element_reference>false</element_reference><foreign_database/><function_definition/><function_field>false</function_field><internal_type display_value="Integer">integer</internal_type><mandatory>false</mandatory><max_length>40</max_length><name>cmn_location</name><next_element/><primary>false</primary><read_only>false</read_only><read_roles/><reference/><reference_cascade_rule/><reference_floats>false</reference_floats><reference_key/><reference_qual/><reference_qual_condition/><reference_type/><sizeclass/><spell_check>false</spell_check><staged>false</staged><sys_class_name>sys_dictionary</sys_class_name><sys_created_by>tanner.smith</sys_created_by><sys_created_on>2020-07-28 02:58:41</sys_created_on><sys_id>9ffe185d1b5ed010edce10ad9c4bcbb5</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Site ID</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_dictionary_cmn_location_u_site_id</sys_update_name><sys_updated_by>tanner.smith</sys_updated_by><sys_updated_on>2020-07-28 02:58:41</sys_updated_on><table_reference>false</table_reference><text_index>false</text_index><unique>false</unique><use_dependent_field>false</use_dependent_field><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><virtual>false</virtual><widget/><write_roles/><xml_view>false</xml_view></sys_dictionary></record_update>]]></payload>
+<payload_hash>699862724</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>8b4a56c8878c0a10c2420dc60cbb35b8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48eee0000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location.Site ID</target_name>
+<type>Dictionary</type>
+<update_domain>global</update_domain>
+<update_guid>1ffe185d6b5ed010a4cbde92f661dec6</update_guid>
+<update_guid_history>1ffe185d6b5ed010a4cbde92f661dec6:699862724,1ffe185d6b5ed010a4cbde92f661dec6:699862724</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_dictionary_cmn_location_full_name</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_dictionary action="INSERT_OR_UPDATE" element="full_name" table="cmn_location"><active>true</active><array>false</array><attributes/><audit>false</audit><calculation/><choice/><choice_field/><choice_table/><column_label>Full name</column_label><comments/><create_roles/><default_value/><defaultsort/><delete_roles/><dependent/><dependent_on_field/><display>false</display><dynamic_creation>false</dynamic_creation><dynamic_creation_script/><dynamic_default_value/><dynamic_ref_qual/><element>full_name</element><element_reference>false</element_reference><foreign_database/><formula/><function_definition/><function_field>false</function_field><internal_type display_value="String">string</internal_type><mandatory>false</mandatory><max_length>255</max_length><name>cmn_location</name><next_element/><primary>false</primary><read_only>false</read_only><read_roles/><reference/><reference_cascade_rule/><reference_floats>false</reference_floats><reference_key/><reference_qual/><reference_qual_condition/><reference_type/><spell_check>false</spell_check><staged>false</staged><sys_class_name>sys_dictionary</sys_class_name><sys_created_by>system</sys_created_by><sys_created_on>2019-10-25 02:43:58</sys_created_on><sys_id>473bb900db300010df0bf81d0f9619a6</sys_id><sys_name>Full name</sys_name><sys_package display_value="System (apps/system_user)" source="apps/system_user">723bb900db300010df0bf81d0f96194a</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_dictionary_cmn_location_full_name</sys_update_name><sys_updated_by>tanner.smith</sys_updated_by><sys_updated_on>2020-07-28 03:13:52</sys_updated_on><table_reference>false</table_reference><text_index>false</text_index><unique>false</unique><use_dependent_field>false</use_dependent_field><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><virtual>false</virtual><virtual_type/><widget/><write_roles>nobody</write_roles><xml_view>false</xml_view><array_denormalized>false</array_denormalized><sizeclass/><sys_mod_count>1</sys_mod_count></sys_dictionary></record_update>]]></payload>
+<payload_hash>427158941</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>8f4a56c8878c0a10c2420dc60cbb35b7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f050000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location.Full name</target_name>
+<type>Dictionary</type>
+<update_domain>global</update_domain>
+<update_guid>e17228dd565ed010609b0856ad9e45f0</update_guid>
+<update_guid_history>e17228dd565ed010609b0856ad9e45f0:427158941,e17228dd565ed010609b0856ad9e45f0:427158941,e97228ddea5ed0103a56c83306dc77ea:-350141834</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_documentation_cmn_location_u_metro_office_en</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_documentation element="u_metro_office" label="Metro Office" language="en" table="cmn_location"><sys_documentation action="INSERT_OR_UPDATE"><element>u_metro_office</element><help/><hint>Used for office identification when combined with Site ID</hint><label>Metro Office</label><language>en</language><name>cmn_location</name><plural>Metro Offices</plural><sys_class_name>sys_documentation</sys_class_name><sys_created_by>tanner.smith</sys_created_by><sys_created_on>2020-07-28 03:15:04</sys_created_on><sys_id>13b2ecdd1b5ed010edce10ad9c4bcb36</sys_id><sys_mod_count>1</sys_mod_count><sys_name>Metro Office</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_documentation_cmn_location_u_metro_office_en</sys_update_name><sys_updated_by>tanner.smith</sys_updated_by><sys_updated_on>2020-07-28 03:18:07</sys_updated_on><url/><url_target/></sys_documentation></sys_documentation></record_update>]]></payload>
+<payload_hash>2132001047</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>c34a56c8878c0a10c2420dc60cbb35b9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f0d0000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location.Metro Office</target_name>
+<type>Field Label</type>
+<update_domain>global</update_domain>
+<update_guid>cc736411599ed010de9de164815b5db4</update_guid>
+<update_guid_history>cc736411599ed010de9de164815b5db4:2132001047,cc736411599ed010de9de164815b5db4:2132001047,1bb2ecdd515ed0108885db288d9ce567:-1173187653</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_dictionary_cmn_location_u_region</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_dictionary action="INSERT_OR_UPDATE" element="u_region" table="cmn_location"><active>true</active><array>false</array><array_denormalized>false</array_denormalized><attributes>encode_utf8=false</attributes><audit>false</audit><calculation/><choice>1</choice><choice_field/><choice_table/><column_label>Region</column_label><comments/><create_roles/><default_value/><defaultsort/><delete_roles/><dependent/><dependent_on_field/><display>false</display><dynamic_creation>false</dynamic_creation><dynamic_creation_script/><dynamic_default_value/><dynamic_ref_qual/><element>u_region</element><element_reference>false</element_reference><foreign_database/><function_definition/><function_field>false</function_field><internal_type display_value="Choice">choice</internal_type><mandatory>false</mandatory><max_length>32</max_length><name>cmn_location</name><next_element/><primary>false</primary><read_only>false</read_only><read_roles/><reference/><reference_cascade_rule/><reference_floats>false</reference_floats><reference_key/><reference_qual/><reference_qual_condition/><reference_type/><sizeclass/><spell_check>false</spell_check><staged>false</staged><sys_class_name>sys_dictionary</sys_class_name><sys_created_by>xavier.corderomuniz</sys_created_by><sys_created_on>2020-03-03 18:54:17</sys_created_on><sys_id>8408b242db5384504f4cf5fc0f9619d5</sys_id><sys_mod_count>1</sys_mod_count><sys_name>Region</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_dictionary_cmn_location_u_region</sys_update_name><sys_updated_by>michael.dobbs</sys_updated_by><sys_updated_on>2020-08-06 15:23:58</sys_updated_on><table_reference>false</table_reference><text_index>false</text_index><unique>false</unique><use_dependent_field>false</use_dependent_field><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><virtual>false</virtual><widget/><write_roles/><xml_view>false</xml_view></sys_dictionary></record_update>]]></payload>
+<payload_hash>-387667299</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>c74a56c8878c0a10c2420dc60cbb35b8</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f600000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location.Region</target_name>
+<type>Dictionary</type>
+<update_domain>global</update_domain>
+<update_guid>58ef959c792e581075cf5a4c2063f318</update_guid>
+<update_guid_history>58ef959c792e581075cf5a4c2063f318:-387667299,58ef959c792e581075cf5a4c2063f318:-387667299,9c08b242705384501184a10186afa4fe:-1857682546</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>sys_dictionary_cmn_location_city</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_dictionary action="INSERT_OR_UPDATE" element="city" table="cmn_location"><active>true</active><array>false</array><attributes/><audit>false</audit><calculation/><choice/><choice_field/><choice_table/><column_label>City</column_label><comments/><create_roles/><default_value/><defaultsort/><delete_roles/><dependent/><dependent_on_field/><display>false</display><dynamic_creation>false</dynamic_creation><dynamic_creation_script/><dynamic_default_value/><dynamic_ref_qual/><element>city</element><element_reference>false</element_reference><foreign_database/><formula/><function_definition/><function_field>false</function_field><internal_type display_value="String">string</internal_type><mandatory>false</mandatory><max_length>40</max_length><name>cmn_location</name><next_element/><primary>false</primary><read_only>false</read_only><read_roles/><reference/><reference_cascade_rule/><reference_floats>false</reference_floats><reference_key/><reference_qual/><reference_qual_condition/><reference_type/><spell_check>false</spell_check><staged>false</staged><sys_class_name>sys_dictionary</sys_class_name><sys_created_by>system</sys_created_by><sys_created_on>2019-10-25 02:43:57</sys_created_on><sys_id>433bb900db300010df0bf81d0f9619a0</sys_id><sys_name>City</sys_name><sys_package display_value="System (apps/system_user)" source="apps/system_user">723bb900db300010df0bf81d0f96194a</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_dictionary_cmn_location_city</sys_update_name><sys_updated_by>jeremiah.puleo</sys_updated_by><sys_updated_on>2020-07-31 14:10:55</sys_updated_on><table_reference>false</table_reference><text_index>false</text_index><unique>false</unique><use_dependent_field>false</use_dependent_field><use_dynamic_default>false</use_dynamic_default><use_reference_qualifier>simple</use_reference_qualifier><virtual>false</virtual><virtual_type/><widget/><write_roles/><xml_view>false</xml_view><array_denormalized>false</array_denormalized><sizeclass/><sys_mod_count>2</sys_mod_count></sys_dictionary></record_update>]]></payload>
+<payload_hash>-779906593</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>cb4a56c8878c0a10c2420dc60cbb35b7</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f3c0000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table>cmn_location</table>
+<target_name>Location.City</target_name>
+<type>Dictionary</type>
+<update_domain>global</update_domain>
+<update_guid>77955692cf1a9010e080672b093f495f</update_guid>
+<update_guid_history>77955692cf1a9010e080672b093f495f:-779906593,77955692cf1a9010e080672b093f495f:-779906593,236592928d1a9010a9d179844fa8d774:-1871662610,e76512928a1a90105f7b4bf00ea7cfb4:-109547902</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>retrieved</category>
+<comments/>
+<name>user_criteria_d09365571b5a14109a872f41f54bcb8a</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="user_criteria"><user_criteria action="INSERT_OR_UPDATE"><active>true</active><advanced>false</advanced><company/><department/><group/><location/><match_all>false</match_all><name>Available for user with 'itil' role</name><role name="itil">282bf1fac6112285017366cb5f867469</role><script/><sys_class_name>user_criteria</sys_class_name><sys_created_by>tanner.smith</sys_created_by><sys_created_on>2020-08-03 13:06:40</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>d09365571b5a14109a872f41f54bcb8a</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Available for user with 'itil' role</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>user_criteria_d09365571b5a14109a872f41f54bcb8a</sys_update_name><sys_updated_by>tanner.smith</sys_updated_by><sys_updated_on>2020-08-03 13:06:40</sys_updated_on><user/></user_criteria></record_update>]]></payload>
+<payload_hash>-210018510</payload_hash>
+<remote_update_set display_value="Pre-prod Config Sync - 2023-07-20 LTE">c74a56c8878c0a10c2420dc60cbb35b6</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-01-25 15:41:49</sys_created_on>
+<sys_id>cf4a56c8878c0a10c2420dc60cbb35b9</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18973f48f430000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-01-25 15:41:49</sys_updated_on>
+<table/>
+<target_name>Available for user with 'itil' role</target_name>
+<type>User Criteria</type>
+<update_domain>global</update_domain>
+<update_guid>33a3a557295a1410b5e21051f9e9dee8</update_guid>
+<update_guid_history>33a3a557295a1410b5e21051f9e9dee8:-210018510,33a3a557295a1410b5e21051f9e9dee8:-210018510</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>
