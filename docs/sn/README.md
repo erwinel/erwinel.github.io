@@ -18,6 +18,7 @@
 - [Custom Applications](./Custom-Applications.md)
 - [Update Sets](./Update-Sets.md)
 - [Development Links](Development-Links.md)
+- [PDI Setup](PDI-Setup.md)
 
 ### ServiceNow Links
 
