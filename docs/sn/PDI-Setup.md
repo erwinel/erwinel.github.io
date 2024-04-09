@@ -22,11 +22,11 @@ This explains how to set up a new Personal Developer Instance for testing USMS c
 
 1. Retrieve and apply the ["Company Setup 2024-02-26" update set](./data/Company%20Setup%202024-02-26.xml).
 2. Retrieve and apply the `KB Setup 2022-10-31` update set.
-2. Retrieve and apply the `KB Setup 2024-02-22` update set.
-2. Retrieve and apply the `KB Setup 2024-02-26 LTE` update set.
-2. Retrieve and apply the ["KB Setup 2024-02-26" update set](./data/KB%20Setup%202024-02-26.xml).
-3. Retrieve and apply the ["Location Config - 2023-07-20 LTE" update set](./data/Location%20Config%20-%202023-07-20%20LTE.xml).
-4. Retrieve and apply the ["SLAs and Schedules 2024-02-26" update set](./data/SLAs%20and%20Schedules%202024-02-26.xml).
+3. Retrieve and apply the `KB Setup 2024-02-26 LTE` update set.
+4. Retrieve and apply the `KB Setup 2024-02-22` update set.
+5. Retrieve and apply the ["KB Setup 2024-02-26" update set](./data/KB%20Setup%202024-02-26.xml).
+6. Retrieve and apply the ["Location Config - 2023-07-20 LTE" update set](./data/Location%20Config%20-%202023-07-20%20LTE.xml).
+7. Retrieve and apply the ["SLAs and Schedules 2024-02-26" update set](./data/SLAs%20and%20Schedules%202024-02-26.xml).
 
 ## Install Products and Plugins
 
@@ -92,10 +92,11 @@ Next, using Application Studio, use "Import from Source Control" to import the a
 Import the following XML files:
 
 1. [Users and Groups](./data/Users%20and%20Groups.xml)
-1. [Sites and Regions](./data/Sites%20and%20Regions.xml)
-1. [Physical Networks](./data/Physical%20Networks.xml)
+2. [Sites and Regions](./data/Sites%20and%20Regions.xml)
+3. [Physical Networks](./data/Physical%20Networks.xml)
 
 ## Import Additional Update Sets
 
-5. Retrieve and apply the ["Service Catalog Baseline - 2024-02-07 LTE" update set](./data/Service%20Catalog%20Baseline%20-%202024-02-07%20LTE.xml).
-6. Retrieve and apply the ["Dev Setup - 2023-08-31 LTE" update set](./data/Dev%20Setup%20-%202023-08-31%20LTE.xml).
+1. Retrieve and apply the `Company Setup 2024-02-26` update set.
+2. Retrieve and apply the ["Service Catalog Baseline - 2024-02-07 LTE" update set](./data/Service%20Catalog%20Baseline%20-%202024-02-07%20LTE.xml).
+3. Retrieve and apply the ["Dev Setup - 2023-08-31 LTE" update set](./data/Dev%20Setup%20-%202023-08-31%20LTE.xml).
