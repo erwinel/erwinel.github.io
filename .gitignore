@@ -28,6 +28,10 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+# System files
+.DS_Store
+Thumbs.db
+
 # Miscellaneous
 /.angular/cache
 .sass-cache/
@@ -36,7 +40,4 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
-
-# System files
-.DS_Store
-Thumbs.db
+.angulardoc.json
