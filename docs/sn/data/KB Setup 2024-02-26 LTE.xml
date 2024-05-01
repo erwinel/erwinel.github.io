@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2024-04-18 20:19:36">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description/>
+<inserted/>
+<name>KB Setup 2024-02-26 LTE</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date>2024-02-26 20:36:56</release_date>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>e010906e87ec4e10246131d70cbb35ac</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-04-18 20:19:36</sys_created_on>
+<sys_id>cf6fb30387a58e104d9a0f28cebb352b</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-04-18 20:19:36</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>kb_category_3d681cadafbed11019d98dd767274962</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="kb_category"><kb_category action="INSERT_OR_UPDATE"><active>true</active><full_category>Infrastructure / ServiceNow</full_category><label>ServiceNow</label><parent_id>4ef1a943afd9b410394e933b3e2749d4</parent_id><parent_table>kb_category</parent_table><sys_created_by>admin</sys_created_by><sys_created_on>2022-10-20 16:59:39</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>3d681cadafbed11019d98dd767274962</sys_id><sys_mod_count>1</sys_mod_count><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-10-20 16:59:39</sys_updated_on><value>servicenow</value></kb_category><sys_translated_text action="delete_multiple" query="documentkey=3d681cadafbed11019d98dd767274962"/></record_update>]]></payload>
+<payload_hash>1826921991</payload_hash>
+<remote_update_set display_value="KB Setup 2024-02-26 LTE">cf6fb30387a58e104d9a0f28cebb352b</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-04-18 20:19:36</sys_created_on>
+<sys_id>076fb30387a58e104d9a0f28cebb352c</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18de721a1450000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-04-18 20:19:36</sys_updated_on>
+<table/>
+<target_name>ServiceNow</target_name>
+<type>Knowledge Category</type>
+<update_domain>global</update_domain>
+<update_guid>ff7010aee6ec4e10203da2c5fbdb7c96</update_guid>
+<update_guid_history>ff7010aee6ec4e10203da2c5fbdb7c96:1826921991,1c42a34d6aec8a10a9f36abbc1f0e8e9:1826921991</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>kb_category_4ef1a943afd9b410394e933b3e2749d4</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="kb_category"><kb_category action="INSERT_OR_UPDATE"><active>true</active><full_category>Infrastructure</full_category><label>Infrastructure</label><parent_id>6941e943afd9b4103a4ea33b3e27</parent_id><parent_table>kb_knowledge_base</parent_table><sys_created_by>admin</sys_created_by><sys_created_on>2022-10-20 16:59:08</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>4ef1a943afd9b410394e933b3e2749d4</sys_id><sys_mod_count>1</sys_mod_count><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-10-20 16:59:08</sys_updated_on><value>infrastructure</value></kb_category><sys_translated_text action="delete_multiple" query="documentkey=4ef1a943afd9b410394e933b3e2749d4"/></record_update>]]></payload>
+<payload_hash>16886330</payload_hash>
+<remote_update_set display_value="KB Setup 2024-02-26 LTE">cf6fb30387a58e104d9a0f28cebb352b</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-04-18 20:19:36</sys_created_on>
+<sys_id>0f6fb30387a58e104d9a0f28cebb352c</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18de721627d0000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-04-18 20:19:36</sys_updated_on>
+<table/>
+<target_name>Infrastructure</target_name>
+<type>Knowledge Category</type>
+<update_domain>global</update_domain>
+<update_guid>b760146e88ec4e10f12f18b79cf0397a</update_guid>
+<update_guid_history>b760146e88ec4e10f12f18b79cf0397a:16886330,de32a34d99ec8a10a3f4c39febf0c3e5:16886330</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>user_criteria_2f137fb2eb303010e0ef83c45e52287c</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="user_criteria"&gt;&lt;user_criteria action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;advanced&gt;false&lt;/advanced&gt;&lt;company/&gt;&lt;department/&gt;&lt;group/&gt;&lt;location/&gt;&lt;match_all&gt;false&lt;/match_all&gt;&lt;name&gt;Users with 'itil' role&lt;/name&gt;&lt;role name="itil"&gt;282bf1fac6112285017366cb5f867469&lt;/role&gt;&lt;script&gt;&lt;![CDATA[/** Scripted User Criteria is not cached, and evaluated everytime, so performance is dependent on the script.
+* Populate `answer` with true/false or evaluate to true/false
+* The script is evaluated in the scope the user criteria is defined
+* Don't use `current` in the script or populate the variable
+* Don't use `gs.getUser()` or  `gs.getUserID()`, 
+* instead use `user_id` which contains the user sys_id against whom the evaluation is happening.
+*/]]&gt;&lt;/script&gt;&lt;short_description/&gt;&lt;sys_class_name&gt;user_criteria&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2021-06-21 13:04:45&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;2f137fb2eb303010e0ef83c45e52287c&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Users with 'itil' role&lt;/sys_name&gt;&lt;sys_package display_value="User Criteria" source="com.glideapp.user_criteria"&gt;2a95ca48dbf00010df0bf81d0f9619d0&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;user_criteria_2f137fb2eb303010e0ef83c45e52287c&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2021-06-21 13:04:45&lt;/sys_updated_on&gt;&lt;user/&gt;&lt;/user_criteria&gt;&lt;/record_update&gt;</payload>
+<payload_hash>-99176272</payload_hash>
+<remote_update_set display_value="KB Setup 2024-02-26 LTE">cf6fb30387a58e104d9a0f28cebb352b</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-04-18 20:19:36</sys_created_on>
+<sys_id>476fb30387a58e104d9a0f28cebb352d</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18de71b3bc70000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-04-18 20:19:36</sys_updated_on>
+<table/>
+<target_name>Users with 'itil' role</target_name>
+<type>User Criteria</type>
+<update_domain>global</update_domain>
+<update_guid>ddeec02edcec4e105698ea09f3e4e0d5</update_guid>
+<update_guid_history>ddeec02edcec4e105698ea09f3e4e0d5:-99176272,f612234d4cec8a106aef5b0b0da6c037:-99176272</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>kb_uc_can_contribute_mtom_aa3363972f62111004e4d3f62799b632</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="kb_uc_can_contribute_mtom"><kb_uc_can_contribute_mtom action="INSERT_OR_UPDATE"><kb_knowledge_base display_value="Team Knowledge">6941e943afd9b4103a4ea33b3e27</kb_knowledge_base><sys_class_name>kb_uc_can_contribute_mtom</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2022-10-20 17:24:14</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>aa3363972f62111004e4d3f62799b632</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Team Knowledge.Users with 'itil' role</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_scope display_value="Global">global</sys_scope><sys_update_name>kb_uc_can_contribute_mtom_aa3363972f62111004e4d3f62799b632</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-10-20 17:24:14</sys_updated_on><user_criteria display_value="Users with 'itil' role">2f137fb2eb303010e0ef83c45e52287c</user_criteria></kb_uc_can_contribute_mtom></record_update>]]></payload>
+<payload_hash>-1754656992</payload_hash>
+<remote_update_set display_value="KB Setup 2024-02-26 LTE">cf6fb30387a58e104d9a0f28cebb352b</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-04-18 20:19:36</sys_created_on>
+<sys_id>836fb30387a58e104d9a0f28cebb352d</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18de71e54420000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-04-18 20:19:36</sys_updated_on>
+<table/>
+<target_name>Team Knowledge.Users with 'itil' role</target_name>
+<type>Who Can Contribute To Knowledge Base</type>
+<update_domain>global</update_domain>
+<update_guid>faaf402ebfec4e108fd7aa42023af815</update_guid>
+<update_guid_history>faaf402ebfec4e108fd7aa42023af815:-1754656992,332e59dfc4c0f910583b01e71d4c08fa:-1754656992</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>kb_knowledge_base_6941e943afd9b4103a4ea33b3e27</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="kb_knowledge_base"><kb_knowledge_base action="INSERT_OR_UPDATE"><active>true</active><application display_value="Global">global</application><approval_description/><article_validity/><card_color/><data_policy display_value="">c9d5dfd72f22111004e4d3f62799b6ce</data_policy><description/><disable_category_editing>false</disable_category_editing><disable_commenting>false</disable_commenting><disable_mark_as_helpful>false</disable_mark_as_helpful><disable_rating>false</disable_rating><disable_suggesting>false</disable_suggesting><enable_socialqa>false</enable_socialqa><icon/><kb_managers/><kb_version>3</kb_version><mandatory_fields/><order/><owner display_value="System Administrator">6816f79cc0a8016401c5a33be04be441</owner><question_annotation/><retire_workflow display_value="Knowledge - Instant Retire">3d18ef12c30031000096dfdc64d3aeb6</retire_workflow><sys_created_by>admin</sys_created_by><sys_created_on>2022-10-20 16:25:41</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>6941e943afd9b4103a4ea33b3e27</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-10-20 16:25:41</sys_updated_on><table>kb_knowledge</table><template/><title>Team Knowledge</title><workflow display_value="Knowledge - Instant Publish">fbe441019f112100d8f8700c267fcf1a</workflow></kb_knowledge_base><sys_translated_text action="delete_multiple" query="documentkey=6941e943afd9b4103a4ea33b3e27"/></record_update>]]></payload>
+<payload_hash>427094833</payload_hash>
+<remote_update_set display_value="KB Setup 2024-02-26 LTE">cf6fb30387a58e104d9a0f28cebb352b</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>lerwinesa</sys_created_by>
+<sys_created_on>2024-04-18 20:19:36</sys_created_on>
+<sys_id>cf6fb30387a58e104d9a0f28cebb352c</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>18de71abdf40000001</sys_recorded_at>
+<sys_updated_by>lerwinesa</sys_updated_by>
+<sys_updated_on>2024-04-18 20:19:36</sys_updated_on>
+<table>kb_knowledge</table>
+<target_name>Team Knowledge</target_name>
+<type>Knowledge Base</type>
+<update_domain>global</update_domain>
+<update_guid>29cec02e82ec4e10dabdc36f559a68d2</update_guid>
+<update_guid_history>29cec02e82ec4e10dabdc36f559a68d2:427094833,87a16bc920ec8a10fda66013fdcd75cb:427094833</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>
