@@ -2,15 +2,6 @@
 
 - [Testing Plans](./Testing-Plans/README.md)
 
-## ServiceNow USG Support
-
-- **Website:** [https://hiwave.servicenowservices.com](https://hiwave.servicenowservices.com) - Requires a PIV login in addition to a  username/password login.
-- **Phone:** 408-606-2701 (855-505-6555)
-- **Federal Account Executive:** Daniel Gershen; M: [(571) 228-5110](tel:571-228-5110); [daniel.gershen@servicenow.com](mailto:daniel.gershen@servicenow.com)
-- **Solution Consultant:** Kevin Littell; M: [(410) 340-8040](tel:410-340-8040); [Kevin.Littell@servicenow.com](mailto:Kevin.Littell@servicenow.com)
-- **Alt Federal Account Executive:** Pat Gunning; M: [(443) 618-5415](tel:443-618-5415); [Patrick.gunning@servicenow.com](mailto:Patrick.gunning@servicenow.com)
-- **Our company name:** Department of Justice - US Marshals Service - TOD
-
 ### Other Documents
 
 - [Self-Hosted References](./Self-Hosted.md)
@@ -26,46 +17,6 @@
 - [Community Website](https://community.servicenow.com/)
 - [Developers Website](https://developer.servicenow.com/)
 - [Learning Portal](https://nowlearning.service-now.com/)
-
-### Registered Instances
-
-| Name                                                      | Stage       | Self-Hosted | Version            |
-|-----------------------------------------------------------|-------------|-------------|--------------------|
-| snow_prod                                                 | Production  | Yes         | Vancouver Patch 5  |
-| snow_test                                                 | Testing     | Yes         | Vancouver Patch 5  |
-| snow_dev                                                  | Development | Yes         | Vancouver Patch 5  |
-| [usmsktrain2](https://usmsktrain2.servicenowservices.com) | Production  | No          | Vancouver Patch 5  |
-| [usmskstage2](https://usmskstage2.servicenowservices.com) | Testing     | No          | Vancouver Patch 5  |
-| [usmskdev2](https://usmskdev2.servicenowservices.com)     | Development | No          | Vancouver Patch 5  |
-
-### Build info for self-hosted instances
-
-#### Production
-
-```text
-Build Date: 12-11-2023_2006
-Build Tag: glide-vancouver-07-06-2023__patch5-12-01-2023
-Instance Name: snow_prod
-Instance ID: 440642b9af011010b6a48dd76727495e
-```
-
-#### Test
-
-```text
-Build Date: 12-11-2023_2006
-Build Tag: glide-vancouver-07-06-2023__patch5-12-01-2023
-Instance Name: snow_test
-Instance ID: 3516518baf0110109384949b4d27496d
-```
-
-#### Dev
-
-```text
-Build Date: 12-11-2023_2006
-Build Tag: glide-vancouver-07-06-2023__patch5-12-01-2023
-Instance Name: snow_dev
-Instance ID: b60a518baf011010971ad6142627496c
-```
 
 ### Entitlements
 
