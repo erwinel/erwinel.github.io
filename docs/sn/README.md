@@ -2,10 +2,9 @@
 
 - [Testing Plans](./Testing-Plans/README.md)
 
-### Other Documents
+## Other Documents
 
 - [Self-Hosted References](./Self-Hosted.md)
-- [Installed Products](./Installed-Products.md)
 - [Custom Applications](./Custom-Applications.md)
 - [Development Links](Development-Links.md)
 - [PDI Setup](PDI-Setup.md)

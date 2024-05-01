@@ -24,8 +24,8 @@ This explains how to set up a new Personal Developer Instance for testing USMS c
 
 1. Retrieve and apply the ["Company Setup 2024-02-26" update set](./data/Company%20Setup%202024-02-26.xml).
 2. Retrieve and apply the `KB Setup 2022-10-31` update set.
-3. Retrieve and apply the `KB Setup 2024-02-26 LTE` update set.
-4. Retrieve and apply the `KB Setup 2024-02-22` update set.
+3. Retrieve and apply the ["KB Setup 2024-02-26 LTE" update set](./data/KB%20Setup%202024-02-26%20LTE.xml).
+4. Retrieve and apply the ["KB Setup 2024-02-22" update set](./data/KB%20Setup%202024-02-22.xml).
 5. Retrieve and apply the ["KB Setup 2024-02-26" update set](./data/KB%20Setup%202024-02-26.xml).
 6. Retrieve and apply the ["Location Config - 2023-07-20 LTE" update set](./data/Location%20Config%20-%202023-07-20%20LTE.xml).
 7. Retrieve and apply the ["SLAs and Schedules 2024-02-26" update set](./data/SLAs%20and%20Schedules%202024-02-26.xml).
