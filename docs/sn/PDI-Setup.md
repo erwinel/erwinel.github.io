@@ -2,15 +2,17 @@
 
 This explains how to set up a new Personal Developer Instance for testing USMS components.
 
-- [See Also](#see-also)
-- [Import Update Sets](#import-update-sets)
-- [Install Products and Plugins](#install-products-and-plugins)
-  - [Install from PDI Website](#install-from-pdi-website)
-  - [Install Products](#install-products)
-  - [Install Store Applications](#install-store-applications)
-- [Import XML Data](#import-xml-data)
-- [Configure Source Control Credentials](#configure-source-control-credentials)
-- [Import USMS Program Operations Application](#import-usms-program-operations-application)
+- [Personal Developer Instance Setup](#personal-developer-instance-setup)
+  - [See Also](#see-also)
+  - [Import Initial Update Sets](#import-initial-update-sets)
+  - [Install Products and Plugins](#install-products-and-plugins)
+    - [Install from PDI Website](#install-from-pdi-website)
+    - [Install Products](#install-products)
+    - [Install Store Applications](#install-store-applications)
+  - [Configure Source Control Credentials](#configure-source-control-credentials)
+  - [Import USMS Program Operations Application](#import-usms-program-operations-application)
+  - [Import XML Data](#import-xml-data)
+  - [Import Additional Update Sets](#import-additional-update-sets)
 
 ## See Also
 
@@ -100,3 +102,5 @@ Import the following XML files:
 1. Retrieve and apply the `Company Setup 2024-02-26` update set.
 2. Retrieve and apply the ["Service Catalog Baseline - 2024-02-07 LTE" update set](./data/Service%20Catalog%20Baseline%20-%202024-02-07%20LTE.xml).
 3. Retrieve and apply the ["Dev Setup - 2023-08-31 LTE" update set](./data/Dev%20Setup%20-%202023-08-31%20LTE.xml).
+4. Retrieve and apply the ["Production Sync 20240430" update set](./data/Production%20Sync%2020240430.xml).
+5. Retrieve and apply the ["Service Catalog Updates 20240430" update set](./data/Service%20Catalog%20Updates%2020240430.xml.xml).
