@@ -7,7 +7,6 @@
 - [Self-Hosted References](./Self-Hosted.md)
 - [Installed Products](./Installed-Products.md)
 - [Custom Applications](./Custom-Applications.md)
-- [Update Sets](./Update-Sets.md)
 - [Development Links](Development-Links.md)
 - [PDI Setup](PDI-Setup.md)
 
