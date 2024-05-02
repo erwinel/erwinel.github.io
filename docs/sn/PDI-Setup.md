@@ -50,7 +50,7 @@ From the Application Manager in your Personal ServiceNow development instance, i
 8. Knowledge Management
 9. Project Portfolio Management - Pending activiation in production.
 10. Application Portfolio Management - Pending activiation in production.
-11. Digital Portfolion Management
+11. Digital Portfolio Management
 
 ### Install Store Applications
 
