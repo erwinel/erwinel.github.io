@@ -7,6 +7,9 @@ Order guide for new virtual server request that can support [Virtual Server](./V
 - [ ] Remove Disk Type options.
 - [ ] If person selects 'No' for automatic updates, the need to explain how updates are taken care of.
 - [ ] Disable or delete New Data Drive catalog item.
+- [ ] Dropdown for Domain.
+- [ ] Textbox for machine name.
+  - [ ] Validate machine name.
 
 ## Layout
 

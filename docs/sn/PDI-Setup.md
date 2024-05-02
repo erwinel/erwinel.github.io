@@ -2,33 +2,26 @@
 
 This explains how to set up a new Personal Developer Instance for testing USMS components.
 
-- [Personal Developer Instance Setup](#personal-developer-instance-setup)
-  - [See Also](#see-also)
-  - [Import Initial Update Sets](#import-initial-update-sets)
-  - [Install Products and Plugins](#install-products-and-plugins)
-    - [Install from PDI Website](#install-from-pdi-website)
-    - [Install Products](#install-products)
-    - [Install Store Applications](#install-store-applications)
-  - [Configure Source Control Credentials](#configure-source-control-credentials)
-  - [Import USMS Program Operations Application](#import-usms-program-operations-application)
-  - [Import XML Data](#import-xml-data)
-  - [Import Additional Update Sets](#import-additional-update-sets)
-
-## See Also
-
-- [GitHub Guide](https://developer.servicenow.com/dev.do#!/guides/tokyo/developer-program/github-guide/github-and-the-developer-site-training-guide-introduction)
-- [Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token)
-- [Managing the Development Environment](https://developer.servicenow.com/learn/courses/tokyo/app_store_learnv2_devenvironment_tokyo_managing_the_development_environment)
+- [Import Initial Update Sets](#import-initial-update-sets)
+- [Install Products and Plugins](#install-products-and-plugins)
+  - [Install from PDI Website](#install-from-pdi-website)
+  - [Install Products](#install-products)
+  - [Install Store Applications](#install-store-applications)
+- [Configure Source Control Credentials](#configure-source-control-credentials)
+- [Import USMS Program Operations Application](#import-usms-program-operations-application)
+- [Import XML Data](#import-xml-data)
+- [Import Additional Update Sets](#import-additional-update-sets)
+- [See Also](#see-also)
 
 ## Import Initial Update Sets
 
-1. Retrieve and apply the ["Company Setup 2024-02-26" update set](./data/Company%20Setup%202024-02-26.xml).
-2. Retrieve and apply the `KB Setup 2022-10-31` update set.
-3. Retrieve and apply the ["KB Setup 2024-02-26 LTE" update set](./data/KB%20Setup%202024-02-26%20LTE.xml).
-4. Retrieve and apply the ["KB Setup 2024-02-22" update set](./data/KB%20Setup%202024-02-22.xml).
-5. Retrieve and apply the ["KB Setup 2024-02-26" update set](./data/KB%20Setup%202024-02-26.xml).
-6. Retrieve and apply the ["Location Config - 2023-07-20 LTE" update set](./data/Location%20Config%20-%202023-07-20%20LTE.xml).
-7. Retrieve and apply the ["SLAs and Schedules 2024-02-26" update set](./data/SLAs%20and%20Schedules%202024-02-26.xml).
+1. Retrieve and apply the ["Company Setup 2024-02-26" update set](https://github.com/erwinel/Company%20Setup%202024-02-26.xml).
+2. Retrieve and apply the ["KB Setup 2022-10-31" update set](https://github.com/erwinel/usms-update-sets/blob/8b4b7e6399ab652bce08f0544157018ea959a481/KB%20Setup%202022-10-31.xml) update set.
+3. Retrieve and apply the ["KB Setup 2024-02-26 LTE" update set](https://github.com/erwinel/KB%20Setup%202024-02-26%20LTE.xml).
+4. Retrieve and apply the ["KB Setup 2024-02-22" update set](https://github.com/erwinel/KB%20Setup%202024-02-22.xml).
+5. Retrieve and apply the ["KB Setup 2024-02-26" update set](https://github.com/erwinel/KB%20Setup%202024-02-26.xml).
+6. Retrieve and apply the ["Location Config - 2023-07-20 LTE" update set](https://github.com/erwinel/Location%20Config%20-%202023-07-20%20LTE.xml).
+7. Retrieve and apply the ["SLAs and Schedules 2024-02-26" update set](https://github.com/erwinel/SLAs%20and%20Schedules%202024-02-26.xml).
 
 ## Install Products and Plugins
 
@@ -38,6 +31,8 @@ From the "Activate Plugin" option under the "Instance Actions" menu of the Servi
 
 - **Software Asset Management Professional** *(optional)*
 - **Discovery** *(optional)*
+- **File Based Discovery** *(optional)*
+- **Service Mapping** *(optional)*
 
 You can see the status of an ongoing plugin activation by navigating to `System Diagnostics` ⇒ `Progress Workers`.
 
@@ -55,6 +50,7 @@ From the Application Manager in your Personal ServiceNow development instance, i
 8. Knowledge Management
 9. Project Portfolio Management - Pending activiation in production.
 10. Application Portfolio Management - Pending activiation in production.
+11. Digital Portfolion Management
 
 ### Install Store Applications
 
@@ -93,14 +89,20 @@ Next, using Application Studio, use "Import from Source Control" to import the a
 
 Import the following XML files:
 
-1. [Users and Groups](./data/Users%20and%20Groups.xml)
-2. [Sites and Regions](./data/Sites%20and%20Regions.xml)
-3. [Physical Networks](./data/Physical%20Networks.xml)
+1. [Users and Groups](https://github.com/erwinel/Users%20and%20Groups.xml)
+2. [Sites and Regions](https://github.com/erwinel/Sites%20and%20Regions.xml)
+3. [Physical Networks](https://github.com/erwinel/Physical%20Networks.xml)
 
 ## Import Additional Update Sets
 
-1. Retrieve and apply the `Company Setup 2024-02-26` update set.
-2. Retrieve and apply the ["Service Catalog Baseline - 2024-02-07 LTE" update set](./data/Service%20Catalog%20Baseline%20-%202024-02-07%20LTE.xml).
-3. Retrieve and apply the ["Dev Setup - 2023-08-31 LTE" update set](./data/Dev%20Setup%20-%202023-08-31%20LTE.xml).
-4. Retrieve and apply the ["Production Sync 20240430" update set](./data/Production%20Sync%2020240430.xml).
-5. Retrieve and apply the ["Service Catalog Updates 20240430" update set](./data/Service%20Catalog%20Updates%2020240430.xml.xml).
+1. Retrieve and apply the [Company Setup 2024-03-04](https://github.com/erwinel/usms-update-sets/blob/0cd5fc92b4b439e3b3125987c8b40d036a0826b2/Company%20Setup%202024-03-04.xml) update set.
+2. Retrieve and apply the ["Service Catalog Baseline - 2024-02-07 LTE" update set](https://github.com/erwinel/Service%20Catalog%20Baseline%20-%202024-02-07%20LTE.xml).
+3. Retrieve and apply the ["Dev Setup 2023-09-06 LTE" update set](https://github.com/erwinel/usms-update-sets/blob/355856fca96df093176d54978c40f5973a391fec/Dev%20Setup%202023-09-06%20LTE.xml).
+4. Retrieve and apply the ["Production Sync 20240430" update set](https://github.com/erwinel/Production%20Sync%2020240430.xml).
+5. Retrieve and apply the ["Service Catalog Updates 20240430" update set](https://github.com/erwinel/Service%20Catalog%20Updates%2020240430.xml.xml).
+
+## See Also
+
+- [GitHub Guide](https://developer.servicenow.com/dev.do#!/guides/tokyo/developer-program/github-guide/github-and-the-developer-site-training-guide-introduction)
+- [Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token)
+- [Managing the Development Environment](https://developer.servicenow.com/learn/courses/tokyo/app_store_learnv2_devenvironment_tokyo_managing_the_development_environment)
