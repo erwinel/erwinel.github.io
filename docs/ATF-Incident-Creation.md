@@ -1,0 +1,78 @@
+# ATF - USMS Incident: Incident creation - Self service
+
+Test to verify the creation of an Incident using the Create Incident catalog item.
+
+- Create a User: Create and impersonate user with the following values:
+  - First name = Unprivileged
+  - Last name = TestUser
+  - Active = true
+  - Email = `unprivileged.testuser@example.com`
+  - User ID = unprivileged_testuser
+- Open a Record Producer: Open 'Create Incident' Record Producer
+- Variable State Validation:
+  - Confirm that the following variables are visible: Please describe your issue below, Associated Network, Network not applicable, Site, Urgency, Category, On Behalf of
+  - Confirm that the following variables are not visible: Subcategory, User
+  - Confirm that the following variables are not read only: Please describe your issue below, Associated Network, Network not applicable, Site, Urgency, Category, On Behalf of
+  - Confirm that the following variables are mandatory: Please describe your issue below, Associated Network, Site, Urgency, On Behalf of
+  - Confirm that the following variables are not mandatory: Category
+- Validate Variable Values: Validate that the answer match the following condition:
+  - Network not applicable = false
+  - On Behalf of = Myself
+  - Category = *-- None --*
+- Set Variable Values: Answer the questions on the form as follows:
+  - Please describe your issue below = Test Incident Comments
+  - Associated Network = PO
+  - Category = Hardware
+  - Subcategory = KVM
+  - Site = HQ/072
+  - Urgency = 2 - Medium
+- Submit Record Producer: Submit the Record Producer and confirm submission canceled in browser
+- Open a Record Producer: Open 'Create Incident' Record Producer
+- Set Variable Values: Answer the questions on the form as follows:
+  - Please describe your issue below = Test Incident Comments
+  - Site = HQ/072
+  - Urgency = 2 - Medium
+- Submit Record Producer: Submit the Record Producer and confirm submission canceled in browser
+- Open a Record Producer: Open 'Create Incident' Record Producer
+- Set Variable Values: Answer the questions on the form as follows:
+  - Please describe your issue below = Test Incident Comments
+  - Associated Network = PO
+  - Urgency = 2 - Medium
+- Submit Record Producer: Submit the Record Producer and confirm submission canceled in browser
+- Open a Record Producer: Open 'Create Incident' Record Producer
+- Set Variable Values: Answer the questions on the form as follows:
+  - Please describe your issue below = Test Incident Comments
+  - Associated Network = PO
+  - Site = HQ/072
+  - Urgency = 2 - Medium
+  - On Behalf of = Someone else
+- Submit Record Producer: Submit the Record Producer and confirm submission canceled in browser
+- Open a Record Producer: Open 'Create Incident' Record Producer
+- Set Variable Values: Answer the questions on the form as follows:
+  - Please describe your issue below = `Test Incident Comments`
+  - Associated Network = PO
+  - Site = HQ/072
+- Submit Record Producer: Submit the Record Producer and confirm submission canceled in browser
+- Open a Record Producer: Open 'Create Incident' Record Producer
+- Set Variable Values: Answer the questions on the form as follows:
+  - Please describe your issue below = `Test Incident Comments\n\nEven more comments`
+  - Associated Network = PO
+  - Site = HQ/072
+  - Urgency = 2 - Medium
+- Submit Record Producer: Submit the Record Producer and confirm submission to server
+- Field State Validation: Assert the following on Incident `[incident]`:
+  - The following fields are visible: Number, Caller, Category, Subcategory, Watch list, Opened, Closed, Urgency, State, Short description, Description, Additional comments
+  - The following fields are not visible: On hold reason, Impact, Priority
+  - The following fields are read only: Number, Caller, Category, Subcategory, Opened, Closed, State, Urgency, Description, Short description
+  - The following fields are not read only: Watch list
+  - The following fields are not mandatory: Watch list
+- Field Values Validation: Validate that the form matches the following condition:
+  - Caller = {{Step 1: Create a User.User}}
+  - State = New
+  - Short description = Test Incident Comments
+  - Description = `Test Incident Comments\n\nEven more comments`
+  - Location = HQ/072
+  - Urgency = 2 - Medium
+- Variable State Validation:
+  - Confirm that the following variables are visible: Please describe your issue below, Associated Network, Network not applicable, Site, Urgency, Category, Subcategory, On Behalf of, User
+  - Confirm that the following variables are read only: Please describe your issue below, Associated Network, Network not applicable, Site, Urgency, Category, Subcategory, On Behalf of, User
