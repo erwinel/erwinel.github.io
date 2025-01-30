@@ -2,7 +2,7 @@
 
 - [USMS Technical Operations Documentation](https://github.com/erwinel/usms-ops-servicenow-docs/blob/main/README.md)
 - [Development Links](./Development-Links.md): A collection of development related-link.
--   [Emojis-And-HTML-Entities](./Emojis-And-HTML-Entities.md)
+  - [Emojis-And-HTML-Entities](./Emojis-And-HTML-Entities.md)
 - [USMS Program Operations ServiceNow Application](https://github.com/erwinel/usmsprogop-src/tree/main)
 - [sn_typings_server_global](https://github.com/erwinel/sn_typings_server_global): ServiceNow Server Globally-Scoped Typings
 - [sn_typings_server_scoped](https://github.com/erwinel/sn_typings_server_scoped): ServiceNow Server Scoped Application Typings
